@@ -1,0 +1,54 @@
+<div nz-row nzType="flex">
+  <!--左侧主要文档内容-->
+  <div nz-col nzSpan="20">
+    <h2 style="color:black;opacity:0.85;margin:16px;">
+      {{wikiPassage.title}}
+      <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="default" (click)="edit()"><i nz-icon type="edit"></i>编 辑</button>
+      <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="update()"><i nz-icon type="save"></i>保 存</button>
+    </h2>
+
+    <div ng-zow nzType="flex">
+      <div ng-col nzSpan="24" style="margin:16px;">
+        {{wikiPassage.lastModifyDate}} · 作者 {{wikiPassage.author}}
+        <nz-avatar nzText="Toms"
+                   nzSize="small"
+                   [ngStyle]="{ 'background-color': color }"
+                   style="vertical-align: middle;"></nz-avatar>
+      </div>
+    </div>
+
+    <div style="margin:16px;margin-top:24px;margin-bottom:40px;">
+
+      <markdown *ngIf="pageStatus==0" [data]="wikiPassage.content"></markdown>
+
+      <md-editor *ngIf="pageStatus==1"
+                 name="Content"
+                 [upload]="doUpload"
+                 [preRender]="preRenderFunc"
+                 [(ngModel)]="wikiPassage.content"
+                 [height]="'670px'"
+                 [mode]="'editor'"
+                 required
+                 maxlength="6000">
+      </md-editor>
+
+    </div>
+  </div>
+  <!--右侧目录-->
+  <div nz-col nzSpan="4">
+    <nz-anchor>
+      <nz-link *ngFor="let item of wikiPassage.anchorTitles" nzHref="{{item.href}}" nzTitle="{{item.title}}">
+        <nz-link *ngFor="let child of item.children" nzHref="{{child.href}}" nzTitle="{{child.title}}"></nz-link>
+      </nz-link>
+      <!--<nz-link nzHref="#道路--铁路" nzTitle="道路 & 铁路"></nz-link>
+      <nz-link nzHref="#公共交通" nzTitle="公共交通"></nz-link>
+      <nz-link nzHref="#市政服务" nzTitle="市政服务"></nz-link>
+      <nz-link nzHref="#发展规划" nzTitle="发展规划"></nz-link>
+      <nz-link nzHref="#其他提示" nzTitle="其他提示"></nz-link>
+      <nz-link nzHref="#衍生讨论与外部资源" nzTitle="衍生讨论与外部资源"></nz-link>-->
+    </nz-anchor>
+  </div>
+</div>
+
+
+

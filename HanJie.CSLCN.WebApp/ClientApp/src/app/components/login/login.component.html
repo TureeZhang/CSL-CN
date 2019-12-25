@@ -1,0 +1,43 @@
+<div nz-row style="height: 785px;
+    background-image: url(/assets/login-background.jpg);
+    background-repeat: round;"
+     nzType="flex" nzJustify="space-around" nzAlign="middle">
+  <!--左侧居中天际线Logo-->
+  <div nz-col nzSpan="6">
+    <img src="/assets/logo-header.png" alt="Alternate Text" style="position:relative;bottom:50px;"/>
+  </div>
+  <!--右侧登录框-->
+  <div nz-col nzSpan="6">
+    <div style="width:300px;position:relative;bottom:50px;">
+      <nz-card>
+        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="请输入用户名。">
+              <nz-input-group nzPrefixIcon="user">
+                <input type="text" nz-input formControlName="userName" placeholder="用户名" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="请输入密码。">
+              <nz-input-group nzPrefixIcon="lock">
+                <input type="password" nz-input formControlName="password" placeholder="密码" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control style="text-align:left;">
+              <label nz-checkbox formControlName="remember">
+                <span>记住我的登录状态</span>
+              </label>
+              <a class="login-form-forgot">忘记密码？</a>
+              <button nz-button class="login-form-button" [nzType]="'primary'">登 录</button>
+              或者
+              <a>立即注册！（尚未开放）</a>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </nz-card>
+    </div>
+  </div>
+</div>

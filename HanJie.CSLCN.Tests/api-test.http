@@ -1,0 +1,20 @@
+GET http://localhost:61520/api/menus
+
+GET http://localhost:61520/api/wikipassages/beginners-guide
+
+POST http://localhost:61520/api/wikipassages
+Content-Type: application/json
+
+{
+	"title": "初学者指南",
+	"content": "此页面旨在作为一些提示列表，这些提示可能对于城市的新玩家来说可能并不完全明显：Skylines，但曾经解释过这些提示可以使游戏更加愉快。\n\n123",
+	"author": "Toms",
+	"routePath": "beginners-guide",
+	"id": 1,
+	"createDate": "2019-05-26  16:24:00 ",
+	"lastModifyDate": "2019-05-26  16:24:00 "
+}
+
+GET http://localhost:5000/api/menus
+
+POST http://localhost:5000/api/login

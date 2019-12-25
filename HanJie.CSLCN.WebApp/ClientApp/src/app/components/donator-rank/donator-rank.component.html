@@ -1,0 +1,29 @@
+<div nz-row style="margin-top:24px;">
+  <div nz-col nzSpan="12" nzOffset="6" nzJustify="center">
+    <h1>贡献者总榜单</h1>
+    <nz-upload nzAction="http://localhost:5000/api/donatorrank"
+               nzFileType="application/vnd.ms-excel"
+               nzWithCredentials="true"
+               [nzHeaders]="setCustomerHeader(file)">
+      <button *ngIf="isAdmin" nz-button nzType="default"><i nz-icon nzType="upload"></i><span>导入新数据</span></button>
+    </nz-upload>
+  </div>
+</div>
+<div nz-row nzType="flex" nzAlign="middle">
+  <div nz-col nzSpan="12" nzOffset="6">
+    <nz-list [nzDataSource]="donatorRanks" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
+      <ng-template #item let-item>
+        <nz-list-item>
+          <nz-list-item-meta [nzTitle]="nzTitle"
+                             [nzAvatar]="item.avatarUrl"
+                             [nzDescription]="'['+item.personalTitle+'] '+item.descriptionWord">
+            <ng-template #nzTitle>
+              <a href="https://ng.ant.design"><b>{{ item.userNickName }}</b></a>
+            </ng-template>
+          </nz-list-item-meta>
+          <span style="color:red;opacity:0.7"><b>{{ item.donateTotalCount}} RMB</b></span>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
+</div>

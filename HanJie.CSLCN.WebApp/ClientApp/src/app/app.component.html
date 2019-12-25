@@ -1,0 +1,66 @@
+
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow">
+    <div *ngIf="!isCollapsed" class="logo" style="height:236px;width:160px;background:url(/assets/logo.png)"></div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+      <ng-template #errorMenu>
+        <li nz-menu-item>
+          <span><i nz-icon type="exclamation-circle"></i><span class="nav-text">获取菜单失败x</span></span>
+        </li>
+      </ng-template>
+      <ng-template #onlineMenu ngFor let-item [ngForOf]="menus" [ngForTrackBy]="trackbyMenuTitle">
+        <li *ngIf="item.menuItems&&item.menuItems.length>0;else submenu" nz-submenu>
+          <span title><i nz-icon type="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
+          <ul>
+            <li nz-menu-item *ngFor="let menuItem of item.menuItems" routerLink="/{{menuItem.path}}">{{menuItem.title}}</li>
+          </ul>
+        </li>
+        <ng-template #submenu>
+          <li nz-menu-item routerLink="/{{item.path}}">
+            <span><i nz-icon type="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
+          </li>
+        </ng-template>
+      </ng-template>
+      <!--控制显示获取菜单失败，还是遍历成功取得的菜单项-->
+      <div *ngIf="!menus;then errorMenu;else onlineMenu"></div>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="background: #fff; padding:0;height:40px;line-height:40px;">
+      <div nz-row style="line-height:inherit;">
+        <div nz-col nzSpan="12">
+          <i class="trigger"
+             nz-icon
+             [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+             (click)="isCollapsed = !isCollapsed"></i>
+        </div>
+        <div nz-col nzSpan="12" style="text-align:right;padding-right:12px;">
+          <button *ngIf="!isUserLogined" nz-button nzType="primary" [nzSize]="'small'" routerLink="/login"><i nz-icon nzType="login"></i>编辑者入口</button>
+          <span *ngIf="isUserLogined">
+            <nz-avatar nzIcon="user" nzSrc="/assets/user-avatar/CBDFEED4-ED0B-4182-9358-63408BA8D15A.JPG"></nz-avatar>
+            {{currentUser.nickName}}（{{currentUser.userName}}）
+            <button nz-button nzType="danger" [nzSize]="'small'" (click)="logout()"><i nz-icon nzType="logout"></i>退出</button>
+          </span>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content style="margin:0 16px;">
+      <nz-breadcrumb style="margin-top:6px;margin-bottom:6px;">
+        <nz-breadcrumb-item>城市天际线：汉界的一颗小虎牙</nz-breadcrumb-item>
+        <nz-breadcrumb-item>主页</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <div style="padding:4px; background: #fff; min-height: 785px;">
+        <!--Angular 路由出口-->
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer style="text-align: center;">
+      <div>
+        Copy Rights. <a href="https://www.huya.com/codelive" target="_blank">虎牙汉界</a> ©2019 Followed at <a href="https://github.com/TureeZhang/CSL-CN" target="_blank">Github/CSL-CN</a> or <a href="https://space.bilibili.com/242720226" target="_blank">Bilibi_虎牙汉界</a>
+      </div>
+      <div>
+        <a href="http://www.beian.miit.gov.cn/">浙ICP备19051457号-1</a> - All Rights Reserved.
+      </div>
+    </nz-footer>
+  </nz-layout>
+</nz-layout>
