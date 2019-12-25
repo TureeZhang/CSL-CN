@@ -11,7 +11,7 @@ export class CSLHttpHelper {
     /***
      *服务端主 host 地址段前缀
      ***/
-    private cslHostUrl: string = "http://www.cities-skylines.cn"; //"http://localhost:5000"
+    private cslHostUrl: string = this.getHostUrl();
 
     constructor(private http: HttpClient) { }
 
@@ -47,6 +47,20 @@ export class CSLHttpHelper {
                 headers:
                     new HttpHeaders().append("Content-Type", "application/json")
             });
+    }
+
+    getHostUrl(): string {
+        let host: string = document.location.host;
+        let apiHostUrl: string = "http://";
+
+        if (host == "www.cities-skylines") {
+            apiHostUrl += "www.cities-skylines";
+        }
+        else {
+            apiHostUrl += "localhost:5000";
+        }
+
+        return apiHostUrl;
     }
 
 }

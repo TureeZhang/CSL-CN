@@ -14,7 +14,7 @@ var CSLHttpHelper = /** @class */ (function () {
         /***
          *服务端主 host 地址段前缀
          ***/
-        this.cslHostUrl = "http://www.cities-skylines.cn"; //"http://localhost:5000"
+        this.cslHostUrl = this.getHostUrl();
     }
     /**
      * 向服务端 API 发起 get 请求
@@ -39,6 +39,17 @@ var CSLHttpHelper = /** @class */ (function () {
         return this.http.delete(this.cslHostUrl + url + "?id=" + id, {
             headers: new http_1.HttpHeaders().append("Content-Type", "application/json")
         });
+    };
+    CSLHttpHelper.prototype.getHostUrl = function () {
+        var host = document.location.host;
+        var apiHostUrl = "http://";
+        if (host == "www.cities-skylines") {
+            apiHostUrl += "www.cities-skylines";
+        }
+        else {
+            apiHostUrl += "localhost:5000";
+        }
+        return apiHostUrl;
     };
     CSLHttpHelper = __decorate([
         core_1.Injectable({ providedIn: "root" })

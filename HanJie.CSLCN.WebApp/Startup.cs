@@ -14,6 +14,8 @@ using System.Linq;
 using HanJie.CSLCN.Services;
 using HanJie.CSLCN.Common;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using System.Collections.Generic;
 
 namespace HanJie.CSLCN.WebApp
 {
@@ -47,6 +49,20 @@ namespace HanJie.CSLCN.WebApp
             services.AddDbContext<CSLDbContext>
                 (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString));  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
 
+            services.AddCors(setupAction =>
+            {
+                setupAction.AddPolicy("local-angular-app", new CorsPolicy
+                {
+                    IsOriginAllowed = url =>
+                    {
+                        if (url == "http://localhost:4200")
+                            return true;
+                        else
+                            return false;
+                    }
+                });
+            });
+
             //注册单例对象
             this.RegisterSingletons(ref services);
             //注册作用域对象
@@ -68,6 +84,7 @@ namespace HanJie.CSLCN.WebApp
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors("local-angular-app");
             app.UseFileServer();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -81,6 +98,7 @@ namespace HanJie.CSLCN.WebApp
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
 
             //app.UseSpa(spa =>
             //{
