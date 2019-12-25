@@ -1,6 +1,12 @@
 
 <nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow">
+  <nz-sider nzCollapsible
+            [(nzCollapsed)]="isCollapsed"
+            [nzWidth]="width"
+            [nzReverseArrow]="isReverseArrow"
+            [nzBreakpoint]="'lg'"
+            [nzCollapsedWidth]="0"
+            [nzZeroTrigger]="zeroTrigger">
     <div *ngIf="!isCollapsed" class="logo" style="height:236px;width:160px;background:url(/assets/logo.png)"></div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
       <ng-template #errorMenu>
@@ -28,13 +34,18 @@
   <nz-layout>
     <nz-header style="background: #fff; padding:0;height:40px;line-height:40px;">
       <div nz-row style="line-height:inherit;">
-        <div nz-col nzSpan="12">
+        <div nz-col nzLg="12" nzXs="0">
           <i class="trigger"
              nz-icon
              [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
              (click)="isCollapsed = !isCollapsed"></i>
         </div>
-        <div nz-col nzSpan="12" style="text-align:right;padding-right:12px;">
+        <div nz-col nzLg="0" nzXs="12">
+          <ng-template #zeroTrigger>
+            <i nz-icon nzType="menu-fold" nzTheme="outline"></i>
+          </ng-template>
+        </div>
+        <div nz-col nzLg="12" nzXs="12" style="text-align:right;padding-right:12px;">
           <button *ngIf="!isUserLogined" nz-button nzType="primary" [nzSize]="'small'" routerLink="/login"><i nz-icon nzType="login"></i>编辑者入口</button>
           <span *ngIf="isUserLogined">
             <nz-avatar nzIcon="user" nzSrc="/assets/user-avatar/CBDFEED4-ED0B-4182-9358-63408BA8D15A.JPG"></nz-avatar>

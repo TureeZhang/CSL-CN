@@ -53,8 +53,8 @@ export class CSLHttpHelper {
         let host: string = document.location.host;
         let apiHostUrl: string = "http://";
 
-        if (host == "www.cities-skylines") {
-            apiHostUrl += "www.cities-skylines";
+        if (host == "www.cities-skylines.cn") {
+            apiHostUrl += "www.cities-skylines.cn";
         }
         else {
             apiHostUrl += "localhost:5000";

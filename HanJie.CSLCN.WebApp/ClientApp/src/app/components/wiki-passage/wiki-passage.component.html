@@ -1,6 +1,6 @@
 <div nz-row nzType="flex">
   <!--左侧主要文档内容-->
-  <div nz-col nzSpan="20">
+  <div nz-col nzLg="20" nzXs="24">
     <h2 style="color:black;opacity:0.85;margin:16px;">
       {{wikiPassage.title}}
       <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="default" (click)="edit()"><i nz-icon type="edit"></i>编 辑</button>
@@ -35,7 +35,7 @@
     </div>
   </div>
   <!--右侧目录-->
-  <div nz-col nzSpan="4">
+  <div nz-col nzLg="4" nzXs="0">
     <nz-anchor>
       <nz-link *ngFor="let item of wikiPassage.anchorTitles" nzHref="{{item.href}}" nzTitle="{{item.title}}">
         <nz-link *ngFor="let child of item.children" nzHref="{{child.href}}" nzTitle="{{child.title}}"></nz-link>

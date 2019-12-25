@@ -43,8 +43,8 @@ var CSLHttpHelper = /** @class */ (function () {
     CSLHttpHelper.prototype.getHostUrl = function () {
         var host = document.location.host;
         var apiHostUrl = "http://";
-        if (host == "www.cities-skylines") {
-            apiHostUrl += "www.cities-skylines";
+        if (host == "www.cities-skylines.cn") {
+            apiHostUrl += "www.cities-skylines.cn";
         }
         else {
             apiHostUrl += "localhost:5000";
