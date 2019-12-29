@@ -33,7 +33,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             foreach (DonatorRank item in donatorRanks)
             {
                 DonatorRankDto dto = new DonatorRankDto().ConvertFromDataModel(item);
-                UserInfo user = this._userInfoService.GetById(item.Id);
+                UserInfo user = this._userInfoService.GetById(item.UserId);
                 dto.UserNickName = user.NickName;
                 dto.AvatarUrl = user.AvatarUrl;
                 datas.Add(dto);

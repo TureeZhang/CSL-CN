@@ -56,6 +56,9 @@ export class CSLHttpHelper {
         if (host == "www.cities-skylines.cn") {
             apiHostUrl += "www.cities-skylines.cn";
         }
+        else if (host == "www.huyahanjie.com") {
+            apiHostUrl += "www.huyahanjie.com"
+        }
         else {
             apiHostUrl += "localhost:5000";
         }
