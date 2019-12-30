@@ -92,12 +92,14 @@ namespace HanJie.CSLCN.WebApp
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
+            app.UseStatusCodePagesWithReExecute("/homepage/{0}");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
 
 
             //app.UseSpa(spa =>

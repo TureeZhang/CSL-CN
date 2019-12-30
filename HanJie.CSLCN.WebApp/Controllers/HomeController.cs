@@ -8,10 +8,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        [Route("homepage")]
+        [Route("/homepage/{0}")]
         public IActionResult Index()
         {
-            return Redirect("/index.html");
+            Response.StatusCode = 200;
+            return File("/index.html", "text/html");
         }
     }
 }

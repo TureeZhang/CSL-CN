@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanJie.CSLCN.WebApp", "HanJie.CSLCN.WebApp\HanJie.CSLCN.WebApp.csproj", "{D7A98D80-0B77-40F2-BD72-4E169669F9D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanJie.CSLCN.WebApp", "HanJie.CSLCN.WebApp\HanJie.CSLCN.WebApp.csproj", "{D7A98D80-0B77-40F2-BD72-4E169669F9D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanJie.CSLCN.Services", "HanJie.CSLCN.Services\HanJie.CSLCN.Services.csproj", "{1B6B532A-4B5B-4C8F-B16D-412E411B42E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanJie.CSLCN.Services", "HanJie.CSLCN.Services\HanJie.CSLCN.Services.csproj", "{1B6B532A-4B5B-4C8F-B16D-412E411B42E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanJie.CSLCN.Datas", "HanJie.CSLCN.Datas\HanJie.CSLCN.Datas.csproj", "{08B17AA1-6D41-401F-8CD0-A0D3B6E24A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanJie.CSLCN.Datas", "HanJie.CSLCN.Datas\HanJie.CSLCN.Datas.csproj", "{08B17AA1-6D41-401F-8CD0-A0D3B6E24A07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanJie.CSLCN.Models", "HanJie.CSLCN.Models\HanJie.CSLCN.Models.csproj", "{67B484BB-B4C0-4C9A-8423-629103852BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanJie.CSLCN.Models", "HanJie.CSLCN.Models\HanJie.CSLCN.Models.csproj", "{67B484BB-B4C0-4C9A-8423-629103852BB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanJie.CSLCN.Common", "HanJie.CSLCN.Common\HanJie.CSLCN.Common.csproj", "{D39F4836-9628-4130-B89B-A14784E27427}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanJie.CSLCN.Common", "HanJie.CSLCN.Common\HanJie.CSLCN.Common.csproj", "{D39F4836-9628-4130-B89B-A14784E27427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanJie.CSLCN.Tests", "HanJie.CSLCN.Tests\HanJie.CSLCN.Tests.csproj", "{15083B01-0D27-4E69-983A-DB0EB094FED0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanJie.CSLCN.Tests", "HanJie.CSLCN.Tests\HanJie.CSLCN.Tests.csproj", "{15083B01-0D27-4E69-983A-DB0EB094FED0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +21,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D7A98D80-0B77-40F2-BD72-4E169669F9D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7A98D80-0B77-40F2-BD72-4E169669F9D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7A98D80-0B77-40F2-BD72-4E169669F9D4}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{D7A98D80-0B77-40F2-BD72-4E169669F9D4}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{D7A98D80-0B77-40F2-BD72-4E169669F9D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7A98D80-0B77-40F2-BD72-4E169669F9D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1B6B532A-4B5B-4C8F-B16D-412E411B42E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
