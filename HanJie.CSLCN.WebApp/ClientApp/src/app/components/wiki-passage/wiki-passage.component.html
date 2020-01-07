@@ -3,8 +3,9 @@
   <div nz-col nzLg="20" nzXs="24">
     <h2 style="color:black;opacity:0.85;margin:16px;">
       {{wikiPassage.title}}
-      <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="default" (click)="edit()"><i nz-icon type="edit"></i>编 辑</button>
-      <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="update()"><i nz-icon type="save"></i>保 存</button>
+      <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="primary" (click)="edit()" style="margin-left:16px;"><i nz-icon type="edit"></i>编 辑</button>
+      <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" (click)="update()" style="margin-left:16px;"><i nz-icon type="save"></i>保 存</button>
+      <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon type="save"></i>表格编辑器</a>
     </h2>
 
     <div ng-zow nzType="flex">

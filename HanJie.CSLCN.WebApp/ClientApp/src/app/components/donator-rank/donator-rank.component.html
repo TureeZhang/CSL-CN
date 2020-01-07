@@ -10,7 +10,7 @@
   </div>
 </div>
 <div nz-row nzType="flex" nzAlign="middle">
-  <div nz-col nzSpan="12" nzOffset="6">
+  <div nz-col nzSpan="12" nzOffset="5">
     <nz-list [nzDataSource]="donatorRanks" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
       <ng-template #item let-item>
         <nz-list-item>
@@ -25,5 +25,13 @@
         </nz-list-item>
       </ng-template>
     </nz-list>
+  </div>
+  <div nz-col nzSpan="6" nzOffset="1" nzXs="23" style="text-align:center;margin-top:60px;margin-bottom:40px;">
+    <img src="/assets/alipay.bmp" alt="捐赠骚汉" />
+  </div>
+</div>
+<div nz-row nzType="flex" ngAlign="middle">
+  <div nz-col nzSpan="24" style="text-align:center;color: cadetblue;">
+    <p><nz-tag [nzColor]="'green'">→ 请您留意：您的捐赠会被骚汉个人在收到时手动统计更新，因而有时会较慢。敬请谅解！（支付宝自动化统计需要企业级用户才能开通）←</nz-tag></p>
   </div>
 </div>

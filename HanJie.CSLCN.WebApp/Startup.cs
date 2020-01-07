@@ -51,15 +51,12 @@ namespace HanJie.CSLCN.WebApp
 
             services.AddCors(setupAction =>
             {
-                setupAction.AddPolicy("local-angular-app", new CorsPolicy
+                setupAction.AddPolicy("local-angular-app", builder =>
                 {
-                    IsOriginAllowed = url =>
-                    {
-                        if (url == "http://localhost:4200")
-                            return true;
-                        else
-                            return false;
-                    }
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:4200");
+                    builder.Build();
                 });
             });
 

@@ -102,7 +102,11 @@ export function markedOptionsFactory(): MarkedOptions {
     const renderer = new MarkedRenderer();
 
     renderer.table = (header: string, body: string) => {
-        return '<table class="table table-bordered">' + header + body + '</table>';
+        return '<div style="overflow:auto"><table class="table table-bordered" style="min-width:850px;">' + header + body + '</table></div>';
+    };
+
+    renderer.image = (href: string, title: string, text: string) => {
+        return '<img src="' + href + '" alt="' + text + '" style="max-width:100%">';
     };
 
     return {
