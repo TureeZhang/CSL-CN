@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Models;
 using Microsoft.EntityFrameworkCore;
 using HanJie.CSLCN.Datas;
-using HanJie.CSLCN.Models.Common;
+using HanJie.CSLCN.Models.Common.AppSettings;
 using HanJie.CSLCN.Models.DataModels;
 using System;
 using System.Linq;

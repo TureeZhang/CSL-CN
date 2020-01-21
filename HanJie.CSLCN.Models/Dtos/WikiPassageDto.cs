@@ -12,5 +12,6 @@ namespace HanJie.CSLCN.Models.Dtos
         public string Author { get; set; }
         public string RoutePath { get; set; }
         public List<WikiPassageAnchorTitleDto> AnchorTitles { get; set; }
+        public List<QiniuStorageInfoDto> Images { get; set; }
     }
 }
