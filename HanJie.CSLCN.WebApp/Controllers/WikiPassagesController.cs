@@ -23,12 +23,6 @@ namespace HanJie.CSLCN.WebApp.Controllers
             _wikiPassageService = wikiPassageService;
         }
 
-        // GET: api/<controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]

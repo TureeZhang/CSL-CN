@@ -136,6 +136,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddSingleton<UserInfoService>();
             services.AddSingleton<UserStatuService>();
             services.AddSingleton<DonatorRankService>();
+            services.AddSingleton<QiniuService>();
         }
 
         /// <summary>

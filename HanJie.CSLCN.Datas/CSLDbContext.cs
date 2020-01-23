@@ -33,6 +33,11 @@ namespace HanJie.CSLCN.Datas
         /// </summary>
         public DbSet<DonatorRank> DonatorRanks { get; set; }
 
+        /// <summary>
+        /// 七牛云存储存放的文件信息
+        /// </summary>
+        public DbSet<QiniuStorageInfo> QiniuStorageInfoes { get; set; }
+
         public CSLDbContext()
         {
 
@@ -61,12 +66,12 @@ namespace HanJie.CSLCN.Datas
             ////}
             ////else
             ////{
-            string connStr = "User ID=root;Password=;Host=localhost;Port=3306;Database=CSLCN;Min Pool Size=0;Max Pool Size=100;";
+            //string connStr = "User ID=csl-cn-debug;Password=7EBC8B5FB6C14509BC75F68824B22351;Host=118.31.20.44;Port=3306;Database=cslcn-dev;Min Pool Size=0;Max Pool Size=100;";
 
-            if (RunAs.Release)
-                connStr = GlobalConfigs.AppSettings.ConnectionString;
+            //if (RunAs.Release)
+            //    connStr = GlobalConfigs.AppSettings.ConnectionString;
 
-            optionsBuilder.UseMySql(connStr);
+            //optionsBuilder.UseMySql(connStr);
             ////}
             //base.OnConfiguring(optionsBuilder);
         }

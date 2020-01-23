@@ -10,5 +10,6 @@ namespace HanJie.CSLCN.Models.Common.AppSettings
         public string SecretKey { get; set; }
         public string BucketName { get; set; }
         public string HttpEndPoint { get; set; }
+        public string CallBackUrl { get; set; }
     }
 }

@@ -11,5 +11,14 @@ namespace HanJie.CSLCN.Common
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(parameterName);
         }
+
+        public static void NotNull(object value,string parameterName)
+        {
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentNullException(nameof(parameterName));
+
+            if (value == null)
+                throw new ArgumentNullException(parameterName);
+        }
     }
 }
