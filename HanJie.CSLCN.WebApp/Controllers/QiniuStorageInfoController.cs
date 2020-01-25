@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
@@ -12,21 +13,30 @@ namespace HanJie.CSLCN.WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QiniuController : ControllerBase
+    public class QiniuStorageInfoController : ControllerBase
     {
+
         private QiniuService _qiniuService;
 
-        public QiniuController(QiniuService qiniuService)
+        public QiniuStorageInfoController(QiniuService qiniuService)
         {
             this._qiniuService = qiniuService;
         }
 
+        /// <summary>
+        /// 请求资源的 CDN 后缀地址
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
-        public string GetUploadToken(string storageFullName)
+        public string Get(int id)
         {
-            Ensure.NotNull(storageFullName, nameof(storageFullName));
+            Ensure.NotNull(id, nameof(id));
 
-            return this._qiniuService.GetUploadToken(storageFullName);
+            QiniuStorageInfo dto = this._qiniuService.GetById(id);
+            return dto.FullName;
         }
+
+
     }
 }

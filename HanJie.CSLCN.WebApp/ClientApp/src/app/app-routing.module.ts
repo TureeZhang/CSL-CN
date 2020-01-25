@@ -4,7 +4,8 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { WikiPassageComponent } from './components/wiki-passage/wiki-passage.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { DonatorRank } from './components/donator-rank/donator-rank.component';
+import { DonatorRankComponent } from './components/donator-rank/donator-rank.component';
+import { UploaderComponent } from './components/uploader/uploader.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "/homepage", pathMatch: "full" },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: "wiki-passage/:id", component: WikiPassageComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "donator-rank", component: DonatorRank }
+  { path: "donator-rank", component: DonatorRankComponent },
+  { path: "uploader", component: UploaderComponent }
 ];
 
 @NgModule({

@@ -11,7 +11,7 @@ import { UploadFile } from 'ng-zorro-antd';
     styleUrls: ['./donator-rank.component.css']
 })
 
-export class DonatorRank implements OnInit {
+export class DonatorRankComponent implements OnInit {
 
     public donatorRanks: DonatorRankDto[];
     public loading: boolean = false;

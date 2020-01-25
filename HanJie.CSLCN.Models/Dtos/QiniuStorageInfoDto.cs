@@ -38,10 +38,5 @@ namespace HanJie.CSLCN.Models.Dtos
         /// 图片高度。若非图片则为 -1
         /// </summary>
         public int ImageHeight { get; set; } = -1;
-
-        /// <summary>
-        /// 上传所需的鉴权 token
-        /// </summary>
-        public string UploadToken { get; set; }
     }
 }

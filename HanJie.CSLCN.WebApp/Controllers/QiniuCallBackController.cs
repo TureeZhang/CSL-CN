@@ -10,6 +10,7 @@ using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HanJie.CSLCN.WebApp.Controllers
 {
@@ -28,12 +29,22 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [HttpPost]
         public async Task<string> Post()
         {
+
             string contentType = Request.ContentType;
-            string authorizationHeader = Request.Headers[HttpHeaders.Authentication];
+            string authorizationHeader = Request.Headers[HttpConsts.Authorization];
             string callBackUrl = "http://www.cities-skylines.cn/api/qiniucallback";
             string callBackBody = await new StreamReader(Request.Body).ReadToEndAsync();
 
-            string result = await this._qiniuService.CallBackHandler(contentType, authorizationHeader, callBackUrl, callBackBody);
+            string result = string.Empty;
+            if (RunAs.Debug)
+            {
+                result = await this._qiniuService.CallBackHandler(contentType, authorizationHeader, callBackUrl, callBackBody);
+            }
+            if (RunAs.Release)
+            {
+                System.IO.File.WriteAllText("callback.txt", JsonConvert.SerializeObject(new { contentType, authorizationHeader, callBackUrl, callBackBody }));
+                result = JsonConvert.SerializeObject(new { ret = "success" });
+            }
 
             return result;
         }

@@ -1,0 +1,16 @@
+<div class="clearfix">
+  <nz-upload nzAction="https://upload.qiniup.com"
+             nzListType="picture"
+             [(nzFileList)]="fileList"
+             nzAccept="image/*"
+             [nzShowButton]="isShowUploadBtn"
+             [nzData]="qiniuUploadParameters"
+             [nzBeforeUpload]="beforeUpload"
+             (nzChange)="uploadActionHandler($event)">
+    <button nz-button><i nz-icon nzType="upload"></i><span>上传图片</span></button>
+  </nz-upload>
+</div>
+
+<button nz-button (click)="showFilesArray()">Show Files Array</button>
+
+<button nz-button (click)="getIamgeMarkdown()">复制 Markdown 链接</button>

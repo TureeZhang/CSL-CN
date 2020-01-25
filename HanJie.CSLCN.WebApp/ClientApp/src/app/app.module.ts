@@ -15,37 +15,39 @@ import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { DonatorRank } from './components/donator-rank/donator-rank.component';
+import { DonatorRankComponent } from './components/donator-rank/donator-rank.component';
+import { UploaderComponent } from './components/uploader/uploader.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomepageComponent,
-        WikiPassageComponent,
-        RegisterComponent,
-        LoginComponent,
-        DonatorRank
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        NgZorroAntdModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MarkdownModule.forRoot({
-            markedOptions: {
-                provide: MarkedOptions,
-                useFactory: markedOptionsFactory,
-            }
-        }),
-        LMarkdownEditorModule,
-        NzUploadModule
-    ],
-    providers: [{ provide: NZ_I18N, useValue: zh_CN }],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    HomepageComponent,
+    WikiPassageComponent,
+    RegisterComponent,
+    LoginComponent,
+    DonatorRankComponent,
+    UploaderComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgZorroAntdModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useFactory: markedOptionsFactory,
+      }
+    }),
+    LMarkdownEditorModule,
+    NzUploadModule
+  ],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

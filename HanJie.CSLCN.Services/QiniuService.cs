@@ -1,6 +1,8 @@
 ﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Models.Consts;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using Qiniu.Storage;
 using Qiniu.Util;
@@ -31,13 +33,14 @@ namespace HanJie.CSLCN.Services
             putPolicy.CallbackUrl = GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl;
             putPolicy.CallbackBody = JsonConvert.SerializeObject(new
             {
-                FullName = "$(key)",                       //文件保存在空间中的资源名
-                Hash = "$(etag)",                     //hash
-                FileSize = $"(fsize)",                //文件大小，单位为字节
-                MimeType = $"(mimeType)",             //媒体类型 img/jpeg,
-                ImagesWidth = $"(imageInfo.width)",      //图片宽度
-                ImageHeight = $"(imageInfo.Height)"     //图片高度
+                FullName = "$(key)",                     //文件保存在空间中的资源名
+                Hash = "$(etag)",                        //hash
+                FileSize = "$(fsize)",                   //文件大小，单位为字节
+                MimeType = "$(mimeType)",                //媒体类型 img/jpeg,
+                ImageWidth = "$(imageInfo.width)",      //图片宽度
+                ImageHeight = "$(imageInfo.height)"      //图片高度
             });
+            putPolicy.CallbackBodyType = HttpConsts.ApplicationJson;
             string token = Auth.CreateUploadToken(this._mac, putPolicy.ToJsonString());
 
             return token;
@@ -54,7 +57,7 @@ namespace HanJie.CSLCN.Services
             bool isContentTypeOK = false;
             if (string.Equals(contentType, "application/json", StringComparison.OrdinalIgnoreCase))
                 isContentTypeOK = true;
-            
+
             bool isAuthorizationOK = false;
             if (authorization.StartsWith("QBox", StringComparison.OrdinalIgnoreCase)
                 && authorization.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1].Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() == GlobalConfigs.AppSettings.QiniuConfig.AccessKey)
@@ -66,11 +69,11 @@ namespace HanJie.CSLCN.Services
 
             bool isCallBackBodyOK = false;
             if (callBackBody.ToLower().Contains("fullname")
-                && callBackUrl.ToLower().Contains("hash")
-                && callBackUrl.ToLower().Contains("filesize")
-                && callBackUrl.ToLower().Contains("mimetype")
-                && callBackUrl.ToLower().Contains("imagewidth")
-                && callBackUrl.ToLower().Contains("imageheight"))
+                && callBackBody.ToLower().Contains("hash")
+                && callBackBody.ToLower().Contains("filesize")
+                && callBackBody.ToLower().Contains("mimetype")
+                && callBackBody.ToLower().Contains("imagewidth")
+                && callBackBody.ToLower().Contains("imageheight"))
                 isCallBackBodyOK = true;
 
             if (isContentTypeOK && isAuthorizationOK && isCallBackUrlOK && isCallBackBodyOK)
@@ -78,7 +81,7 @@ namespace HanJie.CSLCN.Services
 
             return isAccess;
         }
-        
+
         public async virtual Task<string> CallBackHandler(string contentType, string authorization, string callBackUrl, string callBackBody)
         {
             bool isAccess = AuthCallBackHeader(contentType, authorization, callBackUrl, callBackBody);
@@ -86,32 +89,27 @@ namespace HanJie.CSLCN.Services
             if (!isAccess)
                 return JsonConvert.SerializeObject(new { ret = "failure" });
 
-            await Add(new QiniuStorageInfo().ConvertFromDtoModel(JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody)));
+            int id = await UpdateFileStorageInfo(new QiniuStorageInfo().ConvertFromDtoModel(JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody)));
 
-            return JsonConvert.SerializeObject(new { ret = "success" });
+            return JsonConvert.SerializeObject(new { ret = "success", id = id });
 
         }
 
-        public virtual async Task Add(QiniuStorageInfo qiniuStorageInfo)
+        public virtual async Task<int> UpdateFileStorageInfo(QiniuStorageInfo qiniuStorageInfo)
         {
             Ensure.NotNull(qiniuStorageInfo, nameof(qiniuStorageInfo));
 
             QiniuStorageInfo entityToUpdate = this.CSLDbContext.QiniuStorageInfoes.Where(item => item.FullName == qiniuStorageInfo.FullName).FirstOrDefault();
-            bool isUpdate = entityToUpdate != null;
 
-            if (!isUpdate)  //新增
-            {
-                qiniuStorageInfo.CreateDate = DateTime.Now;
-                qiniuStorageInfo.LastModifyDate = DateTime.Now;
-                await this.CSLDbContext.QiniuStorageInfoes.AddAsync(qiniuStorageInfo);
-            }
-            else  //更新已有文件
-            {
-                qiniuStorageInfo.Id = entityToUpdate.Id;
-                qiniuStorageInfo.CreateDate = entityToUpdate.CreateDate;
-                qiniuStorageInfo.LastModifyDate = DateTime.Now;
-                this.CSLDbContext.QiniuStorageInfoes.Update(qiniuStorageInfo);
-            }
+            if (entityToUpdate != null)
+                this.CSLDbContext.QiniuStorageInfoes.Remove(entityToUpdate);
+
+            qiniuStorageInfo.CreateDate = DateTime.Now;
+            qiniuStorageInfo.LastModifyDate = DateTime.Now;
+            EntityEntry<QiniuStorageInfo> entry = await this.CSLDbContext.QiniuStorageInfoes.AddAsync(qiniuStorageInfo);
+            await this.CSLDbContext.SaveChangesAsync();
+
+            return entry.Entity.Id;
         }
 
     }
