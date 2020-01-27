@@ -4,9 +4,8 @@
              [(nzFileList)]="fileList"
              nzAccept="image/*"
              [nzShowButton]="isShowUploadBtn"
-             [nzData]="qiniuUploadParameters"
-             [nzBeforeUpload]="beforeUpload"
-             (nzChange)="uploadActionHandler($event)">
+             [nzCustomRequest]="customRequest"
+             (nzChange)="onUploadStatusChanged($event)">
     <button nz-button><i nz-icon nzType="upload"></i><span>上传图片</span></button>
   </nz-upload>
 </div>

@@ -12,7 +12,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QiniuUploadController : ControllerBase
+    public class QiniuUploadController : BaseController
     {
         private QiniuService _qiniuService;
 

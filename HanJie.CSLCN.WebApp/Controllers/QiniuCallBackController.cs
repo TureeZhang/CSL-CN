@@ -32,19 +32,30 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
             string contentType = Request.ContentType;
             string authorizationHeader = Request.Headers[HttpConsts.Authorization];
-            string callBackUrl = "http://www.cities-skylines.cn/api/qiniucallback";
+            string callBackUrl = $"http://{Request.Host.Value}{Request.Path.Value}";
             string callBackBody = await new StreamReader(Request.Body).ReadToEndAsync();
 
-            string result = string.Empty;
-            if (RunAs.Debug)
-            {
-                result = await this._qiniuService.CallBackHandler(contentType, authorizationHeader, callBackUrl, callBackBody);
-            }
-            if (RunAs.Release)
-            {
-                System.IO.File.WriteAllText("callback.txt", JsonConvert.SerializeObject(new { contentType, authorizationHeader, callBackUrl, callBackBody }));
-                result = JsonConvert.SerializeObject(new { ret = "success" });
-            }
+            string result = await this._qiniuService.CallBackHandler(contentType, authorizationHeader, callBackUrl, callBackBody);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 此方法的存在是由于本地开发测试时，无暴露向公网可以被直接访问的地址。
+        /// 通过将七牛在测试环境回调的数据记录为文件再手动 POST 给测试环境回调方法，完成测试。
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/api/qiniucallbacktest")]
+        public async Task<string> PostForTest()
+        {
+            string contentType = Request.ContentType;
+            string authorizationHeader = Request.Headers[HttpConsts.Authorization];
+            string callBackUrl = $"http://{Request.Host.Value}{Request.Path.Value}";
+            string callBackBody = await new StreamReader(Request.Body).ReadToEndAsync();
+
+            System.IO.File.WriteAllText("callback.txt", JsonConvert.SerializeObject(new { contentType, authorizationHeader, callBackUrl, callBackBody }));
+            string result = JsonConvert.SerializeObject(new { ret = "success", info = JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody) });
 
             return result;
         }

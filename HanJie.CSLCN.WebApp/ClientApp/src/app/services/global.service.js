@@ -7,23 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var QiniuUploadService = /** @class */ (function () {
-    function QiniuUploadService(httpHelper) {
+var GlobalService = /** @class */ (function () {
+    function GlobalService(httpHelper) {
         this.httpHelper = httpHelper;
-        this.qiniuUploadUrl = "/api/qiniuupload";
+        this.configsUrl = "/api/configs";
+        this.initConfigs();
     }
-    QiniuUploadService.prototype.ngOnInit = function () {
+    GlobalService.prototype.initConfigs = function () {
+        var host = this;
+        this.httpHelper.get(this.configsUrl).subscribe(function (response) {
+            host.clientAppConfigs = response;
+        });
     };
-    QiniuUploadService.prototype.getQiniuUploadToken = function (localFileName) {
-        localFileName = encodeURI(localFileName);
-        var promise = this.httpHelper.get(this.qiniuUploadUrl + "?storageFullName=" + localFileName)
-            .toPromise();
-        return promise;
-    };
-    QiniuUploadService = __decorate([
+    GlobalService = __decorate([
         core_1.Injectable({ providedIn: "root" })
-    ], QiniuUploadService);
-    return QiniuUploadService;
+    ], GlobalService);
+    return GlobalService;
 }());
-exports.QiniuUploadService = QiniuUploadService;
-//# sourceMappingURL=qiniu-upload.service.js.map
+exports.GlobalService = GlobalService;
+//# sourceMappingURL=global.service.js.map

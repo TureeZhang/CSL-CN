@@ -18,11 +18,16 @@ namespace HanJie.CSLCN.Services
     public class QiniuService : BaseService<QiniuStorageInfoDto, QiniuStorageInfo>
     {
         private readonly Mac _mac;
+        private readonly List<string> _validQiniuCallBackUrls;
+        private readonly string _qiniuCallBackUrl;
 
         public QiniuService()
         {
             this._mac = new Mac(GlobalConfigs.AppSettings.QiniuConfig.AccessKey, GlobalConfigs.AppSettings.QiniuConfig.SecretKey);
+            this._validQiniuCallBackUrls = new List<string>() { GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl, "http://www.cities-skylines.cn/api/qiniucallbacktest" };
+            this._qiniuCallBackUrl = RunAs.Release ? GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl : "http://www.cities-skylines.cn/api/qiniucallbacktest";
         }
+
 
         public string GetUploadToken(string storageFullName)
         {
@@ -30,7 +35,7 @@ namespace HanJie.CSLCN.Services
 
             PutPolicy putPolicy = new PutPolicy();
             putPolicy.Scope = $"{GlobalConfigs.AppSettings.QiniuConfig.BucketName}:{storageFullName}";
-            putPolicy.CallbackUrl = GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl;
+            putPolicy.CallbackUrl = this._qiniuCallBackUrl;
             putPolicy.CallbackBody = JsonConvert.SerializeObject(new
             {
                 FullName = "$(key)",                     //文件保存在空间中的资源名
@@ -54,6 +59,11 @@ namespace HanJie.CSLCN.Services
 
             bool isAccess = false;
 
+            Ensure.NotNull(contentType, nameof(contentType));
+            Ensure.NotNull(authorization, nameof(authorization));
+            Ensure.NotNull(callBackUrl, nameof(callBackUrl));
+            Ensure.NotNull(callBackBody, nameof(callBackBody));
+
             bool isContentTypeOK = false;
             if (string.Equals(contentType, "application/json", StringComparison.OrdinalIgnoreCase))
                 isContentTypeOK = true;
@@ -64,7 +74,7 @@ namespace HanJie.CSLCN.Services
                 isAuthorizationOK = true;
 
             bool isCallBackUrlOK = false;
-            if (callBackUrl == "http://www.cities-skylines.cn/api/qiniucallback")
+            if (this._validQiniuCallBackUrls.Contains(callBackUrl))
                 isCallBackUrlOK = true;
 
             bool isCallBackBodyOK = false;
@@ -89,13 +99,14 @@ namespace HanJie.CSLCN.Services
             if (!isAccess)
                 return JsonConvert.SerializeObject(new { ret = "failure" });
 
-            int id = await UpdateFileStorageInfo(new QiniuStorageInfo().ConvertFromDtoModel(JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody)));
+            QiniuStorageInfo qiniuStorageInfo = new QiniuStorageInfo().ConvertFromDtoModel(JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody));
+            QiniuStorageInfoDto dto = new QiniuStorageInfoDto().ConvertFromDataModel(await UpdateFileStorageInfo(qiniuStorageInfo));
 
-            return JsonConvert.SerializeObject(new { ret = "success", id = id });
+            return JsonConvert.SerializeObject(new { ret = "success", info = dto });
 
         }
 
-        public virtual async Task<int> UpdateFileStorageInfo(QiniuStorageInfo qiniuStorageInfo)
+        public virtual async Task<QiniuStorageInfo> UpdateFileStorageInfo(QiniuStorageInfo qiniuStorageInfo)
         {
             Ensure.NotNull(qiniuStorageInfo, nameof(qiniuStorageInfo));
 
@@ -109,7 +120,7 @@ namespace HanJie.CSLCN.Services
             EntityEntry<QiniuStorageInfo> entry = await this.CSLDbContext.QiniuStorageInfoes.AddAsync(qiniuStorageInfo);
             await this.CSLDbContext.SaveChangesAsync();
 
-            return entry.Entity.Id;
+            return entry.Entity;
         }
 
     }

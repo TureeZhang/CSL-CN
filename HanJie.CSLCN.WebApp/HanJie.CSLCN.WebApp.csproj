@@ -35,6 +35,7 @@
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
     <None Remove="ClientApp\src\app\models\anchor-title.ts" />
+    <None Remove="ClientApp\src\app\models\configs-dto.ts" />
     <None Remove="ClientApp\src\app\models\donator-rank-dto.ts" />
     <None Remove="ClientApp\src\app\models\enums\wiki-passage-page-status.enum.ts" />
     <None Remove="ClientApp\src\app\models\menu-dto.ts" />
@@ -44,6 +45,7 @@
     <None Remove="ClientApp\src\app\models\user-info-dto.ts" />
     <None Remove="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <None Remove="ClientApp\src\app\services\donator-rank.service.ts" />
+    <None Remove="ClientApp\src\app\services\global.service.ts" />
     <None Remove="ClientApp\src\app\services\menu.service.ts" />
     <None Remove="ClientApp\src\app\services\qiniu-upload.service.ts" />
     <None Remove="ClientApp\src\app\services\user-info.service.ts" />
@@ -63,6 +65,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
     <TypeScriptCompile Include="ClientApp\src\app\models\anchor-title.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\configs-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\donator-rank-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\enums\wiki-passage-page-status.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\qiniu-storage-info-dto.ts" />
@@ -72,6 +75,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\donator-rank.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\global.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\qiniu-upload.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\user-info.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\menu.service.ts" />

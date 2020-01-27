@@ -1,0 +1,1 @@
+{"contentType":null,"authorizationHeader":null,"callBackUrl":"http://www.cities-skylines.cn/api/qiniucallback","callBackBody":""}

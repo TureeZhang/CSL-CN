@@ -11,5 +11,6 @@ namespace HanJie.CSLCN.Models.Common.AppSettings
         public string BucketName { get; set; }
         public string HttpEndPoint { get; set; }
         public string CallBackUrl { get; set; }
+        public string CdnHostUri { get; set; }
     }
 }
