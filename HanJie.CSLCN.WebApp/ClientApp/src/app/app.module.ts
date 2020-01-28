@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgZorroAntdModule, NZ_I18N, zh_CN, isParentOption, NzUploadModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { DonatorRankComponent } from './components/donator-rank/donator-rank.component';
 import { UploaderComponent } from './components/uploader/uploader.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 registerLocaleData(zh);
 
@@ -45,7 +46,9 @@ registerLocaleData(zh);
       }
     }),
     LMarkdownEditorModule,
-    NzUploadModule
+    NzUploadModule,
+    ClipboardModule,
+    NzMessageModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]

@@ -1,15 +1,23 @@
-<div class="clearfix">
-  <nz-upload nzAction="https://upload.qiniup.com"
-             nzListType="picture"
-             [(nzFileList)]="fileList"
-             nzAccept="image/*"
-             [nzShowButton]="isShowUploadBtn"
-             [nzCustomRequest]="customRequest"
-             (nzChange)="onUploadStatusChanged($event)">
-    <button nz-button><i nz-icon nzType="upload"></i><span>上传图片</span></button>
-  </nz-upload>
+<div nz-row nzType="flex" nzJustify="center" style="margin-bottom:16px;">
+  <div nz-col nzSpan="20">
+    <button nz-button (click)="copyMarkDownToClipboard()" nzType="primary" *ngIf="!(imageMarkdownString==null)">生成并复制 Markdown 语句</button>
+    <nz-tag [nzColor]="'lime'" *ngIf="!(imageMarkdownString==null)" style="margin-left:16px;">{{imageMarkdownString}}</nz-tag>
+  </div>
 </div>
 
-<button nz-button (click)="showFilesArray()">Show Files Array</button>
+<div nz-row nzType="flex" nzJustify="center" style="margin-bottom:16px;">
+  <div nz-col nzSpan="20">
+    <div class="clearfix">
+      <nz-upload nzAction="https://upload.qiniup.com"
+                 nzListType="picture"
+                 [(nzFileList)]="fileList"
+                 nzAccept="image/*"
+                 [nzShowButton]="isShowUploadButton"
+                 [nzCustomRequest]="customRequest"
+                 (nzChange)="onUploadStatusChanged($event)">
+        <button nz-button><i nz-icon nzType="upload"></i><span>上传图片</span></button>
+      </nz-upload>
+    </div>
+  </div>
+</div>
 
-<button nz-button (click)="getIamgeMarkdown()">复制 Markdown 链接</button>

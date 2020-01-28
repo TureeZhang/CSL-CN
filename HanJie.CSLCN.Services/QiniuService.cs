@@ -33,6 +33,8 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(storageFullName, nameof(storageFullName));
 
+            storageFullName = storageFullName.StartsWith("/") ? storageFullName.Substring(1) : storageFullName;
+
             PutPolicy putPolicy = new PutPolicy();
             putPolicy.Scope = $"{GlobalConfigs.AppSettings.QiniuConfig.BucketName}:{storageFullName}";
             putPolicy.CallbackUrl = this._qiniuCallBackUrl;

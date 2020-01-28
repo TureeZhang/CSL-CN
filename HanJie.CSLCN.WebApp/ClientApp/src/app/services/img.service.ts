@@ -16,7 +16,7 @@ export class ImgService implements OnInit {
   }
 
   getCdnMarkdownString(storageFullName: string): string {
-    let imgUrl: string = this.globalService.clientAppConfigs.qiniuCdnHostUri + storageFullName;
+    let imgUrl: string = `${this.globalService.clientAppConfigs.qiniuCdnHostUri}/${storageFullName}`;
     let result: string = `![${storageFullName}](${imgUrl})`;
 
     return result;

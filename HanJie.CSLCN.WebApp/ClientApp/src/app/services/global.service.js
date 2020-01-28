@@ -8,15 +8,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var GlobalService = /** @class */ (function () {
-    function GlobalService(httpHelper) {
+    function GlobalService(httpHelper, messageService, clipboardService) {
         this.httpHelper = httpHelper;
+        this.messageService = messageService;
+        this.clipboardService = clipboardService;
         this.configsUrl = "/api/configs";
         this.initConfigs();
+        this.handleCopyResponseTip();
     }
     GlobalService.prototype.initConfigs = function () {
         var host = this;
         this.httpHelper.get(this.configsUrl).subscribe(function (response) {
             host.clientAppConfigs = response;
+        });
+    };
+    GlobalService.prototype.successTip = function (message) {
+        this.messageService.create("success", message);
+    };
+    GlobalService.prototype.ErrorTip = function (message) {
+        this.messageService.create("error", message);
+    };
+    GlobalService.prototype.WarningTip = function (message) {
+        this.messageService.create("warning", message);
+    };
+    GlobalService.prototype.handleCopyResponseTip = function () {
+        var _this = this;
+        this.clipboardService.copyResponse$.subscribe(function (result) {
+            if (result.isSuccess) {
+                _this.successTip("复制成功");
+            }
+            //else {
+            //  this.ErrorTip("复制失败：请手动复制所需内容。");
+            //}
         });
     };
     GlobalService = __decorate([

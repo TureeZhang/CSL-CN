@@ -10,6 +10,8 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { GlobalService } from '../../services/global.service';
 import { ImgService } from '../../services/img.service';
 import { QiniuStorageInfoDto } from '../../models/qiniu-storage-info-dto';
+import { ClipboardService, IClipboardResponse } from 'ngx-clipboard';
+import { ClipboardResponse } from '../../models/clipboard-response';
 
 @Component({
   selector: 'uploader',
@@ -19,21 +21,23 @@ import { QiniuStorageInfoDto } from '../../models/qiniu-storage-info-dto';
 export class UploaderComponent implements OnInit {
 
   public fileList: Array<UploadFile> = [];
-  public isShowUploadButton: boolean = this.isShowUploadBtn();
+  public isShowUploadButton: boolean = true;
   public host: UploaderComponent = this;
+  public imageMarkdownString: string = null;
 
   @Input()
-  public directoryPath: string = "/shared";
+  public directoryPath: string = "shared";
 
   constructor(private qiniuUploadService: QiniuUploadService,
     private http: HttpClient,
     private globalService: GlobalService,
-    private imgService: ImgService) {
+    private imgService: ImgService,
+    private clipboardService: ClipboardService) {
 
   }
 
   ngOnInit(): void {
-    this.copyToClipboard("123");
+
   }
 
   showFilesArray(): void {
@@ -77,41 +81,35 @@ export class UploaderComponent implements OnInit {
     );
   };
 
-  isShowUploadBtn(): boolean {
-    let result: boolean = true;
-    this.fileList.forEach(item => {
-      if (item.status === "success") {
-        result = false;
-        return;
-      }
-    });
-    return result;
-  }
-
   onUploadStatusChanged(data: UploadChangeParam): void {
+    if (data.type === "start") {
+      this.isShowUploadButton = false;
+      if (this.fileList.length > 1 && (data.file.name === this.fileList[0].name)) {
+        this.fileList.pop();
+      }
+    }
+
+    if (data.type === "failure") {
+      this.isShowUploadButton = true;
+    }
+
     if (data.type === "success") {
       let storageInfo: any = data.file.response.info;
-      this.copyImgCdnMarkdownString(storageInfo.FullName);
+      this.imageMarkdownString = this.getImageMarkdownString(storageInfo.FullName);
     }
   }
 
-  copyImgCdnMarkdownString(storageFullName: string): void {
+  getImageMarkdownString(storageFullName: string): string {
     let markdown: string = this.imgService.getCdnMarkdownString(storageFullName);
-    this.copyToClipboard(markdown);
+    return markdown;
   }
 
-  copyToClipboard(value: string): void {
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = value;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('Copy');
-    document.body.removeChild(selBox);
+  copyMarkDownToClipboard(): void {
+    this.clipboardService.copy(this.imageMarkdownString);
+    let copyResponse: ClipboardResponse = new ClipboardResponse();
+    this.clipboardService.pushCopyReponse(copyResponse);
   }
 
 }
+
+

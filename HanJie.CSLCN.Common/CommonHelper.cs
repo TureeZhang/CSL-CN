@@ -20,5 +20,19 @@ namespace HanJie.CSLCN.Common
 
             return base64String;
         }
+
+        public bool IsValidHostValue(string hostValue)
+        {
+            Ensure.NotNull(hostValue, nameof(hostValue));
+
+            if (hostValue != "www.cities-skylines.cn" &&
+                hostValue != "localhost:5000" &&
+                hostValue != "localhost:4200")
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
