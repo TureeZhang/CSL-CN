@@ -5,6 +5,7 @@
       {{wikiPassage.title}}
       <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="primary" (click)="edit()" style="margin-left:16px;"><i nz-icon type="edit"></i>编 辑</button>
       <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" (click)="update()" style="margin-left:16px;"><i nz-icon type="save"></i>保 存</button>
+      <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon type="upload"></i>上传图片</button>
       <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon type="save"></i>表格编辑器</a>
     </h2>
 

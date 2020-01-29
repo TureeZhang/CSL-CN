@@ -1,4 +1,4 @@
-﻿using HanJie.CSLCN.Models.Common;
+﻿using HanJie.CSLCN.Models.Common.AppSettings;
 using System;
 using System.Collections.Generic;
 using System.Text;

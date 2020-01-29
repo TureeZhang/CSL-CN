@@ -78,6 +78,36 @@ namespace HanJie.CSLCN.Datas.Migrations
                     b.ToTable("Menus");
                 });
 
+            modelBuilder.Entity("HanJie.CSLCN.Models.DataModels.QiniuStorageInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<int>("FileSize");
+
+                    b.Property<string>("FullName")
+                        .IsRequired();
+
+                    b.Property<string>("Hash")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<int>("ImageHeight");
+
+                    b.Property<int>("ImageWidth");
+
+                    b.Property<DateTime>("LastModifyDate");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QiniuStorageInfoes");
+                });
+
             modelBuilder.Entity("HanJie.CSLCN.Models.DataModels.UserInfo", b =>
                 {
                     b.Property<int>("Id")

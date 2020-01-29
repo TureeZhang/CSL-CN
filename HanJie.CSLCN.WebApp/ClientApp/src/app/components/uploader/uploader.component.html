@@ -1,0 +1,37 @@
+<div *ngIf="isShowUploadButton">
+  <div nz-row nzJustify="center" style="margin-top:16px;">
+    <div nz-col nzSpan="24" style="text-align:center;">
+      <img src="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original" alt="no-data"
+           style="height:90px;width:90px;" />
+    </div>
+  </div>
+  <div nz-row nzJustify="center">
+    <div nz-col nzSpan="24" style="text-align:center;">
+      <span> 暂无上传任务 </span>
+    </div>
+  </div>
+</div>
+
+<div nz-row nzType="flex" nzJustify="center" style="margin-top:16px;margin-bottom:16px;text-align:center;">
+  <div nz-col nzSpan="20">
+    <div class="clearfix">
+      <nz-upload nzAction="https://upload.qiniup.com"
+                 nzListType="picture"
+                 [(nzFileList)]="fileList"
+                 nzAccept="image/*"
+                 [nzShowButton]="isShowUploadButton"
+                 [nzCustomRequest]="customRequest"
+                 (nzChange)="onUploadStatusChanged($event)">
+        <button nz-button><i nz-icon nzType="upload"></i><span>选择文件</span></button>
+      </nz-upload>
+    </div>
+  </div>
+</div>
+
+<div nz-row nzType="flex" nzJustify="center" style="margin-bottom:16px;">
+  <div nz-col nzSpan="20">
+    <button nz-button (click)="copyMarkDownToClipboard()" nzType="primary" *ngIf="!(imageMarkdownString==null)">复制 Markdown 并关闭上传工具</button>
+    <nz-tag [nzColor]="'lime'" *ngIf="!(imageMarkdownString==null)" style="margin-left:16px;">{{imageMarkdownString}}</nz-tag>
+  </div>
+</div>
+

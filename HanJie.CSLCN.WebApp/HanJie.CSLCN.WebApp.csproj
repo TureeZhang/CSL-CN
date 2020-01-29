@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,14 +35,20 @@
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
     <None Remove="ClientApp\src\app\models\anchor-title.ts" />
+    <None Remove="ClientApp\src\app\models\clipboard-response.ts" />
+    <None Remove="ClientApp\src\app\models\configs-dto.ts" />
     <None Remove="ClientApp\src\app\models\donator-rank-dto.ts" />
     <None Remove="ClientApp\src\app\models\enums\wiki-passage-page-status.enum.ts" />
     <None Remove="ClientApp\src\app\models\menu-dto.ts" />
     <None Remove="ClientApp\src\app\models\menu-item-dto.ts" />
+    <None Remove="ClientApp\src\app\models\qiniu-storage-info-dto.ts" />
+    <None Remove="ClientApp\src\app\models\qiniu-upload-parameters.ts" />
     <None Remove="ClientApp\src\app\models\user-info-dto.ts" />
     <None Remove="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <None Remove="ClientApp\src\app\services\donator-rank.service.ts" />
+    <None Remove="ClientApp\src\app\services\global.service.ts" />
     <None Remove="ClientApp\src\app\services\menu.service.ts" />
+    <None Remove="ClientApp\src\app\services\qiniu-upload.service.ts" />
     <None Remove="ClientApp\src\app\services\user-info.service.ts" />
     <None Remove="ClientApp\src\app\services\wiki-passage.service.ts" />
   </ItemGroup>
@@ -60,13 +66,19 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
     <TypeScriptCompile Include="ClientApp\src\app\models\anchor-title.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\clipboard-response.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\configs-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\donator-rank-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\enums\wiki-passage-page-status.enum.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\qiniu-storage-info-dto.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\qiniu-upload-parameters.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\user-info-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-item-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\donator-rank.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\global.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\qiniu-upload.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\user-info.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\menu.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\wiki-passage.service.ts" />

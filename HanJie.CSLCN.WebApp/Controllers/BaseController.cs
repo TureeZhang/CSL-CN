@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
+
+            if (!new CommonHelper().IsValidHostValue(Request.Host.Value))
+            {
+                Response.StatusCode = 404;
+            }
 
             ValidateUserIsLogined();
         }

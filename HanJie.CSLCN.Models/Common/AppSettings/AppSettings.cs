@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HanJie.CSLCN.Models.Common
+namespace HanJie.CSLCN.Models.Common.AppSettings
 {
     public class AppSettings
     {
@@ -19,16 +19,11 @@ namespace HanJie.CSLCN.Models.Common
         /// MD5 盐
         /// </summary>
         public string Md5Sold { get; set; }
+
+        public QiniuConfig QiniuConfig { get; set; }
     }
 
-    public class Logging
-    {
-        public LogLevel LogLevel { get; set; }
 
-    }
 
-    public class LogLevel
-    {
-        public string Default { get; set; }
-    }
+
 }

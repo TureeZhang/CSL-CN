@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HanJie.CSLCN.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,18 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [Route("/homepage/{0}")]
         public IActionResult Index()
         {
-            Response.StatusCode = 200;
-            return File("/index.html", "text/html");
+            try
+            {
+                if (!new CommonHelper().IsValidHostValue(Request.Host.Value))
+                    throw new UnauthorizedAccessException("非法解析。");
+
+                Response.StatusCode = 200;
+                return File("/index.html", "text/html");
+            }
+            catch (UnauthorizedAccessException uAEx)
+            {
+                return NotFound("Illegal DNS.");
+            }
         }
     }
 }
