@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
 import { forEach } from '@angular/router/src/utils/collection';
 import { FormArray } from '@angular/forms';
-import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs } from 'ng-zorro-antd';
+import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs, NzDrawerRef } from 'ng-zorro-antd';
 import { QiniuUploadService } from '../../services/qiniu-upload.service';
 import { QiniuUploadParameters } from '../../models/qiniu-upload-parameters';
 import { HttpClient, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
@@ -32,7 +32,8 @@ export class UploaderComponent implements OnInit {
     private http: HttpClient,
     private globalService: GlobalService,
     private imgService: ImgService,
-    private clipboardService: ClipboardService) {
+    private clipboardService: ClipboardService,
+    private drawerRef: NzDrawerRef<string>) {
 
   }
 
@@ -108,8 +109,10 @@ export class UploaderComponent implements OnInit {
     this.clipboardService.copy(this.imageMarkdownString);
     let copyResponse: ClipboardResponse = new ClipboardResponse();
     this.clipboardService.pushCopyReponse(copyResponse);
+    this.closeDrwaer();
   }
 
+  closeDrwaer(): void {
+    this.drawerRef.close();
+  }
 }
-
-

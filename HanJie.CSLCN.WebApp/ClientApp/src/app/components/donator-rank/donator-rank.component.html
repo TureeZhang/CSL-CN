@@ -35,3 +35,15 @@
     <p><nz-tag [nzColor]="'green'">→ 请您留意：您的捐赠会被骚汉个人在收到时手动统计更新，因而有时会较慢。敬请谅解！（支付宝自动化统计需要企业级用户才能开通）←</nz-tag></p>
   </div>
 </div>
+
+<!--抽屉-开始-->
+<nz-drawer [nzClosable]="false"
+           [nzVisible]="visible"
+           [nzPlacement]="placement"
+           nzTitle="Basic Drawer"
+           (nzOnClose)="close()">
+  <p>Some contents...</p>
+  <p>Some contents...</p>
+  <p>Some contents...</p>
+</nz-drawer>
+<!--抽屉-结束-->
