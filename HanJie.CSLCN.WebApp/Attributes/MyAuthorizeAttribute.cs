@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +20,20 @@ namespace HanJie.CSLCN.WebApp.Attributes
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
+            if (RunAs.Debug)
+                return;
+
             string userStatusCookieGuid = context.HttpContext.Request.Cookies[StringTagEnum.CurrentLoginedUserGuid];
             if (string.IsNullOrEmpty(userStatusCookieGuid))
             {
                 context.Result = new UnauthorizedResult();
+                return;
             }
 
             if (!UserStatuService.LoginedUsers[userStatusCookieGuid].IsAdmin)
             {
                 context.Result = new UnauthorizedResult();
+                return;
             }
         }
     }
