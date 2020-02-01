@@ -37,8 +37,19 @@ namespace HanJie.CSLCN.Services
             {
                 return ResotreLoginStatus(userInfo.StatusMarkGuid);
             }
+        }
 
+        public virtual List<UserInfoDto> ListDtoes()
+        {
+            List<UserInfo> datas = base.List();
+            List<UserInfoDto> dtos = new List<UserInfoDto>();
+            foreach (UserInfo item in datas)
+            {
+                UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
+                dtos.Add(dto);
+            }
 
+            return dtos;
         }
 
         private UserInfoDto ResotreLoginStatus(string cookieGuid)

@@ -20,7 +20,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
         private MenuService _menuService { get; set; }
         #endregion
 
-        public MenusController(MenuService menuService)
+        public MenusController(MenuService menuService,
+            UserStatuService userStatuService) : base(userStatuService)
         {
             _menuService = menuService;
         }

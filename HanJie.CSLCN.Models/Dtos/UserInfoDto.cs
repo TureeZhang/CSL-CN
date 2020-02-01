@@ -41,7 +41,7 @@ namespace HanJie.CSLCN.Models.Dtos
         /// 用于当前登录用户状态标记的 Guid Cookie 值
         /// </summary>
         public string StatusMarkGuid { get; set; }
-
+        
         /// <summary>
         /// 用户头像
         /// </summary>

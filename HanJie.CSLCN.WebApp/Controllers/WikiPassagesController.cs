@@ -18,7 +18,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
         private WikiPassageService _wikiPassageService { get; set; }
 
-        public WikiPassagesController(WikiPassageService wikiPassageService)
+        public WikiPassagesController(WikiPassageService wikiPassageService,
+            UserStatuService userStatuService) : base(userStatuService)
         {
             _wikiPassageService = wikiPassageService;
         }

@@ -10,11 +10,6 @@ namespace HanJie.CSLCN.Datas
     public class CSLDbContext : DbContext
     {
         /// <summary>
-        /// 数据库上下文实例。（无论何种方式，此实例务必保证单例返回）
-        /// </summary>
-        public static CSLDbContext Instance { get; } = new CSLDbContext();
-
-        /// <summary>
         /// 用户信息表
         /// </summary>
         public DbSet<UserInfo> UserInfoes { get; set; }

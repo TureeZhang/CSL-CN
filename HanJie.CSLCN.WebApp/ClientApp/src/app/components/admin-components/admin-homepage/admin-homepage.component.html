@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>设置中心</h2>
+  <b>基础设置</b>
+  <div nz-row nzGutter="16">
+
+    <div nz-col nzSpan="6" *ngFor="let item of data">
+      <nz-card style="width: 100%;margin-top: 16px" nzHoverable="true"
+               [routerLink]="item.routerLink">
+        <nz-card-meta [nzAvatar]="elementRef"
+                      [nzTitle]="item.title"
+                      [nzDescription]="item.description"></nz-card-meta>
+      </nz-card>
+      <ng-template #elementRef>
+        <i nz-icon [nzType]="item.iconType" nzTheme="outline"></i>
+      </ng-template>
+    </div>
+
+  </div>
+  <hr />
+
+</div>

@@ -1,0 +1,34 @@
+<div class="container">
+
+  <form nz-form [formGroup]="userInfoForm"
+        (ngSubmit)="submitForm(userInfoForm.value)"
+        [nzLayout]="vertical">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>用户名</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzValidatingTip="查询是否重名" [nzErrorTip]="userNameErrorTemplate">
+        <input nz-input formControlName="userName" placeholder="请输入用户名" />
+        <ng-template #userNameErrorTemplate>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入用户名
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicated')">
+            用户名已存在
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24">
+        <button nz-button nzType="primary" [disabled]="!userInfoForm.valid">添加</button>
+        <button nz-button (click)="resetForm($event)">重置</button>
+      </nz-form-control>
+    </nz-form-item>
+
+
+
+  </form>
+
+
+</div>

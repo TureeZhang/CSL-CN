@@ -22,10 +22,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         protected bool IsLogin => this.CurrentUser != null;
 
-        public BaseController()
+        public BaseController(UserStatuService userStatuService)
         {
-            IServiceProvider serviceProvider = new ServiceCollection().BuildServiceProvider();
-            this._userStatuService = serviceProvider.GetService<UserStatuService>();
+            _userStatuService = userStatuService;
         }
 
 

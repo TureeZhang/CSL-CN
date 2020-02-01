@@ -16,7 +16,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
         private QiniuService _qiniuService;
 
-        public QiniuUploadController(QiniuService qiniuService)
+        public QiniuUploadController(QiniuService qiniuService,
+            UserStatuService userStatuService) : base(userStatuService)
         {
             this._qiniuService = qiniuService;
         }

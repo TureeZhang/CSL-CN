@@ -31,9 +31,13 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\commons\http-helper.ts" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-homepage\admin-homepage.component.ts" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.css" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.ts" />
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.css" />
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
+    <None Remove="ClientApp\src\app\models\admin\admin-homepage-card.ts" />
     <None Remove="ClientApp\src\app\models\anchor-title.ts" />
     <None Remove="ClientApp\src\app\models\clipboard-response.ts" />
     <None Remove="ClientApp\src\app\models\configs-dto.ts" />
@@ -45,6 +49,7 @@
     <None Remove="ClientApp\src\app\models\qiniu-upload-parameters.ts" />
     <None Remove="ClientApp\src\app\models\user-info-dto.ts" />
     <None Remove="ClientApp\src\app\models\wiki-passage-dto.ts" />
+    <None Remove="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
     <None Remove="ClientApp\src\app\services\donator-rank.service.ts" />
     <None Remove="ClientApp\src\app\services\global.service.ts" />
     <None Remove="ClientApp\src\app\services\menu.service.ts" />
@@ -62,9 +67,17 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\commons\http-helper.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.css">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-homepage\admin-homepage.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.css" />
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\admin\admin-homepage-card.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\anchor-title.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\clipboard-response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\configs-dto.ts" />
@@ -76,6 +89,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-item-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-passage-dto.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\donator-rank.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\global.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\qiniu-upload.service.ts" />

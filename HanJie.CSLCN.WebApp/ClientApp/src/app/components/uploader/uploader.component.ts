@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
-import { forEach } from '@angular/router/src/utils/collection';
 import { FormArray } from '@angular/forms';
 import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs, NzDrawerRef } from 'ng-zorro-antd';
 import { QiniuUploadService } from '../../services/qiniu-upload.service';
