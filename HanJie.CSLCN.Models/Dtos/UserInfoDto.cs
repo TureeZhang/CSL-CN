@@ -41,10 +41,15 @@ namespace HanJie.CSLCN.Models.Dtos
         /// 用于当前登录用户状态标记的 Guid Cookie 值
         /// </summary>
         public string StatusMarkGuid { get; set; }
-        
+
         /// <summary>
         /// 用户头像
         /// </summary>
         public string AvatarUrl { get; set; }
+
+        /// <summary>
+        /// 用户个人主页地址
+        /// </summary>
+        public string PersonalHomepageUrl { get; set; }
     }
 }

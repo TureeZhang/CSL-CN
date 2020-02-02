@@ -58,6 +58,13 @@
     </nz-form-item>
 
     <nz-form-item>
+      <nz-form-label [nzSpan]="24">个人主页 Url</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback>
+        <input nz-input formControlName="personalHomepageUrl" placeholder="例如 http://www.cities-skylines.cn" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
       <nz-form-label [nzSpan]="24">权限</nz-form-label>
       <nz-form-control [nzSpan]="24">
         <label nz-checkbox formControlName="isAdmin">编辑者</label>

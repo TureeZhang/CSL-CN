@@ -49,9 +49,22 @@ namespace HanJie.CSLCN.Models.DataModels
                     {
                         result.GetType().GetProperty(propName).SetValue(result, Convert.ToDateTime(item.GetValue(dtoModel)));
                     }
+                    else if (dtoModel.GetType().GetProperty(propName).PropertyType.FullName.Contains("List`1[System.String]") && result.GetType().GetProperty(propName).PropertyType.FullName == typeof(String).FullName)
+                    {
+                        result.GetType().GetProperty(propName).SetValue(result, string.Join(",", item.GetValue(dtoModel)));
+                    }
                     else
                     {
-                        result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dtoModel));
+                        try
+                        {
+                            result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dtoModel));
+                        }
+                        catch (Exception)
+                        {
+                            //do nothing here.
+                            //并非所有类型都可以正确转换，如果尝试失败则跳过
+                            continue;
+                        }
                     }
                 }
             }

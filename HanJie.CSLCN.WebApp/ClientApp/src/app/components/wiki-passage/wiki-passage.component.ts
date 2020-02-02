@@ -31,6 +31,7 @@ export class WikiPassageComponent implements OnInit {
    ***/
   public oldWikiPassageDtoContent: string;
 
+  public loading: boolean = true;
 
 
   public color: string = "lightblue";
@@ -81,6 +82,7 @@ export class WikiPassageComponent implements OnInit {
     this.wikiPassageService.getWikiPassage(routePath).subscribe(response => {
       host.wikiPassage = response;
       host.oldWikiPassageDtoContent = host.wikiPassage.content;
+      host.loading = false;
     });
   }
 

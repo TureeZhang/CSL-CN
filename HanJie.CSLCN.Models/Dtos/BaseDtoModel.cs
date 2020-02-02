@@ -27,9 +27,24 @@ namespace HanJie.CSLCN.Models.Dtos
                 {
                     result.GetType().GetProperty(propName).SetValue(result, Convert.ToString(item.GetValue(dataModel)));
                 }
+                else if (propTypeFullName == typeof(String).FullName && typeof(TDtoType).GetProperty(propName).PropertyType.FullName.Contains("List`1[System.String]"))
+                {
+                    string[] array = item.GetValue(dataModel).ToString().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    result.GetType().GetProperty(propName).SetValue(result, new List<string>(array));
+                }
                 else
                 {
-                    result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dataModel));
+                    try
+                    {
+
+                        result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dataModel));
+                    }
+                    catch (Exception)
+                    {
+                        //do nothing here.
+                        //并非所有类型都可以正确转换，如果尝试失败则跳过
+                        continue;
+                    }
                 }
             }
 

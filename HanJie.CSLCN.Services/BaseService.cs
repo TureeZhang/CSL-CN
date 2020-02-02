@@ -66,7 +66,7 @@ namespace HanJie.CSLCN.Services
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
-        public async Task UpdateAsync(TDataModelType data)
+        public virtual async Task UpdateAsync(TDataModelType data)
         {
             if (data == null)
             {

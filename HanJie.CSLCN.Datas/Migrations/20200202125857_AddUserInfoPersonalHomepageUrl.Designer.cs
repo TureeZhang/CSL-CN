@@ -3,14 +3,16 @@ using System;
 using HanJie.CSLCN.Datas;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HanJie.CSLCN.Datas.Migrations
 {
     [DbContext(typeof(CSLDbContext))]
-    partial class CSLDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200202125857_AddUserInfoPersonalHomepageUrl")]
+    partial class AddUserInfoPersonalHomepageUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

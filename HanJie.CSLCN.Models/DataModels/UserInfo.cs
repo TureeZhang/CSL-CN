@@ -39,5 +39,10 @@ namespace HanJie.CSLCN.Models.DataModels
         /// 用户头像地址
         /// </summary>
         public string AvatarUrl { get; set; }
+
+        /// <summary>
+        /// 个人主页地址
+        /// </summary>
+        public string PersonalHomepageUrl { get; set; }
     }
 }

@@ -13,11 +13,12 @@ var uploader_component_1 = require("../../uploader/uploader.component");
 var drawer_statu_service_1 = require("../../../services/drawer-statu.service");
 var uploader_usage_enum_1 = require("../../../models/uploader-usage.enum");
 var AdminCreateUserInfoComponent = /** @class */ (function () {
-    function AdminCreateUserInfoComponent(formBuilder, userInfoService, drawerService) {
+    function AdminCreateUserInfoComponent(formBuilder, userInfoService, drawerService, drawerRef) {
         var _this = this;
         this.formBuilder = formBuilder;
         this.userInfoService = userInfoService;
         this.drawerService = drawerService;
+        this.drawerRef = drawerRef;
         this.confirmPassword = function (control) {
             if (!control.value) {
                 return { error: true, required: true };
@@ -52,7 +53,8 @@ var AdminCreateUserInfoComponent = /** @class */ (function () {
             userName: ['', [forms_1.Validators.required], [this.userNameAsyncValidator]],
             password: ['', [forms_1.Validators.required]],
             confirm: ['', [this.confirmPassword]],
-            isAdmin: [false]
+            personalHomepageUrl: ['http://www.cities-skylines.cn'],
+            isAdmin: [false],
         });
     }
     AdminCreateUserInfoComponent.prototype.ngOnInit = function () {
@@ -62,13 +64,15 @@ var AdminCreateUserInfoComponent = /** @class */ (function () {
         setTimeout(function () { _this.userInfoForm.controls["confirm"].updateValueAndValidity(); });
     };
     AdminCreateUserInfoComponent.prototype.submitForm = function (data) {
+        var _this = this;
         for (var item in this.userInfoForm.controls) {
             this.userInfoForm.controls[item].markAsDirty(); //标记为已触碰并修改
             this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
         }
         console.log(data);
         this.userInfoService.create(data).subscribe(function (response) {
-            //返回给上层，添加到表格
+            console.log(response);
+            _this.drawerRef.close(response);
         });
     };
     AdminCreateUserInfoComponent.prototype.openUploader = function () {

@@ -5,7 +5,7 @@ import { AdminUserInfoService } from '../../../services/admin/admin-userinfo.ser
 import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
 import { UserInfoService } from '../../../services/user-info.service';
 import { UploaderComponent } from '../../uploader/uploader.component';
-import { NzDrawerService } from 'ng-zorro-antd';
+import { NzDrawerService, NzDrawerRef } from 'ng-zorro-antd';
 import { DrawerStatuService } from '../../../services/drawer-statu.service';
 import { UploaderUsageEnum } from '../../../models/uploader-usage.enum';
 
@@ -23,14 +23,16 @@ export class AdminCreateUserInfoComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private userInfoService: UserInfoService,
-    private drawerService: NzDrawerService) {
+    private drawerService: NzDrawerService,
+    private drawerRef: NzDrawerRef) {
     this.userInfoForm = this.formBuilder.group({
       avatarUrl: ['', [Validators.required]],
       nickName: ['', [Validators.required]],
       userName: ['', [Validators.required], [this.userNameAsyncValidator]],
       password: ['', [Validators.required]],
       confirm: ['', [this.confirmPassword]],
-      isAdmin: [false]
+      personalHomepageUrl: ['http://www.cities-skylines.cn'],
+      isAdmin: [false],
     });
   }
 
@@ -78,7 +80,8 @@ export class AdminCreateUserInfoComponent implements OnInit {
     }
     console.log(data);
     this.userInfoService.create(data).subscribe(response => {
-      //返回给上层，添加到表格
+      console.log(response);
+      this.drawerRef.close(response);
     });
   }
 
