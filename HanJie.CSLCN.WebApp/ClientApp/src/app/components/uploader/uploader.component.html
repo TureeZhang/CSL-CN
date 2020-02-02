@@ -22,7 +22,8 @@
                  [nzShowButton]="isShowUploadButton"
                  [nzCustomRequest]="customRequest"
                  (nzChange)="onUploadStatusChanged($event)">
-        <button nz-button><i nz-icon nzType="upload"></i><span>选择文件</span></button>
+        <button nz-button nzType="primary"><i nz-icon nzType="upload"></i><span>选择文件</span></button>
+        <button nz-button (click)="$event.stopPropagation();closeDrawer()" style="margin-left:16px;">取消</button>
       </nz-upload>
     </div>
   </div>
@@ -30,8 +31,14 @@
 
 <div nz-row nzType="flex" nzJustify="center" style="margin-bottom:16px;">
   <div nz-col nzSpan="20">
-    <button nz-button (click)="copyMarkDownToClipboard()" nzType="primary" *ngIf="!(imageMarkdownString==null)">复制 Markdown 并关闭上传工具</button>
-    <nz-tag [nzColor]="'lime'" *ngIf="!(imageMarkdownString==null)" style="margin-left:16px;">{{imageMarkdownString}}</nz-tag>
+    <ng-container *ngIf="usage=='0'">
+      <button nz-button (click)="copyMarkDownToClipboard()" nzType="primary" *ngIf="!(imageMarkdownString==null)">复制 Markdown 并关闭上传工具</button>
+      <nz-tag [nzColor]="'lime'" *ngIf="!(imageMarkdownString==null)" style="margin-left:16px;">{{imageMarkdownString}}</nz-tag>
+    </ng-container>
+    <ng-container *ngIf="usage=='1' && fileUrl!=null">
+      <button nz-button (click)="confirmUserAvatar()" nzType="primary">确定</button>
+      <button nz-button (click)="$event.stopPropagation();closeDrawer()" style="margin-left:16px;">取消</button>
+    </ng-container>
   </div>
 </div>
 

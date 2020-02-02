@@ -11,6 +11,8 @@ import { ImgService } from '../../services/img.service';
 import { QiniuStorageInfoDto } from '../../models/qiniu-storage-info-dto';
 import { ClipboardService, IClipboardResponse } from 'ngx-clipboard';
 import { ClipboardResponse } from '../../models/clipboard-response';
+import { DrawerStatuService } from '../../services/drawer-statu.service';
+import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
 
 @Component({
   selector: 'uploader',
@@ -23,9 +25,12 @@ export class UploaderComponent implements OnInit {
   public isShowUploadButton: boolean = true;
   public host: UploaderComponent = this;
   public imageMarkdownString: string = null;
+  public fileUrl: string;
 
   @Input()
   public directoryPath: string = "shared";
+  @Input()
+  public usage: UploaderUsageEnum = UploaderUsageEnum.wiki;
 
   constructor(private qiniuUploadService: QiniuUploadService,
     private http: HttpClient,
@@ -96,6 +101,7 @@ export class UploaderComponent implements OnInit {
     if (data.type === "success") {
       let storageInfo: any = data.file.response.info;
       this.imageMarkdownString = this.getImageMarkdownString(storageInfo.FullName);
+      this.fileUrl = this.imgService.getFileUrl(storageInfo.FullName);
     }
   }
 
@@ -108,10 +114,15 @@ export class UploaderComponent implements OnInit {
     this.clipboardService.copy(this.imageMarkdownString);
     let copyResponse: ClipboardResponse = new ClipboardResponse();
     this.clipboardService.pushCopyReponse(copyResponse);
-    this.closeDrwaer();
+    this.closeDrawer();
   }
 
-  closeDrwaer(): void {
-    this.drawerRef.close();
+  closeDrawer(fileUrl: string = null): void {
+    DrawerStatuService.createUserDrawerRef.nzOffsetX = 0;
+    this.drawerRef.close(fileUrl);
+  }
+
+  confirmUserAvatar(): void {
+    this.closeDrawer(this.fileUrl);
   }
 }

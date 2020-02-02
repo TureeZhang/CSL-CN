@@ -47,10 +47,12 @@
     <None Remove="ClientApp\src\app\models\menu-item-dto.ts" />
     <None Remove="ClientApp\src\app\models\qiniu-storage-info-dto.ts" />
     <None Remove="ClientApp\src\app\models\qiniu-upload-parameters.ts" />
+    <None Remove="ClientApp\src\app\models\uploader-usage.enum.ts" />
     <None Remove="ClientApp\src\app\models\user-info-dto.ts" />
     <None Remove="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <None Remove="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
     <None Remove="ClientApp\src\app\services\donator-rank.service.ts" />
+    <None Remove="ClientApp\src\app\services\drawer-statu.service.ts" />
     <None Remove="ClientApp\src\app\services\global.service.ts" />
     <None Remove="ClientApp\src\app\services\menu.service.ts" />
     <None Remove="ClientApp\src\app\services\qiniu-upload.service.ts" />
@@ -85,12 +87,14 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\enums\wiki-passage-page-status.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\qiniu-storage-info-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\qiniu-upload-parameters.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\uploader-usage.enum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\user-info-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-item-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\donator-rank.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\drawer-statu.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\global.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\qiniu-upload.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\user-info.service.ts" />

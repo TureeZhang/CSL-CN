@@ -4,6 +4,7 @@ import { UserInfoDto } from '../../../models/user-info-dto';
 import { AdminUserInfoService } from '../../../services/admin/admin-userinfo.service';
 import { NzDrawerService } from 'ng-zorro-antd';
 import { AdminCreateUserInfoComponent } from '../admin-create-userinfo/admin-create-userinfo.component';
+import { DrawerStatuService } from '../../../services/drawer-statu.service';
 
 @Component({
   selector: 'admin-userinfoes',
@@ -33,6 +34,8 @@ export class AdminUserInfoesComponent implements OnInit {
       nzTitle: '添加用户',
       nzContent: AdminCreateUserInfoComponent,
       nzPlacement: 'right',
+      nzWidth: 320,
+      nzMaskClosable: false,
       nzContentParams: {
 
       },
@@ -43,12 +46,15 @@ export class AdminUserInfoesComponent implements OnInit {
     });
 
     drawerRef.afterClose.subscribe(data => {
+      DrawerStatuService.createUserDrawerRef = null;
       console.log(data);
       if (typeof data === 'string') {
         console.log(data.toString());
         //this.value = data;
       }
     });
+
+    DrawerStatuService.createUserDrawerRef = drawerRef;
   }
 
 }

@@ -32,7 +32,7 @@ namespace HanJie.CSLCN.Services
         /// 添加数据
         /// </summary>
         /// <param name="dto"></param>
-        public async Task AddAsync(TDataModelType data)
+        public virtual async Task<TDataModelType> AddAsync(TDataModelType data)
         {
             if (data == null)
             {
@@ -41,8 +41,11 @@ namespace HanJie.CSLCN.Services
 
             data.CreateDate = DateTime.Now;
             data.LastModifyDate = DateTime.Now;
-            await CSLDbContext.Set<TDataModelType>().AddAsync(data);
+            TDataModelType result = (await CSLDbContext.Set<TDataModelType>().AddAsync(data)).Entity;
             await CSLDbContext.SaveChangesAsync();
+
+            return result;
+
         }
 
         /// <summary>

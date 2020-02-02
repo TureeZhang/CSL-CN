@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var admin_create_userinfo_component_1 = require("../admin-create-userinfo/admin-create-userinfo.component");
+var drawer_statu_service_1 = require("../../../services/drawer-statu.service");
 var AdminUserInfoesComponent = /** @class */ (function () {
     function AdminUserInfoesComponent(adminUserInfoService, drawerService) {
         this.adminUserInfoService = adminUserInfoService;
@@ -26,18 +27,22 @@ var AdminUserInfoesComponent = /** @class */ (function () {
             nzTitle: '添加用户',
             nzContent: admin_create_userinfo_component_1.AdminCreateUserInfoComponent,
             nzPlacement: 'right',
+            nzWidth: 320,
+            nzMaskClosable: false,
             nzContentParams: {},
         });
         drawerRef.afterOpen.subscribe(function () {
             console.log('Drawer(Component) open');
         });
         drawerRef.afterClose.subscribe(function (data) {
+            drawer_statu_service_1.DrawerStatuService.createUserDrawerRef = null;
             console.log(data);
             if (typeof data === 'string') {
                 console.log(data.toString());
                 //this.value = data;
             }
         });
+        drawer_statu_service_1.DrawerStatuService.createUserDrawerRef = drawerRef;
     };
     AdminUserInfoesComponent = __decorate([
         core_1.Component({

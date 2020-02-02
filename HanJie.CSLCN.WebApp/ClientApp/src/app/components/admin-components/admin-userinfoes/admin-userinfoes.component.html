@@ -1,9 +1,14 @@
 <div class="container">
-  <h2>用户</h2>
 
   <div nz-row>
     <div nz-col nzSpan="24">
-      <button nz-button (click)="createUser()">添加用户</button>
+      <h2>用户</h2>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" nzJustify="end">
+    <div nz-col nzSpan="2" style="margin-bottom:16px;">
+      <button nz-button (click)="createUser()" nzType="primary">添加用户</button>
     </div>
   </div>
 

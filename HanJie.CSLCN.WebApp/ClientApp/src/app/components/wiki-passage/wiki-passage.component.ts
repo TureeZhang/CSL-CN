@@ -8,6 +8,7 @@ import { UserInfoService } from '../../services/user-info.service';
 import { MarkedOptions, MarkedRenderer } from 'ngx-markdown';
 import { NzDrawerService } from 'ng-zorro-antd';
 import { UploaderComponent } from '../uploader/uploader.component';
+import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
 
 @Component({
   selector: 'wiki-passage',
@@ -97,12 +98,13 @@ export class WikiPassageComponent implements OnInit {
   }
 
   openUploader(): void {
-    const drawerRef = this.drawerService.create<UploaderComponent, { directoryPath: string }, string>({
+    const drawerRef = this.drawerService.create<UploaderComponent, { directoryPath: string, usage: UploaderUsageEnum }, string>({
       nzTitle: '上传图片',
       nzContent: UploaderComponent,
       nzPlacement: 'top',
       nzContentParams: {
-        directoryPath: `wiki-passages/${this.routePath}`
+        directoryPath: `wiki-passages/${this.routePath}`,
+        usage: UploaderUsageEnum.wiki
       },
     });
 
