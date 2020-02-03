@@ -6,6 +6,7 @@ import { UserInfoDto } from './models/user-info-dto';
 import { UserInfoService } from './services/user-info.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { GlobalService } from './services/global.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   constructor(private menuService: MenuService,
     private userInfoService: UserInfoService,
-    private router: Router) {
+    private router: Router,
+    public globalService: GlobalService) {
     this.navigationEnd = router.events.pipe(
       filter(evt => evt instanceof NavigationEnd)
     ) as Observable<NavigationEnd>;

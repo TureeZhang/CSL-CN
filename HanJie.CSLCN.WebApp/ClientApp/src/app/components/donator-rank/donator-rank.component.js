@@ -9,9 +9,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var user_info_service_1 = require("../../services/user-info.service");
 var DonatorRankComponent = /** @class */ (function () {
-    function DonatorRankComponent(donatorRankService) {
+    function DonatorRankComponent(donatorRankService, globalService) {
         this.donatorRankService = donatorRankService;
-        this.loading = false;
+        this.globalService = globalService;
+        this.loading = true;
         this.isAdmin = false;
     }
     DonatorRankComponent.prototype.ngOnInit = function () {
@@ -24,6 +25,7 @@ var DonatorRankComponent = /** @class */ (function () {
         var _this = this;
         this.donatorRankService.getRanks().subscribe(function (datas) {
             _this.donatorRanks = datas;
+            _this.loading = false;
         });
     };
     DonatorRankComponent.prototype.setCustomerHeader = function (file) {

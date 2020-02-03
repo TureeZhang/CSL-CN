@@ -31,11 +31,11 @@
 
 <div nz-row nzType="flex" nzJustify="center" style="margin-bottom:16px;">
   <div nz-col nzSpan="20">
-    <ng-container *ngIf="usage=='0'">
+    <ng-container *ngIf="usage.toString()=='0'">
       <button nz-button (click)="copyMarkDownToClipboard()" nzType="primary" *ngIf="!(imageMarkdownString==null)">复制 Markdown 并关闭上传工具</button>
       <nz-tag [nzColor]="'lime'" *ngIf="!(imageMarkdownString==null)" style="margin-left:16px;">{{imageMarkdownString}}</nz-tag>
     </ng-container>
-    <ng-container *ngIf="usage=='1' && fileUrl!=null">
+    <ng-container *ngIf="usage.toString()=='1' && fileUrl!=null">
       <button nz-button (click)="confirmUserAvatar()" nzType="primary">确定</button>
       <button nz-button (click)="$event.stopPropagation();closeDrawer()" style="margin-left:16px;">取消</button>
     </ng-container>

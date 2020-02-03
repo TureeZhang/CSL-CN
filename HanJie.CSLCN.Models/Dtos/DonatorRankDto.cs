@@ -13,6 +13,7 @@ namespace HanJie.CSLCN.Models.Dtos
         public string PersonalTitle { get; set; }
         public string DescriptionWord { get; set; }
         public string AvatarUrl { get; set; }
+        public string PersonalHomepageUrl { get; set; }
 
         public override DonatorRankDto ConvertFromDataModel(DonatorRank dataModel)
         {

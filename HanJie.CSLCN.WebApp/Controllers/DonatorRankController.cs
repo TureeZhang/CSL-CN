@@ -36,6 +36,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
                 UserInfo user = this._userInfoService.GetById(item.UserId);
                 dto.UserNickName = user.NickName;
                 dto.AvatarUrl = user.AvatarUrl;
+                dto.PersonalHomepageUrl = user.PersonalHomepageUrl;
                 datas.Add(dto);
             }
 

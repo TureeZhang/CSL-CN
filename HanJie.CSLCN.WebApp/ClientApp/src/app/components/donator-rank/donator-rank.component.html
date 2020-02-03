@@ -1,6 +1,6 @@
 <div nz-row style="margin-top:24px;">
-  <div nz-col nzSpan="12" nzOffset="6" nzJustify="center">
-    <h1>贡献者总榜单</h1>
+  <div nz-col nzSpan="24" style="text-align:center;">
+    <h1>捐赠记录公开</h1>
     <nz-upload nzAction="http://localhost:5000/api/donatorrank"
                nzFileType="application/vnd.ms-excel"
                nzWithCredentials="true"
@@ -8,30 +8,57 @@
       <button *ngIf="isAdmin" nz-button nzType="default"><i nz-icon nzType="upload"></i><span>导入新数据</span></button>
     </nz-upload>
   </div>
-</div>
-<div nz-row nzType="flex" nzAlign="middle">
-  <div nz-col nzSpan="12" nzOffset="5">
-    <nz-list [nzDataSource]="donatorRanks" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
-      <ng-template #item let-item>
-        <nz-list-item>
-          <nz-list-item-meta [nzTitle]="nzTitle"
-                             [nzAvatar]="item.avatarUrl"
-                             [nzDescription]="'['+item.personalTitle+'] '+item.descriptionWord">
-            <ng-template #nzTitle>
-              <a href="https://ng.ant.design"><b>{{ item.userNickName }}</b></a>
-            </ng-template>
-          </nz-list-item-meta>
-          <span style="color:red;opacity:0.7"><b>{{ item.donateTotalCount}} RMB</b></span>
-        </nz-list-item>
-      </ng-template>
-    </nz-list>
-  </div>
-</div>
-<div nz-row nzType="flex" ngAlign="middle" style="margin-top:60px;">
-  <div nz-col nzSpan="24" style="text-align:center;color: cadetblue;">
+  <div nz-col nzSpan="24" style="text-align:center;color: cadetblue;margin-bottom:30px;">
     <p><nz-alert nzType="success" nzMessage="请您留意：为表感激，在捐赠后您可凭借转账交易单号，申请加入开发者 QQ 群 676651513，在第一线了解并影响引擎的最新开发进度！"></nz-alert></p>
   </div>
-  <div nz-col nzSpan="24" style="text-align:center;margin-bottom:40px;">
-    <img src="/assets/payments.bmp" alt="捐赠骚汉" />
+</div>
+
+<div style="overflow:auto;">
+  <div nz-row nzType="flex" nzJustify="center">
+    <div nz-col nzMd="20" nzXs="24">
+      <nz-table #basicTable [nzData]="donatorRanks" [nzLoading]="loading"
+                [nzPageSize]="999" nzShowPagination style="min-width:850px;">
+        <thead>
+          <tr>
+            <th>总计</th>
+            <th>头像</th>
+            <th>昵称</th>
+            <th>爱称</th>
+            <th>时间</th>
+            <th>赠言</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of basicTable.data;">
+            <td><b style="color:red;font-family:'Comic Sans MS'">¥ {{item.donateTotalCount}}</b></td>
+            <td>
+              <nz-avatar nzSrc="{{item.avatarUrl}}" nzSize="small"></nz-avatar>
+            </td>
+            <td>
+              <a style="color:dodgerblue" *ngIf="item.personalHomepageUrl!=null" href="{{item.personalHomepageUrl}}" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}">{{ item.userNickName }}</a>
+              <span *ngIf="item.personalHomepageUrl==null">{{item.userNickName}}</span>
+            </td>
+            <td>{{item.personalTitle}}</td>
+            <td>{{item.lastModifyDate}}</td>
+            <td><nz-tag nzColor="blue" nz-tooltip nzTooltipTitle="{{item.descriptionWord}}" nzTooltipPlacement="left">显示</nz-tag></td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+
+<div nz-row nzType="flex" nzAlign="middle" style="margin-top:60px;margin-bottom:40px;text-align:center;">
+  <div nz-col nzMd="6" nzXs="24">
+    <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/alipay.bmp" alt="支付宝" style="max-width:100%;" />
+  </div>
+  <div nz-col nzMd="6" nzXs="24">
+    <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/wechatpay.bmp" alt="微信支付" style="max-width:100%;" />
+  </div>
+  <div nz-col nzMd="6" nzXs="24">
+    <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/cs-group.jpg" alt="天际线群聊" style="max-width:100%;" />
+  </div>
+  <div nz-col nzMd="6" nzXs="24">
+    <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/dev-group.jpg" alt="开发者群聊" style="max-width:100%;" />
   </div>
 </div>
