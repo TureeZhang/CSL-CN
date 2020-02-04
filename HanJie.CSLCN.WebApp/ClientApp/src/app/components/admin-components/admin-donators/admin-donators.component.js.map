@@ -1,0 +1,1 @@
+{"version":3,"file":"admin-donators.component.js","sourceRoot":"","sources":["admin-donators.component.ts"],"names":[],"mappings":";;;;;;;;AAAA,sCAAkD;AAQlD;IAIE;IAEA,CAAC;IAED,yCAAQ,GAAR;IAEA,CAAC;IAVU,sBAAsB;QALlC,gBAAS,CAAC;YACT,QAAQ,EAAE,gBAAgB;YAC1B,WAAW,EAAE,iCAAiC;YAC9C,SAAS,EAAE,CAAC,gCAAgC,CAAC;SAC9C,CAAC;OACW,sBAAsB,CAYlC;IAAD,6BAAC;CAAA,AAZD,IAYC;AAZY,wDAAsB"}

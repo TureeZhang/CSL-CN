@@ -9,42 +9,81 @@
     </nz-upload>
   </div>
   <div nz-col nzSpan="24" style="text-align:center;color: cadetblue;margin-bottom:30px;">
-    <p><nz-alert nzType="success" nzMessage="请您留意：为表感激，在捐赠后您可凭借转账交易单号，申请加入开发者 QQ 群 676651513，在第一线了解并影响引擎的最新开发进度！"></nz-alert></p>
+    <p><nz-alert nzType="success" nzMessage="请您留意：为表感激，在捐赠后您可凭借转账交易单号加入开发者 QQ 群 676651513，开发及翻译团队将与你分享引擎的最新开发进度！"></nz-alert></p>
   </div>
 </div>
 
 <div style="overflow:auto;">
   <div nz-row nzType="flex" nzJustify="center">
     <div nz-col nzMd="20" nzXs="24">
-      <nz-table #basicTable [nzData]="donatorRanks" [nzLoading]="loading"
-                [nzPageSize]="999" nzShowPagination style="min-width:850px;">
-        <thead>
-          <tr>
-            <th>总计</th>
-            <th>头像</th>
-            <th>昵称</th>
-            <th>爱称</th>
-            <th>时间</th>
-            <th>赠言</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of basicTable.data;">
-            <td><b style="color:red;font-family:'Comic Sans MS'">¥ {{item.donateTotalCount}}</b></td>
-            <td>
-              <nz-avatar nzSrc="{{item.avatarUrl}}" nzSize="small"></nz-avatar>
-            </td>
-            <td>
-              <a style="color:dodgerblue" *ngIf="item.personalHomepageUrl!=null" href="{{item.personalHomepageUrl}}" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}">{{ item.userNickName }}</a>
-              <span *ngIf="item.personalHomepageUrl==null">{{item.userNickName}}</span>
-            </td>
-            <td>{{item.personalTitle}}</td>
-            <td>{{item.lastModifyDate}}</td>
-            <td><nz-tag nzColor="blue" nz-tooltip nzTooltipTitle="{{item.descriptionWord}}" nzTooltipPlacement="left">显示</nz-tag></td>
-          </tr>
-        </tbody>
-      </nz-table>
+      <nz-tabset (nzSelectChange)="onTabsetChange($event)">
+        <nz-tab nzTitle="近 30 天内">
+          <nz-table #monthlyTable [nzData]="monthlyRanks" [nzLoading]="monthlyRanksLoading" style="min-width:850px;">
+            <thead>
+              <tr>
+                <th>总计</th>
+                <th>头像</th>
+                <th>昵称</th>
+                <th>爱称</th>
+                <th>赠言</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of monthlyTable.data;">
+                <td><b style="color:red;font-family:'Comic Sans MS'">¥ {{item.donateTotalCount}}</b></td>
+                <td>
+                  <nz-avatar nzSrc="{{item.avatarUrl}}" nzSize="small"></nz-avatar>
+                </td>
+                <td>
+                  <a style="color:dodgerblue" *ngIf="item.personalHomepageUrl!=null" href="{{item.personalHomepageUrl}}" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}">{{ item.userNickName }}</a>
+                  <span *ngIf="item.personalHomepageUrl==null">{{item.userNickName}}</span>
+                </td>
+                <td>{{item.personalTitle}}</td>
+                <td><nz-tag nzColor="blue" nz-tooltip nzTooltipTitle="{{item.descriptionWord}}" nzTooltipPlacement="left">显示</nz-tag></td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+        <nz-tab nzTitle="有史以来">
+          <nz-table #totalTable [nzData]="allRanks" [nzLoading]="allRanksLoading" style="min-width:850px;">
+            <thead>
+              <tr>
+                <th>总计</th>
+                <th>头像</th>
+                <th>昵称</th>
+                <th>爱称</th>
+                <th>赠言</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of totalTable.data;">
+                <td><b style="color:red;font-family:'Comic Sans MS'">¥ {{item.donateTotalCount}}</b></td>
+                <td>
+                  <nz-avatar nzSrc="{{item.avatarUrl}}" nzSize="small"></nz-avatar>
+                </td>
+                <td>
+                  <a style="color:dodgerblue" *ngIf="item.personalHomepageUrl!=null" href="{{item.personalHomepageUrl}}" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}">{{ item.userNickName }}</a>
+                  <span *ngIf="item.personalHomepageUrl==null">{{item.userNickName}}</span>
+                </td>
+                <td>{{item.personalTitle}}</td>
+                <td><nz-tag nzColor="blue" nz-tooltip nzTooltipTitle="{{item.descriptionWord}}" nzTooltipPlacement="left">显示</nz-tag></td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+      </nz-tabset>
+
     </div>
+
+    <div nz-col nzSpan="24" style="text-align:center;color: cadetblue;margin-top:30px;">
+      <p>
+        <nz-alert nzType="info"
+                  nzShowIcon
+                  nzMessage="请务必！"
+                  nzDescription="请务必在转账备注填写希望使用的【昵称】+【赠言】+【个人主页链接】，谢谢！"></nz-alert>
+      </p>
+    </div>
+
   </div>
 </div>
 

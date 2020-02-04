@@ -31,6 +31,12 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\commons\http-helper.ts" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-donators\admin-create-donator.component.ts\admin-create-donator.component.css" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-donators\admin-create-donator.component.ts\admin-create-donator.component.html" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-donators\admin-create-donator.component.ts\admin-create-donator.component.ts" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-donators\admin-donators.component.css" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-donators\admin-donators.component.html" />
+    <None Remove="ClientApp\src\app\components\admin-components\admin-donators\admin-donators.component.ts" />
     <None Remove="ClientApp\src\app\components\admin-components\admin-homepage\admin-homepage.component.ts" />
     <None Remove="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.css" />
     <None Remove="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.ts" />
@@ -50,6 +56,7 @@
     <None Remove="ClientApp\src\app\models\uploader-usage.enum.ts" />
     <None Remove="ClientApp\src\app\models\user-info-dto.ts" />
     <None Remove="ClientApp\src\app\models\wiki-passage-dto.ts" />
+    <None Remove="ClientApp\src\app\services\admin\admin-donator.service.ts" />
     <None Remove="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
     <None Remove="ClientApp\src\app\services\donator-rank.service.ts" />
     <None Remove="ClientApp\src\app\services\drawer-statu.service.ts" />
@@ -69,6 +76,20 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\commons\http-helper.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-donators\admin-create-donator.component.ts\admin-create-donator.component.html">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-donators\admin-create-donator.component.ts\admin-create-donator.component.css">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-donators\admin-create-donator.component.ts\admin-create-donator.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-donators\admin-donators.component.html">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-donators\admin-donators.component.css">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-donators\admin-donators.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\admin-components\admin-userinfoes\admin-userinfoes.component.css">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -92,6 +113,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-item-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-passage-dto.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\admin\admin-donator.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\donator-rank.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\drawer-statu.service.ts" />

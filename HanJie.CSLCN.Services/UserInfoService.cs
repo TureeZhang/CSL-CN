@@ -133,6 +133,21 @@ namespace HanJie.CSLCN.Services
             return true;
         }
 
+        public List<DonatorRankDto> BindDonatorUserInfo(List<DonatorRankDto> dtos)
+        {
+            foreach (DonatorRankDto item in dtos)
+            {
+                UserInfo user = this.GetById(item.UserId);
+                item.UserNickName = user.NickName;
+                item.AvatarUrl = user.AvatarUrl;
+                item.PersonalHomepageUrl = user.PersonalHomepageUrl;
+                item.PersonalTitle = user.PersonalTitle ?? "-";
+                item.DescriptionWord = user.DescriptionWord ?? "这个刁民太懒了，什么都没写。";
+            }
+
+            return dtos;
+        }
+
         /// <summary>
         /// 校验用户密码是否正确。
         /// </summary>

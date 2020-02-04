@@ -51,5 +51,16 @@ namespace HanJie.CSLCN.Models.Dtos
         /// 用户个人主页地址
         /// </summary>
         public string PersonalHomepageUrl { get; set; }
+
+        /// <summary>
+        /// 个人头衔
+        /// </summary>
+        public string PersonalTitle { get; set; }
+
+        /// <summary>
+        /// 个人签名
+        /// </summary>
+        public string DescriptionWord { get; set; }
+
     }
 }

@@ -18,12 +18,9 @@ namespace HanJie.CSLCN.Models.Dtos
         public override DonatorRankDto ConvertFromDataModel(DonatorRank dataModel)
         {
             DonatorRankDto result = new DonatorRankDto();
-            result.CreateDate = dataModel.CreateDate.ToString();
-            result.DescriptionWord = dataModel.DescriptionWord;
             result.DonateTotalCount = dataModel.DonateTotalCount;
             result.Id = dataModel.Id;
             result.LastModifyDate = dataModel.LastModifyDate.ToString();
-            result.PersonalTitle = dataModel.PersonalTitle;
             result.UserId = dataModel.UserId;
 
             return result;
