@@ -9,9 +9,9 @@ namespace HanJie.CSLCN.Models.Dtos
     {
         public string Title { get; set; }
         public string Content { get; set; }
-        public string Author { get; set; }
         public string RoutePath { get; set; }
         public List<WikiPassageAnchorTitleDto> AnchorTitles { get; set; }
-        public List<QiniuStorageInfoDto> Images { get; set; }
+        public List<UserInfoDto> MainAuthors { get; set; }
+        public List<UserInfoDto> CoAuthors { get; set; }
     }
 }

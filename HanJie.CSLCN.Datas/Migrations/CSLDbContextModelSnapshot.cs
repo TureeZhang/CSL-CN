@@ -129,6 +129,8 @@ namespace HanJie.CSLCN.Datas.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
+                    b.Property<string>("PersonalHomepageUrl");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(16);
@@ -143,8 +145,7 @@ namespace HanJie.CSLCN.Datas.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author")
-                        .IsRequired();
+                    b.Property<string>("CoAuthors");
 
                     b.Property<string>("Content")
                         .IsRequired();
@@ -152,6 +153,9 @@ namespace HanJie.CSLCN.Datas.Migrations
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<DateTime>("LastModifyDate");
+
+                    b.Property<string>("MainAuthors")
+                        .IsRequired();
 
                     b.Property<string>("RoutePath")
                         .IsRequired();

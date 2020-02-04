@@ -16,10 +16,15 @@ export class ImgService implements OnInit {
   }
 
   getCdnMarkdownString(storageFullName: string): string {
-    let imgUrl: string = `${this.globalService.clientAppConfigs.qiniuCdnHostUri}/${storageFullName}`;
+    let imgUrl: string = this.getFileUrl(storageFullName);
     let result: string = `![${storageFullName}](${imgUrl})`;
 
     return result;
+  }
+
+  getFileUrl(storageFullName: string): string {
+    let fileUrl: string = `${this.globalService.clientAppConfigs.qiniuCdnHostUri}/${storageFullName}`;
+    return fileUrl;
   }
 
 

@@ -4,6 +4,7 @@ using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,12 +14,13 @@ namespace HanJie.CSLCN.Services
         where TDtoType : BaseDtoModel<TDtoType, TDataModelType>, new()
         where TDataModelType : BaseDataModel<TDataModelType, TDtoType>, new()     //约束继承此基类的子类必须拥有传输模型和数据模型，且数据模型和传输模型必须继承自 BaseDtoModel 和 BaseDataModel
     {
-        public CSLDbContext CSLDbContext { get; } = CSLDbContext.Instance;
+        public CSLDbContext CSLDbContext { get; set; }
         public CommonHelper CommonHelper { get; set; }
 
         public BaseService()
         {
             this.CommonHelper = new CommonHelper();
+            this.CSLDbContext = new CSLDbContext();
         }
 
         public T GetService<T>()
@@ -30,7 +32,7 @@ namespace HanJie.CSLCN.Services
         /// 添加数据
         /// </summary>
         /// <param name="dto"></param>
-        public async Task AddAsync(TDataModelType data)
+        public virtual async Task<TDataModelType> AddAsync(TDataModelType data)
         {
             if (data == null)
             {
@@ -39,8 +41,11 @@ namespace HanJie.CSLCN.Services
 
             data.CreateDate = DateTime.Now;
             data.LastModifyDate = DateTime.Now;
-            await CSLDbContext.Set<TDataModelType>().AddAsync(data);
+            TDataModelType result = (await CSLDbContext.Set<TDataModelType>().AddAsync(data)).Entity;
             await CSLDbContext.SaveChangesAsync();
+
+            return result;
+
         }
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace HanJie.CSLCN.Services
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
-        public async Task UpdateAsync(TDataModelType data)
+        public virtual async Task UpdateAsync(TDataModelType data)
         {
             if (data == null)
             {
@@ -90,6 +95,12 @@ namespace HanJie.CSLCN.Services
             TDataModelType data = CSLDbContext.Set<TDataModelType>().Find(id);
 
             return data;
+        }
+
+        public virtual List<TDataModelType> List()
+        {
+            List<TDataModelType> results = this.CSLDbContext.Set<TDataModelType>().ToList();
+            return results;
         }
     }
 }

@@ -132,12 +132,7 @@ namespace HanJie.CSLCN.WebApp
         /// <param name="services"></param>
         private void RegisterSingletons(ref IServiceCollection services)
         {
-            services.AddSingleton<MenuService>();
-            services.AddSingleton<UserInfoService>();
-            services.AddSingleton<UserStatuService>();
-            services.AddSingleton<DonatorRankService>();
-            services.AddSingleton<QiniuService>();
-            services.AddSingleton<ClientAppService>();
+
         }
 
         /// <summary>
@@ -149,7 +144,13 @@ namespace HanJie.CSLCN.WebApp
         /// <param name="services"></param>
         private void RegisterScoped(ref IServiceCollection services)
         {
+            services.AddSingleton<UserStatuService>();
+            services.AddSingleton<ClientAppService>();
             services.AddScoped<WikiPassageService>();
+            services.AddSingleton<MenuService>();
+            services.AddSingleton<UserInfoService>();
+            services.AddSingleton<DonatorRankService>();
+            services.AddSingleton<QiniuService>();
         }
     }
 }

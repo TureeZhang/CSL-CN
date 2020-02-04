@@ -4,8 +4,6 @@ import { CSLHttpHelper } from '../commons/http-helper';
 import { Observable } from 'rxjs';
 import { QiniuStorageInfoDto } from '../models/qiniu-storage-info-dto';
 import { promise } from 'protractor';
-import { map } from 'rxjs/operators';
-import { pipe } from '@angular/core/src/render3';
 
 @Injectable({ providedIn: "root" })
 export class QiniuUploadService implements OnInit {

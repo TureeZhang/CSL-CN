@@ -15,7 +15,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
         private UserInfoService _userInfoService;
 
-        public UserInfoController(UserInfoService userInfoService)
+        public UserInfoController(UserInfoService userInfoService,
+            UserStatuService userStatuService) : base(userStatuService)
         {
             _userInfoService = userInfoService;
         }

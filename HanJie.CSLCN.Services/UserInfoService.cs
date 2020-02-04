@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using HanJie.CSLCN.Common;
+using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
@@ -37,8 +39,19 @@ namespace HanJie.CSLCN.Services
             {
                 return ResotreLoginStatus(userInfo.StatusMarkGuid);
             }
+        }
 
+        public virtual List<UserInfoDto> ListDtoes()
+        {
+            List<UserInfo> datas = base.List();
+            List<UserInfoDto> dtos = new List<UserInfoDto>();
+            foreach (UserInfo item in datas)
+            {
+                UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
+                dtos.Add(dto);
+            }
 
+            return dtos;
         }
 
         private UserInfoDto ResotreLoginStatus(string cookieGuid)
@@ -91,6 +104,33 @@ namespace HanJie.CSLCN.Services
             }
 
             this._userStatuService.LogoutSuccess(id);
+        }
+
+        public override async Task<UserInfo> AddAsync(UserInfo userInfo)
+        {
+            Ensure.NotNull(userInfo, nameof(userInfo));
+            Ensure.NotNull(userInfo.IsAdmin, nameof(userInfo.IsAdmin));
+            Ensure.NotNull(userInfo.NickName, nameof(userInfo.NickName));
+            Ensure.NotNull(userInfo.Password, nameof(userInfo.Password));
+            Ensure.NotNull(userInfo.UserName, nameof(userInfo.UserName));
+            Ensure.NotNull(userInfo.AvatarUrl, nameof(userInfo.AvatarUrl));
+
+            userInfo.Password = new CommonHelper().GetMd5Base64StringUsePrivateSold(userInfo.Password);
+
+            UserInfo result = await base.AddAsync(userInfo);
+            return result;
+
+        }
+
+        public bool IsUserNameDuplicated(string userName)
+        {
+            Ensure.NotNull(userName, nameof(userName));
+
+            UserInfo userInfo = this.CSLDbContext.UserInfoes.Where(item => item.UserName == userName).FirstOrDefault();
+            if (userInfo == null)
+                return false;
+
+            return true;
         }
 
         /// <summary>

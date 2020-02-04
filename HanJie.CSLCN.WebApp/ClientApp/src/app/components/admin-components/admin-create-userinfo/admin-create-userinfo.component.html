@@ -1,0 +1,88 @@
+<div class="container">
+
+  <form nz-form [formGroup]="userInfoForm"
+        (ngSubmit)="submitForm(userInfoForm.value)"
+        [nzLayout]="'vertical'">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>头像</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请上传用户头像">
+        <input nz-input type="hidden" [(ngModel)]="userAvartarUrl" formControlName="avatarUrl" />
+        <nz-avatar nzIcon="user" [nzSrc]="userAvartarUrl" *ngIf="userAvartarUrl" style="margin-right:16px;"></nz-avatar>
+        <span (click)="openUploader()" style="cursor:pointer;"><i nz-icon nzType="plus-circle" nzSize="large" nzTheme="outline"></i>上传图片</span>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>昵称</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入昵称">
+        <input nz-input formControlName="nickName" placeholder="请输入昵称" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>用户名</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzValidatingTip="查询重名..." [nzErrorTip]="userNameErrorTemplate">
+        <input nz-input formControlName="userName" placeholder="请输入用户名" />
+        <ng-template #userNameErrorTemplate let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入用户名
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicated')">
+            用户名已被占用
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>密码</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入密码">
+        <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>确认密码</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback [nzErrorTip]="passwordErrorTemplate">
+        <input nz-input type="password" formControlName="confirm" placeholder="重复你的密码" />
+        <ng-template #passwordErrorTemplate let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请填写密码
+          </ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">
+            两次输入的密码不一致
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24">个人主页 Url</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback>
+        <input nz-input formControlName="personalHomepageUrl" placeholder="例如 http://www.cities-skylines.cn" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24">权限</nz-form-label>
+      <nz-form-control [nzSpan]="24">
+        <label nz-checkbox formControlName="isAdmin">编辑者</label>
+      </nz-form-control>
+    </nz-form-item>
+
+
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24">
+        <button nz-button nzType="primary" [disabled]="!userInfoForm.valid">添加</button>
+        <button nz-button (click)="resetForm($event)" style="margin-left:16px;">重置</button>
+      </nz-form-control>
+    </nz-form-item>
+
+
+
+  </form>
+
+
+</div>

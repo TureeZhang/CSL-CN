@@ -18,7 +18,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
         private WikiPassageService _wikiPassageService { get; set; }
 
-        public WikiPassagesController(WikiPassageService wikiPassageService)
+        public WikiPassagesController(WikiPassageService wikiPassageService,
+            UserStatuService userStatuService) : base(userStatuService)
         {
             _wikiPassageService = wikiPassageService;
         }
@@ -28,19 +29,21 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [HttpGet("{id}")]
         public async Task<JsonResult> GetAsync(string id)
         {
-            string routePath = id;
             WikiPassage wikiPassage = await this._wikiPassageService.GetByRoutePathAsync(id);
             WikiPassageDto wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
-            wikiPassageDto.AnchorTitles = await CollectAnchorTitlesAsync(wikiPassageDto.Content);
+            wikiPassageDto.AnchorTitles = await this._wikiPassageService.CollectAnchorTitlesAsync(wikiPassageDto.Content);
+            wikiPassageDto.MainAuthors = this._wikiPassageService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+            wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? this._wikiPassageService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
 
             return new JsonResult(wikiPassageDto);
         }
+
         // POST api/<controller>
         [HttpPost]
         [MyAuthorize]
         public async Task PostAsync([FromBody]WikiPassageDto dto)
         {
-            await this._wikiPassageService.UpdateAsync(new WikiPassage().ConvertFromDtoModel(dto));
+            await this._wikiPassageService.UpdateAsync(dto);
         }
 
         // PUT api/<controller>/5
@@ -55,33 +58,6 @@ namespace HanJie.CSLCN.WebApp.Controllers
         {
         }
 
-        [NonAction]
-        public async Task<List<WikiPassageAnchorTitleDto>> CollectAnchorTitlesAsync(string content)
-        {
-            if (string.IsNullOrEmpty(content))
-                throw new ArgumentNullException(nameof(content), "content is required.");
-
-            List<WikiPassageAnchorTitleDto> result = new List<WikiPassageAnchorTitleDto>();
-            StringReader stringReader = new StringReader(content);
-            string line = await stringReader.ReadLineAsync();
-            while (line != null)
-            {
-                if (line.StartsWith("## "))
-                    result.Add(new WikiPassageAnchorTitleDto() { Title = line.Substring(3), Href = $"#{line.Substring(3).Replace(" ", "-").Replace("&", "")}" });
-                if (line.StartsWith("### "))
-                {
-                    if (result.Last().Children == null)
-                    {
-                        result.Last().Children = new List<WikiPassageAnchorTitleDto>();
-                    }
-                    result.Last().Children.Add(new WikiPassageAnchorTitleDto() { Title = line.Substring(4), Href = $"#{line.Substring(4).Replace(" ", "-").Replace("&", "")}" });
-                }
-
-                line = await stringReader.ReadLineAsync();
-            }
-
-            return result;
-        }
 
     }
 }

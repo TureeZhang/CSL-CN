@@ -14,9 +14,8 @@ export class LoginComponent implements OnInit {
   validateForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private userInfoService: UserInfoService,
-              private router : Router)
-  {
+    private userInfoService: UserInfoService,
+    private router: Router) {
 
   }
 

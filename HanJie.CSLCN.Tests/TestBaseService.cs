@@ -17,7 +17,7 @@ namespace HanJie.CSLCN.Tests
         [Fact]
         public async Task TestBaseServiceDbWrite_ShouldCreateAsync()
         {
-            var service = new WikiPassageService();
+            var service = new WikiPassageService(new UserInfoService());
 
             await service.AddAsync(BuildOneEntity());
             WikiPassage passage = service.GetById(1);
@@ -28,7 +28,7 @@ namespace HanJie.CSLCN.Tests
         [Fact]
         public async Task TestBaseServiceDbDelte_ShouldDeleteAsync()
         {
-            WikiPassageService service = new WikiPassageService();
+            WikiPassageService service = new WikiPassageService(new UserInfoService());
             await service.AddAsync(BuildOneEntity());
 
             WikiPassage passageToFind = service.GetById(1);
@@ -43,7 +43,7 @@ namespace HanJie.CSLCN.Tests
         [Fact]
         public async Task TestBaseServiceDbUpdate_ShouldUpdate()
         {
-            WikiPassageService service = new WikiPassageService();
+            WikiPassageService service = new WikiPassageService(new UserInfoService());
             await service.AddAsync(BuildOneEntity());
 
             WikiPassage passage = service.GetById(1);

@@ -1,0 +1,51 @@
+<div class="container">
+
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <h2>用户</h2>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" nzJustify="end">
+    <div nz-col nzSpan="2" style="margin-bottom:16px;">
+      <button nz-button (click)="createUser()" nzType="primary">添加用户</button>
+    </div>
+  </div>
+
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <nz-table #basicTable
+                [nzData]="datas"
+                [nzLoading]="loading">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>头像</th>
+            <th>昵称</th>
+            <th>用户名</th>
+            <th>编辑者</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of basicTable.data;">
+            <td>{{item.id}}</td>
+            <td><nz-avatar nzIcon="user" nzSrc="{{item.avatarUrl}}"></nz-avatar></td>
+            <td>{{item.nickName}}</td>
+            <td>{{item.userName}}</td>
+            <td>
+              <span *ngIf="item.isAdmin==true">是</span>
+              <span *ngIf="item.isAdmin===false">否</span>
+            </td>
+            <td>
+              <a>Action 一 {{item.id}}</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a>Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+</div>

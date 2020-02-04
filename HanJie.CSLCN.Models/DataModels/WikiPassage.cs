@@ -15,7 +15,9 @@ namespace HanJie.CSLCN.Models.DataModels
         public string Content { get; set; }
 
         [Required]
-        public string Author { get; set; }
+        public string MainAuthors { get; set; }
+
+        public string CoAuthors { get; set; }
 
         [Required]
         public string RoutePath { get; set; }

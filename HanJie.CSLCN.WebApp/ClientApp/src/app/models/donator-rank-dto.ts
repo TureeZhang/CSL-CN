@@ -5,4 +5,6 @@ export class DonatorRankDto {
   personalTitle: string;
   descriptionWord: string;
   avatarUrl: string;
+  personalHomepageUrl: string;
+  lastModifyDate: string;
 }

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgZorroAntdModule, NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,18 +18,27 @@ import { LoginComponent } from './components/login/login.component';
 import { DonatorRankComponent } from './components/donator-rank/donator-rank.component';
 import { UploaderComponent } from './components/uploader/uploader.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { AdminHomepageComponent } from './components/admin-components/admin-homepage/admin-homepage.component';
+import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
+import { AdminCreateUserInfoComponent } from './components/admin-components/admin-create-userinfo/admin-create-userinfo.component';
+
 
 registerLocaleData(zh);
 
 @NgModule({
   declarations: [
+    //主站组件
     AppComponent,
     HomepageComponent,
     WikiPassageComponent,
     RegisterComponent,
     LoginComponent,
     DonatorRankComponent,
-    UploaderComponent
+    UploaderComponent,
+    //管理界面组件
+    AdminHomepageComponent,
+    AdminUserInfoesComponent,
+    AdminCreateUserInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -49,10 +58,14 @@ registerLocaleData(zh);
     NzUploadModule,
     ClipboardModule,
     NzMessageModule,
-    NzAlertModule
+    NzAlertModule,
+    NzCardModule,
+    NzListModule,
+    NzCheckboxModule,
+    NzSkeletonModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],
-  entryComponents: [UploaderComponent]
+  entryComponents: [UploaderComponent, AdminCreateUserInfoComponent]
 })
 export class AppModule { }

@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MenuDto } from '../models/menu-dto';
 import { CSLHttpHelper } from '../commons/http-helper';
-import { retry } from 'rxjs/operators';
-import { resetCompiledComponents } from '@angular/core/src/render3/jit/module';
 import { UserInfoDto } from '../models/user-info-dto';
 
 @Injectable({ providedIn: "root" })
 export class UserInfoService {
 
-  private userServiceUrl: string = "/api/login";
+  private loginApiUrl: string = "/api/login";
+  private adminUserInfoApiUrl: string = "/api/admin/adminuserinfo";
 
   public static currentUser: UserInfoDto;
 
@@ -17,11 +16,19 @@ export class UserInfoService {
 
   }
 
+  isUserNameDuplicated(userName: string): Observable<boolean> {
+    return this.httpHelper.get<boolean>(`${this.adminUserInfoApiUrl}/isduplicated?username=${userName}`);
+  }
+
   login(userInfo: UserInfoDto = null): Observable<UserInfoDto> {
-    return this.httpHelper.post<UserInfoDto, UserInfoDto>(this.userServiceUrl, userInfo);
+    return this.httpHelper.post<UserInfoDto, UserInfoDto>(this.loginApiUrl, userInfo);
   }
 
   logout(userId: number): Observable<object> {
-    return this.httpHelper.delete(this.userServiceUrl, userId);
+    return this.httpHelper.delete(this.loginApiUrl, userId);
+  }
+
+  create(data: UserInfoDto): Observable<UserInfoDto> {
+    return this.httpHelper.post<UserInfoDto, UserInfoDto>(this.adminUserInfoApiUrl, data);
   }
 }

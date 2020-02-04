@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -30,11 +31,19 @@ namespace HanJie.CSLCN.WebApp.Attributes
                 return;
             }
 
-            if (!UserStatuService.LoginedUsers[userStatusCookieGuid].IsAdmin)
+            UserInfoDto userInfoDto = UserStatuService.LoginedUsers[userStatusCookieGuid];
+            if (!userInfoDto.IsAdmin)
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
-        }
+
+            //请求的是后台管理界面，/api/admin/ 统一前缀，严格限制仅创建网站的用户允许调用
+            if (context.HttpContext.Request.Path.Value.StartsWith("/api/admin/") && userInfoDto.Id != 1)
+            {
+                context.Result = new UnauthorizedResult();
+                return;
+            }
+         }
     }
 }

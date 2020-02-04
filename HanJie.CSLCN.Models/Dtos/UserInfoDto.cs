@@ -46,5 +46,10 @@ namespace HanJie.CSLCN.Models.Dtos
         /// 用户头像
         /// </summary>
         public string AvatarUrl { get; set; }
+
+        /// <summary>
+        /// 用户个人主页地址
+        /// </summary>
+        public string PersonalHomepageUrl { get; set; }
     }
 }

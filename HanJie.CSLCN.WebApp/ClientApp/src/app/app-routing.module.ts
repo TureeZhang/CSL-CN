@@ -6,15 +6,21 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { DonatorRankComponent } from './components/donator-rank/donator-rank.component';
 import { UploaderComponent } from './components/uploader/uploader.component';
+import { AdminHomepageComponent } from './components/admin-components/admin-homepage/admin-homepage.component';
+import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
 
 const routes: Routes = [
+  //主站路由
   { path: "", redirectTo: "/homepage", pathMatch: "full" },
   { path: "homepage", component: HomepageComponent },
   { path: "wiki-passage/:id", component: WikiPassageComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
   { path: "donator-rank", component: DonatorRankComponent },
-  { path: "uploader", component: UploaderComponent }
+  { path: "uploader", component: UploaderComponent },
+  //管理界面路由
+  { path: "admin", component: AdminHomepageComponent },
+  { path: "admin/userinfoes", component: AdminUserInfoesComponent }
 ];
 
 @NgModule({
