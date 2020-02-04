@@ -2,73 +2,77 @@
   <div nz-row nzType="flex">
     <!--左侧主要文档内容-->
     <div nz-col nzLg="20" nzXs="24">
-      <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzParagraph]="{rows:16}">
-        <h2 style="color:black;opacity:0.85;margin:16px;">
-          {{wikiPassage?.title}}
-          <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="primary" (click)="edit()" style="margin-left:16px;"><i nz-icon type="edit"></i>编 辑</button>
-          <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" (click)="update()" style="margin-left:16px;"><i nz-icon type="save"></i>保 存</button>
-          <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon type="upload"></i>上传图片</button>
-          <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon type="save"></i>表格编辑器</a>
-        </h2>
-        <span style="margin-left:16px;">
-          最后编辑：{{wikiPassage?.lastModifyDate}}
-        </span>
+      <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzParagraph]="{rows:16}"></nz-skeleton>
+    </div>
+  </div>
 
-        <div ng-zow nzType="flex">
-          <div ng-col nzSpan="24" style="margin:16px;">
-            <ul style="text-decoration:none;">
-              <li>
-                <b>主要作者/译者：</b>
-                <ng-container *ngFor="let item of wikiPassage?.mainAuthors;let i=index;">
+  <div nz-row nzType="flex" *ngIf="loading==false">
+    <div nz-col nzLg="20" nzXs="24">
+      <h2 style="color:black;opacity:0.85;margin:16px;">
+        {{wikiPassage?.title}}
+        <button *ngIf="pageStatus==0 && isAdmin" nz-button nzType="primary" (click)="edit()" style="margin-left:16px;"><i nz-icon type="edit"></i>编 辑</button>
+        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" (click)="update()" style="margin-left:16px;"><i nz-icon type="save"></i>保 存</button>
+        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon type="upload"></i>上传图片</button>
+        <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon type="save"></i>表格编辑器</a>
+      </h2>
+      <span style="margin-left:16px;">
+        最后编辑：{{wikiPassage?.lastModifyDate}}
+      </span>
+
+      <div nz-row nzType="flex">
+        <div nz-col nzSpan="24" style="margin:16px;">
+          <ul style="text-decoration:none;">
+            <li>
+              <b>主要作者/译者：</b>
+              <ng-container *ngFor="let item of wikiPassage?.mainAuthors;let i=index;">
+                <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}" href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
+                <span *ngIf="item.personalHomepageUrl==null">{{item.nickName}}</span>
+                <nz-avatar nzSrc="{{item.avatarUrl}}"
+                           [ngStyle]="{ 'background-color': color }"
+                           style="vertical-align: middle;"></nz-avatar>
+                <span *ngIf="i+1<wikiPassage.mainAuthors.length" style="margin-left:8px;margin-right:8px;">|</span>
+
+              </ng-container>
+            </li>
+            <li>
+              <b>合作编辑者/译者：</b>
+              <span>
+                <ng-container *ngFor="let item of wikiPassage?.coAuthors;let i =index;">
                   <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}" href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
                   <span *ngIf="item.personalHomepageUrl==null">{{item.nickName}}</span>
+                  <span *ngIf="i+1<wikiPassage.coAuthors.length">, </span>
+                  <span *ngIf="i+1==wikiPassage.coAuthors.length" style="margin-left:8px;margin-right:8px;">|</span>
+                </ng-container>
+                <ng-container *ngFor="let item of wikiPassage?.coAuthors">
                   <nz-avatar nzSrc="{{item.avatarUrl}}"
                              [ngStyle]="{ 'background-color': color }"
                              style="vertical-align: middle;"></nz-avatar>
-                  <span *ngIf="i+1<wikiPassage.mainAuthors.length" style="margin-left:8px;margin-right:8px;">|</span>
-
                 </ng-container>
-              </li>
-              <li>
-                <b>合作编辑者/译者：</b>
-                <span>
-                  <ng-container *ngFor="let item of wikiPassage?.coAuthors;let i =index;">
-                    <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}" href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
-                    <span *ngIf="item.personalHomepageUrl==null">{{item.nickName}}</span>
-                    <span *ngIf="i+1<wikiPassage.coAuthors.length">, </span>
-                    <span *ngIf="i+1==wikiPassage.coAuthors.length" style="margin-left:8px;margin-right:8px;">|</span>
-                  </ng-container>
-                  <ng-container *ngFor="let item of wikiPassage?.coAuthors">
-                    <nz-avatar nzSrc="{{item.avatarUrl}}"
-                               [ngStyle]="{ 'background-color': color }"
-                               style="vertical-align: middle;"></nz-avatar>
-                  </ng-container>
-                  <ng-container *ngIf="wikiPassage?.coAuthors==null">无</ng-container>
-                </span>
-              </li>
-            </ul>
+                <ng-container *ngIf="wikiPassage?.coAuthors==null">无</ng-container>
+              </span>
+            </li>
+          </ul>
 
-
-          </div>
-        </div>
-
-        <div style="margin:16px;margin-top:24px;margin-bottom:40px;">
-
-          <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
-
-          <md-editor *ngIf="pageStatus==1"
-                     name="Content"
-                     [upload]="doUpload"
-                     [preRender]="preRenderFunc"
-                     [(ngModel)]="wikiPassage.content"
-                     [height]="'670px'"
-                     [mode]="'editor'"
-                     required
-                     maxlength="6000">
-          </md-editor>
 
         </div>
-      </nz-skeleton>
+      </div>
+
+      <div style="margin:16px;margin-top:24px;margin-bottom:40px;">
+
+        <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
+
+        <md-editor *ngIf="pageStatus==1"
+                   name="Content"
+                   [upload]="doUpload"
+                   [preRender]="preRenderFunc"
+                   [(ngModel)]="wikiPassage.content"
+                   [height]="'670px'"
+                   [mode]="'editor'"
+                   required
+                   maxlength="6000">
+        </md-editor>
+
+      </div>
     </div>
     <!--右侧目录-->
 

@@ -32,7 +32,7 @@ export class AdminCreateUserInfoComponent implements OnInit {
       password: ['', [Validators.required]],
       confirm: ['', [this.confirmPassword]],
       personalHomepageUrl: ['http://www.cities-skylines.cn'],
-      isAdmin: [false],
+      isAdmin: [false]
     });
   }
 

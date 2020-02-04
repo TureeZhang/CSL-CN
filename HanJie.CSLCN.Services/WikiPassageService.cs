@@ -88,7 +88,9 @@ namespace HanJie.CSLCN.Services
         {
             WikiPassage entity = new WikiPassage().ConvertFromDtoModel(data);
             entity.MainAuthors = string.Join(",", data.MainAuthors.Select(item => item.Id).ToArray());
-            entity.CoAuthors = string.Join(",", data.CoAuthors.Select(item => item.Id).ToArray());
+
+            if (data.CoAuthors != null)
+                entity.CoAuthors = string.Join(",", data.CoAuthors?.Select(item => item.Id).ToArray());
 
             await base.UpdateAsync(entity);
         }

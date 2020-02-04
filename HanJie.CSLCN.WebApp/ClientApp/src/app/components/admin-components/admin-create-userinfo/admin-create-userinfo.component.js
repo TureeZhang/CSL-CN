@@ -54,7 +54,7 @@ var AdminCreateUserInfoComponent = /** @class */ (function () {
             password: ['', [forms_1.Validators.required]],
             confirm: ['', [this.confirmPassword]],
             personalHomepageUrl: ['http://www.cities-skylines.cn'],
-            isAdmin: [false],
+            isAdmin: [false]
         });
     }
     AdminCreateUserInfoComponent.prototype.ngOnInit = function () {
