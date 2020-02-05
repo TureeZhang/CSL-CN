@@ -25,7 +25,7 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public List<UserInfoDto> Get()
+        public List<UserInfoDto> List()
         {
             return this._userInfoService.ListDtoes();
         }

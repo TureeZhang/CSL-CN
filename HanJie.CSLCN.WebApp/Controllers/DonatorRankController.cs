@@ -29,7 +29,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public async Task<IActionResult> GetAsync()
         {
             List<DonatorRankDto> donatorAllRanks = await this._donatorRankService.GetDonatorAllRanksOrderbyTotalCountAsync();
-            donatorAllRanks = this._userInfoService.BindDonatorUserInfo(donatorAllRanks);
+            donatorAllRanks = this._userInfoService.BindDonatorUserInfo(donatorAllRanks.ToArray()).ToList();
 
             return new JsonResult(donatorAllRanks);
         }
@@ -39,7 +39,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public async Task<IActionResult> GetMonthly()
         {
             List<DonatorRankDto> donatorMonthlyRanks = await this._donatorRankService.GetDonatorMontlyRanksOrderbyTotalCountAsync();
-            donatorMonthlyRanks = this._userInfoService.BindDonatorUserInfo(donatorMonthlyRanks);
+            donatorMonthlyRanks = this._userInfoService.BindDonatorUserInfo(donatorMonthlyRanks.ToArray()).ToList();
 
             return Json(donatorMonthlyRanks);
         }

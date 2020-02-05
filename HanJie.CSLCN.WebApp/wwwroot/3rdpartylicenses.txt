@@ -206,6 +206,8 @@ ng-zorro-antd/form
 
 ng-zorro-antd/input
 
+ng-zorro-antd/input-number
+
 ng-zorro-antd/layout
 
 ng-zorro-antd/menu
@@ -233,6 +235,8 @@ ng-zorro-antd/skeleton
 ng-zorro-antd/spin
 
 ng-zorro-antd/table
+
+ng-zorro-antd/tabs
 
 ng-zorro-antd/tag
 

@@ -1,1 +1,70 @@
-﻿
+<div class="container">
+
+  <form nz-form [formGroup]="donatorForm"
+        (ngSubmit)="submitForm(donatorForm.value)"
+        [nzLayout]="'vertical'">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>用户</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请选择用户">
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="选择用户" formControlName="userId">
+          <nz-option nzCustomContent nzLabel="{{item.nickName}}" nzValue="{{item.id}}" *ngFor="let item of userInfoes">
+            <nz-avatar nzSize="small" nzSrc="{{item.avatarUrl}}"></nz-avatar><span style="margin-left:8px;">{{item.nickName}}</span>
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>渠道</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请选择受赠渠道">
+        <nz-select nzAllowClear nzPlaceHolder="选择捐赠渠道" formControlName="paymentCompany">
+          <nz-option nzLabel="支付宝" nzValue="Alipay">支付宝</nz-option>
+          <nz-option nzLabel="微信支付" nzValue="WeChat">微信支付</nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>金额（单位：元）</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入 ≥ 0.1 元的金额。">
+        <nz-input-number formControlName="donateTotalCount"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>捐赠人姓名</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入捐赠人姓名">
+        <input nz-input formControlName="paymentUserNameSecretly" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>账户名（手机/邮箱）</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入捐赠人账户">
+        <input nz-input formControlName="paymentAccountSecretly" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>订单号</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入转账订单号">
+        <input nz-input formControlName="orderId" />
+      </nz-form-control>
+    </nz-form-item>
+
+
+
+
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24">
+        <button nz-button nzType="primary" [disabled]="!donatorForm.valid">添加</button>
+        <button nz-button (click)="resetForm($event)" style="margin-left:16px;">重置</button>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+
+
+</div>

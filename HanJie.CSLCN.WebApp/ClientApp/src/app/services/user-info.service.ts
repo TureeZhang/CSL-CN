@@ -16,6 +16,10 @@ export class UserInfoService {
 
   }
 
+  getUserInfoes(): Observable<UserInfoDto[]> {
+    return this.httpHelper.get<UserInfoDto[]>(this.adminUserInfoApiUrl);
+  }
+
   isUserNameDuplicated(userName: string): Observable<boolean> {
     return this.httpHelper.get<boolean>(`${this.adminUserInfoApiUrl}/isduplicated?username=${userName}`);
   }

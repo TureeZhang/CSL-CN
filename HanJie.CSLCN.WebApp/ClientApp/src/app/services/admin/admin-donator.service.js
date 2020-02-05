@@ -8,8 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var AdminDonatorService = /** @class */ (function () {
-    function AdminDonatorService() {
+    function AdminDonatorService(http, drawerService) {
+        this.http = http;
+        this.drawerService = drawerService;
+        this.adminDonatorsUrl = '/api/admin/admindonators';
     }
+    AdminDonatorService.prototype.getDonators = function () {
+        return this.http.get(this.adminDonatorsUrl);
+    };
+    AdminDonatorService.prototype.create = function (data) {
+        return this.http.post(this.adminDonatorsUrl, data);
+    };
     AdminDonatorService = __decorate([
         core_1.Injectable({ providedIn: 'root' })
     ], AdminDonatorService);

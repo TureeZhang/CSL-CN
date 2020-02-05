@@ -53,6 +53,8 @@ var AdminCreateUserInfoComponent = /** @class */ (function () {
             userName: ['', [forms_1.Validators.required], [this.userNameAsyncValidator]],
             password: ['', [forms_1.Validators.required]],
             confirm: ['', [this.confirmPassword]],
+            personalTitle: [''],
+            descriptionWord: [''],
             personalHomepageUrl: ['http://www.cities-skylines.cn'],
             isAdmin: [false]
         });
@@ -62,18 +64,6 @@ var AdminCreateUserInfoComponent = /** @class */ (function () {
     AdminCreateUserInfoComponent.prototype.validateConfirmPassword = function () {
         var _this = this;
         setTimeout(function () { _this.userInfoForm.controls["confirm"].updateValueAndValidity(); });
-    };
-    AdminCreateUserInfoComponent.prototype.submitForm = function (data) {
-        var _this = this;
-        for (var item in this.userInfoForm.controls) {
-            this.userInfoForm.controls[item].markAsDirty(); //标记为已触碰并修改
-            this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
-        }
-        console.log(data);
-        this.userInfoService.create(data).subscribe(function (response) {
-            console.log(response);
-            _this.drawerRef.close(response);
-        });
     };
     AdminCreateUserInfoComponent.prototype.openUploader = function () {
         var _this = this;
@@ -99,6 +89,18 @@ var AdminCreateUserInfoComponent = /** @class */ (function () {
                 console.log(data.toString());
                 _this.userAvartarUrl = data;
             }
+        });
+    };
+    AdminCreateUserInfoComponent.prototype.submitForm = function (data) {
+        var _this = this;
+        for (var item in this.userInfoForm.controls) {
+            this.userInfoForm.controls[item].markAsDirty(); //标记为已触碰并修改
+            this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
+        }
+        console.log(data);
+        this.userInfoService.create(data).subscribe(function (response) {
+            console.log(response);
+            _this.drawerRef.close(response);
         });
     };
     AdminCreateUserInfoComponent.prototype.resetForm = function (e) {

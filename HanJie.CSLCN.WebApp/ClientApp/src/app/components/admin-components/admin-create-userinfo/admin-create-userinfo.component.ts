@@ -31,6 +31,8 @@ export class AdminCreateUserInfoComponent implements OnInit {
       userName: ['', [Validators.required], [this.userNameAsyncValidator]],
       password: ['', [Validators.required]],
       confirm: ['', [this.confirmPassword]],
+      personalTitle: [''],
+      descriptionWord: [''],
       personalHomepageUrl: ['http://www.cities-skylines.cn'],
       isAdmin: [false]
     });
@@ -73,18 +75,6 @@ export class AdminCreateUserInfoComponent implements OnInit {
     });
   };
 
-  submitForm(data: UserInfoDto): void {
-    for (const item in this.userInfoForm.controls) {
-      this.userInfoForm.controls[item].markAsDirty();            //标记为已触碰并修改
-      this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
-    }
-    console.log(data);
-    this.userInfoService.create(data).subscribe(response => {
-      console.log(response);
-      this.drawerRef.close(response);
-    });
-  }
-
   openUploader(): void {
     DrawerStatuService.createUserDrawerRef.nzOffsetX = 180;
 
@@ -115,6 +105,18 @@ export class AdminCreateUserInfoComponent implements OnInit {
 
   }
 
+
+  submitForm(data: UserInfoDto): void {
+    for (const item in this.userInfoForm.controls) {
+      this.userInfoForm.controls[item].markAsDirty();            //标记为已触碰并修改
+      this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
+    }
+    console.log(data);
+    this.userInfoService.create(data).subscribe(response => {
+      console.log(response);
+      this.drawerRef.close(response);
+    });
+  }
   resetForm(e: MouseEvent): void {
     e.preventDefault();
     this.userInfoForm.reset();

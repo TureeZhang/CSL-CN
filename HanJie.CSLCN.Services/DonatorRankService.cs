@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using HanJie.CSLCN.Common;
 
 namespace HanJie.CSLCN.Services
 {
@@ -70,5 +71,22 @@ namespace HanJie.CSLCN.Services
 
             return results;
         }
+
+        public virtual Task<DonatorRank> CreateAsync(DonatorRankDto data)
+        {
+            Ensure.NotNull(data, nameof(data));
+            Ensure.NotNull(data.UserId, nameof(data.UserId));
+            Ensure.MoreThan(data.DonateTotalCount, 0, nameof(data.DonateTotalCount));
+            Ensure.NotNull(data.PaymentCompany, nameof(data.PaymentCompany));
+            Ensure.NotNull(data.PaymentUserNameSecretly, nameof(data.PaymentUserNameSecretly));
+            Ensure.NotNull(data.PaymentAccountSecretly, nameof(data.PaymentAccountSecretly));
+            Ensure.NotNull(data.OrderId, nameof(data.OrderId));
+
+            data.Id = 0;    //新增数据，ID 自增，需确保为 0 ，由数据库决定 ID
+            DonatorRank entity = new DonatorRank().ConvertFromDtoModel(data);
+            return base.AddAsync(entity);
+        }
+
     }
+
 }

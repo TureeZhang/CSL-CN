@@ -37,7 +37,6 @@ var AdminUserInfoesComponent = /** @class */ (function () {
             nzContent: admin_create_userinfo_component_1.AdminCreateUserInfoComponent,
             nzPlacement: 'right',
             nzWidth: 320,
-            nzMaskClosable: false,
             nzContentParams: {},
         });
         drawerRef.afterOpen.subscribe(function () {
@@ -57,8 +56,10 @@ var AdminUserInfoesComponent = /** @class */ (function () {
             //}];
             //// 删除数据
             //this.dataSet = this.dataSet.filter(d => d.key !== i);
-            _this.datas = __spreadArrays(_this.datas, [data]);
-            _this.globalService.successTip("\u65B0\u589E\u7528\u6237\u6210\u529F\uFF1A" + data.nickName + "(" + data.userName + ")");
+            if (data != null) {
+                _this.datas = __spreadArrays(_this.datas, [data]);
+                _this.globalService.successTip("\u65B0\u589E\u7528\u6237\u6210\u529F\uFF1A" + data.nickName + "(" + data.userName + ")");
+            }
         });
         drawer_statu_service_1.DrawerStatuService.createUserDrawerRef = drawerRef;
     };

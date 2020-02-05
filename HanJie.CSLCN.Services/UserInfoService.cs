@@ -48,6 +48,7 @@ namespace HanJie.CSLCN.Services
             foreach (UserInfo item in datas)
             {
                 UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
+                dto.Password = null;
                 dtos.Add(dto);
             }
 
@@ -133,7 +134,7 @@ namespace HanJie.CSLCN.Services
             return true;
         }
 
-        public List<DonatorRankDto> BindDonatorUserInfo(List<DonatorRankDto> dtos)
+        public IEnumerable<DonatorRankDto> BindDonatorUserInfo(params DonatorRankDto[] dtos)
         {
             foreach (DonatorRankDto item in dtos)
             {

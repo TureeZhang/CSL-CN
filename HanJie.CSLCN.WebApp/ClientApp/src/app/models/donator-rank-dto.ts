@@ -7,4 +7,5 @@ export class DonatorRankDto {
   avatarUrl: string;
   personalHomepageUrl: string;
   lastModifyDate: string;
+
 }

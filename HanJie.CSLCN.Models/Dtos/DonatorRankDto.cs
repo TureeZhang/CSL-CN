@@ -14,6 +14,27 @@ namespace HanJie.CSLCN.Models.Dtos
         public string DescriptionWord { get; set; }
         public string AvatarUrl { get; set; }
         public string PersonalHomepageUrl { get; set; }
+        /// <summary>
+        /// 捐赠渠道
+        /// Alipay
+        /// WeChat
+        /// </summary>
+        public string PaymentCompany { get; set; }
+
+        /// <summary>
+        /// 加密的支付宝用户昵称
+        /// </summary>
+        public string PaymentUserNameSecretly { get; set; }
+
+        /// <summary>
+        /// 加密的支付宝账号
+        /// </summary
+        public string PaymentAccountSecretly { get; set; }
+
+        /// <summary>
+        /// 交易单号
+        /// </summary>
+        public string OrderId { get; set; }
 
         public override DonatorRankDto ConvertFromDataModel(DonatorRank dataModel)
         {
@@ -22,6 +43,10 @@ namespace HanJie.CSLCN.Models.Dtos
             result.Id = dataModel.Id;
             result.LastModifyDate = dataModel.LastModifyDate.ToString();
             result.UserId = dataModel.UserId;
+            result.PaymentCompany = dataModel.PaymentCompany.ToString();
+            result.PaymentUserNameSecretly = dataModel.PaymentUserNameSecretly;
+            result.PaymentAccountSecretly = dataModel.PaymentAccountSecretly;
+            result.OrderId = dataModel.OrderId;
 
             return result;
         }
