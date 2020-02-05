@@ -48,6 +48,7 @@ namespace HanJie.CSLCN.Services
             foreach (UserInfo item in datas)
             {
                 UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
+                dto.Password = null;
                 dtos.Add(dto);
             }
 
@@ -131,6 +132,21 @@ namespace HanJie.CSLCN.Services
                 return false;
 
             return true;
+        }
+
+        public IEnumerable<DonatorRankDto> BindDonatorUserInfo(params DonatorRankDto[] dtos)
+        {
+            foreach (DonatorRankDto item in dtos)
+            {
+                UserInfo user = this.GetById(item.UserId);
+                item.UserNickName = user.NickName;
+                item.AvatarUrl = user.AvatarUrl;
+                item.PersonalHomepageUrl = user.PersonalHomepageUrl;
+                item.PersonalTitle = user.PersonalTitle ?? "-";
+                item.DescriptionWord = user.DescriptionWord ?? "这个刁民太懒了，什么都没写。";
+            }
+
+            return dtos;
         }
 
         /// <summary>

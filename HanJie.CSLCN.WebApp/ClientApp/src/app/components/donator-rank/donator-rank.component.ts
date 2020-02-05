@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DonatorRankService } from '../../services/donator-rank.service';
 import { DonatorRankDto } from '../../models/donator-rank-dto';
 import { UserInfoService } from '../../services/user-info.service';
-import { UploadFile } from 'ng-zorro-antd';
+import { UploadFile, NzTabComponent } from 'ng-zorro-antd';
 import { GlobalService } from '../../services/global.service';
 
 @Component({
@@ -14,8 +14,10 @@ import { GlobalService } from '../../services/global.service';
 
 export class DonatorRankComponent implements OnInit {
 
-  public donatorRanks: DonatorRankDto[];
-  public loading: boolean = true;
+  public allRanks: DonatorRankDto[];
+  public monthlyRanks: DonatorRankDto[];
+  public monthlyRanksLoading: boolean = true;
+  public allRanksLoading: boolean = true;
   public isAdmin: boolean = false;
   public file: UploadFile;
 
@@ -25,21 +27,34 @@ export class DonatorRankComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getRanks();
+    this.getMonthlyRank();
     if (UserInfoService.currentUser) {
       this.isAdmin = UserInfoService.currentUser.isAdmin;
     }
   }
 
-  getRanks(): void {
-    this.donatorRankService.getRanks().subscribe(datas => {
-      this.donatorRanks = datas;
-      this.loading = false;
+  getAllRanks(): void {
+    this.donatorRankService.getAllRanks().subscribe(datas => {
+      this.allRanks = datas;
+      this.allRanksLoading = false;
+    });
+  }
+
+  getMonthlyRank(): void {
+    this.donatorRankService.getMonthlyRanks().subscribe(datas => {
+      this.monthlyRanks = datas;
+      this.monthlyRanksLoading = false;
     });
   }
 
   setCustomerHeader(file: UploadFile): void {
     //file.type = ""
+  }
+
+  onTabsetChange(event: { index: number, tab: NzTabComponent }): void {
+    if (event.index == 1 && this.allRanks == null) {
+      this.getAllRanks();
+    }
   }
 
 }

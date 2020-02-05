@@ -58,6 +58,20 @@
     </nz-form-item>
 
     <nz-form-item>
+      <nz-form-label [nzSpan]="24">头衔（爱称）</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback>
+        <input nz-input formControlName="personalTitle" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24">个性签名</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback>
+        <input nz-input formControlName="descriptionWord" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
       <nz-form-label [nzSpan]="24">个人主页 Url</nz-form-label>
       <nz-form-control [nzSpan]="24" nzHasFeedback>
         <input nz-input formControlName="personalHomepageUrl" placeholder="例如 http://www.cities-skylines.cn" />

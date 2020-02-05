@@ -21,16 +21,6 @@ namespace HanJie.CSLCN.Models.DataModels
         public decimal DonateTotalCount { get; set; } = 0.00m;
 
         /// <summary>
-        /// 个人自定义头衔
-        /// </summary>
-        public string PersonalTitle { get; set; }
-
-        /// <summary>
-        /// 描述语句
-        /// </summary>
-        public string DescriptionWord { get; set; }
-
-        /// <summary>
         /// 捐赠渠道
         /// </summary>
         [Required]

@@ -37,7 +37,6 @@ export class AdminUserInfoesComponent implements OnInit {
       nzContent: AdminCreateUserInfoComponent,
       nzPlacement: 'right',
       nzWidth: 320,
-      nzMaskClosable: false,
       nzContentParams: {
 
       },
@@ -63,9 +62,10 @@ export class AdminUserInfoesComponent implements OnInit {
       //}];
       //// 删除数据
       //this.dataSet = this.dataSet.filter(d => d.key !== i);
-
-      this.datas = [...this.datas, data];
-      this.globalService.successTip(`新增用户成功：${data.nickName}(${data.userName})`)
+      if (data != null) {
+        this.datas = [...this.datas, data];
+        this.globalService.successTip(`新增用户成功：${data.nickName}(${data.userName})`)
+      }
     });
 
     DrawerStatuService.createUserDrawerRef = drawerRef;

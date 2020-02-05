@@ -28,5 +28,37 @@ namespace HanJie.CSLCN.Common
             if (id <= 0)
                 throw new ArgumentOutOfRangeException(parameterName, id, "作为数据库数据的主键 Id 应当 ≥ 1");
         }
+
+        public static void MoreThan(decimal value, decimal minValueNotInclued, string parameterName)
+        {
+            NotNull(parameterName, nameof(parameterName));
+
+            if (!(value > minValueNotInclued))
+                throw new ArgumentOutOfRangeException($"参数 {parameterName} 的值应当 > {minValueNotInclued}。");
+        }
+
+        public static void MoreThan(int value, int minValueNotInclued, string parameterName)
+        {
+            NotNull(parameterName, nameof(parameterName));
+
+            if (!(value > minValueNotInclued))
+                throw new ArgumentOutOfRangeException($"参数 {parameterName} 的值应当 > {minValueNotInclued}。");
+        }
+
+        public static void EqualOrMoreThan(int value, int minValueInclude, string parameterName)
+        {
+            NotNull(parameterName, nameof(parameterName));
+
+            if (!(value >= minValueInclude))
+                throw new ArgumentOutOfRangeException($"参数 {parameterName} 的值应当 ≥ {minValueInclude}");
+        }
+
+        public static void EqualOrMoreThan(decimal value, decimal minValueInclude, string parameterName)
+        {
+            NotNull(parameterName, nameof(parameterName));
+
+            if (!(value >= minValueInclude))
+                throw new ArgumentOutOfRangeException($"参数 {parameterName} 的值应当 ≥ {minValueInclude}");
+        }
     }
 }

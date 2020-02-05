@@ -21,6 +21,8 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AdminHomepageComponent } from './components/admin-components/admin-homepage/admin-homepage.component';
 import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
 import { AdminCreateUserInfoComponent } from './components/admin-components/admin-create-userinfo/admin-create-userinfo.component';
+import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
+import { AdminCreateDonatorComponent } from './components/admin-components/admin-donators/admin-create-donator.component.ts/admin-create-donator.component';
 
 
 registerLocaleData(zh);
@@ -38,7 +40,9 @@ registerLocaleData(zh);
     //管理界面组件
     AdminHomepageComponent,
     AdminUserInfoesComponent,
-    AdminCreateUserInfoComponent
+    AdminCreateUserInfoComponent,
+    AdminDonatorsComponent,
+    AdminCreateDonatorComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +70,10 @@ registerLocaleData(zh);
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent],
-  entryComponents: [UploaderComponent, AdminCreateUserInfoComponent]
+  entryComponents: [
+    UploaderComponent,
+    AdminCreateUserInfoComponent,
+    AdminCreateDonatorComponent
+  ]
 })
 export class AppModule { }

@@ -10,14 +10,18 @@ var core_1 = require("@angular/core");
 var DonatorRankService = /** @class */ (function () {
     function DonatorRankService(httpHelper) {
         this.httpHelper = httpHelper;
-        this.donatorRankUrl = "/api/donatorrank";
+        this.donatorAllRankUrl = "/api/donatorrank";
+        this.donatorMonthlyRankUrl = "/api/donatorrank-monthly";
     }
     DonatorRankService.prototype.ngOnInit = function () {
     };
-    DonatorRankService.prototype.getRanks = function () {
-        return this.httpHelper.get(this.donatorRankUrl);
+    DonatorRankService.prototype.getAllRanks = function () {
+        return this.httpHelper.get(this.donatorAllRankUrl);
     };
     ;
+    DonatorRankService.prototype.getMonthlyRanks = function () {
+        return this.httpHelper.get(this.donatorMonthlyRankUrl);
+    };
     DonatorRankService = __decorate([
         core_1.Injectable({ providedIn: "root" })
     ], DonatorRankService);

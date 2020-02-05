@@ -9,4 +9,6 @@ export class UserInfoDto {
   statusMarkGuid: string;
   avatarUrl: string;
   personalHomepageUrl: string;
+  personalTitle: string;
+  descriptionWord: string;
 }

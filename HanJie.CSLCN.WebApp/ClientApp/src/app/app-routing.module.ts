@@ -8,6 +8,7 @@ import { DonatorRankComponent } from './components/donator-rank/donator-rank.com
 import { UploaderComponent } from './components/uploader/uploader.component';
 import { AdminHomepageComponent } from './components/admin-components/admin-homepage/admin-homepage.component';
 import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
+import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
 
 const routes: Routes = [
   //主站路由
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: "uploader", component: UploaderComponent },
   //管理界面路由
   { path: "admin", component: AdminHomepageComponent },
-  { path: "admin/userinfoes", component: AdminUserInfoesComponent }
+  { path: "admin/userinfoes", component: AdminUserInfoesComponent },
+  { path: "admin/donators", component: AdminDonatorsComponent }
 ];
 
 @NgModule({

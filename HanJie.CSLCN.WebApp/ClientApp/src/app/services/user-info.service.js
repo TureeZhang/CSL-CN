@@ -13,6 +13,9 @@ var UserInfoService = /** @class */ (function () {
         this.loginApiUrl = "/api/login";
         this.adminUserInfoApiUrl = "/api/admin/adminuserinfo";
     }
+    UserInfoService.prototype.getUserInfoes = function () {
+        return this.httpHelper.get(this.adminUserInfoApiUrl);
+    };
     UserInfoService.prototype.isUserNameDuplicated = function (userName) {
         return this.httpHelper.get(this.adminUserInfoApiUrl + "/isduplicated?username=" + userName);
     };

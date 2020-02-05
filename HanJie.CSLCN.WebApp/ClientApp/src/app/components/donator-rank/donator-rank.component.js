@@ -12,24 +12,37 @@ var DonatorRankComponent = /** @class */ (function () {
     function DonatorRankComponent(donatorRankService, globalService) {
         this.donatorRankService = donatorRankService;
         this.globalService = globalService;
-        this.loading = true;
+        this.monthlyRanksLoading = true;
+        this.allRanksLoading = true;
         this.isAdmin = false;
     }
     DonatorRankComponent.prototype.ngOnInit = function () {
-        this.getRanks();
+        this.getMonthlyRank();
         if (user_info_service_1.UserInfoService.currentUser) {
             this.isAdmin = user_info_service_1.UserInfoService.currentUser.isAdmin;
         }
     };
-    DonatorRankComponent.prototype.getRanks = function () {
+    DonatorRankComponent.prototype.getAllRanks = function () {
         var _this = this;
-        this.donatorRankService.getRanks().subscribe(function (datas) {
-            _this.donatorRanks = datas;
-            _this.loading = false;
+        this.donatorRankService.getAllRanks().subscribe(function (datas) {
+            _this.allRanks = datas;
+            _this.allRanksLoading = false;
+        });
+    };
+    DonatorRankComponent.prototype.getMonthlyRank = function () {
+        var _this = this;
+        this.donatorRankService.getMonthlyRanks().subscribe(function (datas) {
+            _this.monthlyRanks = datas;
+            _this.monthlyRanksLoading = false;
         });
     };
     DonatorRankComponent.prototype.setCustomerHeader = function (file) {
         //file.type = ""
+    };
+    DonatorRankComponent.prototype.onTabsetChange = function (event) {
+        if (event.index == 1 && this.allRanks == null) {
+            this.getAllRanks();
+        }
     };
     DonatorRankComponent = __decorate([
         core_1.Component({

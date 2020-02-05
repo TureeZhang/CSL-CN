@@ -28,19 +28,20 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            List<DonatorRank> donatorRanks = await this._donatorRankService.GetDonatorRanksOrderbyTotalCountAsync();
-            List<DonatorRankDto> datas = new List<DonatorRankDto>();
-            foreach (DonatorRank item in donatorRanks)
-            {
-                DonatorRankDto dto = new DonatorRankDto().ConvertFromDataModel(item);
-                UserInfo user = this._userInfoService.GetById(item.UserId);
-                dto.UserNickName = user.NickName;
-                dto.AvatarUrl = user.AvatarUrl;
-                dto.PersonalHomepageUrl = user.PersonalHomepageUrl;
-                datas.Add(dto);
-            }
+            List<DonatorRankDto> donatorAllRanks = await this._donatorRankService.GetDonatorAllRanksOrderbyTotalCountAsync();
+            donatorAllRanks = this._userInfoService.BindDonatorUserInfo(donatorAllRanks.ToArray()).ToList();
 
-            return new JsonResult(datas);
+            return new JsonResult(donatorAllRanks);
+        }
+
+        [HttpGet]
+        [Route("/api/donatorrank-monthly")]
+        public async Task<IActionResult> GetMonthly()
+        {
+            List<DonatorRankDto> donatorMonthlyRanks = await this._donatorRankService.GetDonatorMontlyRanksOrderbyTotalCountAsync();
+            donatorMonthlyRanks = this._userInfoService.BindDonatorUserInfo(donatorMonthlyRanks.ToArray()).ToList();
+
+            return Json(donatorMonthlyRanks);
         }
 
         // POST api/<controller>
