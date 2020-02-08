@@ -13,6 +13,7 @@ import { ClipboardService, IClipboardResponse } from 'ngx-clipboard';
 import { ClipboardResponse } from '../../models/clipboard-response';
 import { DrawerStatuService } from '../../services/drawer-statu.service';
 import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
+import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'uploader',
@@ -118,7 +119,9 @@ export class UploaderComponent implements OnInit {
   }
 
   closeDrawer(fileUrl: string = null): void {
-    DrawerStatuService.createUserDrawerRef.nzOffsetX = 0;
+    if (this.usage.toString() == UploaderUsageEnum.userAvatar.toString() && DrawerStatuService.createUserDrawerRef != null) {
+      DrawerStatuService.createUserDrawerRef.nzOffsetX = 0;
+    }
     this.drawerRef.close(fileUrl);
   }
 

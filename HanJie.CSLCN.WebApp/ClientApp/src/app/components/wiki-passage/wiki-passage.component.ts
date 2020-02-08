@@ -42,11 +42,11 @@ export class WikiPassageComponent implements OnInit {
 
   public isAdmin: boolean = false;
 
-
   constructor(private route: ActivatedRoute,
     private router: Router,
     private wikiPassageService: WikiPassageService,
-    private drawerService: NzDrawerService
+    private drawerService: NzDrawerService,
+    private userInfoService: UserInfoService
   ) {
   }
 
@@ -54,10 +54,10 @@ export class WikiPassageComponent implements OnInit {
     //从路由中抓取文章路由地址
     this.getParamsMapId();
 
-    //查询是否是管理员
-    if (UserInfoService.currentUser) {
-      this.isAdmin = UserInfoService.currentUser.isAdmin;
-    }
+    //检查是否为管理员
+    this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
+      this.isAdmin = response.isAdmin;
+    });
   }
 
   /***
@@ -123,6 +123,9 @@ export class WikiPassageComponent implements OnInit {
     });
   }
 
+  createChildPage(): void {
+
+  }
 
 }
 

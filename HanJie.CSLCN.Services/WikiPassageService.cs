@@ -95,5 +95,21 @@ namespace HanJie.CSLCN.Services
             await base.UpdateAsync(entity);
         }
 
+        public virtual async Task<WikiPassage> Create(WikiPassageDto wikiPassageDto)
+        {
+            Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
+            Ensure.NotNull(wikiPassageDto.Title, nameof(wikiPassageDto.Title));
+            Ensure.NotNull(wikiPassageDto.RoutePath, nameof(wikiPassageDto.RoutePath));
+            Ensure.NotNull(wikiPassageDto.MainAuthors, nameof(wikiPassageDto.MainAuthors));
+
+            if (GetByRoutePathAsync(wikiPassageDto.RoutePath) != null)
+                throw new ArgumentException($"指定的路径名称已存在：{wikiPassageDto.RoutePath}");
+
+            wikiPassageDto.Content = "施工中🚧";
+            WikiPassage wikiPassage = await base.AddAsync(new WikiPassage().ConvertFromDtoModel(wikiPassageDto));
+
+            return wikiPassage;
+        }
+
     }
 }

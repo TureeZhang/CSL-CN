@@ -15,7 +15,7 @@ var WikiPassageService = /** @class */ (function () {
     WikiPassageService.prototype.ngOnInit = function () {
     };
     WikiPassageService.prototype.getWikiPassage = function (routePath) {
-        return this.httpHelper.get(this.wikiPassageUrl + "/" + routePath);
+        return this.httpHelper.get(this.wikiPassageUrl + "/" + encodeURIComponent(routePath));
     };
     WikiPassageService.prototype.postWikiPassage = function (dto) {
         return this.httpHelper.post(this.wikiPassageUrl, dto);

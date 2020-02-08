@@ -102,5 +102,17 @@ namespace HanJie.CSLCN.Services
             List<TDataModelType> results = this.CSLDbContext.Set<TDataModelType>().ToList();
             return results;
         }
+
+        public virtual List<TDtoType> ListDtos()
+        {
+            List<TDataModelType> datas = this.CSLDbContext.Set<TDataModelType>().ToList();
+            List<TDtoType> dtos = new List<TDtoType>();
+            foreach (TDataModelType item in datas)
+            {
+                dtos.Add(new TDtoType().ConvertFromDataModel(item));
+            }
+
+            return dtos;
+        }
     }
 }

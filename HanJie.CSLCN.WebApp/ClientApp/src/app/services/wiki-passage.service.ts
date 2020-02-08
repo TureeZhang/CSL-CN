@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { CSLHttpHelper } from '../commons/http-helper';
 import { Observable } from 'rxjs';
 import { WikiPassageDto } from '../models/wiki-passage-dto';
+import { encode } from 'punycode';
 
 @Injectable({ providedIn: "root" })
 export class WikiPassageService implements OnInit {
@@ -15,7 +16,7 @@ export class WikiPassageService implements OnInit {
   }
 
   getWikiPassage(routePath: string): Observable<WikiPassageDto> {
-    return this.httpHelper.get<WikiPassageDto>(this.wikiPassageUrl + "/" + routePath);
+    return this.httpHelper.get<WikiPassageDto>(this.wikiPassageUrl + "/" + encodeURIComponent(routePath));
   }
 
   postWikiPassage(dto: WikiPassageDto): Observable<null> {

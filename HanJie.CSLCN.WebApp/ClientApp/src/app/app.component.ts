@@ -7,6 +7,7 @@ import { UserInfoService } from './services/user-info.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { GlobalService } from './services/global.service';
+import { responsiveMap } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-root',
@@ -35,19 +36,20 @@ export class AppComponent implements OnInit, AfterContentChecked {
   ngOnInit(): void {
     this.getMenus();
 
-    this.navigationEnd.subscribe(evt => {
-      if (UserInfoService.currentUser) {
-        this.currentUser = UserInfoService.currentUser;
-        this.isUserLogined = UserInfoService.currentUser.isLoginSuccess;
-      }
-    });
-
-    if (UserInfoService.currentUser == null) {
-      this.tryRestoreLoginStatus();
+    if (this.currentUser == null) {
+      this.tryRestoreLoginUserInfo();
     }
+
+    this.navigationEnd.subscribe(evt => {
+      this.tryRestoreLoginUserInfo();
+    });
   }
 
-  ngAfterContentChecked(): void {
+  tryRestoreLoginUserInfo(): void {
+    this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
+      this.currentUser = response;
+      this.isUserLogined = this.currentUser.isLoginSuccess;
+    });
   }
 
   getMenus(): void {
@@ -61,25 +63,14 @@ export class AppComponent implements OnInit, AfterContentChecked {
     return menu.title;
   }
 
-  tryRestoreLoginStatus(): void {
-    if (this.currentUser == null) {
-      this.userInfoService.login().subscribe(user => {
-        UserInfoService.currentUser = user;
-        this.currentUser = UserInfoService.currentUser;
-        this.isUserLogined = UserInfoService.currentUser.isLoginSuccess;
-      });
+  logout(): void {
+    if (this.currentUser) {
+      this.userInfoService.logout(this.currentUser.id);
+      this.currentUser = null;
+      this.isUserLogined = false;
     }
+    this.globalService.successTip("退出登陆成功");
+    this.router.navigate(["/homepage"]);
   }
 
-  logout(): void {
-    let host = this;
-    if (this.currentUser) {
-      this.userInfoService.logout(this.currentUser.id).subscribe((res) => {
-        UserInfoService.currentUser = null;
-        this.currentUser = UserInfoService.currentUser;
-        this.isUserLogined = false;
-        host.router.navigate(["/homepage"])
-      });
-    }
-  }
 }
