@@ -23,6 +23,8 @@ import { AdminUserInfoesComponent } from './components/admin-components/admin-us
 import { AdminCreateUserInfoComponent } from './components/admin-components/admin-create-userinfo/admin-create-userinfo.component';
 import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
 import { AdminCreateDonatorComponent } from './components/admin-components/admin-donators/admin-create-donator.component.ts/admin-create-donator.component';
+import { AdminWikipassagesComponent } from './components/admin-components/admin-wikipassages/admin-wikipassages.component';
+import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
 
 
 registerLocaleData(zh);
@@ -42,7 +44,9 @@ registerLocaleData(zh);
     AdminUserInfoesComponent,
     AdminCreateUserInfoComponent,
     AdminDonatorsComponent,
-    AdminCreateDonatorComponent
+    AdminCreateDonatorComponent,
+    AdminWikipassagesComponent,
+    AdminCreateWikipassageComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,8 @@ registerLocaleData(zh);
   entryComponents: [
     UploaderComponent,
     AdminCreateUserInfoComponent,
-    AdminCreateDonatorComponent
+    AdminCreateDonatorComponent,
+    AdminCreateWikipassageComponent
   ]
 })
 export class AppModule { }

@@ -8,6 +8,7 @@ import { encode } from 'punycode';
 export class WikiPassageService implements OnInit {
 
   private wikiPassageUrl: string = "/api/wikipassages";
+  private wikiRoutePathValidateUrl: string = "/api/wikipassages/isduplicated"
 
   constructor(private httpHelper: CSLHttpHelper) { }
 
@@ -19,8 +20,16 @@ export class WikiPassageService implements OnInit {
     return this.httpHelper.get<WikiPassageDto>(this.wikiPassageUrl + "/" + encodeURIComponent(routePath));
   }
 
-  postWikiPassage(dto: WikiPassageDto): Observable<null> {
-    return this.httpHelper.post<WikiPassageDto, null>(this.wikiPassageUrl, dto);
+  putWikiPassage(dto: WikiPassageDto): Observable<WikiPassageDto> {
+    return this.httpHelper.put<WikiPassageDto, WikiPassageDto>(this.wikiPassageUrl, dto);
+  }
+
+  postWikiPassage(dto: WikiPassageDto): Observable<WikiPassageDto> {
+    return this.httpHelper.post<WikiPassageDto, WikiPassageDto>(this.wikiPassageUrl, dto);
+  }
+
+  isRoutePathDuplicated(routePath: string): Observable<boolean> {
+    return this.httpHelper.get<boolean>(`${this.wikiRoutePathValidateUrl}?routePath=${routePath}`);
   }
 
 }

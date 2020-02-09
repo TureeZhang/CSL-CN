@@ -69,6 +69,53 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
+        public virtual async Task<List<BreadCrumbDto>> CollectChildPageBreadCrumbs(WikiPassageDto wikiPassageDto)
+        {
+            List<BreadCrumbDto> results = new List<BreadCrumbDto>();
+            List<WikiPassage> childPassages = await this.CSLDbContext.WikiPassages.Where(item => item.ParentPassageId == wikiPassageDto.Id).ToListAsync();
+            foreach (WikiPassage item in childPassages)
+            {
+                BreadCrumbDto breadCrumbDto = new BreadCrumbDto { Name = item.Title, Url = item.RoutePath };
+                results.Add(breadCrumbDto);
+            }
+
+            return results;
+        }
+
+        public virtual List<BreadCrumbDto> CollectBreadCrumbs(WikiPassageDto wikiPassageDto)
+        {
+            Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
+
+            List<BreadCrumbDto> results = new List<BreadCrumbDto>();
+            List<BreadCrumbDto> parents = new List<BreadCrumbDto>();
+            while (true)
+            {
+                WikiPassage parentPassage = base.GetById(wikiPassageDto.ParentPassageId);
+                parents.Add(new BreadCrumbDto { Name = parentPassage.Title, Url = $"/wiki-passage/{parentPassage.RoutePath}" });
+
+                if (parentPassage.ParentPassageId == 0)
+                {
+                    break;
+                }
+            }
+
+            for (int i = parents.Count - 1; i >= 0; i--)
+            {
+                results.Add(parents[i]);
+            }
+
+            return results;
+        }
+
+        public virtual async Task<bool> IsRoutePathExist(string routePath)
+        {
+            Ensure.NotNull(routePath, nameof(routePath));
+
+            WikiPassage wikiPassage = await GetByRoutePathAsync(routePath);
+            bool isExist = wikiPassage != null;
+            return isExist;
+        }
+
         public List<UserInfoDto> CollectAuthorInfoes(string[] userIds)
         {
             Ensure.NotNull(userIds, nameof(userIds));
@@ -100,13 +147,14 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
             Ensure.NotNull(wikiPassageDto.Title, nameof(wikiPassageDto.Title));
             Ensure.NotNull(wikiPassageDto.RoutePath, nameof(wikiPassageDto.RoutePath));
-            Ensure.NotNull(wikiPassageDto.MainAuthors, nameof(wikiPassageDto.MainAuthors));
 
-            if (GetByRoutePathAsync(wikiPassageDto.RoutePath) != null)
+            if ((await GetByRoutePathAsync(wikiPassageDto.RoutePath)) != null)
                 throw new ArgumentException($"指定的路径名称已存在：{wikiPassageDto.RoutePath}");
 
             wikiPassageDto.Content = "施工中🚧";
-            WikiPassage wikiPassage = await base.AddAsync(new WikiPassage().ConvertFromDtoModel(wikiPassageDto));
+            WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);
+            entity.MainAuthors = wikiPassageDto.MainAuthors.FirstOrDefault()?.Id.ToString();
+            WikiPassage wikiPassage = await base.AddAsync(entity);
 
             return wikiPassage;
         }

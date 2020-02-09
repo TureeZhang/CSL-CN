@@ -45,6 +45,7 @@
     <None Remove="ClientApp\src\app\components\donator-rank\donator-rank.component.ts" />
     <None Remove="ClientApp\src\app\models\admin\admin-homepage-card.ts" />
     <None Remove="ClientApp\src\app\models\anchor-title.ts" />
+    <None Remove="ClientApp\src\app\models\bread-crumb.ts" />
     <None Remove="ClientApp\src\app\models\clipboard-response.ts" />
     <None Remove="ClientApp\src\app\models\configs-dto.ts" />
     <None Remove="ClientApp\src\app\models\donator-rank-dto.ts" />
@@ -102,6 +103,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\donator-rank\donator-rank.component.html" />
     <TypeScriptCompile Include="ClientApp\src\app\models\admin\admin-homepage-card.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\anchor-title.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\bread-crumb.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\clipboard-response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\configs-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\donator-rank-dto.ts" />

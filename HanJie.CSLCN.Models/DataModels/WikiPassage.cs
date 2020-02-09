@@ -21,5 +21,7 @@ namespace HanJie.CSLCN.Models.DataModels
 
         [Required]
         public string RoutePath { get; set; }
+
+        public int ParentPassageId { get; set; }
     }
 }

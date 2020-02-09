@@ -13,5 +13,8 @@ namespace HanJie.CSLCN.Models.Dtos
         public List<WikiPassageAnchorTitleDto> AnchorTitles { get; set; }
         public List<UserInfoDto> MainAuthors { get; set; }
         public List<UserInfoDto> CoAuthors { get; set; }
+        public int ParentPassageId { get; set; }
+        public List<BreadCrumbDto> BreadCrumbs { get; set; }
+        public List<BreadCrumbDto> ChildPageBreadCrumbs { get; set; }
     }
 }

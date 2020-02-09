@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { MenuDto } from './models/menu-dto';
 import { Observable } from 'rxjs';
@@ -8,13 +8,14 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { GlobalService } from './services/global.service';
 import { responsiveMap } from 'ng-zorro-antd';
+import { BreadCrumbDto } from './models/bread-crumb';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterContentChecked {
+export class AppComponent implements OnInit {
 
   public isCollapsed: boolean = false;
   public isReverseArrow: boolean = false;
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   public currentUser: UserInfoDto;
   public isUserLogined: boolean = false;
   public navigationEnd: Observable<NavigationEnd>;
+  public breadCrumbs: Observable<BreadCrumbDto[]>;
 
   constructor(private menuService: MenuService,
     private userInfoService: UserInfoService,
@@ -42,6 +44,13 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
     this.navigationEnd.subscribe(evt => {
       this.tryRestoreLoginUserInfo();
+      if (evt.url === "/homepage") {
+        this.globalService.setBreadCrumbs(new Array<BreadCrumbDto>());
+      }
+    });
+
+    this.globalService.onBreadCrumbReady.subscribe(breadCrumbs => {
+      this.breadCrumbs = breadCrumbs;
     });
   }
 
