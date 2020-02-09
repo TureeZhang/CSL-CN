@@ -1,12 +1,6 @@
 <div nz-row style="margin-top:24px;">
   <div nz-col nzSpan="24" style="text-align:center;">
     <h1>捐赠记录公开</h1>
-    <nz-upload nzAction="http://localhost:5000/api/donatorrank"
-               nzFileType="application/vnd.ms-excel"
-               nzWithCredentials="true"
-               [nzHeaders]="setCustomerHeader(file)">
-      <button *ngIf="isAdmin" nz-button nzType="default"><i nz-icon nzType="upload"></i><span>导入新数据</span></button>
-    </nz-upload>
   </div>
   <div nz-col nzSpan="24" style="text-align:center;color: cadetblue;margin-bottom:30px;">
     <p><nz-alert nzType="success" nzMessage="请您留意：为表感激，在捐赠后您可凭借转账交易单号加入开发者 QQ 群 676651513，开发及翻译团队将与你分享引擎的最新开发进度！"></nz-alert></p>

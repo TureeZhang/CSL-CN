@@ -22,9 +22,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpGet]
-        public string Get()
+        public IActionResult GetCurrentUser()
         {
-            throw new NotImplementedException();
+            return Json(base.CurrentUser);
         }
 
         [HttpPost]

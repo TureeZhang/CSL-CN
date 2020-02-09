@@ -8,6 +8,7 @@ using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Mvc;
 using HanJie.CSLCN.WebApp.Attributes;
+using HanJie.CSLCN.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,22 +35,40 @@ namespace HanJie.CSLCN.WebApp.Controllers
             wikiPassageDto.AnchorTitles = await this._wikiPassageService.CollectAnchorTitlesAsync(wikiPassageDto.Content);
             wikiPassageDto.MainAuthors = this._wikiPassageService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
             wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? this._wikiPassageService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
+            wikiPassageDto.BreadCrumbs = wikiPassage.ParentPassageId != 0 ? this._wikiPassageService.CollectBreadCrumbs(wikiPassageDto) : null;
+            wikiPassageDto.ChildPageBreadCrumbs = await this._wikiPassageService.CollectChildPageBreadCrumbs(wikiPassageDto);
 
             return new JsonResult(wikiPassageDto);
+        }
+
+        [HttpGet]
+        [Route("/api/wikipassages/isduplicated")]
+        public async Task<IActionResult> IsDuplicated(string routePath)
+        {
+            Ensure.NotNull(routePath, nameof(routePath));
+
+            bool result = await this._wikiPassageService.IsRoutePathExist(routePath);
+            return Json(result);
         }
 
         // POST api/<controller>
         [HttpPost]
         [MyAuthorize]
-        public async Task PostAsync([FromBody]WikiPassageDto dto)
+        public async Task<IActionResult> PostAsync([FromBody]WikiPassageDto dto)
         {
-            await this._wikiPassageService.UpdateAsync(dto);
+            dto.MainAuthors = new List<UserInfoDto> { base.CurrentUser };
+            WikiPassage wikiPassage = await this._wikiPassageService.Create(dto);
+            WikiPassageDto wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
+
+            return Json(wikiPassageDto);
         }
 
         // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        [MyAuthorize]
+        public async Task Put([FromBody]WikiPassageDto dto)
         {
+            await this._wikiPassageService.UpdateAsync(dto);
         }
 
         // DELETE api/<controller>/5

@@ -6,9 +6,12 @@ import { WikiPassageService } from 'src/app/services/wiki-passage.service';
 import { WikiPassagePageStatusEnum } from 'src/app/models/enums/wiki-passage-page-status.enum';
 import { UserInfoService } from '../../services/user-info.service';
 import { MarkedOptions, MarkedRenderer } from 'ngx-markdown';
-import { NzDrawerService } from 'ng-zorro-antd';
+import { NzDrawerService, NzDrawerRef } from 'ng-zorro-antd';
 import { UploaderComponent } from '../uploader/uploader.component';
 import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
+import { AdminCreateWikipassageComponent } from '../admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
+import { GlobalService } from '../../services/global.service';
+import { BreadCrumbDto } from '../../models/bread-crumb';
 
 @Component({
   selector: 'wiki-passage',
@@ -42,11 +45,12 @@ export class WikiPassageComponent implements OnInit {
 
   public isAdmin: boolean = false;
 
-
   constructor(private route: ActivatedRoute,
     private router: Router,
     private wikiPassageService: WikiPassageService,
-    private drawerService: NzDrawerService
+    private drawerService: NzDrawerService,
+    private userInfoService: UserInfoService,
+    private globalService: GlobalService
   ) {
   }
 
@@ -54,10 +58,11 @@ export class WikiPassageComponent implements OnInit {
     //从路由中抓取文章路由地址
     this.getParamsMapId();
 
-    //查询是否是管理员
-    if (UserInfoService.currentUser) {
-      this.isAdmin = UserInfoService.currentUser.isAdmin;
-    }
+    //检查是否为管理员
+    this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
+      this.isAdmin = response.isAdmin;
+    });
+
   }
 
   /***
@@ -83,7 +88,22 @@ export class WikiPassageComponent implements OnInit {
       host.wikiPassage = response;
       host.oldWikiPassageDtoContent = host.wikiPassage.content;
       host.loading = false;
+      this.setBreadCrumbs();
     });
+  }
+
+  /**
+   *更新面包屑导航
+   * */
+  setBreadCrumbs(): void {
+    let crumbs: Array<BreadCrumbDto> = new Array<BreadCrumbDto>();
+    if (this.wikiPassage.breadCrumbs != null) {
+      for (var i = 0; i < this.wikiPassage.breadCrumbs.length; i++) {
+        crumbs.push(this.wikiPassage.breadCrumbs[i]);
+      }
+    }
+    crumbs.push(new BreadCrumbDto(`/wiki-passage/${this.wikiPassage.routePath}`, this.wikiPassage.title));
+    this.globalService.setBreadCrumbs(crumbs);
   }
 
   private edit(): void {
@@ -92,7 +112,7 @@ export class WikiPassageComponent implements OnInit {
 
   private update(): void {
     if (this.wikiPassage.content != this.oldWikiPassageDtoContent) {
-      this.wikiPassageService.postWikiPassage(this.wikiPassage).subscribe(response => {
+      this.wikiPassageService.putWikiPassage(this.wikiPassage).subscribe(response => {
         //TODO 弹出报错提示弹窗
       });
     }
@@ -123,6 +143,26 @@ export class WikiPassageComponent implements OnInit {
     });
   }
 
+  createChildPage(): void {
+    let drawerRef: NzDrawerRef = this.drawerService.create<AdminCreateWikipassageComponent, { prefix: string, parentPassageId: number }>({
+      nzTitle: "添加子文档",
+      nzPlacement: 'right',
+      nzWidth: 320,
+      nzContent: AdminCreateWikipassageComponent,
+      nzContentParams: {
+        prefix: this.routePath + '@',
+        parentPassageId: this.wikiPassage.id
+      }
+    });
+    drawerRef.afterOpen.subscribe(response => { });
+    drawerRef.afterClose.subscribe(response => {
+      this.router.navigate([`/wiki-passage/${response.routePath}`]);
+    });
+  }
+
+  gotoChildPage(routePath: string) {
+    this.router.navigate([`/wiki-passage/${routePath}`]);
+  }
 
 }
 

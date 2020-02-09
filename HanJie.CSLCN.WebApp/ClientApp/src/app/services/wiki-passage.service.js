@@ -11,14 +11,21 @@ var WikiPassageService = /** @class */ (function () {
     function WikiPassageService(httpHelper) {
         this.httpHelper = httpHelper;
         this.wikiPassageUrl = "/api/wikipassages";
+        this.wikiRoutePathValidateUrl = "/api/wikipassages/isduplicated";
     }
     WikiPassageService.prototype.ngOnInit = function () {
     };
     WikiPassageService.prototype.getWikiPassage = function (routePath) {
-        return this.httpHelper.get(this.wikiPassageUrl + "/" + routePath);
+        return this.httpHelper.get(this.wikiPassageUrl + "/" + encodeURIComponent(routePath));
+    };
+    WikiPassageService.prototype.putWikiPassage = function (dto) {
+        return this.httpHelper.put(this.wikiPassageUrl, dto);
     };
     WikiPassageService.prototype.postWikiPassage = function (dto) {
         return this.httpHelper.post(this.wikiPassageUrl, dto);
+    };
+    WikiPassageService.prototype.isRoutePathDuplicated = function (routePath) {
+        return this.httpHelper.get(this.wikiRoutePathValidateUrl + "?routePath=" + routePath);
     };
     WikiPassageService = __decorate([
         core_1.Injectable({ providedIn: "root" })

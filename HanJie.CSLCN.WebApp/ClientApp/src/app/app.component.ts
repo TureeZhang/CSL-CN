@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { MenuDto } from './models/menu-dto';
 import { Observable } from 'rxjs';
@@ -7,13 +7,15 @@ import { UserInfoService } from './services/user-info.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { GlobalService } from './services/global.service';
+import { responsiveMap } from 'ng-zorro-antd';
+import { BreadCrumbDto } from './models/bread-crumb';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterContentChecked {
+export class AppComponent implements OnInit {
 
   public isCollapsed: boolean = false;
   public isReverseArrow: boolean = false;
@@ -22,6 +24,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   public currentUser: UserInfoDto;
   public isUserLogined: boolean = false;
   public navigationEnd: Observable<NavigationEnd>;
+  public breadCrumbs: Observable<BreadCrumbDto[]>;
 
   constructor(private menuService: MenuService,
     private userInfoService: UserInfoService,
@@ -35,19 +38,27 @@ export class AppComponent implements OnInit, AfterContentChecked {
   ngOnInit(): void {
     this.getMenus();
 
+    if (this.currentUser == null) {
+      this.tryRestoreLoginUserInfo();
+    }
+
     this.navigationEnd.subscribe(evt => {
-      if (UserInfoService.currentUser) {
-        this.currentUser = UserInfoService.currentUser;
-        this.isUserLogined = UserInfoService.currentUser.isLoginSuccess;
+      this.tryRestoreLoginUserInfo();
+      if (evt.url === "/homepage") {
+        this.globalService.setBreadCrumbs(new Array<BreadCrumbDto>());
       }
     });
 
-    if (UserInfoService.currentUser == null) {
-      this.tryRestoreLoginStatus();
-    }
+    this.globalService.onBreadCrumbReady.subscribe(breadCrumbs => {
+      this.breadCrumbs = breadCrumbs;
+    });
   }
 
-  ngAfterContentChecked(): void {
+  tryRestoreLoginUserInfo(): void {
+    this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
+      this.currentUser = response;
+      this.isUserLogined = this.currentUser.isLoginSuccess;
+    });
   }
 
   getMenus(): void {
@@ -61,25 +72,14 @@ export class AppComponent implements OnInit, AfterContentChecked {
     return menu.title;
   }
 
-  tryRestoreLoginStatus(): void {
-    if (this.currentUser == null) {
-      this.userInfoService.login().subscribe(user => {
-        UserInfoService.currentUser = user;
-        this.currentUser = UserInfoService.currentUser;
-        this.isUserLogined = UserInfoService.currentUser.isLoginSuccess;
-      });
+  logout(): void {
+    if (this.currentUser) {
+      this.userInfoService.logout(this.currentUser.id);
+      this.currentUser = null;
+      this.isUserLogined = false;
     }
+    this.globalService.successTip("退出登陆成功");
+    this.router.navigate(["/homepage"]);
   }
 
-  logout(): void {
-    let host = this;
-    if (this.currentUser) {
-      this.userInfoService.logout(this.currentUser.id).subscribe((res) => {
-        UserInfoService.currentUser = null;
-        this.currentUser = UserInfoService.currentUser;
-        this.isUserLogined = false;
-        host.router.navigate(["/homepage"])
-      });
-    }
-  }
 }

@@ -7,20 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var user_info_service_1 = require("../../services/user-info.service");
 var DonatorRankComponent = /** @class */ (function () {
     function DonatorRankComponent(donatorRankService, globalService) {
         this.donatorRankService = donatorRankService;
         this.globalService = globalService;
         this.monthlyRanksLoading = true;
         this.allRanksLoading = true;
-        this.isAdmin = false;
     }
     DonatorRankComponent.prototype.ngOnInit = function () {
         this.getMonthlyRank();
-        if (user_info_service_1.UserInfoService.currentUser) {
-            this.isAdmin = user_info_service_1.UserInfoService.currentUser.isAdmin;
-        }
     };
     DonatorRankComponent.prototype.getAllRanks = function () {
         var _this = this;

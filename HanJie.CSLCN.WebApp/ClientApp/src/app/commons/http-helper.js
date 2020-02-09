@@ -24,6 +24,12 @@ var CSLHttpHelper = /** @class */ (function () {
         var host = this;
         return this.http.get(this.cslHostUrl + url);
     };
+    CSLHttpHelper.prototype.put = function (url, datas) {
+        var host = this;
+        return this.http.put(this.cslHostUrl + url, JSON.stringify(datas), {
+            headers: new http_1.HttpHeaders().append("Content-Type", "application/json")
+        });
+    };
     /**
      * 向服务端 API 发起 post 请求
      * @param url API 接口相对路径。eg. "/api/menus"

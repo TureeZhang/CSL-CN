@@ -18,7 +18,6 @@ export class DonatorRankComponent implements OnInit {
   public monthlyRanks: DonatorRankDto[];
   public monthlyRanksLoading: boolean = true;
   public allRanksLoading: boolean = true;
-  public isAdmin: boolean = false;
   public file: UploadFile;
 
   constructor(private donatorRankService: DonatorRankService,
@@ -28,9 +27,6 @@ export class DonatorRankComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMonthlyRank();
-    if (UserInfoService.currentUser) {
-      this.isAdmin = UserInfoService.currentUser.isAdmin;
-    }
   }
 
   getAllRanks(): void {

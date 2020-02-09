@@ -1,0 +1,44 @@
+<div class="container">
+
+  <form nz-form [formGroup]="wikiPassageForm"
+        (ngSubmit)="submitForm(wikiPassageForm.value)"
+        [nzLayout]="'vertical'">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>中文一级标题</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="请输入文档标题">
+        <input nz-input formControlName="title" placeholder="输入文档标题"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>url 路径后缀</nz-form-label>
+      <nz-form-control [nzSpan]="24" nzHasFeedback nzValidatingTip="查询占用..." [nzErrorTip]="routePathErrorTemplate">
+        <input nz-input formControlName="routePath" placeholder="字母数字、下划线(_)、短横线(-)" />
+        <ng-template #routePathErrorTemplate let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入 url 路径
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicated')">
+            使用的路径名称已占用
+          </ng-container>
+          <ng-container *ngIf="control.hasError('notwritter')">
+            仅支持英文字母与短横线（-）
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24">
+        <button nz-button nzType="primary" [disabled]="!wikiPassageForm.valid">添加</button>
+        <button nz-button (click)="resetForm($event)" style="margin-left:16px;">重置</button>
+      </nz-form-control>
+    </nz-form-item>
+
+
+
+  </form>
+
+
+</div>

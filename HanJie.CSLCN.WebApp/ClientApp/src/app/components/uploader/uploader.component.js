@@ -135,7 +135,9 @@ var UploaderComponent = /** @class */ (function () {
     };
     UploaderComponent.prototype.closeDrawer = function (fileUrl) {
         if (fileUrl === void 0) { fileUrl = null; }
-        drawer_statu_service_1.DrawerStatuService.createUserDrawerRef.nzOffsetX = 0;
+        if (this.usage.toString() == uploader_usage_enum_1.UploaderUsageEnum.userAvatar.toString() && drawer_statu_service_1.DrawerStatuService.createUserDrawerRef != null) {
+            drawer_statu_service_1.DrawerStatuService.createUserDrawerRef.nzOffsetX = 0;
+        }
         this.drawerRef.close(fileUrl);
     };
     UploaderComponent.prototype.confirmUserAvatar = function () {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserInfoDto } from '../../models/user-info-dto';
 import { UserInfoService } from '../../services/user-info.service';
 import { Router } from '@angular/router';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private userInfoService: UserInfoService,
+    private globalService:GlobalService,
     private router: Router) {
 
   }
@@ -33,8 +35,8 @@ export class LoginComponent implements OnInit {
     let userInfo: UserInfoDto = this.validateForm.value;
     this.userInfoService.login(userInfo).subscribe(res => {
       if (res.isLoginSuccess) {
-        UserInfoService.currentUser = res;
         host.router.navigate(["/homepage"]);
+        host.globalService.successTip(`欢迎 ${res.userName} ：登陆成功`);
       } else {
 
       }

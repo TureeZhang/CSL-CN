@@ -7,12 +7,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var rxjs_1 = require("rxjs");
 var UserInfoService = /** @class */ (function () {
     function UserInfoService(httpHelper) {
         this.httpHelper = httpHelper;
         this.loginApiUrl = "/api/login";
+        this.userInfoApiUrl = "/api/userinfo";
         this.adminUserInfoApiUrl = "/api/admin/adminuserinfo";
+        if (UserInfoService_1.currentUser == null) {
+            this.getCurrentLoginedUserInfo().subscribe(function (response) {
+                UserInfoService_1.currentUser = response;
+            });
+        }
     }
+    UserInfoService_1 = UserInfoService;
     UserInfoService.prototype.getUserInfoes = function () {
         return this.httpHelper.get(this.adminUserInfoApiUrl);
     };
@@ -24,12 +32,31 @@ var UserInfoService = /** @class */ (function () {
         return this.httpHelper.post(this.loginApiUrl, userInfo);
     };
     UserInfoService.prototype.logout = function (userId) {
-        return this.httpHelper.delete(this.loginApiUrl, userId);
+        this.httpHelper.delete(this.loginApiUrl, userId).subscribe(function (response) {
+            UserInfoService_1.currentUser = null;
+        });
     };
     UserInfoService.prototype.create = function (data) {
         return this.httpHelper.post(this.adminUserInfoApiUrl, data);
     };
-    UserInfoService = __decorate([
+    UserInfoService.prototype.getCurrentLoginedUserInfo = function () {
+        var _this = this;
+        return new rxjs_1.Observable(function (subscriber) {
+            if (UserInfoService_1.currentUser != null) {
+                subscriber.next(UserInfoService_1.currentUser);
+                subscriber.complete();
+            }
+            else {
+                _this.httpHelper.get(_this.userInfoApiUrl).subscribe(function (response) {
+                    UserInfoService_1.currentUser = response;
+                    subscriber.next(response);
+                    subscriber.complete();
+                });
+            }
+        });
+    };
+    var UserInfoService_1;
+    UserInfoService = UserInfoService_1 = __decorate([
         core_1.Injectable({ providedIn: "root" })
     ], UserInfoService);
     return UserInfoService;
