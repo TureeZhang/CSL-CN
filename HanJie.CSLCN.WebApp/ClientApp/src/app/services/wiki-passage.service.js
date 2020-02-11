@@ -12,6 +12,8 @@ var WikiPassageService = /** @class */ (function () {
         this.httpHelper = httpHelper;
         this.wikiPassageUrl = "/api/wikipassages";
         this.wikiRoutePathValidateUrl = "/api/wikipassages/isduplicated";
+        this.wikiLockPassageEditingStatusUrl = "/api/wikipassages/lockpassageeditingstatus";
+        this.wikiImStillOnlineCallUrl = "/api/wikipassages/imstillonline";
     }
     WikiPassageService.prototype.ngOnInit = function () {
     };
@@ -26,6 +28,12 @@ var WikiPassageService = /** @class */ (function () {
     };
     WikiPassageService.prototype.isRoutePathDuplicated = function (routePath) {
         return this.httpHelper.get(this.wikiRoutePathValidateUrl + "?routePath=" + routePath);
+    };
+    WikiPassageService.prototype.lockPassageEditingStatus = function (passageId) {
+        return this.httpHelper.get(this.wikiLockPassageEditingStatusUrl + "?passageId=" + passageId);
+    };
+    WikiPassageService.prototype.imStillOnlineCall = function (passageId) {
+        return this.httpHelper.get(this.wikiImStillOnlineCallUrl + "?passageId=" + passageId);
     };
     WikiPassageService = __decorate([
         core_1.Injectable({ providedIn: "root" })

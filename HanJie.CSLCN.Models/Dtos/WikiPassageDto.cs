@@ -16,5 +16,6 @@ namespace HanJie.CSLCN.Models.Dtos
         public int ParentPassageId { get; set; }
         public List<BreadCrumbDto> BreadCrumbs { get; set; }
         public List<BreadCrumbDto> ChildPageBreadCrumbs { get; set; }
+        public UserInfoDto EditingUser { get; set; }
     }
 }

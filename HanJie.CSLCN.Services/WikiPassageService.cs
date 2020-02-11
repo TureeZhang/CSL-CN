@@ -1,6 +1,7 @@
 ﻿using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Dtos.Normals;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace HanJie.CSLCN.Services
     public class WikiPassageService : BaseService<WikiPassageDto, WikiPassage>
     {
         private UserInfoService _userInfoService;
+        private static Dictionary<int, WikiPassageLockingInfo> WikiEditingStatusDictionary = new Dictionary<int, WikiPassageLockingInfo>();
+        private object _editingStatusLock = new object();
 
         public WikiPassageService(UserInfoService userInfoService)
         {
@@ -131,15 +134,23 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        public virtual async Task UpdateAsync(WikiPassageDto data)
+        public virtual async Task UpdateAsync(WikiPassageDto wikiPassageDto, int currentUserId)
         {
-            WikiPassage entity = new WikiPassage().ConvertFromDtoModel(data);
-            entity.MainAuthors = string.Join(",", data.MainAuthors.Select(item => item.Id).ToArray());
+            Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
+            Ensure.NotNull(wikiPassageDto.EditingUser, nameof(wikiPassageDto.EditingUser));
+            Ensure.NotNull(currentUserId, nameof(currentUserId));
 
-            if (data.CoAuthors != null)
-                entity.CoAuthors = string.Join(",", data.CoAuthors?.Select(item => item.Id).ToArray());
+            if (!IsCurrentUserEditing(wikiPassageDto.Id, currentUserId))
+                throw new UnauthorizedAccessException($"当前用户 UserId:{currentUserId} 不是此文档 passageId:{wikiPassageDto.Id} 的编辑者，无权更新文档。");
+
+            WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);
+            entity.MainAuthors = string.Join(",", wikiPassageDto.MainAuthors.Select(item => item.Id).ToArray());
+
+            if (wikiPassageDto.CoAuthors != null)
+                entity.CoAuthors = string.Join(",", wikiPassageDto.CoAuthors?.Select(item => item.Id).ToArray());
 
             await base.UpdateAsync(entity);
+            UnlockPassageEditingStatus(wikiPassageDto.Id);
         }
 
         public virtual async Task<WikiPassage> Create(WikiPassageDto wikiPassageDto)
@@ -158,6 +169,104 @@ namespace HanJie.CSLCN.Services
 
             return wikiPassage;
         }
+
+        #region 锁定编辑状态
+
+        public bool LockPassageEditingStatus(int passageId, int applyToLockPassageUserId)
+        {
+            Ensure.IsDatabaseId(passageId, nameof(passageId));
+            Ensure.IsDatabaseId(applyToLockPassageUserId, nameof(applyToLockPassageUserId));
+
+            lock (this._editingStatusLock)
+            {
+                //文章已锁定，且不是当前用户锁定，则返回锁定失败
+                if (WikiPassageService.WikiEditingStatusDictionary.ContainsKey(passageId)
+                     && WikiPassageService.WikiEditingStatusDictionary[passageId].UserId != applyToLockPassageUserId)
+                    return false;
+
+                //已被当前用户锁定后再次发起锁定请求，则更新锁定时间
+                if (WikiPassageService.WikiEditingStatusDictionary.ContainsKey(passageId)
+                    && WikiPassageService.WikiEditingStatusDictionary[passageId].UserId == applyToLockPassageUserId)
+                {
+                    WikiEditingStatusDictionary[passageId].LastLockingConfirmDateTime = DateTime.Now;
+                    return true;
+                }
+
+                //否则执行初次锁定
+                WikiPassageLockingInfo wikiPassageLockingInfo = new WikiPassageLockingInfo();
+                wikiPassageLockingInfo.UserId = applyToLockPassageUserId;
+                wikiPassageLockingInfo.LastLockingConfirmDateTime = DateTime.Now;
+                WikiPassageService.WikiEditingStatusDictionary.Add(passageId, wikiPassageLockingInfo);
+                return true;
+            }
+        }
+
+        public void UnlockPassageEditingStatus(int passageId)
+        {
+            lock (this._editingStatusLock)
+            {
+                if (!WikiPassageService.WikiEditingStatusDictionary.ContainsKey(passageId))
+                    return;
+
+                WikiPassageService.WikiEditingStatusDictionary.Remove(passageId);
+            }
+        }
+
+        public bool IsPassageLocked(int passageId)
+        {
+            lock (this._editingStatusLock)
+            {
+
+                Ensure.IsDatabaseId(passageId, nameof(passageId));
+
+                if (!WikiPassageService.WikiEditingStatusDictionary.ContainsKey(passageId))
+                    return false;
+
+                WikiPassageLockingInfo lockingInfo = WikiPassageService.WikiEditingStatusDictionary[passageId];
+                if (lockingInfo.LastLockingConfirmDateTime.AddMinutes(1) < DateTime.Now)
+                {
+                    UnlockPassageEditingStatus(passageId);
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public bool IsCurrentUserEditing(int passageId, int currentUserId)
+        {
+            Ensure.IsDatabaseId(passageId, nameof(passageId));
+            Ensure.IsDatabaseId(currentUserId, nameof(currentUserId));
+
+            if (!WikiPassageService.WikiEditingStatusDictionary.ContainsKey(passageId))
+                return false;
+
+            if (WikiEditingStatusDictionary[passageId].UserId != currentUserId)
+                return false;
+
+            return true;
+        }
+
+        public int GetEditingUserId(int passageId)
+        {
+            Ensure.IsDatabaseId(passageId, nameof(passageId));
+
+            //为便利测试， Id=1 的文档持续在 Debug 环境中会被 UserId=1 一直锁定
+            if (RunAs.Debug && passageId == 1)
+            {
+                LockPassageEditingStatus(1, 1);
+                return 1;
+            }
+
+            if (IsPassageLocked(passageId))
+                return WikiPassageService.WikiEditingStatusDictionary[passageId].UserId;
+
+            return 0;
+        }
+
+        #endregion
+
+
 
     }
 }

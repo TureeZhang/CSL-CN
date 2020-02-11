@@ -12,6 +12,7 @@ import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
 import { AdminCreateWikipassageComponent } from '../admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
 import { GlobalService } from '../../services/global.service';
 import { BreadCrumbDto } from '../../models/bread-crumb';
+import { UserInfoDto } from '../../models/user-info-dto';
 
 @Component({
   selector: 'wiki-passage',
@@ -45,6 +46,15 @@ export class WikiPassageComponent implements OnInit {
 
   public isAdmin: boolean = false;
 
+  public currentUser: UserInfoDto;
+
+  public isEditLocked: boolean = false;
+
+  private imStillOnlineTimer: NodeJS.Timer;
+
+  public isLoadingEditButton: boolean = false;
+  public isLoadingSaveButton: boolean = false;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private wikiPassageService: WikiPassageService,
@@ -60,6 +70,7 @@ export class WikiPassageComponent implements OnInit {
 
     //检查是否为管理员
     this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
+      this.currentUser = response;
       this.isAdmin = response.isAdmin;
     });
 
@@ -89,6 +100,11 @@ export class WikiPassageComponent implements OnInit {
       host.oldWikiPassageDtoContent = host.wikiPassage.content;
       host.loading = false;
       this.setBreadCrumbs();
+
+      //锁定编辑
+      if (response.editingUser != null && response.editingUser.id != this.currentUser.id) {
+        this.isEditLocked = true;
+      }
     });
   }
 
@@ -107,16 +123,39 @@ export class WikiPassageComponent implements OnInit {
   }
 
   private edit(): void {
-    this.pageStatus = WikiPassagePageStatusEnum.Editing;
+    this.isLoadingEditButton = true;
+    this.wikiPassageService.lockPassageEditingStatus(this.wikiPassage.id).subscribe(response => {
+      if (response === true) {
+        this.pageStatus = WikiPassagePageStatusEnum.Editing;
+        this.isEditLocked = true;
+        this.wikiPassage.editingUser = this.currentUser;
+        this.globalService.successTip(`【已为你锁定】其他用户暂无权编辑，直至你完成保存。`);
+        this.startImStillOnlineCall();
+      } else {
+        this.globalService.ErrorTip(`【失败】其他用户正在进行编辑，请刷新查看。`);
+      }
+      this.isLoadingEditButton = false;
+    });
+  }
+
+  private startImStillOnlineCall(): void {
+    this.wikiPassageService.imStillOnlineCall(this.wikiPassage.id).subscribe(response => { });
+    this.imStillOnlineTimer = setTimeout(() => {
+      this.startImStillOnlineCall();
+    }, 15000);
   }
 
   private update(): void {
+    this.isLoadingSaveButton = true;
     if (this.wikiPassage.content != this.oldWikiPassageDtoContent) {
       this.wikiPassageService.putWikiPassage(this.wikiPassage).subscribe(response => {
-        //TODO 弹出报错提示弹窗
+        this.isLoadingSaveButton = false;
+        clearTimeout(this.imStillOnlineTimer);
+        this.isEditLocked = false;
+        this.pageStatus = WikiPassagePageStatusEnum.Displaying;
+        this.globalService.successTip(`【保存成功】锁定解除，已释放编辑权限。`);
       });
     }
-    this.pageStatus = WikiPassagePageStatusEnum.Displaying;
   }
 
   openUploader(): void {

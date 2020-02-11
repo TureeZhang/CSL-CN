@@ -9,6 +9,8 @@ export class WikiPassageService implements OnInit {
 
   private wikiPassageUrl: string = "/api/wikipassages";
   private wikiRoutePathValidateUrl: string = "/api/wikipassages/isduplicated"
+  private wikiLockPassageEditingStatusUrl = "/api/wikipassages/lockpassageeditingstatus";
+  private wikiImStillOnlineCallUrl = "/api/wikipassages/imstillonline";
 
   constructor(private httpHelper: CSLHttpHelper) { }
 
@@ -30,6 +32,14 @@ export class WikiPassageService implements OnInit {
 
   isRoutePathDuplicated(routePath: string): Observable<boolean> {
     return this.httpHelper.get<boolean>(`${this.wikiRoutePathValidateUrl}?routePath=${routePath}`);
+  }
+
+  lockPassageEditingStatus(passageId: number): Observable<boolean> {
+    return this.httpHelper.get<boolean>(`${this.wikiLockPassageEditingStatusUrl}?passageId=${passageId}`);
+  }
+
+  imStillOnlineCall(passageId: number): Observable<boolean> {
+    return this.httpHelper.get<boolean>(`${this.wikiImStillOnlineCallUrl}?passageId=${passageId}`);
   }
 
 }
