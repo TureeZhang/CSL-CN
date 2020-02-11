@@ -1,6 +1,7 @@
 ﻿using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Dtos.Normals;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace HanJie.CSLCN.Services
     public class WikiPassageService : BaseService<WikiPassageDto, WikiPassage>
     {
         private UserInfoService _userInfoService;
+        private static Dictionary<int, WikiPassageLockingInfo> WikiEditingStatusDictionary = new Dictionary<int, WikiPassageLockingInfo>();
+        private object _editingStatusLock = new object();
 
         public WikiPassageService(UserInfoService userInfoService)
         {
@@ -131,15 +134,23 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        public virtual async Task UpdateAsync(WikiPassageDto data)
+        public virtual async Task UpdateAsync(WikiPassageDto wikiPassageDto, int currentUserId)
         {
-            WikiPassage entity = new WikiPassage().ConvertFromDtoModel(data);
-            entity.MainAuthors = string.Join(",", data.MainAuthors.Select(item => item.Id).ToArray());
+            Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
+            Ensure.NotNull(wikiPassageDto.EditingUser, nameof(wikiPassageDto.EditingUser));
+            Ensure.NotNull(currentUserId, nameof(currentUserId));
 
-            if (data.CoAuthors != null)
-                entity.CoAuthors = string.Join(",", data.CoAuthors?.Select(item => item.Id).ToArray());
+            if (!IsCurrentUserEditing(wikiPassageDto.Id, currentUserId))
+                throw new UnauthorizedAccessException($"当前用户 UserId:{currentUserId} 不是此文档 passageId:{wikiPassageDto.Id} 的编辑者，无权更新文档。");
+
+            WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);
+            entity.MainAuthors = string.Join(",", wikiPassageDto.MainAuthors.Select(item => item.Id).ToArray());
+
+            if (wikiPassageDto.CoAuthors != null)
+                entity.CoAuthors = string.Join(",", wikiPassageDto.CoAuthors?.Select(item => item.Id).ToArray());
 
             await base.UpdateAsync(entity);
+            UnlockPassageEditingStatus(wikiPassageDto.Id);
         }
 
         public virtual async Task<WikiPassage> Create(WikiPassageDto wikiPassageDto)

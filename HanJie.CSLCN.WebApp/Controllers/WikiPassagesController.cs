@@ -17,12 +17,16 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [Route("api/[controller]")]
     public class WikiPassagesController : BaseController
     {
-        private WikiPassageService _wikiPassageService { get; set; }
+
+        private readonly WikiPassageService _wikiPassageService;
+        private readonly UserInfoService _userInfoService;
 
         public WikiPassagesController(WikiPassageService wikiPassageService,
+            UserInfoService userInfoService,
             UserStatuService userStatuService) : base(userStatuService)
         {
-            _wikiPassageService = wikiPassageService;
+            this._userInfoService = userInfoService;
+            this._wikiPassageService = wikiPassageService;
         }
 
 
@@ -38,6 +42,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
             wikiPassageDto.BreadCrumbs = wikiPassage.ParentPassageId != 0 ? this._wikiPassageService.CollectBreadCrumbs(wikiPassageDto) : null;
             wikiPassageDto.ChildPageBreadCrumbs = await this._wikiPassageService.CollectChildPageBreadCrumbs(wikiPassageDto);
 
+            int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
+            wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(editingUserId));
+
             return new JsonResult(wikiPassageDto);
         }
 
@@ -50,6 +57,24 @@ namespace HanJie.CSLCN.WebApp.Controllers
             bool result = await this._wikiPassageService.IsRoutePathExist(routePath);
             return Json(result);
         }
+
+        #region 编辑锁定功能
+        [HttpGet]
+        [Route("/api/wikipassages/lockpassageeditingstatus")]
+        public IActionResult LockEditingStatus(int passageId)
+        {
+            bool lockResult = this._wikiPassageService.LockPassageEditingStatus(passageId, base.CurrentUser.Id);
+            return Json(lockResult);
+        }
+
+        [HttpGet]
+        [Route("/api/wikipassages/imstillonline")]
+        public IActionResult ImStillOnline(int passageId)
+        {
+            this._wikiPassageService.LockPassageEditingStatus(passageId, base.CurrentUser.Id);
+            return Json(true);
+        }
+        #endregion
 
         // POST api/<controller>
         [HttpPost]
@@ -68,7 +93,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [MyAuthorize]
         public async Task Put([FromBody]WikiPassageDto dto)
         {
-            await this._wikiPassageService.UpdateAsync(dto);
+            await this._wikiPassageService.UpdateAsync(dto, base.CurrentUser.Id);
         }
 
         // DELETE api/<controller>/5

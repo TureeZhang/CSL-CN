@@ -15,4 +15,5 @@ export class WikiPassageDto {
   parentPassageId: number;
   breadCrumbs: BreadCrumbDto[];
   childPageBreadCrumbs: BreadCrumbDto[];
+  editingUser:UserInfoDto;
 }
