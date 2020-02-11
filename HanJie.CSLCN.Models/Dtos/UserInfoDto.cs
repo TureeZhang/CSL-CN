@@ -61,6 +61,7 @@ namespace HanJie.CSLCN.Models.Dtos
         /// 个人签名
         /// </summary>
         public string DescriptionWord { get; set; }
+        public string EditingUserId { get; set; }
 
     }
 }
