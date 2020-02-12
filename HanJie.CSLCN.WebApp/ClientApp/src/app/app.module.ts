@@ -24,8 +24,8 @@ import { AdminCreateUserInfoComponent } from './components/admin-components/admi
 import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
 import { AdminCreateDonatorComponent } from './components/admin-components/admin-donators/admin-create-donator.component.ts/admin-create-donator.component';
 import { AdminWikipassagesComponent } from './components/admin-components/admin-wikipassages/admin-wikipassages.component';
-import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
-
+import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';  
+import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 
 registerLocaleData(zh);
 
@@ -46,7 +46,8 @@ registerLocaleData(zh);
     AdminDonatorsComponent,
     AdminCreateDonatorComponent,
     AdminWikipassagesComponent,
-    AdminCreateWikipassageComponent
+    AdminCreateWikipassageComponent,
+    WikiListComponent
   ],
   imports: [
     BrowserModule,

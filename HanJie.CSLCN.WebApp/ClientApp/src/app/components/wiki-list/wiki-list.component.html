@@ -1,0 +1,35 @@
+<div class="container">
+
+  <div nz-row>
+    <div nz-col nzSpan="12">
+      <h2>全部文档</h2>
+    </div>
+    <div nz-col nzSpan="12" style="text-align:right;line-height:64px;">
+      <nz-input-group [nzSuffix]="suffixIconSearch" style="width:90%;">
+        <input type="text" #searchbox nz-input placeholder="键入标题包含的关键字以搜索。示例：能源、电力 .." (input)="search(searchbox.value)" />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" nzJustify="middle" *ngIf="isLoading">
+    <div nz-col nzSpan="24" style="text-align:center;margin-top:32px;">
+      <nz-spin nzSimple></nz-spin><span style="color:darkgray;">请稍候：正在抓取文章列表。访问量过大时，这一过程可能耗时数秒...</span>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" nzJustify="start" nzAlign="top" nzGutter="16" *ngIf="!isLoading">
+    <div nz-col nzMd="6" nzXs="12" *ngFor="let item of displayWikis" style="margin-top:8px;">
+      <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate" routerLink="/wiki-passage/{{item.routePath}}">
+        <nz-card-meta nzTitle="{{item.title}}" nzDescription="{{item.description}} ..."></nz-card-meta>
+      </nz-card>
+      <ng-template #coverTemplate>
+        <img *ngIf="item.coverUrl!=null" alt="example" src="{{item.coverUrl}}" />
+        <h3 nzTitle *ngIf="item.coverUrl==null">{{item.title}}</h3>
+      </ng-template>
+    </div>
+  </div>
+
+</div>

@@ -9,6 +9,7 @@ import { UploaderComponent } from './components/uploader/uploader.component';
 import { AdminHomepageComponent } from './components/admin-components/admin-homepage/admin-homepage.component';
 import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
 import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
+import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 
 const routes: Routes = [
   //主站路由
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: "donator-rank", component: DonatorRankComponent },
   { path: "uploader", component: UploaderComponent },
+  { path: "wiki-list", component: WikiListComponent },
   //管理界面路由
   { path: "admin", component: AdminHomepageComponent },
   { path: "admin/userinfoes", component: AdminUserInfoesComponent },
