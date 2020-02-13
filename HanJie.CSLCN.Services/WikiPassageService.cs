@@ -268,5 +268,28 @@ namespace HanJie.CSLCN.Services
 
 
 
+        public virtual async Task<string> PickCoverUrlFromContentFirstImage(string content)
+        {
+            string result = "./assets/logo-header.png";
+
+            if (string.IsNullOrEmpty(content))
+                return result;
+
+            StringReader stringReader = new StringReader(content);
+            string line = await stringReader.ReadLineAsync();
+            while (line != null)
+            {
+                if (line.Trim().StartsWith("!["))
+                {
+                    result = line.Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault().Replace(")", "");
+                    break;
+                }
+
+                line = await stringReader.ReadLineAsync();
+            }
+
+            return result;
+        }
+
     }
 }
