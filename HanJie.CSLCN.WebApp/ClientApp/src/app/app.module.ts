@@ -26,6 +26,7 @@ import { AdminCreateDonatorComponent } from './components/admin-components/admin
 import { AdminWikipassagesComponent } from './components/admin-components/admin-wikipassages/admin-wikipassages.component';
 import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';  
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
+import { ReplaceTableDirective } from './directives/replace-table.service';
 
 registerLocaleData(zh);
 
@@ -47,7 +48,9 @@ registerLocaleData(zh);
     AdminCreateDonatorComponent,
     AdminWikipassagesComponent,
     AdminCreateWikipassageComponent,
-    WikiListComponent
+    WikiListComponent,
+    //指令
+    ReplaceTableDirective
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { WikiPassageDto } from 'src/app/models/wiki-passage-dto';
@@ -6,13 +6,14 @@ import { WikiPassageService } from 'src/app/services/wiki-passage.service';
 import { WikiPassagePageStatusEnum } from 'src/app/models/enums/wiki-passage-page-status.enum';
 import { UserInfoService } from '../../services/user-info.service';
 import { MarkedOptions, MarkedRenderer } from 'ngx-markdown';
-import { NzDrawerService, NzDrawerRef } from 'ng-zorro-antd';
+import { NzDrawerService, NzDrawerRef, NzTableComponent } from 'ng-zorro-antd';
 import { UploaderComponent } from '../uploader/uploader.component';
 import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
 import { AdminCreateWikipassageComponent } from '../admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
 import { GlobalService } from '../../services/global.service';
 import { BreadCrumbDto } from '../../models/bread-crumb';
 import { UserInfoDto } from '../../models/user-info-dto';
+import { ReplaceTableDirective } from '../../directives/replace-table.service';
 
 @Component({
   selector: 'wiki-passage',
@@ -55,12 +56,16 @@ export class WikiPassageComponent implements OnInit {
   public isLoadingEditButton: boolean = false;
   public isLoadingSaveButton: boolean = false;
 
+  @ViewChild(ReplaceTableDirective, { static: true })
+  replaceTableHost: ReplaceTableDirective;
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private wikiPassageService: WikiPassageService,
     private drawerService: NzDrawerService,
     private userInfoService: UserInfoService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {
   }
 
@@ -74,6 +79,15 @@ export class WikiPassageComponent implements OnInit {
       this.isAdmin = response.isAdmin;
     });
 
+    this.replaceTable();
+
+  }
+
+  replaceTable(): void {
+    const viewContainerRef: ViewContainerRef = this.replaceTableHost.viewContainerRef;
+
+    const component = this.componentFactoryResolver.resolveComponentFactory(NzTableComponent);
+    console.log(component);
   }
 
   /***

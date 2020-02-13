@@ -86,7 +86,7 @@
 
       <div style="margin:16px;margin-top:24px;margin-bottom:40px;">
 
-        <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
+        <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content" replace-table></markdown>
 
         <md-editor *ngIf="pageStatus==1"
                    name="Content"
