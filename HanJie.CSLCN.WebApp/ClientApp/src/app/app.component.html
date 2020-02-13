@@ -7,7 +7,7 @@
             [nzBreakpoint]="'lg'"
             [nzCollapsedWidth]="0"
             [nzZeroTrigger]="zeroTrigger">
-    <div *ngIf="!isCollapsed" class="logo" style="height:236px;width:160px;background:url(/assets/logo.png)"></div>
+    <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url(/assets/logo.png)"></div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
       <ng-template #errorMenu>
         <li nz-menu-item>

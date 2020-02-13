@@ -56,6 +56,7 @@
     <None Remove="ClientApp\src\app\models\qiniu-upload-parameters.ts" />
     <None Remove="ClientApp\src\app\models\uploader-usage.enum.ts" />
     <None Remove="ClientApp\src\app\models\user-info-dto.ts" />
+    <None Remove="ClientApp\src\app\models\wiki-list-item-dto.ts" />
     <None Remove="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <None Remove="ClientApp\src\app\services\admin\admin-donator.service.ts" />
     <None Remove="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
@@ -114,6 +115,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\user-info-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-item-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\menu-dto.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\wiki-list-item-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-passage-dto.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\admin\admin-donator.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\admin\admin-userinfo.service.ts" />
