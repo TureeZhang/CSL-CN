@@ -14,8 +14,8 @@ namespace HanJie.CSLCN.Services
     {
         public async Task<List<DonatorRankDto>> GetDonatorAllRanksOrderbyTotalCountAsync()
         {
-            Dictionary<int, decimal> userIdMoneyDictionary = await CSLDbContext.DonatorRanks.ToDictionaryAsync(item => item.UserId, item => item.DonateTotalCount);
-            List<DonatorRankDto> results = CountTotalWithOrderbyDesc(userIdMoneyDictionary);
+            List<DonatorRank> donatorRanks = await CSLDbContext.DonatorRanks.ToListAsync();
+            List<DonatorRankDto> results = CountTotalWithOrderbyDesc(donatorRanks);
 
             return results;
         }
@@ -23,24 +23,34 @@ namespace HanJie.CSLCN.Services
         public virtual async Task<List<DonatorRankDto>> GetDonatorMontlyRanksOrderbyTotalCountAsync()
         {
             DateTime minData = DateTime.Now.AddDays(-30);
-            Dictionary<int, decimal> monthlyuserIdMoneyDictionary = await CSLDbContext.DonatorRanks.Where(item => item.CreateDate >= minData).ToDictionaryAsync(item => item.UserId, item => item.DonateTotalCount);
-            List<DonatorRankDto> results = CountTotalWithOrderbyDesc(monthlyuserIdMoneyDictionary);
+            List<DonatorRank> donatorRanks = await CSLDbContext.DonatorRanks.Where(item => item.CreateDate >= minData).ToListAsync();
+            List<DonatorRankDto> results = CountTotalWithOrderbyDesc(donatorRanks);
 
             return results;
         }
 
-        public List<DonatorRankDto> CountTotalWithOrderbyDesc(Dictionary<int, decimal> userIdMoneyDictionary)
+        public List<DonatorRankDto> CountTotalWithOrderbyDesc(List<DonatorRank> donatorRanks)
         {
-            Dictionary<int, decimal> userIdMoneySummaryDictionary = new Dictionary<int, decimal>();
-            foreach (KeyValuePair<int, decimal> item in userIdMoneyDictionary)
+            List<Tuple<int, decimal>> userIdMoneyList = new List<Tuple<int, decimal>>();
+            foreach (DonatorRank item in donatorRanks)
             {
-                if (!userIdMoneySummaryDictionary.ContainsKey(item.Key))
+                Tuple<int, decimal> userIdMoney = new Tuple<int, decimal>(item.UserId, item.DonateTotalCount);
+                userIdMoneyList.Add(userIdMoney);
+            }
+
+            Dictionary<int, decimal> userIdMoneySummaryDictionary = new Dictionary<int, decimal>();
+            foreach (Tuple<int, decimal> item in userIdMoneyList)
+            {
+                int userId = item.Item1;
+                decimal moneyCount = item.Item2;
+
+                if (!userIdMoneySummaryDictionary.ContainsKey(userId))
                 {
-                    userIdMoneySummaryDictionary.Add(item.Key, item.Value);
+                    userIdMoneySummaryDictionary.Add(userId, moneyCount);
                 }
                 else
                 {
-                    userIdMoneySummaryDictionary[item.Key] += item.Value;
+                    userIdMoneySummaryDictionary[userId] += moneyCount;
                 }
             }
 
