@@ -17,5 +17,6 @@ namespace HanJie.CSLCN.Models.Dtos
         public List<BreadCrumbDto> BreadCrumbs { get; set; }
         public List<BreadCrumbDto> ChildPageBreadCrumbs { get; set; }
         public UserInfoDto EditingUser { get; set; }
+        public int TotalViewsCount { get; set; }
     }
 }
