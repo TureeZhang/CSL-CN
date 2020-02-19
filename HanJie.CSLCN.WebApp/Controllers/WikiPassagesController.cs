@@ -27,7 +27,6 @@ namespace HanJie.CSLCN.WebApp.Controllers
         {
             this._userInfoService = userInfoService;
             this._wikiPassageService = wikiPassageService;
-            WikiPassageService.StartViewsCountUpdateTask(this._wikiPassageService);
         }
 
 
@@ -45,6 +44,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
             wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(editingUserId));
+
+            this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
 
             return new JsonResult(wikiPassageDto);
         }

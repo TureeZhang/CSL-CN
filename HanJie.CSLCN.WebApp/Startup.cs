@@ -67,6 +67,8 @@ namespace HanJie.CSLCN.WebApp
 
             //提供 服务提供 对象。
             GlobalService.ServiceProvider = services.BuildServiceProvider();
+            //启动计划任务
+            StartTask();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,7 +134,7 @@ namespace HanJie.CSLCN.WebApp
         /// <param name="services"></param>
         private void RegisterSingletons(ref IServiceCollection services)
         {
-
+            services.AddSingleton<ClientAppService>();
         }
 
         /// <summary>
@@ -144,13 +146,20 @@ namespace HanJie.CSLCN.WebApp
         /// <param name="services"></param>
         private void RegisterScoped(ref IServiceCollection services)
         {
-            services.AddSingleton<UserStatuService>();
-            services.AddSingleton<ClientAppService>();
+            services.AddScoped<UserStatuService>();
             services.AddScoped<WikiPassageService>();
-            services.AddSingleton<MenuService>();
-            services.AddSingleton<UserInfoService>();
-            services.AddSingleton<DonatorRankService>();
-            services.AddSingleton<QiniuService>();
+            services.AddScoped<MenuService>();
+            services.AddScoped<UserInfoService>();
+            services.AddScoped<DonatorRankService>();
+            services.AddScoped<QiniuService>();
+        }
+
+        /// <summary>
+        /// 启动计划任务
+        /// </summary>
+        private void StartTask()
+        {
+            WikiPassageService.StartViewsCountUpdateTask(GlobalService.ServiceProvider.GetService<WikiPassageService>());
         }
     }
 }

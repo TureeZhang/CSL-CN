@@ -16,18 +16,26 @@ namespace HanJie.CSLCN.Services
 {
     public class WikiPassageService : BaseService<WikiPassageDto, WikiPassage>
     {
-        private UserInfoService _userInfoService;
         private static Dictionary<int, WikiPassageLockingInfo> WikiEditingStatusDictionary = new Dictionary<int, WikiPassageLockingInfo>();
         private object _editingStatusLock = new object();
 
         #region 访问量统计
         private static Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
+        private static Task viewsCountTask;
+        /// <summary>
+        /// 对访问量缓存对象的保护锁
+        /// </summary>
         private static object _viewsCountDictionaryLock = new object();
+        /// <summary>
+        /// 
+        /// </summary>
+        private static object _viewsCountTaskLock = new object();
+        private static object _addViewsLock = new object();
+        private static object _updateViewsCountLock = new object();
         #endregion
 
         public WikiPassageService()
         {
-
         }
 
         public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
@@ -292,24 +300,27 @@ namespace HanJie.CSLCN.Services
             string ipAddress = ip.ToString();
             LockViewsDictionary(dic =>
             {
-                if (!dic.ContainsKey(passageId))
-                    dic.Add(passageId, new Dictionary<string, ViewsCountDto>());
+                lock (WikiPassageService._addViewsLock)
+                {
+                    if (!dic.ContainsKey(passageId))
+                        dic.Add(passageId, new Dictionary<string, ViewsCountDto>());
 
-                if (dic[passageId].ContainsKey(ipAddress))
-                {
-                    DateTime lastUpdateTime = dic[passageId][ipAddress].LastUpdateTime;
-                    if (lastUpdateTime.AddMinutes(5) < DateTime.Now)
+                    if (dic[passageId].ContainsKey(ipAddress))
                     {
-                        dic[passageId][ipAddress].NewViews += 1;
-                        dic[passageId][ipAddress].LastUpdateTime = DateTime.Now;
+                        DateTime lastUpdateTime = dic[passageId][ipAddress].LastUpdateTime;
+                        if (lastUpdateTime.AddMinutes(5) < DateTime.Now)
+                        {
+                            dic[passageId][ipAddress].NewViews += 1;
+                            dic[passageId][ipAddress].LastUpdateTime = DateTime.Now;
+                        }
                     }
-                }
-                else
-                {
-                    ViewsCountDto viewsCountDto = new ViewsCountDto();
-                    viewsCountDto.NewViews = 1;
-                    viewsCountDto.LastUpdateTime = DateTime.Now;
-                    dic[passageId].Add(ipAddress, viewsCountDto);
+                    else
+                    {
+                        ViewsCountDto viewsCountDto = new ViewsCountDto();
+                        viewsCountDto.NewViews = 1;
+                        viewsCountDto.LastUpdateTime = DateTime.Now;
+                        dic[passageId].Add(ipAddress, viewsCountDto);
+                    }
                 }
 
             });
@@ -317,46 +328,59 @@ namespace HanJie.CSLCN.Services
 
         public static void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
         {
-            while (true)
-            {
-                Task task = Task.Run(() =>
-                 {
-                     LockViewsDictionary(async dic =>
-                     {
-                         foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
-                         {
-                             int passageId = item.Key;
-                             int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
+            Ensure.NotNull(wikiPassageService, nameof(wikiPassageService));
 
-                             if (newViewsCount > 0)
-                             {
-                                 WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
-                                 wikiPassage.TotalViewsCount += newViewsCount;
-                                 await wikiPassageService.UpdateAsync(wikiPassage);
-                             }
-                         }
-                         foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
-                         {
-                             foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
-                             {
-                                 viewsCountItem.Value.NewViews = 0;
-                             }
-                         }
-                     });
-                 });
-                task.GetAwaiter().OnCompleted(() =>
-                {
-                    if (RunAs.Debug)
-                        Thread.Sleep(5000);
-                    if (RunAs.Release)
-                        Thread.Sleep(30000);
-                });
-            }
+
+            if (WikiPassageService.viewsCountTask != null)
+                return;
+
+            WikiPassageService.viewsCountTask = Task.Run(() =>
+             {
+                 while (true)
+                 {
+                     LockViewsDictionary(dic =>
+                    {
+                        lock (WikiPassageService._viewsCountTaskLock)
+                        {
+                            foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
+                            {
+                                int passageId = item.Key;
+                                int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
+
+                                if (newViewsCount > 0)
+                                {
+                                    WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
+                                    wikiPassage.TotalViewsCount += newViewsCount;
+                                    _ = wikiPassageService.UpdateAsync(wikiPassage);
+                                }
+                            }
+                            foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
+                            {
+                                foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
+                                {
+                                    viewsCountItem.Value.NewViews = 0;
+                                }
+                            }
+                        }
+                    });
+                     if (RunAs.Debug)
+                         Thread.Sleep(5000);
+                     if (RunAs.Release)
+                         Thread.Sleep(30000);
+                 }
+
+             });
+
         }
 
+        /// <summary>
+        /// 锁定保护，防止两个冲突的进程同时访问 Dictionary 
+        /// </summary>
+        /// <param name="action"></param>
         public static void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
         {
-            lock (_viewsCountDictionaryLock)
+            //此锁锁定 新增访问量 与 结算访问量 同时访问的情况，保护 ViewsDictionary 唯一性
+            lock (WikiPassageService._viewsCountDictionaryLock)
             {
                 action(WikiPassageService.ViewsDictionary);
             }
