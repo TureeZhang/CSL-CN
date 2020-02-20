@@ -3,24 +3,40 @@ using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Dtos.Normals;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
     public class WikiPassageService : BaseService<WikiPassageDto, WikiPassage>
     {
-        private UserInfoService _userInfoService;
         private static Dictionary<int, WikiPassageLockingInfo> WikiEditingStatusDictionary = new Dictionary<int, WikiPassageLockingInfo>();
         private object _editingStatusLock = new object();
 
-        public WikiPassageService(UserInfoService userInfoService)
+        #region 访问量统计
+        private static Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
+        private static Task viewsCountTask;
+        /// <summary>
+        /// 对访问量缓存对象的保护锁
+        /// </summary>
+        private static object _viewsCountDictionaryLock = new object();
+        /// <summary>
+        /// 
+        /// </summary>
+        private static object _viewsCountTaskLock = new object();
+        private static object _addViewsLock = new object();
+        private static object _updateViewsCountLock = new object();
+        #endregion
+
+        public WikiPassageService()
         {
-            _userInfoService = userInfoService;
         }
 
         public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
@@ -117,21 +133,6 @@ namespace HanJie.CSLCN.Services
             WikiPassage wikiPassage = await GetByRoutePathAsync(routePath);
             bool isExist = wikiPassage != null;
             return isExist;
-        }
-
-        public List<UserInfoDto> CollectAuthorInfoes(string[] userIds)
-        {
-            Ensure.NotNull(userIds, nameof(userIds));
-
-            List<UserInfoDto> result = new List<UserInfoDto>();
-            foreach (string item in userIds)
-            {
-                UserInfo userInfo = this._userInfoService.GetById(Convert.ToInt32(item));
-                UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(userInfo);
-                result.Add(dto);
-            }
-
-            return result;
         }
 
         public virtual async Task UpdateAsync(WikiPassageDto wikiPassageDto, int currentUserId)
@@ -290,6 +291,104 @@ namespace HanJie.CSLCN.Services
 
             return result;
         }
+
+        #region 访问量统计
+        public void AddViewsCount(int passageId, IPAddress ip)
+        {
+            Ensure.IsDatabaseId(passageId, nameof(passageId));
+            Ensure.NotNull(ip, nameof(ip));
+
+            string ipAddress = ip.ToString();
+            LockViewsDictionary(dic =>
+            {
+                lock (WikiPassageService._addViewsLock)
+                {
+                    if (!dic.ContainsKey(passageId))
+                        dic.Add(passageId, new Dictionary<string, ViewsCountDto>());
+
+                    if (dic[passageId].ContainsKey(ipAddress))
+                    {
+                        DateTime lastUpdateTime = dic[passageId][ipAddress].LastUpdateTime;
+                        if (lastUpdateTime.AddMinutes(5) < DateTime.Now)
+                        {
+                            dic[passageId][ipAddress].NewViews += 1;
+                            dic[passageId][ipAddress].LastUpdateTime = DateTime.Now;
+                        }
+                    }
+                    else
+                    {
+                        ViewsCountDto viewsCountDto = new ViewsCountDto();
+                        viewsCountDto.NewViews = 1;
+                        viewsCountDto.LastUpdateTime = DateTime.Now;
+                        dic[passageId].Add(ipAddress, viewsCountDto);
+                    }
+                }
+
+            });
+        }
+
+        public static void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
+        {
+            Ensure.NotNull(wikiPassageService, nameof(wikiPassageService));
+
+
+            if (WikiPassageService.viewsCountTask != null)
+                return;
+
+            WikiPassageService.viewsCountTask = Task.Run(() =>
+             {
+                 while (true)
+                 {
+                     Dictionary<int, Dictionary<string, ViewsCountDto>> output = null;
+                     LockViewsDictionary(dic =>
+                                {
+                                    output = dic;
+                                    lock (WikiPassageService._viewsCountTaskLock)
+                                    {
+                                        foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
+                                        {
+                                            int passageId = item.Key;
+                                            int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
+
+                                            if (newViewsCount > 0)
+                                            {
+                                                WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
+                                                wikiPassage.TotalViewsCount += newViewsCount;
+                                                _ = wikiPassageService.UpdateAsync(wikiPassage);
+                                            }
+                                        }
+                                        foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
+                                        {
+                                            foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
+                                            {
+                                                viewsCountItem.Value.NewViews = 0;
+                                            }
+                                        }
+                                    }
+                                });
+                     if (RunAs.Debug)
+                         Thread.Sleep(5 * 1000);    //5秒
+                     if (RunAs.Release)
+                         Thread.Sleep(180 * 1000);  //180秒=3分钟
+                 }
+
+             });
+
+        }
+
+        /// <summary>
+        /// 锁定保护，防止两个冲突的进程同时访问 Dictionary 
+        /// </summary>
+        /// <param name="action"></param>
+        public static void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
+        {
+            //此锁锁定 新增访问量 与 结算访问量 同时访问的情况，保护 ViewsDictionary 唯一性
+            lock (WikiPassageService._viewsCountDictionaryLock)
+            {
+                action(WikiPassageService.ViewsDictionary);
+            }
+        }
+        #endregion
 
     }
 }

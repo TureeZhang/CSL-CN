@@ -186,5 +186,20 @@ namespace HanJie.CSLCN.Services
 
             return result;
         }
+
+        public List<UserInfoDto> CollectAuthorInfoes(string[] userIds)
+        {
+            Ensure.NotNull(userIds, nameof(userIds));
+
+            List<UserInfoDto> result = new List<UserInfoDto>();
+            foreach (string item in userIds)
+            {
+                UserInfo userInfo = GetById(Convert.ToInt32(item));
+                UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(userInfo);
+                result.Add(dto);
+            }
+
+            return result;
+        }
     }
 }
