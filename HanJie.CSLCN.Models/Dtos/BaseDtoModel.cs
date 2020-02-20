@@ -25,7 +25,7 @@ namespace HanJie.CSLCN.Models.Dtos
                 string propTypeFullName = item.PropertyType.FullName;
                 if (propTypeFullName == typeof(DateTime).FullName)
                 {
-                    result.GetType().GetProperty(propName).SetValue(result, Convert.ToString(item.GetValue(dataModel)));
+                    result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dataModel).ToString());
                 }
                 else if (propTypeFullName == typeof(String).FullName && typeof(TDtoType).GetProperty(propName).PropertyType.FullName.Contains("List`1[System.String]"))
                 {

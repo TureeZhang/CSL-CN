@@ -78,16 +78,6 @@ export class WikiPassageComponent implements OnInit {
       this.currentUser = response;
       this.isAdmin = response.isAdmin;
     });
-
-    this.replaceTable();
-
-  }
-
-  replaceTable(): void {
-    const viewContainerRef: ViewContainerRef = this.replaceTableHost.viewContainerRef;
-
-    const component = this.componentFactoryResolver.resolveComponentFactory(NzTableComponent);
-    console.log(component);
   }
 
   /***

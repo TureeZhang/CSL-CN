@@ -43,8 +43,12 @@
         <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon type="save"></i>表格编辑器</a>
       </h2>
 
-      <span style="margin-left:16px;">
+
+      <span style="margin-left:16px;" nz-text nzType="secondary">
         最后编辑：{{wikiPassage?.lastModifyDate}}
+      </span>
+      <span style="margin-left:8px;" nz-text nzType="secondary">
+        浏览数量：{{wikiPassage?.totalViewsCount}}
       </span>
 
 
@@ -86,7 +90,7 @@
 
       <div style="margin:16px;margin-top:24px;margin-bottom:40px;">
 
-        <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content" replace-table></markdown>
+        <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
 
         <md-editor *ngIf="pageStatus==1"
                    name="Content"

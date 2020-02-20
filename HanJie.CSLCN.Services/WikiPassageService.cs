@@ -3,6 +3,7 @@ using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Dtos.Normals;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -338,35 +339,37 @@ namespace HanJie.CSLCN.Services
              {
                  while (true)
                  {
+                     Dictionary<int, Dictionary<string, ViewsCountDto>> output = null;
                      LockViewsDictionary(dic =>
-                    {
-                        lock (WikiPassageService._viewsCountTaskLock)
-                        {
-                            foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
-                            {
-                                int passageId = item.Key;
-                                int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
+                                {
+                                    output = dic;
+                                    lock (WikiPassageService._viewsCountTaskLock)
+                                    {
+                                        foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
+                                        {
+                                            int passageId = item.Key;
+                                            int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
 
-                                if (newViewsCount > 0)
-                                {
-                                    WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
-                                    wikiPassage.TotalViewsCount += newViewsCount;
-                                    _ = wikiPassageService.UpdateAsync(wikiPassage);
-                                }
-                            }
-                            foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
-                            {
-                                foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
-                                {
-                                    viewsCountItem.Value.NewViews = 0;
-                                }
-                            }
-                        }
-                    });
+                                            if (newViewsCount > 0)
+                                            {
+                                                WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
+                                                wikiPassage.TotalViewsCount += newViewsCount;
+                                                _ = wikiPassageService.UpdateAsync(wikiPassage);
+                                            }
+                                        }
+                                        foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
+                                        {
+                                            foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
+                                            {
+                                                viewsCountItem.Value.NewViews = 0;
+                                            }
+                                        }
+                                    }
+                                });
                      if (RunAs.Debug)
-                         Thread.Sleep(5000);
+                         Thread.Sleep(5 * 1000);    //5秒
                      if (RunAs.Release)
-                         Thread.Sleep(30000);
+                         Thread.Sleep(180 * 1000);  //180秒=3分钟
                  }
 
              });
