@@ -11,7 +11,7 @@ namespace HanJie.CSLCN.Services
 {
     public class LogService : BaseService<LogDto, Log>
     {
-        public async virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, Dictionary<string, string> parameters = null)
+        public new async virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
         {
             Ensure.NotNull(message, nameof(message));
 

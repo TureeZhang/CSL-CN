@@ -2,6 +2,7 @@
 using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,13 @@ namespace HanJie.CSLCN.Services
         public CSLDbContext CSLDbContext { get; set; }
         public CommonHelper CommonHelper { get; set; }
 
+        public LogService LogService { get; set; }
+
         public BaseService()
         {
             this.CommonHelper = new CommonHelper();
             this.CSLDbContext = new CSLDbContext();
+            this.LogService = new LogService();
         }
 
         public T GetService<T>()
@@ -113,6 +117,11 @@ namespace HanJie.CSLCN.Services
             }
 
             return dtos;
+        }
+
+        public virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
+        {
+            this.LogService.Log(message, logLevel, parameters);
         }
     }
 }
