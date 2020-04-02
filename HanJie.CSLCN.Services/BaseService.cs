@@ -18,13 +18,10 @@ namespace HanJie.CSLCN.Services
         public CSLDbContext CSLDbContext { get; set; }
         public CommonHelper CommonHelper { get; set; }
 
-        public LogService LogService { get; set; }
-
         public BaseService()
         {
             this.CommonHelper = new CommonHelper();
             this.CSLDbContext = new CSLDbContext();
-            this.LogService = new LogService();
         }
 
         public T GetService<T>()
@@ -50,6 +47,18 @@ namespace HanJie.CSLCN.Services
 
             return result;
 
+        }
+
+        public virtual TDataModelType Add(TDataModelType data)
+        {
+            Ensure.NotNull(data, nameof(data));
+
+            data.CreateDate = DateTime.Now;
+            data.LastModifyDate = DateTime.Now;
+            TDataModelType result = CSLDbContext.Set<TDataModelType>().Add(data).Entity;
+            CSLDbContext.SaveChanges();
+
+            return result;
         }
 
         /// <summary>
@@ -121,7 +130,7 @@ namespace HanJie.CSLCN.Services
 
         public virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
         {
-            this.LogService.Log(message, logLevel, parameters);
+            new LogService().Log(message, logLevel, parameters);
         }
     }
 }

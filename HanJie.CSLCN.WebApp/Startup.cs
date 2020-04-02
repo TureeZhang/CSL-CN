@@ -68,7 +68,7 @@ namespace HanJie.CSLCN.WebApp
             //提供 服务提供 对象。
             GlobalService.ServiceProvider = services.BuildServiceProvider();
             //启动计划任务
-            //StartTask();
+            StartTask();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

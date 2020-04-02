@@ -38,9 +38,9 @@ namespace HanJie.CSLCN.Datas
         /// </summary>
         public DbSet<Log> Logs { get; set; }
 
-        public CSLDbContext()
+        public CSLDbContext():base()
         {
-
+            
         }
 
         public CSLDbContext(DbContextOptions<CSLDbContext> options)
@@ -51,7 +51,7 @@ namespace HanJie.CSLCN.Datas
         {
             //FluentAPI goes here.
             //优先使用 Attrbiute 标记，FluentAPI 优先级高于其他，在使用前请先仔细检查其他数据模型的标记情况。
-
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
