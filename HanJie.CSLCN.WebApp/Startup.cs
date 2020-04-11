@@ -159,7 +159,7 @@ namespace HanJie.CSLCN.WebApp
         /// </summary>
         private void StartTask()
         {
-            WikiPassageService.StartViewsCountUpdateTask(GlobalService.ServiceProvider.GetService<WikiPassageService>());
+            WikiPassageService.StartViewsCountUpdateTask(new WikiPassageService());
         }
     }
 }

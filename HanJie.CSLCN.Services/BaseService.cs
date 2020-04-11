@@ -2,6 +2,7 @@
 using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,18 @@ namespace HanJie.CSLCN.Services
 
             return result;
 
+        }
+
+        public virtual TDataModelType Add(TDataModelType data)
+        {
+            Ensure.NotNull(data, nameof(data));
+
+            data.CreateDate = DateTime.Now;
+            data.LastModifyDate = DateTime.Now;
+            TDataModelType result = CSLDbContext.Set<TDataModelType>().Add(data).Entity;
+            CSLDbContext.SaveChanges();
+
+            return result;
         }
 
         /// <summary>
@@ -113,6 +126,11 @@ namespace HanJie.CSLCN.Services
             }
 
             return dtos;
+        }
+
+        public virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
+        {
+            new LogService().Log(message, logLevel, parameters);
         }
     }
 }
