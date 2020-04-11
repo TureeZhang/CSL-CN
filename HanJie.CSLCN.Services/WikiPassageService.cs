@@ -48,6 +48,7 @@ namespace HanJie.CSLCN.Services
             return wikiPassage;
         }
 
+
         public async Task<List<WikiPassageAnchorTitleDto>> CollectAnchorTitlesAsync(string content)
         {
             if (string.IsNullOrEmpty(content))
@@ -287,6 +288,35 @@ namespace HanJie.CSLCN.Services
                 }
 
                 line = await stringReader.ReadLineAsync();
+            }
+
+            return result;
+        }
+
+
+        public virtual async Task<string> PickDescriptionFromContent(string content)
+        {
+            Ensure.NotNull(content, nameof(content));
+
+            string result = "编辑中...";
+
+            if (!content.Trim().StartsWith("!["))
+            {
+                result = content.Substring(0, content.Length < 32 ? content.Length : 32);
+                return result;
+            }
+
+            StringReader contentReader = new StringReader(content);
+            string line = await contentReader.ReadLineAsync();
+            while (line!=null)
+            {
+                if (!line.Trim().StartsWith("![") && line.Trim() != string.Empty)
+                {
+                    result = line.Substring(0, line.Length < 32 ? line.Length : 32);
+                    break;
+                }
+
+                line = await contentReader.ReadLineAsync();
             }
 
             return result;

@@ -36,7 +36,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
                 WikiListItemDto dto = new WikiListItemDto();
                 dto.Id = item.Id;
                 dto.Title = item.Title;
-                dto.Description = item.Content.Substring(0, item.Content.Length<32 ? item.Content.Length : 32);
+                dto.Description = await this._wikiPassageService.PickDescriptionFromContent(item.Content);
                 dto.RoutePath = item.RoutePath;
                 dto.CoverUrl = await this._wikiPassageService.PickCoverUrlFromContentFirstImage(item.Content);
                 wikiListItems.Add(dto);

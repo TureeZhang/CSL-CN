@@ -31,6 +31,7 @@ namespace HanJie.CSLCN.WebApp
                          config.SetBasePath(Directory.GetCurrentDirectory());
                          config.AddJsonFile(RunAs.Debug ? "appsettings.Debug.json" : "appsettings.Release.json", optional: true, reloadOnChange: true);
                      })
+                     .UseUrls("http://localhost:5000")
                      .UseStartup<Startup>();
         }
     }
