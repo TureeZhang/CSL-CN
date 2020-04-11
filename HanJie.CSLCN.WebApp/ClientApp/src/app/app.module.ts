@@ -27,6 +27,7 @@ import { AdminWikipassagesComponent } from './components/admin-components/admin-
 import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';  
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { ReplaceTableDirective } from './directives/replace-table.service';
+import { AdminSystemSettingsComponent } from './components/admin-components/admin-homepage-settings/admin-system-settings.component';
 
 registerLocaleData(zh);
 
@@ -50,7 +51,8 @@ registerLocaleData(zh);
     AdminCreateWikipassageComponent,
     WikiListComponent,
     //指令
-    ReplaceTableDirective
+    ReplaceTableDirective,
+    AdminSystemSettingsComponent
   ],
   imports: [
     BrowserModule,

@@ -34,13 +34,18 @@ namespace HanJie.CSLCN.Datas
         public DbSet<QiniuStorageInfo> QiniuStorageInfoes { get; set; }
 
         /// <summary>
+        /// 系统设置
+        /// </summary>
+        public DbSet<SystemSettings> SystemSettings { get; set; }
+
+        /// <summary>
         /// 日志
         /// </summary>
         public DbSet<Log> Logs { get; set; }
 
-        public CSLDbContext():base()
+        public CSLDbContext() : base()
         {
-            
+
         }
 
         public CSLDbContext(DbContextOptions<CSLDbContext> options)

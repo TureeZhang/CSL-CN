@@ -36,7 +36,7 @@ namespace HanJie.CSLCN.Models.DataModels
         /// <summary>
         /// 将传输模型转换为数据模型。
         /// </summary>
-        public TDataModelType ConvertFromDtoModel(TDtoType dtoModel)
+        public virtual TDataModelType ConvertFromDtoModel(TDtoType dtoModel)
         {
             TDataModelType result = new TDataModelType();
             foreach (PropertyInfo item in dtoModel.GetType().GetProperties())
