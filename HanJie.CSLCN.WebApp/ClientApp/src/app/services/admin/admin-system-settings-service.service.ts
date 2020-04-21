@@ -16,8 +16,8 @@ export class AdminSystemSettingsService {
         return this.httpHelper.post<SystemSettingsDto,SystemSettingsDto>(this.systemSettingsUrl,data);
     }
 
-    get(): void {
-
+    get(): Observable<SystemSettingsDto> {
+        return this.httpHelper.get<SystemSettingsDto>(this.systemSettingsUrl);
     }
 
 }

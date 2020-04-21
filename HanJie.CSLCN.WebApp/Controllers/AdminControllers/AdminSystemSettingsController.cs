@@ -22,6 +22,14 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
             this._systemSettingsService = systemSettingsService;
         }
 
+        [HttpGet]
+        public IActionResult List()
+        {
+            SystemSettingsDto result = this._systemSettingsService.ListAsDto();
+
+            return Json(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Update(SystemSettingsDto dto)
         {

@@ -40,6 +40,20 @@ namespace HanJie.CSLCN.Services
             return settings;
         }
 
+        public SystemSettingsDto ListAsDto()
+        {
+            SystemSettingsDto result = new SystemSettingsDto();
+
+            List<SystemSettings> systemSettings = List();
+            foreach (string propName in typeof(SystemSettingsEnum).GetEnumNames())
+            {
+                string propValue = systemSettings.Where(item => string.Equals(propName, item.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault().Value;
+                typeof(SystemSettingsDto).GetProperty(propName).SetValue(result, propValue);
+            }
+
+            return result;
+        }
+
         public async Task UpdateAsync(SystemSettingsDto settings)
         {
             Ensure.NotNull(settings, nameof(settings));

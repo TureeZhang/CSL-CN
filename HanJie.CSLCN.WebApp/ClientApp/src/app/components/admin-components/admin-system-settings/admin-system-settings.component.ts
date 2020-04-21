@@ -26,11 +26,15 @@ export class AdminSystemSettingsComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.initSystemSettingValues();
     }
 
     initSystemSettingValues(): void {
-        this.adminSystemSettingsService.
+        this.adminSystemSettingsService.get().subscribe(response => {
+            this.systemSettingsForm.setValue({
+                homepageNews: response.homepageNews
+            });
+        });
     }
 
     submitForm(data: SystemSettingsDto): void {
