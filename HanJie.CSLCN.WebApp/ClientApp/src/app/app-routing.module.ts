@@ -10,7 +10,7 @@ import { AdminHomepageComponent } from './components/admin-components/admin-home
 import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
 import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
-import { AdminSystemSettingsComponent } from './components/admin-components/admin-homepage-settings/admin-system-settings.component';
+import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
 
 const routes: Routes = [
     //主站路由

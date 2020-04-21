@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
 {
+    [Route("api/admin/[controller]")]
     public class AdminSystemSettingsController : AdminBaseController
     {
         private readonly SystemSettingsService _systemSettingsService;
@@ -21,10 +22,6 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
             this._systemSettingsService = systemSettingsService;
         }
 
-        public AdminSystemSettingsController(UserStatuService userStatuService) : base(userStatuService)
-        {
-        }
-
         [HttpPost]
         public async Task<IActionResult> Update(SystemSettingsDto dto)
         {
@@ -32,7 +29,7 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
             Ensure.NotNull(dto.Id, nameof(dto));
             Ensure.NotNull(dto.HomepageNews, nameof(dto));
 
-            await this._systemSettingsService.UpdateAsync(new SystemSettings().ConvertFromDtoModel(dto));
+            await this._systemSettingsService.UpdateAsync(dto);
             return Ok();
         }
     }

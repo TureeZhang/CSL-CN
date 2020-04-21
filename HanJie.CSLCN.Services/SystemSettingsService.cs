@@ -13,9 +13,9 @@ namespace HanJie.CSLCN.Services
 {
     public class SystemSettingsService : BaseService<SystemSettingsDto, SystemSettings>
     {
-        public string GetByName(SystemSettingsEnum settingName)
+        public SystemSettings GetByName(SystemSettingsEnum settingName)
         {
-            string result = base.CSLDbContext.SystemSettings.Where(item => string.Equals(item.Name, settingName.ToString(), StringComparison.OrdinalIgnoreCase)).FirstOrDefault()?.Value;
+            SystemSettings result = base.CSLDbContext.SystemSettings.Where(item => string.Equals(item.Name, settingName.ToString(), StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
             return result;
         }
 
@@ -43,19 +43,17 @@ namespace HanJie.CSLCN.Services
         public async Task UpdateAsync(SystemSettingsDto settings)
         {
             Ensure.NotNull(settings, nameof(settings));
+            Ensure.NotNull(settings.HomepageNews, nameof(settings.HomepageNews));
 
-            foreach (PropertyInfo prop in typeof(SystemSettingsEnum).GetProperties())
+            foreach (string propName in typeof(SystemSettingsEnum).GetEnumNames())
             {
-                string propName = prop.Name;
-                string propValue = prop.GetValue(settings)?.ToString();
+                SystemSettings setting = this.GetByName(SystemSettingsEnum.HomepageNews);
 
-                if (propValue != null)
-                {
-                    SystemSettings systemSettings = new SystemSettings();
-                    systemSettings.Name = propName;
-                    systemSettings.Value = propValue;
-                    await base.UpdateAsync(systemSettings);
-                }
+                if (setting == null)
+                    throw new ArgumentException($"不存在设置项名称为 {propName} 的选项。");
+
+                setting.Value = typeof(SystemSettingsDto).GetProperty(propName).GetValue(settings).ToString();
+                await base.UpdateAsync(setting);
             }
         }
 

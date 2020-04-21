@@ -1,0 +1,42 @@
+<div class="container">
+
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <h2>系统设置</h2>
+    </div>
+  </div>
+
+  <div nz-row nzType="flex" nzJustify="end">
+    <div nz-col nzSpan="2" style="margin-bottom:16px;">
+      <!--<button nz-button (click)="createUser()" nzType="primary">添加用户</button>-->
+    </div>
+  </div>
+
+  <div nz-row>
+    <div nz-col nzSpan="24">
+
+      <form nz-form [formGroup]="systemSettingsForm"
+            (ngSubmit)="submitForm(systemSettingsForm.value)"
+            [nzLayout]="'vertical'">
+
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>最新消息</nz-form-label>
+          <nz-form-control [nzSpan]="24" nzErrorTip="请填写最新消息!">
+            <textarea formControlName="homepageNews"
+                      nz-input rows="2"
+                      placeholder="请填写首页“最新消息”（支持 markdown 书写格式）"
+                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+        <div nz-col nzSpan="24">
+          <button nz-button nzType="primary" style="width:120px;" [disabled]="!systemSettingsForm.valid">保 存</button>
+          <button nz-button nzType="default" (click)="resetForm($event)" style="margin-left:8px;">重 置</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</div>

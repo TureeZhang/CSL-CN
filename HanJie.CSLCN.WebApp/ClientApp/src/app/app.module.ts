@@ -27,7 +27,7 @@ import { AdminWikipassagesComponent } from './components/admin-components/admin-
 import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';  
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { ReplaceTableDirective } from './directives/replace-table.service';
-import { AdminSystemSettingsComponent } from './components/admin-components/admin-homepage-settings/admin-system-settings.component';
+import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
 
 registerLocaleData(zh);
 
