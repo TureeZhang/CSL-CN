@@ -14,7 +14,7 @@ var AdminHomepageComponent = /** @class */ (function () {
         this.init();
     }
     AdminHomepageComponent.prototype.init = function () {
-        this.data.push(new admin_homepage_card_1.AdminHomepageCard("/admin/userinfoes", "userinfoAvatarTemplate", "用户", "查看并管理注册用户信息", "user"), new admin_homepage_card_1.AdminHomepageCard("/admin/donators", "donatorRankTemplate", "捐赠", "查看并管理捐赠者统计数据", "heart"), new admin_homepage_card_1.AdminHomepageCard("/admin/wikipassages", "wikiPassageTemplate", "文章", "查看并管理维基文档", "file-text"), new admin_homepage_card_1.AdminHomepageCard("/admin/storagefiles", "cloudFileTemplate", "文件", "查看并管理已上传文件", "cloud-upload"));
+        this.data.push(new admin_homepage_card_1.AdminHomepageCard("/admin/userinfoes", "userinfoAvatarTemplate", "用户", "查看并管理注册用户信息", "user"), new admin_homepage_card_1.AdminHomepageCard("/admin/donators", "donatorRankTemplate", "捐赠", "查看并管理捐赠者统计数据", "heart"), new admin_homepage_card_1.AdminHomepageCard("/admin/wikipassages", "wikiPassageTemplate", "文章", "查看并管理维基文档", "file-text"), new admin_homepage_card_1.AdminHomepageCard("/admin/storagefiles", "cloudFileTemplate", "文件", "查看并管理已上传文件", "cloud-upload"), new admin_homepage_card_1.AdminHomepageCard("/admin/systemsettings", "homepageSettingsTemplate", "系统设置", "查看并编辑系统关键信息", "setting"));
     };
     AdminHomepageComponent.prototype.ngOnInit = function () {
     };
