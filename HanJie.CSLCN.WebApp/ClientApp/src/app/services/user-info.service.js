@@ -14,9 +14,9 @@ var UserInfoService = /** @class */ (function () {
         this.loginApiUrl = "/api/login";
         this.userInfoApiUrl = "/api/userinfo";
         this.adminUserInfoApiUrl = "/api/admin/adminuserinfo";
-        if (UserInfoService_1.currentUser == null) {
+        if (UserInfoService_1.CurrentUser == null) {
             this.getCurrentLoginedUserInfo().subscribe(function (response) {
-                UserInfoService_1.currentUser = response;
+                UserInfoService_1.CurrentUser = response;
             });
         }
     }
@@ -33,7 +33,7 @@ var UserInfoService = /** @class */ (function () {
     };
     UserInfoService.prototype.logout = function (userId) {
         this.httpHelper.delete(this.loginApiUrl, userId).subscribe(function (response) {
-            UserInfoService_1.currentUser = null;
+            UserInfoService_1.CurrentUser = null;
         });
     };
     UserInfoService.prototype.create = function (data) {
@@ -42,13 +42,13 @@ var UserInfoService = /** @class */ (function () {
     UserInfoService.prototype.getCurrentLoginedUserInfo = function () {
         var _this = this;
         return new rxjs_1.Observable(function (subscriber) {
-            if (UserInfoService_1.currentUser != null) {
-                subscriber.next(UserInfoService_1.currentUser);
+            if (UserInfoService_1.CurrentUser != null) {
+                subscriber.next(UserInfoService_1.CurrentUser);
                 subscriber.complete();
             }
             else {
                 _this.httpHelper.get(_this.userInfoApiUrl).subscribe(function (response) {
-                    UserInfoService_1.currentUser = response;
+                    UserInfoService_1.CurrentUser = response;
                     subscriber.next(response);
                     subscriber.complete();
                 });

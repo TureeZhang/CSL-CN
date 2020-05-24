@@ -13,12 +13,12 @@ export class UserInfoService {
   private userInfoApiUrl: string = "/api/userinfo";
   private adminUserInfoApiUrl: string = "/api/admin/adminuserinfo";
 
-  private static currentUser: UserInfoDto;
+  public static CurrentUser: UserInfoDto;
 
   constructor(private httpHelper: CSLHttpHelper) {
-    if (UserInfoService.currentUser == null) {
+    if (UserInfoService.CurrentUser == null) {
       this.getCurrentLoginedUserInfo().subscribe(response => {
-        UserInfoService.currentUser = response;
+        UserInfoService.CurrentUser = response;
       });
     }
   }
@@ -35,9 +35,9 @@ export class UserInfoService {
     return this.httpHelper.post<UserInfoDto, UserInfoDto>(this.loginApiUrl, userInfo);
   }
 
-  logout(userId: number): void {
+    logout(userId: number): void {
     this.httpHelper.delete(this.loginApiUrl, userId).subscribe(response => {
-      UserInfoService.currentUser = null;
+      UserInfoService.CurrentUser = null;
     });
   }
 
@@ -47,12 +47,12 @@ export class UserInfoService {
 
   getCurrentLoginedUserInfo(): Observable<UserInfoDto> {
     return new Observable<UserInfoDto>((subscriber) => {
-      if (UserInfoService.currentUser != null) {
-        subscriber.next(UserInfoService.currentUser);
+      if (UserInfoService.CurrentUser != null) {
+        subscriber.next(UserInfoService.CurrentUser);
         subscriber.complete();
       } else {
         this.httpHelper.get<UserInfoDto>(this.userInfoApiUrl).subscribe(response => {
-          UserInfoService.currentUser = response;
+          UserInfoService.CurrentUser = response;
           subscriber.next(response);
           subscriber.complete();
         });

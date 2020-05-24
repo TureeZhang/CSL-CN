@@ -13,7 +13,6 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [ApiController]
     public class WikiListController : BaseController
     {
-        public static Tuple<DateTime, List<WikiListItemDto>> WikiListCaches;
 
         private WikiPassageService _wikiPassageService { get; set; }
 
@@ -26,26 +25,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            if (WikiListCaches!=null && WikiListCaches.Item1.AddMinutes(5) > DateTime.Now)
-                return Json(WikiListCaches.Item2);
-
-            List<WikiPassageDto> wikiPassageDtos = this._wikiPassageService.ListDtos();
-            List<WikiListItemDto> wikiListItems = new List<WikiListItemDto>();
-            foreach (WikiPassageDto item in wikiPassageDtos)
-            {
-                WikiListItemDto dto = new WikiListItemDto();
-                dto.Id = item.Id;
-                dto.Title = item.Title;
-                dto.Description = await this._wikiPassageService.PickDescriptionFromContent(item.Content);
-                dto.RoutePath = item.RoutePath;
-                dto.CoverUrl = await this._wikiPassageService.PickCoverUrlFromContentFirstImage(item.Content);
-                wikiListItems.Add(dto);
-            }
-
-            //Cache
-            WikiListController.WikiListCaches = new Tuple<DateTime, List<WikiListItemDto>>(DateTime.Now, wikiListItems);
-
-            return Json(wikiListItems);
+            List<WikiListItemDto> wikiListItemDtos = await this._wikiPassageService.ListAllPassageGenerals();
+            return Json(wikiListItemDtos);
         }
+
     }
 }

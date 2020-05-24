@@ -117,6 +117,8 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(userInfo.AvatarUrl, nameof(userInfo.AvatarUrl));
 
             userInfo.Password = new CommonHelper().GetMd5Base64StringUsePrivateSold(userInfo.Password);
+            userInfo.PersonalHomepageUrl = string.IsNullOrWhiteSpace(userInfo.PersonalHomepageUrl) ? null : userInfo.PersonalHomepageUrl;
+            userInfo.DescriptionWord = string.IsNullOrEmpty(userInfo.DescriptionWord) ? "这个刁民太懒了，什么都没有写。" : userInfo.DescriptionWord;
 
             UserInfo result = await base.AddAsync(userInfo);
             return result;

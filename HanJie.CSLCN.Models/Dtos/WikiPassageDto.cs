@@ -11,6 +11,7 @@ namespace HanJie.CSLCN.Models.Dtos
         public string Content { get; set; }
         public string RoutePath { get; set; }
         public List<WikiPassageAnchorTitleDto> AnchorTitles { get; set; }
+        public UserInfoDto LastModifyUser { get; set; }
         public List<UserInfoDto> MainAuthors { get; set; }
         public List<UserInfoDto> CoAuthors { get; set; }
         public int ParentPassageId { get; set; }

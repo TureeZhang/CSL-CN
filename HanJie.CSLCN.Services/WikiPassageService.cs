@@ -20,6 +20,8 @@ namespace HanJie.CSLCN.Services
         private static Dictionary<int, WikiPassageLockingInfo> WikiEditingStatusDictionary = new Dictionary<int, WikiPassageLockingInfo>();
         private object _editingStatusLock = new object();
 
+        public static Tuple<DateTime, List<WikiListItemDto>> WikiListCaches { get; private set; }
+
         #region 访问量统计
         private static Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
         private static Task viewsCountTask;
@@ -89,6 +91,42 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
+        /// 列出所有文章的概述。
+        /// 
+        /// 注意：
+        ///     包含文章标题、概述、封面图链接等。
+        /// <param name="isContainLastModifyUserInfo">是否包含文章的作者信息</param>
+        /// <param name="neverReadFromCache">是否立即从数据库中执行统计。设置为 false，则自动按照缓存策略决定返回的数据来自于缓存还是数据库。</param>
+        /// <returns></returns>
+        public virtual async Task<List<WikiListItemDto>> ListAllPassageGenerals(bool readFromDatabaseImmediately = false)
+        {
+            if (!readFromDatabaseImmediately)
+            {
+                if (WikiListCaches != null && WikiListCaches.Item1.AddMinutes(5) > DateTime.Now)
+                    return WikiListCaches.Item2;
+            }
+
+            List<WikiPassage> wikiPassageDtos = List();
+            List<WikiListItemDto> wikiListItems = new List<WikiListItemDto>();
+            foreach (WikiPassage item in wikiPassageDtos)
+            {
+                WikiListItemDto dto = new WikiListItemDto();
+                dto.Id = item.Id;
+                dto.Title = item.Title;
+                dto.Description = await PickDescriptionFromContent(item.Content);
+                dto.RoutePath = item.RoutePath;
+                dto.CoverUrl = await PickCoverUrlFromContentFirstImage(item.Content);
+                dto.LastModifyDate = item.LastModifyDate.ToString();
+                dto.LastModifyUser = new UserInfoDto { Id = item.LastModifyUserId };
+                wikiListItems.Add(dto);
+            }
+
+            //Cache
+            WikiPassageService.WikiListCaches = new Tuple<DateTime, List<WikiListItemDto>>(DateTime.Now, wikiListItems);
+
+            return wikiListItems;
+        }
+
         public virtual async Task<List<BreadCrumbDto>> CollectChildPageBreadCrumbs(WikiPassageDto wikiPassageDto)
         {
             List<BreadCrumbDto> results = new List<BreadCrumbDto>();
@@ -151,6 +189,8 @@ namespace HanJie.CSLCN.Services
             if (wikiPassageDto.CoAuthors != null)
                 entity.CoAuthors = string.Join(",", wikiPassageDto.CoAuthors?.Select(item => item.Id).ToArray());
 
+            entity.LastModifyUserId = wikiPassageDto.Id;
+
             await base.UpdateAsync(entity);
             UnlockPassageEditingStatus(wikiPassageDto.Id);
         }
@@ -167,6 +207,7 @@ namespace HanJie.CSLCN.Services
             wikiPassageDto.Content = "施工中🚧";
             WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);
             entity.MainAuthors = wikiPassageDto.MainAuthors.FirstOrDefault()?.Id.ToString();
+            entity.LastModifyUserId = wikiPassageDto.LastModifyUser.Id;
             WikiPassage wikiPassage = await base.AddAsync(entity);
 
             return wikiPassage;
@@ -308,7 +349,7 @@ namespace HanJie.CSLCN.Services
 
             StringReader contentReader = new StringReader(content);
             string line = await contentReader.ReadLineAsync();
-            while (line!=null)
+            while (line != null)
             {
                 if (!line.Trim().StartsWith("![") && line.Trim() != string.Empty)
                 {
