@@ -24,3 +24,8 @@
   margin-left: 4px;
   font-size: small;
 }
+
+.last-modify-wiki-container {
+  padding: 4px 16px;
+  text-align: left !important;
+}

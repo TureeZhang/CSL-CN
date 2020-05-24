@@ -15,6 +15,9 @@ namespace HanJie.CSLCN.Models.DataModels
         public string Content { get; set; }
 
         [Required]
+        public int LastModifyUserId { get; set; }
+
+        [Required]
         public string MainAuthors { get; set; }
 
         public string CoAuthors { get; set; }

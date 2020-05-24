@@ -3,18 +3,18 @@ import { UserInfoDto } from './user-info-dto';
 import { BreadCrumbDto } from './bread-crumb';
 
 export class WikiPassageDto {
-  id: number;
-  title: string;
-  content: string;
-  routePath: string;
-  createDate: string;
-  lastModifyDate: string;
-  anchorTitles: AnchorTitle[];
-  mainAuthors: UserInfoDto[];
-  coAuthors: UserInfoDto[];
-  parentPassageId: number;
-  breadCrumbs: BreadCrumbDto[];
-  childPageBreadCrumbs: BreadCrumbDto[];
-  editingUser: UserInfoDto;
-  totalViewsCount: number;
+    id: number;
+    title: string;
+    content: string;
+    routePath: string;
+    createDate: string;
+    lastModifyUser: UserInfoDto;
+    anchorTitles: AnchorTitle[];
+    mainAuthors: UserInfoDto[];
+    coAuthors: UserInfoDto[];
+    parentPassageId: number;
+    breadCrumbs: BreadCrumbDto[];
+    childPageBreadCrumbs: BreadCrumbDto[];
+    editingUser: UserInfoDto;
+    totalViewsCount: number;
 }

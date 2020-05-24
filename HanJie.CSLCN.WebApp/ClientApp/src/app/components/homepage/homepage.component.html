@@ -1,7 +1,9 @@
 <div nz-row nzType="flex" nzJustify="center" ngAlign="middle" style="background:#001529;height:147px;text-align:center;color:white;line-height:147px;">
   <div nz-col nzXl="12" nzXs="24">
     <div>
+      <!--todo :Release 记得改回来-->
       <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/logo-header.png" />
+      <!--<img src="/assets/logo-header.png" alt="Alternate Text" />-->
     </div>
   </div>
   <div nz-col nzXl="12" nzXs="0" style="font-size:large;">
@@ -83,7 +85,7 @@
       <a href="https://www.huya.com/codelive" rel="nofollow" target="_blank"><i nz-icon nzType="tag" nzTheme="outline"></i> 前往汉界的虎牙直播间现场</a>
     </div>
   </div>
-  <div nz-col nzXXl="16" nzXl="14" nzMd="8" nzLg="16" nzXs="24">
+  <div nz-col nzXXl="15" nzXl="13" nzMd="7" nzLg="15" nzXs="24">
     <div nz-row nzType="flex" nzJustify="center" nzAlign="middle" style="">
       <div nz-col nzXl="24">
         <div class="content-header-board">
@@ -115,10 +117,46 @@
       </div>
     </div>
   </div>
-  <div nz-col nzXXl="4" nzXl="4" nzLg="0" nzMd="0" nzXs="24" style="text-align:center;">
+  <div nz-col nzXXl="5" nzXl="5" nzLg="0" nzMd="0" nzXs="24" style="text-align:center;">
     <div>
-      <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/homepage-thumb.png" alt="Alternate Text" />
+      <div class="content-header-board">
+        最近编辑
+      </div>
+      <!-- todo: Release 记得改回来 -->
+      <!--<img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/homepage-thumb.png" alt="Alternate Text" />-->
+      <!--<img *ngIf="item==null" src="/assets/homepage-thumb.png" alt="Alternate Text" style="width:100%" />-->
+      <!--<ng-container *ngIf="item!=null">-->
+      <nz-list class="last-modify-wiki-container"
+               [nzDataSource]="lastModifyWikisDisplay"
+               [nzRenderItem]="item"
+               [nzItemLayout]="'horizontal'"
+               [nzLoading]="isLoadingLastModifyWikis"
+               [nzPagination]="pagination">
+        <ng-template #item let-item>
+          <nz-list-item>
+            <nz-list-item-meta [nzTitle]="nzTitle"
+                               nzAvatar="{{item.lastModifyUser.avatarUrl}}"
+                               [nzDescription]="nzDescription">
+              <ng-template #nzTitle>
+                <b>《<a routerLink="/wiki-passages/{{item.routerPath}}">{{ item.title }}</a>》</b>
+              </ng-template>
+              <ng-template #nzDescription>
+                <div class="ant-list-item-meta-description ng-star-inserted" style="font-size:xx-small;">
+                  最后编辑: {{item.lastModifyUser.nickName}} {{item.lastModifyDate}}
+                </div>
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
+        </ng-template>
+        <ng-template #pagination>
+          <nz-pagination [nzPageIndex]="pageIndex" nzPageSize="5" [nzTotal]="pageItemTotals" (click)="stopAutoPageTimer()" (nzPageIndexChange)="pageIndexChange($event)"></nz-pagination>
+        </ng-template>
+      </nz-list>
+      <!--</ng-container>-->
+
+
     </div>
+    <nz-divider nzText="DLC" nzOrientation="left"></nz-divider>
     <div>
       <div style="list-style:none;text-align:center;" class="dlc-logo-list">
         <div><img src="/assets/dlc-logo/after-dark.png" alt="Alternate Text" /><a href="#">黑夜（After Dark）</a></div>
@@ -129,6 +167,7 @@
         <div><img src="/assets/dlc-logo/parklife.png" alt="Alternate Text" /><a href="#">公园生活（Parklife）</a></div>
         <div><img src="/assets/dlc-logo/industries.png" alt="Alternate Text" /><a href="#">工业（Industries）</a></div>
         <div><img src="/assets/dlc-logo/campus.png" alt="Alternate Text" /><a href="#">校园（Campus）</a></div>
+        <div><img src="/assets/dlc-logo/sunset-harbor.png" alt="Alternate Text" /><a href="#">日落港口（Sunset Harbor）</a></div>
       </div>
     </div>
   </div>

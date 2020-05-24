@@ -11,5 +11,6 @@ namespace HanJie.CSLCN.Models.Dtos
         public string Description { get; set; }
         public string RoutePath { get; set; }
         public string CoverUrl { get; set; }
+        public UserInfoDto LastModifyUser { get; set; }
     }
 }
