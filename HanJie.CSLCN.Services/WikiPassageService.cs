@@ -116,7 +116,7 @@ namespace HanJie.CSLCN.Services
                 dto.Description = await PickDescriptionFromContent(item.Content);
                 dto.RoutePath = item.RoutePath;
                 dto.CoverUrl = await PickCoverUrlFromContentFirstImage(item.Content);
-                dto.LastModifyDate = item.LastModifyDate.ToString();
+                dto.LastModifyDate = item.LastModifyDate.ToString("yyyy-MM-dd HH:mm:ss");
                 dto.LastModifyUser = new UserInfoDto { Id = item.LastModifyUserId };
                 wikiListItems.Add(dto);
             }

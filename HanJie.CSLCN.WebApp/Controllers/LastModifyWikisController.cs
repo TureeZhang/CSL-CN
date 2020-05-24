@@ -34,7 +34,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
             }
 
             List<WikiListItemDto> wikiListItemDtos = await this._wikiPassageService.ListAllPassageGenerals();
-            wikiListItemDtos = wikiListItemDtos.OrderByDescending(item => item.LastModifyDate).ToList();
+
+            //todo:严重的性能问题。前期偷懒，取出了全部了文档对象再 take(30)，应当从 List 起就决定从数据库读取的数据条数。
+            wikiListItemDtos = wikiListItemDtos.OrderByDescending(item => item.LastModifyDate).Take(30).ToList();
             foreach (var item in wikiListItemDtos)
             {
                 UserInfoDto userInfoDto = new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(item.LastModifyUser.Id));
