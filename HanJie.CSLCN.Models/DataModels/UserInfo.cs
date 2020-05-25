@@ -51,8 +51,18 @@ namespace HanJie.CSLCN.Models.DataModels
         public string PersonalTitle { get; set; }
 
         /// <summary>
-        /// 个人签名
+        /// 捐赠描述
         /// </summary>
         public string DescriptionWord { get; set; }
+
+        /// <summary>
+        /// 个性签名
+        /// </summary>
+        public string PersonalizedSignature { get; set; }
+
+        /// <summary>
+        /// 提交次数计数
+        /// </summary>
+        public int CommitTimesCount { get; set; }
     }
 }
