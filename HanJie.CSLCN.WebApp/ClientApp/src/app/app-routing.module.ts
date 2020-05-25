@@ -11,6 +11,7 @@ import { AdminUserInfoesComponent } from './components/admin-components/admin-us
 import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
+import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 
 const routes: Routes = [
     //主站路由
@@ -22,6 +23,7 @@ const routes: Routes = [
     { path: "donator-rank", component: DonatorRankComponent },
     { path: "uploader", component: UploaderComponent },
     { path: "wiki-list", component: WikiListComponent },
+    { path: "editor-list", component: EditorDevoteInfoListComponent },
     //管理界面路由
     { path: "admin", component: AdminHomepageComponent },
     { path: "admin/userinfoes", component: AdminUserInfoesComponent },

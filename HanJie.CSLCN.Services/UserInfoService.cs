@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Common;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HanJie.CSLCN.Services
 {
@@ -49,6 +50,7 @@ namespace HanJie.CSLCN.Services
             {
                 UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
                 dto.Password = null;
+                dto.LastCommitDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 dtos.Add(dto);
             }
 
@@ -202,6 +204,50 @@ namespace HanJie.CSLCN.Services
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 更新最后一次提交的信息。
+        /// 
+        /// 注意：
+        ///     调用此方法同时执行了：
+        ///     1.提交次数累计加一；
+        ///     2.最后活跃时间更新为现在。
+        /// </summary>
+        /// <param name="id"></param>
+        public virtual async void UpdateLastCommitInfo(int id)
+        {
+            Ensure.IsDatabaseId(id, nameof(id));
+
+            UserInfo userInfo = GetById(id);
+            userInfo.CommitTimesCount += 1;
+            userInfo.LastCommitDateTime = DateTime.Now;
+            await UpdateAsync(userInfo);
+        }
+
+        public virtual async Task<List<UserInfo>> ListAllEditors()
+        {
+            List<UserInfo> editors = await this.CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToListAsync();
+            return editors;
+        }
+
+        public virtual async Task<List<UserInfoDto>> ListAllEditorsDto()
+        {
+            List<UserInfoDto> results = null;
+            List<UserInfo> userInfoes = await ListAllEditors();
+
+            if (userInfoes == null)
+                return null;
+
+            foreach (UserInfo item in userInfoes)
+            {
+                UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
+                dto.Password = null;
+                dto.LastCommitDateTime = item.LastCommitDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                results.Add(dto);
+            }
+
+            return results;
         }
     }
 }

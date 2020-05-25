@@ -518,5 +518,54 @@ namespace HanJie.CSLCN.Services
         }
         #endregion
 
+        #region 文档贡献者列表
+
+        public virtual async Task<List<WikiPassage>> ListAsMainAuthorPassages(int userId)
+        {
+            Ensure.IsDatabaseId(userId, nameof(userId));
+
+            List<WikiPassage> results = await this.CSLDbContext.WikiPassages
+                .Where(item => item.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToListAsync<WikiPassage>();
+
+            return results;
+        }
+
+        public virtual async Task<List<WikiPassageDto>> ListAsMainAuthorPassageDtoes(int userId)
+        {
+            return ConvertToDtos(await ListAsMainAuthorPassages(userId));
+        }
+
+        public virtual async Task<List<WikiPassage>> ListAsCooperatePassages(int userId)
+        {
+            Ensure.IsDatabaseId(userId, nameof(userId));
+
+            List<WikiPassage> result = await this.CSLDbContext.WikiPassages
+                .Where(item => item.CoAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToListAsync();
+
+            return result;
+        }
+
+        public virtual async Task<List<WikiPassageDto>> ListAsCooperatePassageDtoes(int userId)
+        {
+            return ConvertToDtos(await ListAsCooperatePassages(userId));
+        }
+
+        private List<WikiPassageDto> ConvertToDtos(List<WikiPassage> list)
+        {
+            Ensure.NotNull(list, nameof(list));
+
+            List<WikiPassageDto> wikiPassageDtos = null;
+            foreach (WikiPassage item in list)
+            {
+                WikiPassageDto dto = new WikiPassageDto().ConvertFromDataModel(item);
+                wikiPassageDtos.Add(dto);
+            }
+
+            return wikiPassageDtos;
+        }
+
+
+        #endregion
+
     }
 }

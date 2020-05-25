@@ -73,5 +73,10 @@ namespace HanJie.CSLCN.Models.Dtos
         /// </summary>
         public int CommitTimesCount { get; set; }
 
+        /// <summary>
+        /// 最后编辑的时间（最后活跃）
+        /// </summary>
+        public string LastCommitDateTime { get; set; }
+
     }
 }

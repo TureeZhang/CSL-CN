@@ -64,5 +64,10 @@ namespace HanJie.CSLCN.Models.DataModels
         /// 提交次数计数
         /// </summary>
         public int CommitTimesCount { get; set; }
+
+        /// <summary>
+        /// 最后编辑文档的时间（最后活跃时间）
+        /// </summary>
+        public DateTime LastCommitDateTime { get; set; }
     }
 }
