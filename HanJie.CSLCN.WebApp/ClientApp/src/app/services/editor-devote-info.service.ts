@@ -15,4 +15,8 @@ export class EditorDevoteInfoService {
     listAllEditorDevoteInfoes(): Observable<EditorDevoteInfoDto[]> {
         return this.httpHelper.get<EditorDevoteInfoDto[]>(this.editorDevoteInfoUrl)
     }
+
+    listMonthlyEditorDevoteInfoes(): Observable<EditorDevoteInfoDto[]> {
+        return this.httpHelper.get<EditorDevoteInfoDto[]>(`${this.editorDevoteInfoUrl}?monthlyTag=true`);
+    }
 }

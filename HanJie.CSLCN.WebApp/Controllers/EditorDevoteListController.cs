@@ -23,17 +23,18 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(string monthlyTag)
         {
-            List<EditorDevoteInfoDto> results = null;
+            List<EditorDevoteInfoDto> results = new List<EditorDevoteInfoDto>();
 
-            List<UserInfoDto> editors = await this._userInfoService.ListAllEditorsDto();
+            List<UserInfoDto> editors = await this._userInfoService.ListEditorsDto(string.IsNullOrEmpty(monthlyTag) ? -1 : 30);
             foreach (UserInfoDto item in editors)
             {
                 EditorDevoteInfoDto editorDevoteInfo = new EditorDevoteInfoDto();
                 editorDevoteInfo.UserInfo = item;
                 editorDevoteInfo.MainAuthPassages = await this._wikiPassageService.ListAsMainAuthorPassageDtoes(item.Id);
                 editorDevoteInfo.CooAuthPassages = await this._wikiPassageService.ListAsCooperatePassageDtoes(item.Id);
+                results.Add(editorDevoteInfo);
             }
 
             return Json(results);

@@ -3,50 +3,49 @@ import { DonatorRankDto } from '../../models/donator-rank-dto';
 import { DonatorRankService } from '../../services/donator-rank.service';
 import { GlobalService } from '../../services/global.service';
 import { UploadFile, NzTabComponent } from 'ng-zorro-antd';
+import { EditorDevoteInfoDto } from '../../models/editor-devote-info-dto';
+import { EditorDevoteInfoService } from '../../services/editor-devote-info.service';
 
 @Component({
-  selector: 'app-editor-devote-info-list',
-  templateUrl: './editor-devote-info-list.component.html',
-  styleUrls: ['./editor-devote-info-list.component.css']
+    selector: 'app-editor-devote-info-list',
+    templateUrl: './editor-devote-info-list.component.html',
+    styleUrls: ['./editor-devote-info-list.component.css']
 })
 export class EditorDevoteInfoListComponent implements OnInit {
 
-    public allRanks: DonatorRankDto[];
-    public monthlyRanks: DonatorRankDto[];
-    public monthlyRanksLoading: boolean = true;
-    public allRanksLoading: boolean = true;
-    public file: UploadFile;
+    public allEditors: EditorDevoteInfoDto[];
+    public monthlyEditors: EditorDevoteInfoDto[];
+    public monthlyEditorsLoading: boolean = false;
+    public allEditorsLoading: boolean = false;
 
-    constructor(private donatorRankService: DonatorRankService,
+    constructor(private editorDevoteInfoService: EditorDevoteInfoService,
         public globalService: GlobalService) {
 
     }
 
     ngOnInit(): void {
-        this.getMonthlyRank();
+        this.getMonthlyEditors();
     }
 
-    getAllRanks(): void {
-        this.donatorRankService.getAllRanks().subscribe(datas => {
-            this.allRanks = datas;
-            this.allRanksLoading = false;
+    getAllEditors(): void {
+        this.allEditorsLoading = true;
+        this.editorDevoteInfoService.listAllEditorDevoteInfoes().subscribe(datas => {
+            this.allEditors = datas;
+            this.allEditorsLoading = false;
         });
     }
 
-    getMonthlyRank(): void {
-        this.donatorRankService.getMonthlyRanks().subscribe(datas => {
-            this.monthlyRanks = datas;
-            this.monthlyRanksLoading = false;
+    getMonthlyEditors(): void {
+        this.monthlyEditorsLoading = true;
+        this.editorDevoteInfoService.listMonthlyEditorDevoteInfoes().subscribe(datas => {
+            this.monthlyEditors = datas;
+            this.monthlyEditorsLoading = false;
         });
-    }
-
-    setCustomerHeader(file: UploadFile): void {
-        //file.type = ""
     }
 
     onTabsetChange(event: { index: number, tab: NzTabComponent }): void {
-        if (event.index == 1 && this.allRanks == null) {
-            this.getAllRanks();
+        if (event.index == 1 && this.allEditors == null) {
+            this.getAllEditors();
         }
     }
 

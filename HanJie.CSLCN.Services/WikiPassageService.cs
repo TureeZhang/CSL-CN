@@ -524,8 +524,10 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.IsDatabaseId(userId, nameof(userId));
 
-            List<WikiPassage> results = await this.CSLDbContext.WikiPassages
-                .Where(item => item.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToListAsync<WikiPassage>();
+            //item => 
+
+            List<WikiPassage> results = await this.CSLDbContext.WikiPassages.ToListAsync();
+            results = results.Where(item => item.MainAuthors == null ? false : item.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToList();
 
             return results;
         }
@@ -539,8 +541,8 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.IsDatabaseId(userId, nameof(userId));
 
-            List<WikiPassage> result = await this.CSLDbContext.WikiPassages
-                .Where(item => item.CoAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToListAsync();
+            List<WikiPassage> result = await this.CSLDbContext.WikiPassages.ToListAsync();
+            result = result.Where(item => item.CoAuthors == null ? false : item.CoAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToList();
 
             return result;
         }
@@ -554,10 +556,11 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(list, nameof(list));
 
-            List<WikiPassageDto> wikiPassageDtos = null;
+            List<WikiPassageDto> wikiPassageDtos = new List<WikiPassageDto>();
             foreach (WikiPassage item in list)
             {
                 WikiPassageDto dto = new WikiPassageDto().ConvertFromDataModel(item);
+                dto.Content = null;
                 wikiPassageDtos.Add(dto);
             }
 
