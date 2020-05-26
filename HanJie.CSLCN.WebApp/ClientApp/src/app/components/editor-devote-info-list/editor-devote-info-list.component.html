@@ -19,54 +19,42 @@
         <nz-tab nzTitle="有史以来">
           <div style="overflow:auto;">
 
-            <div nz-row nzType="flex" nzJustify="center">
+            <div nz-row nzType="flex" nzJustify="center" style="margin-top:24px;" *ngFor="let item of allEditors">
               <!--左侧头像、个性签名-->
-              <div nz-col nzSpan="6" style="text-align:left;border-right:1px solid gray;">
-                <nz-avatar [nzSize]="64" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar><b>虎牙汉界</b>
+              <div nz-col nzXl="6" nzLg="24" style="text-align:left;border-right:1px solid #e8e8e8;">
+                <nz-card style="width:300px;">
+                  <nz-card-meta nzTitle="{{item.userInfo.nickName}}" nzDescription="{{item.userInfo.personalizedSignature}}" [nzAvatar]="avatarTemplate"></nz-card-meta>
+                </nz-card>
+                <ng-template #avatarTemplate>
+                  <nz-avatar [nzSize]="64" nzSrc="{{item.userInfo.avatarUrl}}"></nz-avatar>
+                </ng-template>
               </div>
               <!--右侧列表-->
-              <div nz-col nzSpan="18" style="text-align:left;padding-left:8px;">
-                <nz-descriptions nzTitle="主要编辑" nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }" nzLayout="vertical">
-                  <nz-descriptions-item [nzTitle]="titleTpl">
-                    Cloud Database
-                    <ng-template #titleTpl>
-                      <p>123</p>
+              <div nz-col nzLg="18" nzMd="24" style="text-align:left;padding-left:24px;">
+                <nz-descriptions nzTitle="文档贡献信息" nzBordered [nzColumn]="{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }" nzLayout="vertical">
+                  <nz-descriptions-item [nzTitle]="nzTitleTpl">
+                    <ng-template #nzTitleTpl>
+                      <i nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i> 作为主要编辑者
                     </ng-template>
+                    <div nz-row nzType="flex" nzJustify="left">
+                      <div nz-col nzLg="4" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
+                        ▶ <a routerLink="{{passage.routePath}}">《{{passage.title}}》</a>
+                      </div>
+                    </div>
                   </nz-descriptions-item>
-
-
-                  <nz-descriptions-item [nzTitle]="tplTest">
-                    Prepaid
-                    <ng-template #tplTest>
-                      <ng-container>
-                        123
-                      </ng-container>
+                  <nz-descriptions-item [nzTitle]="nzTitleTpl2">
+                    <ng-template #nzTitleTpl2>
+                      <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i> 参与编辑或校对
                     </ng-template>
+                    <div nz-row nzType="flex" nzJustify="left">
+                      <div nz-col nzLg="4" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
+                        ● <a routerLink="{{passage.routePath}}">《{{passage.title}}》</a>
+                      </div>
+                    </div>
                   </nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                </nz-descriptions>
-                <nz-descriptions nzTitle="合作编辑" nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }" nzLayout="vertical">
-                  <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
                 </nz-descriptions>
               </div>
-
+              <nz-divider></nz-divider>
             </div>
 
           </div>

@@ -524,8 +524,20 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.IsDatabaseId(userId, nameof(userId));
 
-            List<WikiPassage> results = await this.CSLDbContext.WikiPassages
-                .Where(item => item.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToListAsync<WikiPassage>();
+            //item => 
+
+            List<WikiPassage> results = new List<WikiPassage>();
+            var datas = await this.CSLDbContext.WikiPassages.Select(item => new { item.Id, item.RoutePath, item.Title, item.MainAuthors }).ToListAsync();
+            datas = datas.Where(item => item.MainAuthors == null ? false : item.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToList();
+
+            foreach (var item in datas)
+            {
+                WikiPassage wikiPassage = new WikiPassage();
+                wikiPassage.Id = item.Id;
+                wikiPassage.RoutePath = item.RoutePath;
+                wikiPassage.Title = item.Title;
+                results.Add(wikiPassage);
+            }
 
             return results;
         }
@@ -539,10 +551,21 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.IsDatabaseId(userId, nameof(userId));
 
-            List<WikiPassage> result = await this.CSLDbContext.WikiPassages
-                .Where(item => item.CoAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToListAsync();
+            List<WikiPassage> results = new List<WikiPassage>();
+            var datas = await this.CSLDbContext.WikiPassages.Select(item => new { item.Id, item.RoutePath, item.Title, item.CoAuthors }).ToListAsync();
+            datas = datas.Where(item => item.CoAuthors == null ? false : item.CoAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToList();
 
-            return result;
+            foreach (var item in datas)
+            {
+                WikiPassage wikiPassage = new WikiPassage();
+                wikiPassage.Id = item.Id;
+                wikiPassage.RoutePath = item.RoutePath;
+                wikiPassage.Title = item.Title;
+                results.Add(wikiPassage);
+
+            }
+
+            return results;
         }
 
         public virtual async Task<List<WikiPassageDto>> ListAsCooperatePassageDtoes(int userId)
@@ -554,10 +577,11 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(list, nameof(list));
 
-            List<WikiPassageDto> wikiPassageDtos = null;
+            List<WikiPassageDto> wikiPassageDtos = new List<WikiPassageDto>();
             foreach (WikiPassage item in list)
             {
                 WikiPassageDto dto = new WikiPassageDto().ConvertFromDataModel(item);
+                dto.Content = null;
                 wikiPassageDtos.Add(dto);
             }
 

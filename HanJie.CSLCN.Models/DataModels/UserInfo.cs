@@ -68,6 +68,6 @@ namespace HanJie.CSLCN.Models.DataModels
         /// <summary>
         /// 最后编辑文档的时间（最后活跃时间）
         /// </summary>
-        public DateTime LastCommitDateTime { get; set; }
+        public DateTime? LastCommitDateTime { get; set; }
     }
 }

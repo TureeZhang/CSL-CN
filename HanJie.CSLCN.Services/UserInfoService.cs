@@ -225,16 +225,31 @@ namespace HanJie.CSLCN.Services
             await UpdateAsync(userInfo);
         }
 
-        public virtual async Task<List<UserInfo>> ListAllEditors()
+        public virtual async Task<List<UserInfo>> ListRecentActiveEditors(int recentDaysCount = 0)
         {
-            List<UserInfo> editors = await this.CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToListAsync();
+            List<UserInfo> editors = null;
+            if (recentDaysCount <= 0)
+            {
+                editors = await this.CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToListAsync();
+            }
+            else
+            {
+                editors = await this.CSLDbContext.UserInfoes.Where(item => item.IsAdmin && DateTime.Now.AddDays(-recentDaysCount) <= item.LastCommitDateTime).ToListAsync();
+            }
+
             return editors;
+
         }
 
-        public virtual async Task<List<UserInfoDto>> ListAllEditorsDto()
+        public virtual async Task<List<UserInfo>> ListAllEditors()
         {
-            List<UserInfoDto> results = null;
-            List<UserInfo> userInfoes = await ListAllEditors();
+            return await ListRecentActiveEditors(-1);
+        }
+
+        public virtual async Task<List<UserInfoDto>> ListEditorsDto(int countRecentDays = -1)
+        {
+            List<UserInfoDto> results = new List<UserInfoDto>();
+            List<UserInfo> userInfoes = await ListRecentActiveEditors(countRecentDays);
 
             if (userInfoes == null)
                 return null;
@@ -243,7 +258,8 @@ namespace HanJie.CSLCN.Services
             {
                 UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(item);
                 dto.Password = null;
-                dto.LastCommitDateTime = item.LastCommitDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                if (item.LastCommitDateTime != null)
+                    dto.LastCommitDateTime = item.LastCommitDateTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
                 results.Add(dto);
             }
 
