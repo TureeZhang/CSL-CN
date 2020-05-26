@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DonatorRankDto } from '../../models/donator-rank-dto';
 import { DonatorRankService } from '../../services/donator-rank.service';
 import { GlobalService } from '../../services/global.service';
-import { UploadFile, NzTabComponent } from 'ng-zorro-antd';
 import { EditorDevoteInfoDto } from '../../models/editor-devote-info-dto';
 import { EditorDevoteInfoService } from '../../services/editor-devote-info.service';
 
@@ -43,7 +42,7 @@ export class EditorDevoteInfoListComponent implements OnInit {
         });
     }
 
-    onTabsetChange(event: { index: number, tab: NzTabComponent }): void {
+    onTabsetChange(event: { index: number }): void {
         if (event.index == 1 && this.allEditors == null) {
             this.getAllEditors();
         }

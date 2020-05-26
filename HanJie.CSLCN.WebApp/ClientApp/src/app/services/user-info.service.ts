@@ -4,7 +4,6 @@ import { MenuDto } from '../models/menu-dto';
 import { CSLHttpHelper } from '../commons/http-helper';
 import { UserInfoDto } from '../models/user-info-dto';
 import { promise } from 'protractor';
-import { responsiveMap } from 'ng-zorro-antd';
 
 @Injectable({ providedIn: "root" })
 export class UserInfoService {
