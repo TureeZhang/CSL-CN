@@ -96,12 +96,14 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public async Task Put([FromBody]WikiPassageDto dto)
         {
             await this._wikiPassageService.UpdateAsync(dto, base.CurrentUser.Id);
+            this._userInfoService.UpdateLastCommitInfo(base.CurrentUser.Id);
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            throw new NotImplementedException();
         }
 
 
