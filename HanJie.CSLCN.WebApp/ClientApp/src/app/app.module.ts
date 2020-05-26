@@ -28,7 +28,6 @@ import { AdminCreateWikipassageComponent } from './components/admin-components/a
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { ReplaceTableDirective } from './directives/replace-table.service';
 import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
-import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 
 registerLocaleData(zh);
 
@@ -53,8 +52,7 @@ registerLocaleData(zh);
     WikiListComponent,
     //指令
     ReplaceTableDirective,
-    AdminSystemSettingsComponent,
-    EditorDevoteInfoListComponent
+    AdminSystemSettingsComponent
   ],
   imports: [
     BrowserModule,

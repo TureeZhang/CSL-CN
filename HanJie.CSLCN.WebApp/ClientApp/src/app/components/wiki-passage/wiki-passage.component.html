@@ -25,8 +25,8 @@
       <h2 style="color:black;opacity:0.85;margin:16px;">
         {{wikiPassage?.title}}
         <ng-container *ngIf="pageStatus==0 && isAdmin && !isEditLocked">
-          <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()" style="margin-left:16px;"><i nz-icon nzType="edit"></i>编 辑</button>
-          <button nz-button nz-dropdown [nzDropdownMenu]="menu" (click)="createChildPage()" style="margin-left: 16px;"><i nz-icon nzType="file-text"></i>创建子文档<i nz-icon nzType="down"></i></button>
+          <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()" style="margin-left:16px;"><i nz-icon type="edit"></i>编 辑</button>
+          <button nz-button nz-dropdown [nzDropdownMenu]="menu" (click)="createChildPage()" style="margin-left: 16px;"><i nz-icon type="file-text"></i>创建子文档<i nz-icon nzType="down"></i></button>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
               <li nz-menu-item *ngFor="let item of wikiPassage.childPageBreadCrumbs" (click)="gotoChildPage(item.url)">
@@ -38,9 +38,9 @@
             </ul>
           </nz-dropdown-menu>
         </ng-container>
-        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton" (click)="update()" style="margin-left:16px;"><i nz-icon nzType="save"></i>保 存</button>
-        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon nzType="upload"></i>上传图片</button>
-        <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon nzType="save"></i>表格编辑器</a>
+        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton" (click)="update()" style="margin-left:16px;"><i nz-icon type="save"></i>保 存</button>
+        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon type="upload"></i>上传图片</button>
+        <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon type="save"></i>表格编辑器</a>
       </h2>
 
 

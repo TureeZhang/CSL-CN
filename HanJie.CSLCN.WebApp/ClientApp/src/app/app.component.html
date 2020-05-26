@@ -11,19 +11,19 @@
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
       <ng-template #errorMenu>
         <li nz-menu-item>
-          <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">获取菜单失败x</span></span>
+          <span><i nz-icon type="exclamation-circle"></i><span class="nav-text">获取菜单失败x</span></span>
         </li>
       </ng-template>
       <ng-template #onlineMenu ngFor let-item [ngForOf]="menus" [ngForTrackBy]="trackbyMenuTitle">
         <li *ngIf="item.menuItems&&item.menuItems.length>0;else submenu" nz-submenu>
-          <span title><i nz-icon nzType="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
+          <span title><i nz-icon type="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
           <ul>
             <li nz-menu-item *ngFor="let menuItem of item.menuItems" routerLink="/{{menuItem.path}}">{{menuItem.title}}</li>
           </ul>
         </li>
         <ng-template #submenu>
           <li nz-menu-item routerLink="/{{item.path}}">
-            <span><i nz-icon nzType="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
+            <span><i nz-icon type="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
           </li>
         </ng-template>
       </ng-template>
@@ -37,7 +37,7 @@
         <div nz-col nzLg="12" nzXs="0">
           <i class="trigger"
              nz-icon
-             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+             [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
              (click)="isCollapsed = !isCollapsed"></i>
         </div>
         <div nz-col nzLg="0" nzXs="12">
