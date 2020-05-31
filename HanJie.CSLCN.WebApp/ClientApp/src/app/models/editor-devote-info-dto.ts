@@ -7,4 +7,8 @@ export class EditorDevoteInfoDto {
     mainAuthPassages: WikiPassageDto[];
 
     cooAuthPassages: WikiPassageDto[];
+
+    commitTimesCount: number;
+
+    lastCommitDateTime: string;
 }

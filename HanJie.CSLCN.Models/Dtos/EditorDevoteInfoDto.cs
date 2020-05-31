@@ -22,5 +22,15 @@ namespace HanJie.CSLCN.Models.Dtos
         /// </summary>
         public List<WikiPassageDto> CooAuthPassages { get; set; }
 
+        /// <summary>
+        /// 提交次数计数
+        /// </summary>
+        public int CommitTimesCount { get; set; }
+
+        /// <summary>
+        /// 最后编辑文档的时间（最后活跃时间）
+        /// </summary>
+        public string LastCommitDateTime { get; set; }
+
     }
 }

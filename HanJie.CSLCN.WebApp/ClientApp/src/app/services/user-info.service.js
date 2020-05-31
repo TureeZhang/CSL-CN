@@ -8,9 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
+var string_tag_consts_1 = require("../models/consts/string-tag-consts");
 var UserInfoService = /** @class */ (function () {
-    function UserInfoService(httpHelper) {
+    function UserInfoService(httpHelper, cookieService) {
         this.httpHelper = httpHelper;
+        this.cookieService = cookieService;
         this.loginApiUrl = "/api/login";
         this.userInfoApiUrl = "/api/userinfo";
         this.adminUserInfoApiUrl = "/api/admin/adminuserinfo";
@@ -32,8 +34,13 @@ var UserInfoService = /** @class */ (function () {
         return this.httpHelper.post(this.loginApiUrl, userInfo);
     };
     UserInfoService.prototype.logout = function (userId) {
-        this.httpHelper.delete(this.loginApiUrl, userId).subscribe(function (response) {
-            UserInfoService_1.CurrentUser = null;
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.httpHelper.delete(_this.loginApiUrl, userId).subscribe(function (response) {
+                UserInfoService_1.CurrentUser = null;
+                _this.cookieService.deleteCookie(string_tag_consts_1.StringTagConsts.currentLoginedUserGuid);
+                resolve();
+            });
         });
     };
     UserInfoService.prototype.create = function (data) {

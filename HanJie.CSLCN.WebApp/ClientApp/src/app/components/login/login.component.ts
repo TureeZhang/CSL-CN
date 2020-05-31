@@ -12,6 +12,8 @@ import { GlobalService } from '../../services/global.service';
 })
 export class LoginComponent implements OnInit {
 
+    public isSubmitting: boolean = false;
+
     validateForm: FormGroup;
 
     constructor(private fb: FormBuilder,
@@ -27,6 +29,7 @@ export class LoginComponent implements OnInit {
     }
 
     submitForm(): void {
+        this.isSubmitting = true;
         var host = this;
         for (const i in this.validateForm.controls) {
             this.validateForm.controls[i].markAsDirty();
@@ -39,8 +42,9 @@ export class LoginComponent implements OnInit {
                 host.router.navigate(["/homepage"]);
                 host.globalService.successTip(`欢迎 ${res.userName} ：登陆成功`);
             } else {
-
+                this.globalService.ErrorTip("用户名或密码错误。");
             }
+            this.isSubmitting = false;
         });
     }
 

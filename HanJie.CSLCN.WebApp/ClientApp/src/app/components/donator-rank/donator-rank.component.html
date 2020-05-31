@@ -30,8 +30,8 @@
                     <nz-avatar nzSrc="{{item.avatarUrl}}" nzSize="small"></nz-avatar>
                   </td>
                   <td>
-                    <a style="color:dodgerblue" *ngIf="item.personalHomepageUrl!=null" href="{{item.personalHomepageUrl}}" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}">{{ item.userNickName }}</a>
-                    <span *ngIf="item.personalHomepageUrl==null">{{item.userNickName}}</span>
+                    <a style="color:dodgerblue" *ngIf="item.personalHomepageUrl!=null && item.personalHomepageUrl!=''" href="{{item.personalHomepageUrl}}" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}">{{ item.userNickName }}</a>
+                    <span *ngIf="item.personalHomepageUrl==null || item.personalHomepageUrl==''">{{item.userNickName}}</span>
                   </td>
                   <td>{{item.personalTitle}}</td>
                   <td><nz-tag nzColor="blue" nz-tooltip nzTooltipTitle="{{item.descriptionWord}}" nzTooltipPlacement="left">显示</nz-tag></td>

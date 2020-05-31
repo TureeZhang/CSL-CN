@@ -51,7 +51,7 @@
           <span *ngIf="isUserLogined">
             <nz-avatar nzIcon="user" nzSrc="{{currentUser.avatarUrl}}"></nz-avatar>
             {{currentUser.nickName}}（{{currentUser.userName}}）
-            <button nz-button nzType="danger" [nzSize]="'small'" (click)="logout()"><i nz-icon nzType="logout"></i>退出</button>
+            <button nz-button nzType="danger" [nzSize]="'small'" (click)="logout()" [nzLoading]="isExiting"><i nz-icon nzType="logout"></i>退出</button>
           </span>
         </div>
       </div>

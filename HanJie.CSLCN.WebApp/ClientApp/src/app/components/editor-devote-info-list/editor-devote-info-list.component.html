@@ -13,50 +13,14 @@
       <nz-tabset (nzSelectChange)="onTabsetChange($event)">
         <nz-tab nzTitle="最近活跃">
           <div style="overflow:auto;">
-            <p>recent works!</p>
+            <nz-alert nzType="success" nzMessage="以下数据展示最近一个月内有过提交记录的用户，列表按累计提交次数由高到低排列。"></nz-alert>
+            <editor-list-board [editors]="monthlyEditors" [isLoading]="isMonthlyEditorsLoading"></editor-list-board>
           </div>
         </nz-tab>
         <nz-tab nzTitle="有史以来">
           <div style="overflow:auto;">
-
-            <div nz-row nzType="flex" nzJustify="center" style="margin-top:24px;" *ngFor="let item of allEditors">
-              <!--左侧头像、个性签名-->
-              <div nz-col nzXl="6" nzLg="24" style="text-align:left;border-right:1px solid #e8e8e8;">
-                <nz-card style="width:300px;">
-                  <nz-card-meta nzTitle="{{item.userInfo.nickName}}" nzDescription="{{item.userInfo.personalizedSignature}}" [nzAvatar]="avatarTemplate"></nz-card-meta>
-                </nz-card>
-                <ng-template #avatarTemplate>
-                  <nz-avatar [nzSize]="64" nzSrc="{{item.userInfo.avatarUrl}}"></nz-avatar>
-                </ng-template>
-              </div>
-              <!--右侧列表-->
-              <div nz-col nzLg="18" nzMd="24" style="text-align:left;padding-left:24px;">
-                <nz-descriptions nzTitle="文档贡献信息" nzBordered [nzColumn]="{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }" nzLayout="vertical">
-                  <nz-descriptions-item [nzTitle]="nzTitleTpl">
-                    <ng-template #nzTitleTpl>
-                      <i nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i> 作为主要编辑者
-                    </ng-template>
-                    <div nz-row nzType="flex" nzJustify="left">
-                      <div nz-col nzLg="4" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
-                        ▶ <a routerLink="{{passage.routePath}}">《{{passage.title}}》</a>
-                      </div>
-                    </div>
-                  </nz-descriptions-item>
-                  <nz-descriptions-item [nzTitle]="nzTitleTpl2">
-                    <ng-template #nzTitleTpl2>
-                      <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i> 参与编辑或校对
-                    </ng-template>
-                    <div nz-row nzType="flex" nzJustify="left">
-                      <div nz-col nzLg="4" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
-                        ● <a routerLink="{{passage.routePath}}">《{{passage.title}}》</a>
-                      </div>
-                    </div>
-                  </nz-descriptions-item>
-                </nz-descriptions>
-              </div>
-              <nz-divider></nz-divider>
-            </div>
-
+            <nz-alert nzType="success" nzMessage="以下数据展示有史以来所有用户的恭喜记录，列表按累计提交次数由高到低排列。"></nz-alert>
+            <editor-list-board [editors]="allEditors" [isLoading]="isAllEditorsLoading"></editor-list-board>
           </div>
         </nz-tab>
       </nz-tabset>

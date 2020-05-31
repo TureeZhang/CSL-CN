@@ -31,7 +31,7 @@
                 <span>记住我的登录状态</span>
               </label>
               <a class="login-form-forgot">忘记密码？</a>
-              <button nz-button class="login-form-button" [nzType]="'primary'">登 录</button>
+              <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isSubmitting">登 录</button>
               <nz-alert nzType="warning"
                         nzCloseable
                         nzMessage="站点为个人名义备案，不具备保护公民个人信息的应急预案和安全措施等，因而无计划开放面向普通用户的注册。"

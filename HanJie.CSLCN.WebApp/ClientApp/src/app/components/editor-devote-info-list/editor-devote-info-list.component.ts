@@ -6,16 +6,17 @@ import { EditorDevoteInfoDto } from '../../models/editor-devote-info-dto';
 import { EditorDevoteInfoService } from '../../services/editor-devote-info.service';
 
 @Component({
-    selector: 'app-editor-devote-info-list',
+    selector: 'editor-devote-info-list',
     templateUrl: './editor-devote-info-list.component.html',
     styleUrls: ['./editor-devote-info-list.component.css']
 })
 export class EditorDevoteInfoListComponent implements OnInit {
 
+    public isMonthlyEditorsLoading: boolean = false;
+    public isAllEditorsLoading: boolean = false;
+
     public allEditors: EditorDevoteInfoDto[];
     public monthlyEditors: EditorDevoteInfoDto[];
-    public monthlyEditorsLoading: boolean = false;
-    public allEditorsLoading: boolean = false;
 
     constructor(private editorDevoteInfoService: EditorDevoteInfoService,
         public globalService: GlobalService) {
@@ -27,18 +28,18 @@ export class EditorDevoteInfoListComponent implements OnInit {
     }
 
     getAllEditors(): void {
-        this.allEditorsLoading = true;
+        this.isAllEditorsLoading = true;
         this.editorDevoteInfoService.listAllEditorDevoteInfoes().subscribe(datas => {
             this.allEditors = datas;
-            this.allEditorsLoading = false;
+            this.isAllEditorsLoading = false;
         });
     }
 
     getMonthlyEditors(): void {
-        this.monthlyEditorsLoading = true;
+        this.isMonthlyEditorsLoading = true;
         this.editorDevoteInfoService.listMonthlyEditorDevoteInfoes().subscribe(datas => {
             this.monthlyEditors = datas;
-            this.monthlyEditorsLoading = false;
+            this.isMonthlyEditorsLoading = false;
         });
     }
 

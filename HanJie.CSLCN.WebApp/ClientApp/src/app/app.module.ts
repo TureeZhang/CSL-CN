@@ -29,6 +29,7 @@ import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { ReplaceTableDirective } from './directives/replace-table.service';
 import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
+import { EditorListBoardComponent } from './components/editor-devote-info-list/editor-list-board/editor-list-board.component';
 
 registerLocaleData(zh);
 
@@ -54,7 +55,8 @@ registerLocaleData(zh);
     //指令
     ReplaceTableDirective,
     AdminSystemSettingsComponent,
-    EditorDevoteInfoListComponent
+    EditorDevoteInfoListComponent,
+    EditorListBoardComponent
   ],
   imports: [
     BrowserModule,

@@ -234,7 +234,10 @@ namespace HanJie.CSLCN.Services
             }
             else
             {
-                editors = await this.CSLDbContext.UserInfoes.Where(item => item.IsAdmin && DateTime.Now.AddDays(-recentDaysCount) <= item.LastCommitDateTime).ToListAsync();
+                editors = await this.CSLDbContext.UserInfoes
+                    .Where(item => item.IsAdmin && DateTime.Now.AddDays(-recentDaysCount) <= item.LastCommitDateTime)
+                    .OrderByDescending(item => item.CommitTimesCount)
+                    .ToListAsync();
             }
 
             return editors;
