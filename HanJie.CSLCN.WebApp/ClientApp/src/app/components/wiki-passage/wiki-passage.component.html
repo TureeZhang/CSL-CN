@@ -10,7 +10,6 @@
     <div nz-col nzLg="20" nzXs="24">
       <div *ngIf="isAdmin && isEditLocked" style="background-color: #fffbe6;
                   width: 100%;
-                  height: 100%;
                   line-height: 32px;
                   padding-left: 16px;">
         <nz-badge nzStatus="processing" nzText="编辑中：" style="font-weight:800;"></nz-badge>
@@ -53,8 +52,9 @@
 
 
       <div nz-row nzType="flex">
-        <div nz-col nzSpan="24" style="margin:16px;">
-          <ul style="text-decoration:none;">
+        <div nz-col nzSpan="24" style="margin:32px;">
+
+          <ul style="text-decoration:none;margin-bottom:0px;">
             <li>
               <b>主要作者/译者：</b>
               <ng-container *ngFor="let item of wikiPassage?.mainAuthors;let i=index;">
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <div style="margin:16px;margin-top:24px;margin-bottom:40px;">
+      <div style="margin:0 16px;margin-bottom:40px;">
 
         <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
 

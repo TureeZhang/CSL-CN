@@ -160,6 +160,11 @@ export class WikiPassageComponent implements OnInit {
                 this.pageStatus = WikiPassagePageStatusEnum.Displaying;
                 this.globalService.successTip(`【保存成功】锁定解除，已释放编辑权限。`);
             });
+        } else {
+            this.isLoadingSaveButton = false;
+            this.isEditLocked = false;
+            this.pageStatus = WikiPassagePageStatusEnum.Displaying;
+            this.globalService.successTip(`【保存成功】锁定解除，已释放编辑权限。`);
         }
     }
 

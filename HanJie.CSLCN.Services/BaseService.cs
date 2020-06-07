@@ -79,14 +79,15 @@ namespace HanJie.CSLCN.Services
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
-        public virtual async Task UpdateAsync(TDataModelType data)
+        public virtual async Task UpdateAsync(TDataModelType data, bool updateLastModifyData = true)
         {
             if (data == null)
             {
                 throw new ArgumentNullException(nameof(data));
             }
 
-            data.LastModifyDate = DateTime.Now;
+            if (updateLastModifyData)
+                data.LastModifyDate = DateTime.Now;
 
             TDataModelType entity = CSLDbContext.Set<TDataModelType>().Where(e => e.Id == data.Id).FirstOrDefault();
             Type modelType = typeof(TDataModelType);

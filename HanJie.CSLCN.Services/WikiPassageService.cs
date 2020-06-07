@@ -465,7 +465,7 @@ namespace HanJie.CSLCN.Services
                                                 {
                                                     WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
                                                     wikiPassage.TotalViewsCount += newViewsCount;
-                                                    _ = wikiPassageService.UpdateAsync(wikiPassage);
+                                                    _ = wikiPassageService.UpdateAsync(wikiPassage,false);
                                                     logService.Log(message: "访问量统计：读取缓存成功，持久化了新的文章访问统计数量。",
                                                                    parameters: new { passageId, newViewsCount });
                                                 }
@@ -490,7 +490,7 @@ namespace HanJie.CSLCN.Services
                          if (RunAs.Release)
                          {
                              logService.Log("访问量统计：访问量统计进入休眠状态。Debug:3分钟");
-                             Thread.Sleep(180 * 1000);  //180秒=3分钟
+                             Thread.Sleep(20 * 1000);  //20秒
                          }
                      }
 

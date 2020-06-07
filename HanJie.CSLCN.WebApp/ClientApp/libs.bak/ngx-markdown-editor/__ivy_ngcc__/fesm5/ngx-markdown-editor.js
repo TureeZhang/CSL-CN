@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { __values } from 'tslib';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, NgZone, Output, EventEmitter, NgModule } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, NgZone, Output, EventEmitter, NgModule } from '@angular/core';
 
 /**
  * @fileoverview added by tsickle
