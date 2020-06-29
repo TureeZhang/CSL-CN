@@ -16,6 +16,10 @@ using HanJie.CSLCN.Common;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Diagnostics;
+using HanJie.CSLCN.Models.Enums;
+using System.IO;
 
 namespace HanJie.CSLCN.WebApp
 {
@@ -78,10 +82,25 @@ namespace HanJie.CSLCN.WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+
+            ExceptionHandlerOptions exceptionHandlerOptions = new ExceptionHandlerOptions();
+            exceptionHandlerOptions.ExceptionHandler = async (httpContext) =>
+              {
+                  await Task.Run(() =>
+                  {
+                      try
+                      {
+                          IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
+                          new LogService().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
+                      }
+                      catch (Exception ex)
+                      {
+                          _ = File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs_{DateTime.Now}.txt"), ex.ToString());
+                          throw;
+                      }
+                  });
+              };
+            app.UseExceptionHandler(exceptionHandlerOptions);
 
             app.UseCors("local-angular-app");
             app.UseFileServer();

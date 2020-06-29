@@ -91,12 +91,12 @@
   "sideEffects": false,
   "typings": "ngx-markdown-editor.d.ts",
   "version": "1.2.0",
-  "__processed_by_ivy_ngcc__": {
-    "fesm5": "9.1.9",
-    "module": "9.1.9",
-    "typings": "9.1.9"
-  },
   "scripts": {
     "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by NGCC. This is not allowed.\\nPlease delete and rebuild the package, without compiling with NGCC, before attempting to publish.\\nNote that NGCC may have been run by importing this package into another project that is being built with Ivy enabled.\\n')\" && exit 1"
+  },
+  "__processed_by_ivy_ngcc__": {
+    "fesm5": "9.1.11",
+    "module": "9.1.11",
+    "typings": "9.1.11"
   }
 }

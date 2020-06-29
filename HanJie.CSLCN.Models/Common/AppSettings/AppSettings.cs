@@ -21,6 +21,8 @@ namespace HanJie.CSLCN.Models.Common.AppSettings
         public string Md5Sold { get; set; }
 
         public QiniuConfig QiniuConfig { get; set; }
+
+        public Redis Redis { get; set; }
     }
 
 
