@@ -189,7 +189,7 @@ namespace HanJie.CSLCN.Services
             if (wikiPassageDto.CoAuthors != null)
                 entity.CoAuthors = string.Join(",", wikiPassageDto.CoAuthors?.Select(item => item.Id).ToArray());
 
-            entity.LastModifyUserId = wikiPassageDto.Id;
+            entity.LastModifyUserId = currentUserId;
 
             await base.UpdateAsync(entity);
             UnlockPassageEditingStatus(wikiPassageDto.Id);
@@ -373,20 +373,13 @@ namespace HanJie.CSLCN.Services
 
                 string ipAddress = ip.ToString();
 
-                base.Log(message: "访问量统计：新增访问量缓存。",
-                    parameters: new { passageId, ipAddress });
-
                 LockViewsDictionary(dic =>
                 {
-                    base.Log(message: "访问量统计：已锁定访问量缓存列表。",
-                             parameters: new { ViewsDictionary = dic });
                     lock (WikiPassageService._addViewsLock)
                     {
                         if (!dic.ContainsKey(passageId))
                         {
                             dic.Add(passageId, new Dictionary<string, ViewsCountDto>());
-                            base.Log(message: "访问量统计：创建了访问量统计缓存项。",
-                                     parameters: new { passageId = passageId, viewsDictionary = dic });
                         }
 
                         if (dic[passageId].ContainsKey(ipAddress))
@@ -396,8 +389,6 @@ namespace HanJie.CSLCN.Services
                             {
                                 dic[passageId][ipAddress].NewViews += 1;
                                 dic[passageId][ipAddress].LastUpdateTime = DateTime.Now;
-                                base.Log(message: "访问量统计：缓存已包含当前文档的缓存项。更新了访问量统计缓存项。",
-                                         parameters: new { passageId = passageId, viewsDictionary = dic });
                             }
                         }
                         else
@@ -406,8 +397,6 @@ namespace HanJie.CSLCN.Services
                             viewsCountDto.NewViews = 1;
                             viewsCountDto.LastUpdateTime = DateTime.Now;
                             dic[passageId].Add(ipAddress, viewsCountDto);
-                            base.Log(message: "访问量统计：缓存未包含当前文档的缓存项。创建了新的文章缓存项。",
-                                     parameters: new { passageId = passageId, viewsDictionary = dic });
                         }
                     }
 
@@ -422,74 +411,51 @@ namespace HanJie.CSLCN.Services
 
         public static void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
         {
-            LogService logService = new LogService();
             try
             {
 
                 Ensure.NotNull(wikiPassageService, nameof(wikiPassageService));
 
-                logService.Log(message: "访问量统计：浏览量统计任务初始化。",
-                    parameters: new { wikiPassageService = wikiPassageService.ToString() });
-
                 if (WikiPassageService.viewsCountTask != null)
                 {
-                    logService.Log(message: "访问量统计：已启动过统计任务，重复启动无效，已中止。",
-                        parameters: new { wikiPassageService = wikiPassageService.ToString() });
                     return;
                 }
 
                 WikiPassageService.viewsCountTask = Task.Run(() =>
                  {
-                     logService.Log(message: "访问量统计：启动了定时任务，即将进入 while(true) 循环。",
-                         parameters: new { wikiPassageService = wikiPassageService.ToString() });
                      while (true)
                      {
-                         logService.Log(message: "访问量统计：执行了 while(true) 循环。",
-                             parameters: new { wikiPassageService = wikiPassageService.ToString() });
                          LockViewsDictionary(dic =>
                                     {
-                                        logService.Log(message: "访问量统计：锁定了访问缓存列表。",
-                                                       parameters: new { ViewsDictionary = dic });
                                         lock (WikiPassageService._viewsCountTaskLock)
                                         {
-                                            logService.Log("访问量统计：准备遍历访问数据缓存。");
                                             foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
                                             {
                                                 int passageId = item.Key;
                                                 int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
 
-                                                logService.Log(message: "访问量统计：正在遍历访问缓存，读取到数据。",
-                                                               parameters: new { passageId, newViewsCount });
-
                                                 if (newViewsCount > 0)
                                                 {
                                                     WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
                                                     wikiPassage.TotalViewsCount += newViewsCount;
-                                                    _ = wikiPassageService.UpdateAsync(wikiPassage,false);
-                                                    logService.Log(message: "访问量统计：读取缓存成功，持久化了新的文章访问统计数量。",
-                                                                   parameters: new { passageId, newViewsCount });
+                                                    _ = wikiPassageService.UpdateAsync(wikiPassage, false);
                                                 }
                                             }
-                                            logService.Log("访问量统计：准备遍历文章的访问量缓存，将所有访问量重置为 0 。");
                                             foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
                                             {
                                                 foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
                                                 {
                                                     viewsCountItem.Value.NewViews = 0;
-                                                    logService.Log(message: "访问量统计：重置了文章的访问量。",
-                                                                   parameters: new { passageId = viewsCountItem.Key, newViewsCount = viewsCountItem.Value.NewViews });
                                                 }
                                             }
                                         }
                                     });
                          if (RunAs.Debug)
                          {
-                             logService.Log("访问量统计：访问量统计进入休眠状态。Debug:5秒");
                              Thread.Sleep(5 * 1000);    //5秒
                          }
                          if (RunAs.Release)
                          {
-                             logService.Log("访问量统计：访问量统计进入休眠状态。Debug:3分钟");
                              Thread.Sleep(20 * 1000);  //20秒
                          }
                      }
@@ -498,7 +464,7 @@ namespace HanJie.CSLCN.Services
             }
             catch (Exception ex)
             {
-                logService.Log(message: "访问量统计：新增访问量出现异常。",
+                new LogService().Log(message: "访问量统计：新增访问量出现异常。",
                          parameters: new { ex = ex.ToString(), wikiPassageService = wikiPassageService.ToString() });
             }
 

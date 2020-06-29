@@ -1,4 +1,4 @@
-import { Renderer2, ElementRef } from '@angular/core';
+﻿import { Renderer2, ElementRef } from '@angular/core';
 import { ControlValueAccessor, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdEditorOption } from './md-editor.types';
