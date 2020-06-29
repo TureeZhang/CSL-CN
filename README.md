@@ -1,79 +1,34 @@
 # CSL-CN
 
-## 概述
+《汉界的一颗小虎牙》 - 你可以免费查阅的 城市天际线 在线百科全书 www.cities-skylines.cn 。
 
-城市天际线中文站点，虎牙汉界，开源项目。 <http://www.cities-skylines.cn>
+## 这是什么 ?
 
-## 技术框架
+CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skylines Wiki of China 。
 
-**服务器端：**
+目前正在线上运行的示例项目是《汉界的一颗小虎牙》，用于承载《城市天际线》的中文维基攻略内容 ，但目标是成为一个高效的、具备舒适的用户体验，以及快捷有效的内容发布与编辑协同引擎。
 
-- [.Net Core 2.2 Web API](https://docs.microsoft.com/zh-cn/aspnet/?view=aspnetcore-2.2#pivot=core)
+## 欢迎使用
+
+引擎目前已支持文章发布、编辑，标题搜索、贡献统计等基本功能，尚在早期开发阶段。如你所见，只需轻松修改，即可适配于其他的内容场景，而不仅限于城市天际线维基百科。
+
+**个人非常乐意提供完全免费的部署，以及后续的更新升级支持，帮助将此引擎免费搭建在你的服务器和域名下，并让你完全自定义 Logo 、网站名称、主界面结构等尽可能多的内容（但必须保留此开源项目的超链接）。** 以期望这一行为能够推动引擎的功能完善，并在真实的使用反馈中不断促进用户使用体验的改进。
+
+如确有所需，请发送邮件至 aa940724@outlook.com 接洽即可。
+
+## 当前技术框架
+
+**服务器：**
+
+- [.NetCore 2.2](https://docs.microsoft.com/zh-cn/aspnet/?view=aspnetcore-2.2#pivot=core)
 - [EF Core 2.2](https://docs.microsoft.com/zh-cn/ef/core/index)
 
-**客户端：**
+**浏览器：**
 
-- [Angular 7.2](https://www.angular.cn/)
+- [Angular 9](https://www.angular.cn/)
 - [Ng-Zorro](https://ng.ant.design/)
 
-## Beta 版当前预览 20191210
+## 配置要求
 
-![homepage](./homepage.png)
-
-![wikipage](./wikipage.png)
-
-![edit](./edit.png)
-
-![login](./login.png)
-
-## 常见命令与问题解决
-
-1.修改数据模型后执行以下操作，更新数据库模型。
-
-```cmd
-Add-Migration InitialCreate //修改 "InitialCreate" 为本次调整的详细说明
-Update-Database
-```
-
-a.如果执行以上命令出现异常:
-
-``
-An item with the same key has already been added. Key: Pomelo.EntityFrameworkCore.MySql.Infrastructure.Internal.MySqlOptionsExtension``
-
-则注释 CSLDbContext 下的 OnConfiguring 方法，仅保留 base. 一行。
-
-b.如果出现 BuildFail：
-
-则 Ctrl+Shift+B 重新生成项目，再根据编译器的错误提示修正 CSL-CN 项目内报红线的语法错误。
-
-
-2.Angular 项目中使用装饰器出现编译器错误提示。
-
-卸载项目 -> 右键编辑项目文件 -> 增加以下配置行以取消错误提示。
-
-```xml
- <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-     ....
-    <TypeScriptExperimentalDecorators>true</TypeScriptExperimentalDecorators
-  </PropertyGroup>
-```
-
- see also: https://github.com/Microsoft/TypeScript/issues/3934
- 
- ## 前端快速提示
- 
- 1.栅格列定位
- 
- - 首先使用 nzType="flex" 支持弹性布局。
- 
- - 水平对齐方式 nzJustify="start,center,end,space-between,space-around"
- 
- - 垂直对齐方式 nzAlign="top,middle,bottom"
- 
- see also : https://ng.ant.design/components/grid/zh
-
-## MySql 常见问题
-
-1. MySql80 服务无法启动
-
-https://www.cnblogs.com/RayWang/p/9347874.html
+* Linux(推荐): 1核1G - 5MB 带宽
+* Windows: 1核2G - 5MG 带宽
