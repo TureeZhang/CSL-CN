@@ -32,3 +32,7 @@ CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skyli
 
 * Linux(推荐): 1核1G - 5MB 带宽
 * Windows: 1核2G - 5MB 带宽
+
+## 开发计划
+
+![开发计划](/README/develop-plane.png)
