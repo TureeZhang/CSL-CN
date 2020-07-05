@@ -1,17 +1,16 @@
 
-<nz-layout>
+<nz-layout class="layout">
   <nz-sider nzCollapsible
-            [(nzCollapsed)]="isCollapsed"
-            [nzWidth]="width"
-            [nzReverseArrow]="isReverseArrow"
-            [nzBreakpoint]="'lg'"
+            nzBreakpoint="xl"
             [nzCollapsedWidth]="0"
-            [nzZeroTrigger]="zeroTrigger">
+            (nzCollapsedChange)="onSiderCollapsedChange($event)"
+            [nzTrigger]="null"
+            [(nzCollapsed)]="isCollapsed">
     <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url(/assets/logo.png)"></div>
-    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <ng-template #errorMenu>
         <li nz-menu-item>
-          <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">获取菜单失败x</span></span>
+          <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">正在获取菜单..</span></span>
         </li>
       </ng-template>
       <ng-template #onlineMenu ngFor let-item [ngForOf]="menus" [ngForTrackBy]="trackbyMenuTitle">
@@ -31,21 +30,10 @@
       <div *ngIf="!menus;then errorMenu;else onlineMenu"></div>
     </ul>
   </nz-sider>
-  <nz-layout>
+  <nz-layout [ngClass]="{'right-layout':!isCollapsed}">
     <nz-header style="background: #fff; padding:0;height:40px;line-height:40px;">
       <div nz-row style="line-height:inherit;">
-        <div nz-col nzLg="12" nzXs="0">
-          <i class="trigger"
-             nz-icon
-             [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-             (click)="isCollapsed = !isCollapsed"></i>
-        </div>
-        <div nz-col nzLg="0" nzXs="12">
-          <ng-template #zeroTrigger>
-            <i nz-icon nzType="menu-fold" nzTheme="outline"></i>
-          </ng-template>
-        </div>
-        <div nz-col nzLg="12" nzXs="12" style="text-align:right;padding-right:12px;">
+        <div nz-col nzLg="24" nzXs="24" style="text-align:right;padding-right:12px;">
           <iframe src="https://ghbtns.com/github-btn.html?user=TureeZhang&repo=CSL-CN&type=star&count=true" frameborder="0" scrolling="0" width="95px" height="25px" style="position:relative;top:10px;"></iframe>
           <button *ngIf="!isUserLogined" nz-button [nzSize]="'small'" routerLink="/login"><i nz-icon nzType="login"></i>编辑者入口</button>
           <span *ngIf="isUserLogined">
@@ -78,3 +66,14 @@
     </nz-footer>
   </nz-layout>
 </nz-layout>
+
+<!--自定义 Trigger-->
+<div class="ant-layout-sider-zero-width-trigger ant-layout-sider-zero-width-trigger-left"
+     [ngClass]="{'collapsed-trigger':isCollapsed,'discollapsed-trigger':!isCollapsed}"
+     (click)="isCollapsed = !isCollapsed">
+  <i nz-icon="" nztype="bars" class="anticon anticon-bars">
+    <svg viewBox="0 0 1024 1024" focusable="false" fill="currentColor" width="1em" height="1em" data-icon="bars" aria-hidden="true">
+      <path d="M912 192H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM104 228a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0z"></path>
+    </svg>
+  </i>
+</div>

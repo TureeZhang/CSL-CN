@@ -9,6 +9,7 @@ using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Mvc;
 using HanJie.CSLCN.WebApp.Attributes;
 using HanJie.CSLCN.Common;
+using System.Runtime.CompilerServices;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,10 +46,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
             wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(editingUserId));
 
-            _ = Task.Run(() =>
-              {
-                  this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
-              });
+            //
+            //此处是有意不做等待的，阅读量的统计不应当影响文本内容的返回。
+
+            TaskAwaiter taskAwaiter = Task.Run(() =>
+             {
+                 this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
+             }).GetAwaiter();
 
             return new JsonResult(wikiPassageDto);
         }

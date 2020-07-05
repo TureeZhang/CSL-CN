@@ -13,16 +13,11 @@
   margin: 0.5em;
   margin-bottom: 1em;
   padding: 0.25em 0.4em 0.25em 0.4em;
+  line-height: 24px;
 }
 
-.dlc-logo-list div {
-  margin: 3px 0;
-  margin-left: 3px;
-}
-
-.dlc-logo-list a {
-  margin-left: 4px;
-  font-size: small;
+.content-list-warpper p {
+  margin-bottom: 0.5em;
 }
 
 .last-modify-wiki-container {

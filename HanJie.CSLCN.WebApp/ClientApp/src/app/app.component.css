@@ -4,19 +4,87 @@
   margin: 16px;
 }
 
-.fixed-sider {
+.layout {
+  min-height: 100vh;
+}
+
+nz-sider {
   overflow: auto;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   left: 0;
 }
 
-.content .header {
+.right-layout {
+  margin-left: 200px;
+}
+
+nz-header {
   background: #fff;
   padding: 0;
 }
 
-.content .content {
+nz-content {
   margin: 24px 16px 0;
-  overflow: initial
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  text-align: center;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+
+
+
+.ant-layout, .ant-layout * {
+  box-sizing: border-box;
+}
+
+.anticon {
+  display: inline-block;
+  color: inherit;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -.125em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ant-layout-sider-zero-width-trigger {
+  position: fixed;
+  top: 64px;
+  right: -36px;
+  z-index: 1;
+  width: 36px;
+  height: 42px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 42px;
+  text-align: center;
+  background: #001529;
+  border-radius: 0 2px 2px 0;
+  cursor: pointer;
+  transition: background .3s ease;
+}
+
+.ant-layout-sider-zero-width > * {
+  overflow: hidden;
+}
+
+.collapsed-trigger {
+  top: 0px;
+  left: 0px;
+}
+
+.discollapsed-trigger {
+  top: 0px;
+  left: 200px;
 }

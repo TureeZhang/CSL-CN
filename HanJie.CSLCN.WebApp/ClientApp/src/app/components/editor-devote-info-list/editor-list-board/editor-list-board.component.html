@@ -9,7 +9,8 @@
 <ng-container *ngIf="editors!=null && editors.length>0">
   <div nz-row nzType="flex" nzJustify="center" style="margin-top:24px;" *ngFor="let item of editors">
     <!--左侧头像、个性签名-->
-    <div nz-col nzXl="6" nzLg="24" style="text-align:left;min-width:330px;">
+    <div nz-col nzXl="7" nzLg="24" style="text-align:left;min-width:330px;">
+      <div style="font-size:16px;margin-bottom:23px;"><b>用户信息</b></div>
       <nz-card style="width:300px;margin-bottom:24px;" [nzActions]="[actionCommitTimes, actionLastActiveDate]">
         <nz-card-meta [nzTitle]="nzCardTitleTpl" nzDescription="{{item.userInfo.personalizedSignature}}" [nzAvatar]="avatarTemplate"></nz-card-meta>
       </nz-card>
@@ -35,14 +36,14 @@
       </ng-template>
     </div>
     <!--右侧列表-->
-    <div nz-col nzLg="18" nzMd="24" style="text-align:left;">
+    <div nz-col nzXl="15" nzLg="24" style="text-align:left;">
       <nz-descriptions nzTitle="文档贡献信息" nzBordered [nzColumn]="{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }" nzLayout="vertical">
         <nz-descriptions-item [nzTitle]="nzTitleTpl">
           <ng-template #nzTitleTpl>
             <i nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i> 作为主要编辑者
           </ng-template>
           <div nz-row nzType="flex" nzJustify="left">
-            <div nz-col nzLg="4" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
+            <div nz-col nzXl="6" nzLg="6" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
               ▶ <a routerLink="/wiki-passage/{{passage.routePath}}">《{{passage.title}}》</a>
             </div>
           </div>
@@ -59,7 +60,7 @@
             <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i> 参与编辑或校对
           </ng-template>
           <div nz-row nzType="flex" nzJustify="left">
-            <div nz-col nzLg="4" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.cooAuthPassages">
+            <div nz-col nzXl="6" nzLg="6" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.cooAuthPassages">
               ● <a routerLink="/wiki-passage/{{passage.routePath}}">《{{passage.title}}》</a>
             </div>
           </div>

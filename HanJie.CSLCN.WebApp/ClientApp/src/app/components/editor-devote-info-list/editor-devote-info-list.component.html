@@ -13,13 +13,13 @@
       <nz-tabset (nzSelectChange)="onTabsetChange($event)">
         <nz-tab nzTitle="最近活跃">
           <div style="overflow:auto;">
-            <nz-alert nzType="success" nzMessage="以下数据展示最近一个月内有过提交记录的用户，列表按累计提交次数由高到低排列。"></nz-alert>
+            <nz-alert nzType="success" nzMessage="以下数据展示最近一个月内有过提交记录的用户，列表按最后活跃日期由近到远倒序排列。"></nz-alert>
             <editor-list-board [editors]="monthlyEditors" [isLoading]="isMonthlyEditorsLoading"></editor-list-board>
           </div>
         </nz-tab>
         <nz-tab nzTitle="有史以来">
           <div style="overflow:auto;">
-            <nz-alert nzType="success" nzMessage="以下数据展示有史以来所有用户的恭喜记录，列表按累计提交次数由高到低排列。"></nz-alert>
+            <nz-alert nzType="success" nzMessage="以下数据展示有史以来所有用户的贡献记录，列表按用户的创建时间由早到晚顺序排列。"></nz-alert>
             <editor-list-board [editors]="allEditors" [isLoading]="isAllEditorsLoading"></editor-list-board>
           </div>
         </nz-tab>
