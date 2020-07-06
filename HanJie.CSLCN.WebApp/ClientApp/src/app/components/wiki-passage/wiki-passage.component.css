@@ -1,0 +1,25 @@
+:host ::ng-deep .fix_head_table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+  :host ::ng-deep .fix_head_table thead tr {
+    display: block;
+    color: white;
+    background-color: black;
+  }
+
+  :host ::ng-deep .fix_head_table th,
+  :host ::ng-deep .fix_head_table td {
+    text-align: center;
+    width: 200px;
+    border: 1px solid black !important;
+  }
+
+  :host ::ng-deep .fix_head_table tbody {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    max-height: 450px;
+  }

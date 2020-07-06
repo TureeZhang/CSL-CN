@@ -62,11 +62,23 @@ namespace HanJie.CSLCN.Services
 
             try
             {
+                int codeTagCount = 0;
+
                 //当文档中跨级出现越级标题时，此处尚不能实现容错。暂时取消生成滚动侦测目录
                 while (line != null)
                 {
+
+                    if (line.StartsWith("```") || line.StartsWith("~~~"))
+                        codeTagCount++;
+
+                    if (codeTagCount % 2 == 1)
+                    {
+                        line = await stringReader.ReadLineAsync();
+                        continue;
+                    }
+
                     if (line.StartsWith("## "))
-                        result.Add(new WikiPassageAnchorTitleDto() { Title = line.Substring(3), Href = $"#{line.Substring(3).Replace(" ", "-").Replace("&", "")}" });
+                        result.Add(new WikiPassageAnchorTitleDto() { Title = line.Substring(3), Href = $"#{line.Substring(3).Replace(" ", "-").Replace("&", "").ToLower()}" });
                     else if (line.StartsWith("### "))
                     {
                         if (result.Last().Children == null)
@@ -188,6 +200,23 @@ namespace HanJie.CSLCN.Services
 
             if (wikiPassageDto.CoAuthors != null)
                 entity.CoAuthors = string.Join(",", wikiPassageDto.CoAuthors?.Select(item => item.Id).ToArray());
+
+            //
+            //提供内容的用户即视为共同编辑者
+
+            List<string> mainAuthors = entity.MainAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)?.ToList();
+            List<string> existCoAuthors = entity.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)?.ToList();
+            if (!mainAuthors.Contains(currentUserId.ToString()))
+            {
+                if (existCoAuthors == null)
+                    existCoAuthors = new List<string>();
+
+                if (!existCoAuthors.Contains(currentUserId.ToString()))
+                {
+                    existCoAuthors.Add(currentUserId.ToString());
+                    entity.CoAuthors = string.Join(",", existCoAuthors);
+                }
+            }
 
             entity.LastModifyUserId = currentUserId;
 
