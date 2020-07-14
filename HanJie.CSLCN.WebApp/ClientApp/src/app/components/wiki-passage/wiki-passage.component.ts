@@ -13,7 +13,6 @@ import { AdminCreateWikipassageComponent } from '../admin-components/admin-wikip
 import { GlobalService } from '../../services/global.service';
 import { BreadCrumbDto } from '../../models/bread-crumb';
 import { UserInfoDto } from '../../models/user-info-dto';
-import { ReplaceTableDirective } from '../../directives/replace-table.service';
 
 @Component({
   selector: 'wiki-passage',
@@ -55,9 +54,6 @@ export class WikiPassageComponent implements OnInit {
 
   public isLoadingEditButton: boolean = false;
   public isLoadingSaveButton: boolean = false;
-
-  @ViewChild(ReplaceTableDirective, { static: true })
-  replaceTableHost: ReplaceTableDirective;
 
   constructor(private route: ActivatedRoute,
     private router: Router,

@@ -1,7 +1,7 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
-@Directive({ selector: '[replace-table]' })
-export class ReplaceTableDirective {
+@Directive({ selector: '[html-render]' })
+export class HtmlRenderDirective {
   constructor(public viewContainerRef:ViewContainerRef) {
 
   }

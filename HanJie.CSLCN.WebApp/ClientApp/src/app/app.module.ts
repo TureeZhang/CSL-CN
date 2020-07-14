@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule, NzLayoutModule, NzBreadCrumbModule, NzGridModule, NzFormModule, NzButtonModule, NzDividerModule, NzIconModule, NzAffixModule, NzDropDownModule, NzMenuModule, NzPaginationModule, NzInputModule, NzInputNumberModule, NzSelectModule, NzAvatarModule, NzCarouselModule, NzPopoverModule, NzStatisticModule, NzTableModule, NzToolTipModule, NzDrawerModule, NzSpinModule, NzAnchorModule, NzTabsModule, NzBadgeModule, NzDescriptionsModule } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule, NzLayoutModule, NzBreadCrumbModule, NzGridModule, NzFormModule, NzButtonModule, NzDividerModule, NzIconModule, NzAffixModule, NzDropDownModule, NzMenuModule, NzPaginationModule, NzInputModule, NzInputNumberModule, NzSelectModule, NzAvatarModule, NzCarouselModule, NzPopoverModule, NzStatisticModule, NzTableModule, NzToolTipModule, NzDrawerModule, NzSpinModule, NzAnchorModule, NzTabsModule, NzBadgeModule, NzDescriptionsModule, NzTableComponent, NzEmptyComponent } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,99 +26,110 @@ import { AdminCreateDonatorComponent } from './components/admin-components/admin
 import { AdminWikipassagesComponent } from './components/admin-components/admin-wikipassages/admin-wikipassages.component';
 import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
-import { ReplaceTableDirective } from './directives/replace-table.service';
+import { HtmlRenderDirective } from './directives/html-render.directive';
 import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 import { EditorListBoardComponent } from './components/editor-devote-info-list/editor-list-board/editor-list-board.component';
+import { EditorComponent } from './components/editor/editor.component';
+import { EditorTableComponent } from './components/editor/editor-table/editor-table.component';
+import { EditorH1Component } from './components/editor/editor-h1/editor-h1.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-    declarations: [
-        //主站组件
-        AppComponent,
-        HomepageComponent,
-        WikiPassageComponent,
-        RegisterComponent,
-        LoginComponent,
-        DonatorRankComponent,
-        UploaderComponent,
-        //管理界面组件
-        AdminHomepageComponent,
-        AdminUserInfoesComponent,
-        AdminCreateUserInfoComponent,
-        AdminDonatorsComponent,
-        AdminCreateDonatorComponent,
-        AdminWikipassagesComponent,
-        AdminCreateWikipassageComponent,
-        WikiListComponent,
-        //指令
-        ReplaceTableDirective,
-        AdminSystemSettingsComponent,
-        EditorDevoteInfoListComponent,
-        EditorListBoardComponent
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MarkdownModule.forRoot({
-            markedOptions: {
-                provide: MarkedOptions,
-                useFactory: markedOptionsFactory,
-            }
-        }),
-        LMarkdownEditorModule,
-        NzUploadModule,
-        ClipboardModule,
-        NzMessageModule,
-        NzAlertModule,
-        NzCardModule,
-        NzListModule,
-        NzCheckboxModule,
-        NzSkeletonModule,
-        NzLayoutModule,
-        NzBreadCrumbModule,
-        NzGridModule,
-        NzFormModule,
-        NzButtonModule,
-        NzIconModule,
-        NzDropDownModule,
-        NzMenuModule,
-        NzPaginationModule,
-        NzCheckboxModule,
-        NzInputModule,
-        NzInputNumberModule,
-        NzSelectModule,
-        NzAvatarModule,
-        NzCardModule,
-        NzCarouselModule,
-        NzEmptyModule,
-        NzListModule,
-        NzPopoverModule,
-        NzStatisticModule,
-        NzTableModule,
-        NzToolTipModule,
-        NzAlertModule,
-        NzDrawerModule,
-        NzMessageModule,
-        NzSpinModule,
-        NzAnchorModule,
-        NzDividerModule,
-        NzTabsModule,
-        NzBadgeModule,
-        NzDescriptionsModule
-    ],
-    providers: [{ provide: NZ_I18N, useValue: zh_CN }],
-    bootstrap: [AppComponent],
-    entryComponents: [
-        UploaderComponent,
-        AdminCreateUserInfoComponent,
-        AdminCreateDonatorComponent,
-        AdminCreateWikipassageComponent
-    ]
+  declarations: [
+    //主站组件
+    AppComponent,
+    HomepageComponent,
+    WikiPassageComponent,
+    RegisterComponent,
+    LoginComponent,
+    DonatorRankComponent,
+    UploaderComponent,
+    //管理界面组件
+    AdminHomepageComponent,
+    AdminUserInfoesComponent,
+    AdminCreateUserInfoComponent,
+    AdminDonatorsComponent,
+    AdminCreateDonatorComponent,
+    AdminWikipassagesComponent,
+    AdminCreateWikipassageComponent,
+    WikiListComponent,
+    AdminSystemSettingsComponent,
+    EditorDevoteInfoListComponent,
+    EditorListBoardComponent,
+    EditorComponent,
+    //指令
+    HtmlRenderDirective,
+    EditorTableComponent,
+    EditorH1Component
+
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MarkedOptions,
+        useFactory: markedOptionsFactory,
+      }
+    }),
+    LMarkdownEditorModule,
+    NzUploadModule,
+    ClipboardModule,
+    NzMessageModule,
+    NzAlertModule,
+    NzCardModule,
+    NzListModule,
+    NzCheckboxModule,
+    NzSkeletonModule,
+    NzLayoutModule,
+    NzBreadCrumbModule,
+    NzGridModule,
+    NzFormModule,
+    NzButtonModule,
+    NzIconModule,
+    NzDropDownModule,
+    NzMenuModule,
+    NzPaginationModule,
+    NzCheckboxModule,
+    NzInputModule,
+    NzInputNumberModule,
+    NzSelectModule,
+    NzAvatarModule,
+    NzCardModule,
+    NzCarouselModule,
+    NzEmptyModule,
+    NzListModule,
+    NzPopoverModule,
+    NzStatisticModule,
+    NzTableModule,
+    NzToolTipModule,
+    NzAlertModule,
+    NzDrawerModule,
+    NzMessageModule,
+    NzSpinModule,
+    NzAnchorModule,
+    NzDividerModule,
+    NzTabsModule,
+    NzBadgeModule,
+    NzDescriptionsModule
+  ],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    UploaderComponent,
+    AdminCreateUserInfoComponent,
+    AdminCreateDonatorComponent,
+    AdminCreateWikipassageComponent,
+    NzTableComponent,
+    NzEmptyComponent,
+    EditorTableComponent,
+    EditorH1Component
+  ]
 })
 export class AppModule { }
