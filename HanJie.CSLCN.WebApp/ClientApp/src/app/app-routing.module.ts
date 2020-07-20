@@ -10,7 +10,7 @@ import { AdminHomepageComponent } from './components/admin-components/admin-home
 import { AdminUserInfoesComponent } from './components/admin-components/admin-userinfoes/admin-userinfoes.component';
 import { AdminDonatorsComponent } from './components/admin-components/admin-donators/admin-donators.component';
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
-import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
+import { AdminHomepageSettingsComponent } from './components/admin-components/admin-homepage-settings/admin-homepage-settings.component';
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 import { EditorComponent } from './components/editor/editor.component';
 
@@ -30,7 +30,7 @@ const routes: Routes = [
     { path: "admin", component: AdminHomepageComponent },
     { path: "admin/userinfoes", component: AdminUserInfoesComponent },
     { path: "admin/donators", component: AdminDonatorsComponent },
-    { path: "admin/systemsettings", component: AdminSystemSettingsComponent }
+    { path: "admin/homepagesettings", component: AdminHomepageSettingsComponent }
 ];
 
 @NgModule({

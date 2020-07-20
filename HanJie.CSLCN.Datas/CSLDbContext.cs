@@ -36,7 +36,7 @@ namespace HanJie.CSLCN.Datas
         /// <summary>
         /// 系统设置
         /// </summary>
-        public DbSet<SystemSettings> SystemSettings { get; set; }
+        public DbSet<SystemSetting> SystemSettings { get; set; }
 
         /// <summary>
         /// 日志

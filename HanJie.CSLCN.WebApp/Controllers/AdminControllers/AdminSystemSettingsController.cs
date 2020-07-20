@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Dtos.SystemSettingsDto;
+using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,31 +15,43 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
     [Route("api/admin/[controller]")]
     public class AdminSystemSettingsController : AdminBaseController
     {
-        private readonly SystemSettingsService _systemSettingsService;
+        private readonly SystemSettingService _systemSettingsService;
 
 
-        public AdminSystemSettingsController(SystemSettingsService systemSettingsService,
+        public AdminSystemSettingsController(SystemSettingService systemSettingsService,
             UserStatuService userStatuService) : base(userStatuService)
         {
             this._systemSettingsService = systemSettingsService;
         }
 
         [HttpGet]
-        public IActionResult List()
+        public IActionResult Get(SystemSettingTypeEnum settingType)
         {
-            SystemSettingsDto result = this._systemSettingsService.ListAsDto();
+            switch (settingType)
+            {
+                case SystemSettingTypeEnum.HomePageSettings:
+                    HomePageSettingsDto result = this._systemSettingsService.GetHomePageSettings();
+                    return Json(result);
+                default:
+                    throw new NotFiniteNumberException();
+            }
 
-            return Json(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(SystemSettingsDto dto)
+        public IActionResult Update(SystemSettingTypeEnum settingType, object settings)
         {
-            Ensure.NotNull(dto, nameof(dto));
-            Ensure.NotNull(dto.Id, nameof(dto));
-            Ensure.NotNull(dto.HomepageNews, nameof(dto));
+            Ensure.NotNull(settings, nameof(settings));
 
-            await this._systemSettingsService.UpdateAsync(dto);
+            switch (settingType)
+            {
+                case SystemSettingTypeEnum.HomePageSettings:
+                    this._systemSettingsService.UpdateHomePageSettings((HomePageSettingsDto)settings);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
             return Ok();
         }
     }

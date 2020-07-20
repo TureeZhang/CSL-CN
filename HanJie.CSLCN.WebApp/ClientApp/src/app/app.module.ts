@@ -27,7 +27,7 @@ import { AdminWikipassagesComponent } from './components/admin-components/admin-
 import { AdminCreateWikipassageComponent } from './components/admin-components/admin-wikipassages/admin-create-wikipassage/admin-create-wikipassage.component';
 import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { HtmlRenderDirective } from './directives/html-render.directive';
-import { AdminSystemSettingsComponent } from './components/admin-components/admin-system-settings/admin-system-settings.component';
+import { AdminHomepageSettingsComponent } from './components/admin-components/admin-homepage-settings/admin-homepage-settings.component';
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 import { EditorListBoardComponent } from './components/editor-devote-info-list/editor-list-board/editor-list-board.component';
 import { EditorComponent } from './components/editor/editor.component';
@@ -55,7 +55,7 @@ registerLocaleData(zh);
     AdminWikipassagesComponent,
     AdminCreateWikipassageComponent,
     WikiListComponent,
-    AdminSystemSettingsComponent,
+    AdminHomepageSettingsComponent,
     EditorDevoteInfoListComponent,
     EditorListBoardComponent,
     EditorComponent,

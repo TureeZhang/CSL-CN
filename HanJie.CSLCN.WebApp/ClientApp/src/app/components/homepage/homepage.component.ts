@@ -9,6 +9,8 @@ import { userInfo } from 'os';
 import { UserInfoDto } from '../../models/user-info-dto';
 import { WikiListItemDto } from '../../models/wiki-list-item-dto';
 import { LastModifyWikisService } from '../../services/last-modify-wikis.service';
+import { SystemSettingTypeEnum } from '../../models/enums/system-setting-type-enum';
+import { HomepageSettingsDto } from '../../models/admin/homepage-settings-dto';
 
 @Component({
   selector: 'homepage',
@@ -18,8 +20,9 @@ import { LastModifyWikisService } from '../../services/last-modify-wikis.service
 export class HomepageComponent implements OnInit {
 
   public isLoadingLastModifyWikis: boolean = false;
+  public isLoadingBoardContent: boolean = true;
 
-  public homepageNews: string;
+  public homepageSettings: HomepageSettingsDto;
   public lastModifyWikisDisplay: WikiListItemDto[];
   public lastModifyWikis: WikiListItemDto[];
   public pageIndex: number = 1;
@@ -38,8 +41,9 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.systemSettingsService.get().subscribe(response => {
-      this.homepageNews = response.homepageNews;
+    this.systemSettingsService.get<HomepageSettingsDto>(SystemSettingTypeEnum.HomePage).subscribe(response => {
+      this.homepageSettings = response;
+      this.isLoadingBoardContent = false;
     });
 
     this.loadDlcInfoes();

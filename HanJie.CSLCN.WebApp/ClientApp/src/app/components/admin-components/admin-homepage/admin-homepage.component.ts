@@ -21,7 +21,7 @@ export class AdminHomepageComponent implements OnInit {
             new AdminHomepageCard("/admin/donators", "donatorRankTemplate", "捐赠", "查看并管理捐赠者统计数据", "heart"),
             new AdminHomepageCard("/admin/wikipassages", "wikiPassageTemplate", "文章", "查看并管理维基文档", "file-text"),
             new AdminHomepageCard("/admin/storagefiles", "cloudFileTemplate", "文件", "查看并管理已上传文件", "cloud-upload"),
-            new AdminHomepageCard("/admin/systemsettings", "homepageSettingsTemplate", "系统设置", "查看并编辑系统关键信息", "setting"));
+            new AdminHomepageCard("/admin/homepagesettings", "homepageSettingsTemplate", "首页设置", "查看并编辑系统关键信息", "desktop"));
     }
 
     ngOnInit(): void {

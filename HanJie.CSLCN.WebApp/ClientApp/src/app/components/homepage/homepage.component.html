@@ -101,22 +101,23 @@
           关于此游戏
         </div>
 
-        <div class="content-text">
-          <a href="https://store.steampowered.com/app/255710/Cities_Skylines/" target="_blank">城市天际线</a> 是一款城市建造模拟类经营游戏，采用 Unity 3D 引擎，由 Colossal Order 开发，并由 Paradox Interactive 发行。
+        <div class="content-text" style="height:80px;overflow:auto;">
+          <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
+          <markdown [data]="homepageSettings.boardContentB"></markdown>
         </div>
         <div class="content-header-board">
           想要参与文档翻译？
         </div>
-        <div class="content-text">
-          文档译自官方维基 <a href="https://skylines.paradoxwikis.com/" target="_blank">Cities:Skylines Wiki</a>，严格遵循 <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.zh" target="_blank">CC BY-SA 3.0</a> 授权许可协议。
-          <br />
-          如果你想加入我们，请阅读我们的<a routerLink="/wiki-passage/contribute">《维基贡献者指南》</a>。
+        <div class="content-text" style="height:80px;overflow:auto;">
+          <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
+          <markdown [data]="homepageSettings.boardContentC"></markdown>
         </div>
         <div class="content-header-board">
           最新消息
         </div>
         <div class="content-text" style="height:155px;overflow:auto;">
-          <markdown [data]="homepageNews"></markdown>
+          <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
+          <markdown [data]="homepageSettings.boardContentD"></markdown>
         </div>
       </div>
 

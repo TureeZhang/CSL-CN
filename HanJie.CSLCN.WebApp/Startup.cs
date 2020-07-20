@@ -171,7 +171,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddScoped<UserInfoService>();
             services.AddScoped<DonatorRankService>();
             services.AddScoped<QiniuService>();
-            services.AddScoped<SystemSettingsService>();
+            services.AddScoped<SystemSettingService>();
         }
 
         /// <summary>

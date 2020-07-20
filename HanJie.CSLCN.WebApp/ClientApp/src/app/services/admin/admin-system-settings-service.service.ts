@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CSLHttpHelper } from '../../commons/http-helper';
-import { SystemSettingsDto } from '../../models/admin/system-settings-dto';
+import { HomepageSettingsDto } from '../../models/admin/homepage-settings-dto';
+import { SystemSettingTypeEnum } from '../../models/enums/system-setting-type-enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminSystemSettingsService {
 
-    private systemSettingsUrl:string = "/api/admin/adminsystemsettings"
+  private systemSettingsUrl: string = "/api/admin/adminsystemsettings"
 
-    constructor(private httpHelper:CSLHttpHelper) { }
+  constructor(private httpHelper: CSLHttpHelper) { }
 
-    update(data: SystemSettingsDto): Observable<SystemSettingsDto> {
-        return this.httpHelper.post<SystemSettingsDto,SystemSettingsDto>(this.systemSettingsUrl,data);
-    }
+  update(data: HomepageSettingsDto): Observable<HomepageSettingsDto> {
+    return this.httpHelper.post<HomepageSettingsDto, HomepageSettingsDto>(this.systemSettingsUrl, data);
+  }
 
-    get(): Observable<SystemSettingsDto> {
-        return this.httpHelper.get<SystemSettingsDto>(this.systemSettingsUrl);
-    }
+  get<T>(settingType: SystemSettingTypeEnum): Observable<T> {
+    return this.httpHelper.get<T>(`${this.systemSettingsUrl}?settingType=${settingType}`);
+  }
 
 }

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace HanJie.CSLCN.Models.Enums
 {
-    public enum SystemSettingsEnum
+    public enum SystemSettingTypeEnum
     {
-        HomepageNews = 0
+        HomePageSettings = 0
     }
 }

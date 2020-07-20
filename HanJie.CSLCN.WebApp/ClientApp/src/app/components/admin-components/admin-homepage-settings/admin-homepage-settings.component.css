@@ -1,0 +1,29 @@
+:host ::ng-deep div {
+  box-sizing: border-box !important;
+}
+
+.container {
+  padding: 16px;
+  width: 100%;
+}
+
+h2 {
+  line-height: 64px;
+}
+
+.homepage-board-box {
+  border-radius: 5px;
+  border: 2px solid #666666;
+}
+
+  .homepage-board-box div {
+    border: 1px solid #999999;
+    background-color: darkcyan;
+    font-size: 32px;
+    font-family: Consolas;
+    color: white;
+  }
+
+  .homepage-board-box .ant-row ::ng-deep {
+    border: 0px;
+  }
