@@ -24,7 +24,8 @@
           <nz-form-control nzErrorTip="请填写{{item.text}}!">
             <input formControlName="{{item.fieldName}}"
                    nz-input
-                   placeholder="{{item.description}}">
+                   placeholder="{{item.description}}"
+                   [(ngModel)]="item.ngModel">
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -62,7 +63,8 @@
                     <nz-form-label nzRequired>{{item.text}}</nz-form-label>
                     <input formControlName="{{item.fieldName}}"
                            nz-input
-                           placeholder="请填写 {{item.description}}">
+                           placeholder="请填写 {{item.description}}"
+                           [(ngModel)]="item.ngModel">
                   </nz-form-control>
                 </div>
               </div>
@@ -74,14 +76,30 @@
     </div>
 
     <div nz-row>
-      <div nz-col nzSpan="24" *ngFor="let item of boardContents">
+      <div nz-col nzSpan="24" *ngFor="let item of boardContents;let i = index">
         <nz-form-item>
           <nz-form-label nzRequired>{{item.text}}</nz-form-label>
-          <nz-form-control nzErrorTip="请填写{{item.text}}!">
+          <nz-form-control nzErrorTip="请填写 {{item.text}}!">
             <textarea formControlName="{{item.fieldName}}"
                       nz-input rows="2"
                       placeholder="{{item.description}}"
-                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                      [(ngModel)]="homepageSettings[item.ngModel]"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <nz-divider nzText="主题色"></nz-divider>
+    <div nz-row nzGutter="16" nzJustify="space-between">
+      <div nz-col nzSpan="8" *ngFor="let item of colorSettings;let i = index">
+        <nz-form-item>
+          <nz-form-label nzRequired>{{item.text}}</nz-form-label>
+          <nz-form-control nzErrorTip="请填写 {{item.text}}!">
+            <input formControlName="{{item.fieldName}}"
+                   nz-input
+                   placeholder="{{item.description}}"
+                   [(ngModel)]="homepageSettings[item.ngModel]">
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -96,7 +114,8 @@
             <textarea formControlName="friendlyWebsiteUrls"
                       nz-input rows="2"
                       placeholder="格式：名称#链接#图片地址。每行一个，换行填写，自动识别。"
-                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                      [(ngModel)]="homepageSettings.friendlyWebsiteUrls"></textarea>
           </nz-form-control>
         </nz-form-item>
       </div>
@@ -105,7 +124,7 @@
     <div nz-row>
       <div nz-col nzSpan="24">
         <nz-form-item>
-          <label nz-checkbox formControlName="isDisplayHuyaLiveUrl" nzRequired>在左下角显示虎牙汉界的直播间跳转链接。</label>
+          <label nz-checkbox formControlName="isDisplayHuyaLiveUrl" nzRequired [(ngModel)]="homepageSettings.isDisplayHuyaLiveUrl">在左下角显示虎牙汉界的直播间跳转链接。</label>
         </nz-form-item>
       </div>
     </div>

@@ -6,8 +6,10 @@
             (nzCollapsedChange)="onSiderCollapsedChange($event)"
             [nzTrigger]="null"
             [(nzCollapsed)]="isCollapsed">
+    <!--[ngStyle]="{'background-color':userColor}"-->
     <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url(/assets/logo.png)"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <!--[ngStyle]="{'background-color':userColor}"-->
       <ng-template #errorMenu>
         <li nz-menu-item>
           <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">正在获取菜单..</span></span>

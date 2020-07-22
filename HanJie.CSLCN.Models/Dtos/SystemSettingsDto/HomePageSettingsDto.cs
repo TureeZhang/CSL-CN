@@ -27,5 +27,8 @@ namespace HanJie.CSLCN.Models.Dtos.SystemSettingsDto
         public string MenuTextFocusColor { get; set; }
         public string BoardBackgroundColor { get; set; }
         public string BoardTextColor { get; set; }
+
+        public string FriendlyWebsiteUrls { get; set; }
+        public bool IsDisplayHuyaLiveUrl { get; set; }
     }
 }

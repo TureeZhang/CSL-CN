@@ -13,11 +13,14 @@ export class HomepageSettingsDto {
   public boardTitleE: string;
   public boardTitleF: string;
 
-  public MenuBackgroundColor: string;
-  public MenuSecondaryBackgroundColor: string;
-  public MenuBackgroundFocusColor: string;
-  public MenuTextColor: string;
-  public MenuTextFocusColor: string;
-  public BoardBackgroundColor: string;
-  public BoardTextColor: string;
+  public menuBackgroundColor: string;
+  public menuSecondaryBackgroundColor: string;
+  public menuBackgroundFocusColor: string;
+  public menuTextColor: string;
+  public menuTextFocusColor: string;
+  public boardBackgroundColor: string;
+  public boardTextColor: string;
+
+  public friendlyWebsiteUrls: string;
+  public isDisplayHuyaLiveUrl: boolean;
 }

@@ -104,9 +104,17 @@ namespace HanJie.CSLCN.Services
             {
                 PropertyInfo propertyInfo = typeof(HomePageSettingsDto).GetProperty(item.Name);
                 if (propertyInfo != null)
-                    propertyInfo.SetValue(
-                        result,
-                        settings.Find(setting => string.Equals(setting.Name, propertyInfo.Name, StringComparison.OrdinalIgnoreCase)).Value);
+                {
+                    object value = settings.Find(setting => string.Equals(setting.Name, propertyInfo.Name, StringComparison.OrdinalIgnoreCase)).Value;
+                    if (string.Equals(typeof(bool).Name, propertyInfo.PropertyType.Name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        propertyInfo.SetValue(result, Convert.ToBoolean(value));
+                    }
+                    else
+                    {
+                        propertyInfo.SetValue(result, value.ToString());
+                    }
+                }
             }
 
             return result;

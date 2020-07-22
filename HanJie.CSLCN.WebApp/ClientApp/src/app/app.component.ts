@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   public navigationEnd: Observable<NavigationEnd>;
   public breadCrumbs: Observable<BreadCrumbDto[]>;
 
+  //public userColor: string;
 
   constructor(private menuService: MenuService,
     private userInfoService: UserInfoService,
@@ -37,6 +38,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.userColor = "red";
+    //setInterval(() => { this.userColor = "lightblue" }, 3000);
+    //setInterval(() => { this.userColor = "lightgreen" }, 6000);
+    //setInterval(() => { this.userColor = "lightgray" }, 9000);
     this.getMenus();
 
     if (this.currentUser == null) {
