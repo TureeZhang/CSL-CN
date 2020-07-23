@@ -8,6 +8,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { GlobalService } from './services/global.service';
 import { BreadCrumbDto } from './models/bread-crumb';
+import { HomepageSettingsDto } from './models/admin/homepage-settings-dto';
+import { SystemSettingsService } from './services/system-settings.service';
+import { SystemSettingTypeEnum } from './models/enums/system-setting-type-enum';
 
 @Component({
   selector: 'app-root',
@@ -25,23 +28,22 @@ export class AppComponent implements OnInit {
   public isUserLogined: boolean = false;
   public navigationEnd: Observable<NavigationEnd>;
   public breadCrumbs: Observable<BreadCrumbDto[]>;
-
-  //public userColor: string;
+  public homepageSettings: HomepageSettingsDto;
 
   constructor(private menuService: MenuService,
     private userInfoService: UserInfoService,
     private router: Router,
-    public globalService: GlobalService) {
+    public globalService: GlobalService,
+    private systemSettingsService: SystemSettingsService) {
     this.navigationEnd = router.events.pipe(
       filter(evt => evt instanceof NavigationEnd)
     ) as Observable<NavigationEnd>;
   }
 
   ngOnInit(): void {
-    //this.userColor = "red";
-    //setInterval(() => { this.userColor = "lightblue" }, 3000);
-    //setInterval(() => { this.userColor = "lightgreen" }, 6000);
-    //setInterval(() => { this.userColor = "lightgray" }, 9000);
+    this.systemSettingsService.get<HomepageSettingsDto>(SystemSettingTypeEnum.HomePage).subscribe(response => {
+      this.homepageSettings = response;
+    });
     this.getMenus();
 
     if (this.currentUser == null) {

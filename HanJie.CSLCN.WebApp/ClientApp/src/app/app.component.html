@@ -5,11 +5,12 @@
             [nzCollapsedWidth]="0"
             (nzCollapsedChange)="onSiderCollapsedChange($event)"
             [nzTrigger]="null"
-            [(nzCollapsed)]="isCollapsed">
-    <!--[ngStyle]="{'background-color':userColor}"-->
+            [(nzCollapsed)]="isCollapsed"
+            [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
+    <!-- #001529 -->
     <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url(/assets/logo.png)"></div>
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <!--[ngStyle]="{'background-color':userColor}"-->
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
+      <!-- #001529 -->
       <ng-template #errorMenu>
         <li nz-menu-item>
           <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">正在获取菜单..</span></span>
@@ -72,7 +73,8 @@
 <!--自定义 Trigger-->
 <div class="ant-layout-sider-zero-width-trigger ant-layout-sider-zero-width-trigger-left"
      [ngClass]="{'collapsed-trigger':isCollapsed,'discollapsed-trigger':!isCollapsed}"
-     (click)="isCollapsed = !isCollapsed">
+     (click)="isCollapsed = !isCollapsed"
+     [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
   <i nz-icon="" nztype="bars" class="anticon anticon-bars">
     <svg viewBox="0 0 1024 1024" focusable="false" fill="currentColor" width="1em" height="1em" data-icon="bars" aria-hidden="true">
       <path d="M912 192H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM104 228a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0z"></path>

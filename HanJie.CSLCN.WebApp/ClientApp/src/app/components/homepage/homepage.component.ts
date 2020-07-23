@@ -41,10 +41,11 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.systemSettingsService.get<HomepageSettingsDto>(SystemSettingTypeEnum.HomePage).subscribe(response => {
       this.homepageSettings = response;
-      this.isLoadingBoardContent = false;
     });
+    this.isLoadingBoardContent = false;
 
     this.loadDlcInfoes();
     this.getNewEditWikiPassages();

@@ -46,7 +46,7 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
             switch (settingType)
             {
                 case SystemSettingTypeEnum.HomePageSettings:
-                    this._systemSettingsService.UpdateHomePageSettings((HomePageSettingsDto)settings);
+                    this._systemSettingsService.UpdateHomePageSettings(Newtonsoft.Json.JsonConvert.DeserializeObject<HomePageSettingsDto>(settings.ToString()));
                     break;
                 default:
                     throw new NotImplementedException();

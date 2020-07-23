@@ -73,12 +73,6 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public override Task UpdateAsync(SystemSetting data, bool isUpdateLastModifyDate = true)
-        {
-            //todo: 考虑帮助转换数据模型到传输模型，继续调用(SystemSettingsDto settings)完成更新
-            throw new NotImplementedException("请调用 (SystemSettingsDto settings) 完成系统选项更新。");
-        }
-
         public HomePageSettingsDto GetHomePageSettings()
         {
             List<SystemSetting> settings = ListSettings(SystemSettingTypeEnum.HomePageSettings);
