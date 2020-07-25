@@ -8,15 +8,15 @@
   </div>
   <div nz-col nzXl="12" nzXs="0" style="font-size:large;">
     <div>
-      <span>汉界的一颗小虎牙，你可以免费查阅的 <a href="https://store.steampowered.com/app/255710/Cities_Skylines/" target="_blank">城市天际线</a> 在线百科全书。</span>
+      <span><markdown [data]="homepageSettings.websiteDescription"></markdown></span>
     </div>
   </div>
 </div>
 
-<div nz-row nzType="flex" nzJustify="center" ngAlign="middle" style="margin-top:3px;">
+<div class="ant-black-font" nz-row nzType="flex" nzJustify="center" ngAlign="middle" style="margin-top:3px;">
   <div nz-col nzXXl="4" nzXl="7" nzLg="7" nzMd="12" nzSm="24" nzXs="24">
     <div class="content-header-board">
-      百科全书
+      {{homepageSettings.boardTitleA}}
     </div>
     <div class="content-list-warpper" style="margin-left:12px;margin-top:12px;">
       <div>
@@ -98,7 +98,7 @@
 
       <div nz-col nzLg="13" nzMd="24" nzSm="24" nzXs="24">
         <div class="content-header-board">
-          关于此游戏
+          {{homepageSettings.boardTitleB}}
         </div>
 
         <div class="content-text" style="height:80px;overflow:auto;">
@@ -106,14 +106,14 @@
           <markdown [data]="homepageSettings.boardContentB"></markdown>
         </div>
         <div class="content-header-board">
-          想要参与文档翻译？
+          {{homepageSettings.boardTitleC}}
         </div>
         <div class="content-text" style="height:80px;overflow:auto;">
           <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
           <markdown [data]="homepageSettings.boardContentC"></markdown>
         </div>
         <div class="content-header-board">
-          最新消息
+          {{homepageSettings.boardTitleD}}
         </div>
         <div class="content-text" style="height:155px;overflow:auto;">
           <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
@@ -132,7 +132,7 @@
       <div nz-col nzSpan="24">
         <div nz-col nzSpan="24">
           <div class="content-header-board" style="margin-bottom:12px;">
-            可下载内容（DLC）
+            {{homepageSettings.boardTitleF}}
           </div>
           <div nz-row nzJustify="center" style="text-align:center;">
             <div nz-col nzXl="6" nzLg="8" nzMd="8" nzSm="12" nzXs="12" style="width:172px;" *ngFor="let item of dlcInfoes">
@@ -157,14 +157,14 @@
 
 <ng-template #recentUpdateList>
   <div class="content-header-board">
-    最近编辑
+    {{homepageSettings.boardTitleE}}
   </div>
 
   <!-- todo: Release 记得改回来 -->
   <!--<img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/homepage-thumb.png" alt="Alternate Text" />-->
   <!--<img *ngIf="item==null" src="/assets/homepage-thumb.png" alt="Alternate Text" style="width:100%" />-->
   <!--<ng-container *ngIf="item!=null">-->
-  <nz-list class="last-modify-wiki-container"
+  <nz-list class="ant-black-font last-modify-wiki-container"
            [nzDataSource]="lastModifyWikisDisplay"
            [nzRenderItem]="item"
            [nzItemLayout]="'horizontal'"

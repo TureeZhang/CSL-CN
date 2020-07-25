@@ -23,9 +23,9 @@ namespace HanJie.CSLCN.Models.Dtos
             {
                 string propName = item.Name;
                 string propTypeFullName = item.PropertyType.FullName;
-                if (propTypeFullName == typeof(DateTime).FullName)
+                if (propTypeFullName == typeof(DateTime).FullName || propTypeFullName == typeof(DateTime?).FullName)
                 {
-                    result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dataModel).ToString());
+                    result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dataModel)?.ToString());
                 }
                 else if (propTypeFullName == typeof(String).FullName && typeof(TDtoType).GetProperty(propName).PropertyType.FullName.Contains("List`1[System.String]"))
                 {
@@ -36,8 +36,9 @@ namespace HanJie.CSLCN.Models.Dtos
                 {
                     try
                     {
-
-                        result.GetType().GetProperty(propName).SetValue(result, item.GetValue(dataModel));
+                        PropertyInfo prop = result.GetType().GetProperty(propName);
+                        if (prop != null)
+                            prop.SetValue(result, item.GetValue(dataModel));
                     }
                     catch (Exception)
                     {

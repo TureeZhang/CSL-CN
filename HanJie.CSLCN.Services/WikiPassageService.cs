@@ -236,7 +236,7 @@ namespace HanJie.CSLCN.Services
             wikiPassageDto.Content = "施工中🚧";
             WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);
             entity.MainAuthors = wikiPassageDto.MainAuthors.FirstOrDefault()?.Id.ToString();
-            entity.LastModifyUserId = wikiPassageDto.LastModifyUser.Id;
+            entity.LastModifyUserId = wikiPassageDto.LastModifyUser == null ? wikiPassageDto.MainAuthors.First().Id : wikiPassageDto.LastModifyUser.Id;
             WikiPassage wikiPassage = await base.AddAsync(entity);
 
             return wikiPassage;

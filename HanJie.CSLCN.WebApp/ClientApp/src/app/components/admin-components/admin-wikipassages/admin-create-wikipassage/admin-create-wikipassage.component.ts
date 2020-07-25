@@ -58,7 +58,7 @@ export class AdminCreateWikipassageComponent {
       }
       let routePath: string = control.value;
       this.timerForRoutePathDuplicated = setTimeout(() => {
-        this.wikiPassageService.isRoutePathDuplicated(routePath).subscribe(response => {
+        this.wikiPassageService.isRoutePathDuplicated(this.prefix + routePath).subscribe(response => {
           if (response === true) {
             observer.next({ error: true, duplicated: true }); //必须返回 error:true 以标识此事件为校验错误
           } else {

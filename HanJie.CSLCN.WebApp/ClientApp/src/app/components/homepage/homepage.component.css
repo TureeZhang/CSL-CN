@@ -1,5 +1,9 @@
+:host {
+  color: rgba(0,0,0,.85);
+}
+
 .content-header-board {
-  background: #001529;
+  background: lightslategrey;
   text-align: left;
   padding-left: 5px;
   border: 1px solid #cccccc;
@@ -7,7 +11,20 @@
   line-height: 31px;
   color: white;
   font-size: medium;
+  border-radius: 5px;
 }
+
+.ant-black-font {
+  font-size: 14px;
+  line-height: 2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+  .ant-black-font ::ng-deep .ant-list-item-meta-description {
+    color: rgba(0,0,0,.85);
+  }
+
+
 
 .content-text {
   margin: 0.5em;

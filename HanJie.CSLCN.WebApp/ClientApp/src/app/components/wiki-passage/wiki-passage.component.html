@@ -7,7 +7,7 @@
   </div>
 
   <div nz-row nzType="flex" *ngIf="loading==false">
-    <div nz-col nzLg="20" nzXs="24">
+    <div nz-col nzLg="20" nzXs="24" style="padding-left:34px;padding-top:14px;padding-right:24px;">
       <div *ngIf="isAdmin && isEditLocked" style="background-color: #fffbe6;
                   width: 100%;
                   line-height: 32px;
@@ -21,8 +21,8 @@
                                                                       top: -2px;"></nz-avatar><b>{{wikiPassage.editingUser.nickName}}</b> 进行编辑，直至该用户完成保存前，编辑权限已暂向其他用户进行锁定。
         </span>
       </div>
-      <h2 style="color:black;opacity:0.85;margin:16px;">
-        {{wikiPassage?.title}}
+      <h1>
+        <span>{{wikiPassage?.title}}</span>
         <ng-container *ngIf="pageStatus==0 && isAdmin && !isEditLocked">
           <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()" style="margin-left:16px;"><i nz-icon nzType="edit"></i>编 辑</button>
           <button nz-button nz-dropdown [nzDropdownMenu]="menu" (click)="createChildPage()" style="margin-left: 16px;"><i nz-icon nzType="file-text"></i>创建子文档<i nz-icon nzType="down"></i></button>
@@ -40,10 +40,10 @@
         <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton" (click)="update()" style="margin-left:16px;"><i nz-icon nzType="save"></i>保 存</button>
         <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon nzType="upload"></i>上传图片</button>
         <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon nzType="save"></i>表格编辑器</a>
-      </h2>
+      </h1>
 
 
-      <span style="margin-left:16px;" nz-text nzType="secondary">
+      <span nz-text nzType="secondary">
         最后编辑：{{wikiPassage?.lastModifyDate}}
       </span>
       <span style="margin-left:8px;" nz-text nzType="secondary">
@@ -52,7 +52,7 @@
 
 
       <div nz-row nzType="flex">
-        <div nz-col nzSpan="24" style="margin:32px;">
+        <div nz-col nzSpan="24" class="editors-board">
 
           <ul style="text-decoration:none;margin-bottom:0px;">
             <li>
@@ -68,7 +68,7 @@
               </ng-container>
             </li>
             <li>
-              <b>合作编辑者/译者：</b>
+              <b>合作校对/译者：</b>
               <ng-container *ngFor="let item of wikiPassage?.coAuthors;let i =index;">
                 <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}" href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
                 <span *ngIf="item.personalHomepageUrl==null">{{item.nickName}}</span>
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <div style="margin:0 16px;margin-bottom:40px;">
+      <div style="margin-bottom:40px;">
 
         <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
 
@@ -105,19 +105,13 @@
 
       </div>
     </div>
-    <!--右侧目录-->
 
+    <!--右侧目录-->
     <div nz-col nzLg="4" nzXs="0">
-      <nz-anchor>
+      <nz-anchor class="toc">
         <nz-link *ngFor="let item of wikiPassage?.anchorTitles" nzHref="{{item.href}}" nzTitle="{{item.title}}">
           <nz-link *ngFor="let child of item.children" nzHref="{{child.href}}" nzTitle="{{child.title}}"></nz-link>
         </nz-link>
-        <!--<nz-link nzHref="#道路--铁路" nzTitle="道路 & 铁路"></nz-link>
-        <nz-link nzHref="#公共交通" nzTitle="公共交通"></nz-link>
-        <nz-link nzHref="#市政服务" nzTitle="市政服务"></nz-link>
-        <nz-link nzHref="#发展规划" nzTitle="发展规划"></nz-link>
-        <nz-link nzHref="#其他提示" nzTitle="其他提示"></nz-link>
-        <nz-link nzHref="#衍生讨论与外部资源" nzTitle="衍生讨论与外部资源"></nz-link>-->
       </nz-anchor>
     </div>
   </div>

@@ -39,11 +39,11 @@ namespace HanJie.CSLCN.WebApp.Attributes
             }
 
             //请求的是后台管理界面，/api/admin/ 统一前缀，严格限制仅创建网站的用户允许调用
-            if (context.HttpContext.Request.Path.Value.StartsWith("/api/admin/") && userInfoDto.Id != 1)
+            if (context.HttpContext.Request.Path.Value.StartsWith("/api/admin/") && userInfoDto.IsAdmin)
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
-         }
+        }
     }
 }

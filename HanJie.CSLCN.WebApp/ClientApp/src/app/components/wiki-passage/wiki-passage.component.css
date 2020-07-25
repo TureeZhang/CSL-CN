@@ -23,3 +23,98 @@
     overflow: auto;
     max-height: 450px;
   }
+
+h1 span {
+  margin-bottom: 20px;
+  color: rgba(0,0,0,.85);
+  font-weight: 500;
+  font-size: 30px;
+  font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif;
+  line-height: 38px;
+}
+
+.toc ::ng-deep nz-link {
+  color: rgba(0,0,0,.85);
+}
+
+.editors-board {
+  margin: 32px 0;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 16px;
+  background-color: lightyellow;
+}
+
+/* Markdown Ant Design -- start */
+:host ::ng-deep markdown {
+  color: rgba(0,0,0,.85) !important;
+  font-size: 14px !important;
+  line-height: 2 !important;
+}
+
+  :host ::ng-deep markdown h1 {
+    margin-top: 8px !important;
+    margin-bottom: 20px !important;
+    color: rgba(0,0,0,.85) !important;
+    font-weight: 500 !important;
+    font-size: 30px !important;
+    font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif !important;
+    line-height: 38px !important;
+  }
+
+  :host ::ng-deep markdown h2, markdown h3, markdown h4, markdown h5，markdown h6 {
+    clear: both !important;
+    margin: 1.6em 0 .6em !important;
+    color: rgba(0,0,0,.85) !important;
+    font-weight: 500 !important;
+    font-family: Avenir,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji,sans-serif !important;
+  }
+
+  :host ::ng-deep markdown h2 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  :host ::ng-deep markdown h3 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  :host ::ng-deep markdown h4 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+    :host ::ng-deep markdown h4 strong {
+      font-weight: 500;
+    }
+
+  :host ::ng-deep markdown h5 {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+    :host ::ng-deep markdown h5 strong {
+      font-weight: 500;
+    }
+
+  :host ::ng-deep markdown h6 {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+    :host ::ng-deep markdown h6 strong {
+      font-weight: 500;
+    }
+
+  :host ::ng-deep markdown p {
+    margin: 1em 0 !important;
+  }
+
+  :host ::ng-deep markdown ol
+  :host ::ng-deep markdown ul {
+    list-style: none !important;
+  }
+
+
+/* Markdown Ant Design -- end */

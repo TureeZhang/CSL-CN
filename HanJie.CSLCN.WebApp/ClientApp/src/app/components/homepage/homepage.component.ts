@@ -62,6 +62,9 @@ export class HomepageComponent implements OnInit {
       { icon: "/assets/dlc-logo/industries.png", url: "/wiki-passage/downloadable-content", name: "工业（Industries）" },
       { icon: "/assets/dlc-logo/campus.png", url: "/wiki-passage/downloadable-content", name: "校园（Campus）" },
       { icon: "/assets/dlc-logo/sunset-harbor.png", url: "/wiki-passage/downloadable-content", name: "日落港口（Sunset Harbor）" },
+      { icon: "", url: "", name: "" },
+      { icon: "", url: "", name: "" },
+      { icon: "", url: "", name: "" }
     ];
   }
 
