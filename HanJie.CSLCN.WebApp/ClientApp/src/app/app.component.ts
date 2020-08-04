@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, ElementRef, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewContainerRef } from '@angular/core';
 import { MenuService } from './services/menu.service';
 import { MenuDto } from './models/menu-dto';
 import { Observable } from 'rxjs';
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   public breadCrumbs: Observable<BreadCrumbDto[]>;
   public homepageSettings: HomepageSettingsDto;
 
+
   constructor(private menuService: MenuService,
     private userInfoService: UserInfoService,
     private router: Router,
@@ -43,7 +44,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.systemSettingsService.get<HomepageSettingsDto>(SystemSettingTypeEnum.HomePage).subscribe(response => {
       this.homepageSettings = response;
+      document.body.style.cssText += `--menu-groupitem-background-color: ${this.homepageSettings?.menuGroupitemBackgroundColor};`;
+      document.body.style.cssText += `--menu-background-focus-color: ${this.homepageSettings?.menuBackgroundFocusColor};`;
+
     });
+
     this.getMenus();
 
     if (this.currentUser == null) {
@@ -73,7 +78,6 @@ export class AppComponent implements OnInit {
   getMenus(): void {
     this.menuService.getMenus().subscribe(response => {
       this.menus = response;
-      console.log(this.menus);
     });
   }
 

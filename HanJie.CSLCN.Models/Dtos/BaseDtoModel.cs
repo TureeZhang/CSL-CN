@@ -40,11 +40,10 @@ namespace HanJie.CSLCN.Models.Dtos
                         if (prop != null)
                             prop.SetValue(result, item.GetValue(dataModel));
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         //do nothing here.
                         //并非所有类型都可以正确转换，如果尝试失败则跳过
-                        continue;
                     }
                 }
             }

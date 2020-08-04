@@ -4,4 +4,14 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 14px;
   line-height: 22px;
+  /*菜单背景色*/
+  --menu-groupitem-background-color: #000c17;
+  /*菜单选中*/
+  --menu-background-focus-color: #1890ff;
+  --menu-text-focus-color: #fff;
+  /*菜单文字*/
+  --menu-group-text-color: rgba(255, 255, 255, 0.65);
+  --menu-item-text-color: rgba(255, 255, 255, 0.65);
+  --menu-hover-color: #fff;
+  --menu-hover-backgroundcolor:
 }

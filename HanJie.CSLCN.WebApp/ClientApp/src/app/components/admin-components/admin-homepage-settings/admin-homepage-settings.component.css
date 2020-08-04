@@ -27,3 +27,13 @@ h2 {
   .homepage-board-box .ant-row ::ng-deep {
     border: 0px;
   }
+
+.color-preview-box {
+  float: left;
+  margin-right: 1%;
+  width: 8%;
+  height: 31px;
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  transition: background-color linear .2s;
+}

@@ -24,6 +24,7 @@ export class AdminHomepageSettingsComponent implements OnInit {
   public siteInfoes: HomepageSiteInfoDto[];
   public boardContents: HomepageBoardContentDto[];
   public homepageSettings: HomepageSettingsDto;
+  public oldHomepageSettings: HomepageSettingsDto;
 
   constructor(private adminSystemSettingsService: AdminSystemSettingsService,
     private formBuilder: FormBuilder,
@@ -31,27 +32,42 @@ export class AdminHomepageSettingsComponent implements OnInit {
     private globalService: GlobalService) {
 
     this.systemSettingsForm = this.formBuilder.group({
-      menuBackgroundColor: ['#001529', [Validators.required]],
-      menuSecondaryBackgroundColor: ['', [Validators.required]],
-      menuBackgroundFocusColor: ['', [Validators.required]],
-      menuTextColor: ['', [Validators.required]],
-      menuTextFocusColor: ['', [Validators.required]],
-      boardBackgroundColor: ['', [Validators.required]],
-      boardTextColor: ['', [Validators.required]],
+
+      websiteName: ['', [Validators.required]],
+      websiteDescription: ['', [Validators.required]],
+      websiteRecordNumber: ['', [Validators.required]],
+      mainLogoPath: ['', [Validators.required]],
+      homepageLogoPath: ['', [Validators.required]],
+
       boardTitleA: ['', [Validators.required]],
       boardTitleB: ['', [Validators.required]],
       boardTitleC: ['', [Validators.required]],
       boardTitleD: ['', [Validators.required]],
       boardTitleE: ['', [Validators.required]],
       boardTitleF: ['', [Validators.required]],
+
       boardContentB: ['', [Validators.required]],
       boardContentC: ['', [Validators.required]],
       boardContentD: ['', [Validators.required]],
-      websiteName: ['', [Validators.required]],
-      websiteDescription: ['', [Validators.required]],
-      websiteRecordNumber: ['', [Validators.required]],
+
+      menuBackgroundColor: ['#001529', [Validators.required]],
+      menuGroupitemBackgroundColor: ['#000c17', [Validators.required]],
+
+      menuBackgroundFocusColor: ['#1890ff', [Validators.required]],
+      menuTextFocusColor: ['', [Validators.required]],
+
+      menuGroupTextColor: ['', [Validators.required]],
+      menuItemTextColor: ['', [Validators.required]],
+      menuHoverColor: ['', [Validators.required]],
+
+      headerBoardBackgroundColor: ['', [Validators.required]],
+      headerBoardTextColor: ['', [Validators.required]],
+      littleBoardTitleTextColor: ['', [Validators.required]],
+      littleBoardBackgroundColor: ['', [Validators.required]],
+
       friendlyWebsiteUrls: ['', [Validators.required]],
-      isDisplayHuyaLiveUrl: [true, [Validators.required]]
+      outsideMediaLinkText: ['', [Validators.required]],
+      outsideMediaLinkUrl: ['', [Validators.required]]
     });
   }
 
@@ -67,7 +83,9 @@ export class AdminHomepageSettingsComponent implements OnInit {
     this.siteInfoes = [
       new HomepageSiteInfoDto("网站名称", "websiteName", "汉界的一颗小虎牙", "websiteName"),
       new HomepageSiteInfoDto("网站简介", "websiteDescription", "汉界的一颗小虎牙，你可以免费查阅的 城市天际线 在线百科全书。", "websiteDescription"),
-      new HomepageSiteInfoDto("备案编号", "websiteRecordNumber", "浙ICP备19051457号-1", "websiteRecordNumber")
+      new HomepageSiteInfoDto("备案编号", "websiteRecordNumber", "浙ICP备19051457号-1", "websiteRecordNumber"),
+      new HomepageSiteInfoDto("Logo 路径（放在 /wwwroot 文件夹下）", "mainLogoPath", "/assets/logo.png", "mainLogoPath"),
+      new HomepageSiteInfoDto("主页顶部 Logo 路径（放在 /wwwroot 文件夹下）", "homepageLogoPath", "/assets/logo-header.png", "homepageLogoPath")
     ];
 
     this.boardContents = [
@@ -86,19 +104,27 @@ export class AdminHomepageSettingsComponent implements OnInit {
     ];
 
     this.colorSettings = [
-      new HomepageColorSettingsDto("菜单背景色", "menuBackgroundColor", "菜单背景色", "menuBackgroundColor"),
-      new HomepageColorSettingsDto("二级菜单背景色", "menuSecondaryBackgroundColor", "二级菜单背景色", "menuSecondaryBackgroundColor"),
-      new HomepageColorSettingsDto("菜单选中背景色", "menuBackgroundFocusColor", "菜单选中背景色", "menuBackgroundFocusColor"),
-      new HomepageColorSettingsDto("菜单文字颜色", "menuTextColor", "菜单文字颜色", "menuTextColor"),
-      new HomepageColorSettingsDto("菜单选中文字颜色", "menuTextFocusColor", "菜单选中文字颜色", "menuTextFocusColor"),
-      new HomepageColorSettingsDto("主页版块标题背景色", "boardBackgroundColor", "主页版块标题背景色", "boardBackgroundColor"),
-      new HomepageColorSettingsDto("主页版块标题文字色", "boardTextColor", "主页版块标题文字色", "boardTextColor")
+      //菜单背景色
+      new HomepageColorSettingsDto("菜单分组背景色", "menuBackgroundColor", "菜单分组背景色", "menuBackgroundColor"),
+      new HomepageColorSettingsDto("二级菜单背景色", "menuGroupitemBackgroundColor", "二级菜单背景色", "menuGroupitemBackgroundColor"),
+      new HomepageColorSettingsDto("选中菜单背景色", "menuBackgroundFocusColor", "选中菜单背景色", "menuBackgroundFocusColor"),
+      new HomepageColorSettingsDto("选中菜单文字色", "menuTextFocusColor", "选中菜单文字色", "menuTextFocusColor"),
+      //菜单文字色
+      new HomepageColorSettingsDto("菜单分组文字色", "menuGroupTextColor", "菜单分组文字色", "menuGroupTextColor"),
+      new HomepageColorSettingsDto("菜单文字颜色", "menuItemTextColor", "菜单文字颜色", "menuItemTextColor"),
+      new HomepageColorSettingsDto("菜单悬停文字色", "menuHoverColor", "菜单悬停文字色", "menuHoverColor"),
+      //主页版块色
+      new HomepageColorSettingsDto("大版块背景色", "headerBoardBackgroundColor", "大版块背景色", "headerBoardBackgroundColor"),
+      new HomepageColorSettingsDto("大版块文字色", "headerBoardTextColor", "大版块文字色", "headerBoardTextColor"),
+      new HomepageColorSettingsDto("小版块文字色", "littleBoardTitleTextColor", "小版块文字色", "littleBoardTitleTextColor"),
+      new HomepageColorSettingsDto("小版块背景色", "littleBoardBackgroundColor", "小版块背景色", "littleBoardBackgroundColor")
     ];
   }
 
   initHomepageSettingValues(): void {
     this.adminSystemSettingsService.get<HomepageSettingsDto>(SystemSettingTypeEnum.HomePage).subscribe(response => {
       this.homepageSettings = response;
+      this.oldHomepageSettings = response;
       this.systemSettingsForm.setValue(this.homepageSettings);
     });
   }
@@ -123,6 +149,20 @@ export class AdminHomepageSettingsComponent implements OnInit {
       this.systemSettingsForm.controls[key].markAsPristine();
       this.systemSettingsForm.controls[key].updateValueAndValidity();
     }
+
+    this.systemSettingsForm.patchValue(this.oldHomepageSettings);
   }
 
+  resetColorSettings(): void {
+    this.systemSettingsForm.patchValue({
+      menuBackgroundColor: "#001529",
+      menuGroupitemBackgroundColor: "#000c17",
+      menuBackgroundFocusColor: "#1890ff",
+      menuItemTextColor: "1",
+      menuTextFocusColor: "2",
+      headerBoardBackgroundColor: "3",
+      headerBoardTextColor: "4"
+    });
+    this.globalService.successTip("已重置\"主题色\"全部数值。（点击保存后生效）")
+  }
 }

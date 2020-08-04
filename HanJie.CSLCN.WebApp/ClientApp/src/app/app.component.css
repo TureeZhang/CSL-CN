@@ -21,6 +21,33 @@
     background: rgba(0,0,0,.9);
   }
 
+/*菜单自定义开始*/
+:host ::ng-deep .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  background-color: var(--menu-groupitem-background-color);
+}
+
+:host ::ng-deep .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: var(--menu-background-focus-color);
+}
+
+:host ::ng-deep .ant-menu-dark .ant-menu-item-selected .anticon + span {
+  color: var(--menu-text-focus-color);
+}
+
+:host ::ng-deep .ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a {
+  color: var(--menu-text-color);
+}
+
+:host ::ng-deep .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+  color: var(--menu-group-text-color);
+}
+
+:host ::ng-deep .ant-menu-dark .ant-menu-item-active, .ant-menu-dark .ant-menu-item:hover, .ant-menu-dark .ant-menu-submenu-active, .ant-menu-dark .ant-menu-submenu-open, .ant-menu-dark .ant-menu-submenu-selected, .ant-menu-dark .ant-menu-submenu-title:hover {
+  color: var(--menu-hover-color);
+  background:
+}
+/*菜单自定义结束*/
+
 .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);

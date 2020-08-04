@@ -96,12 +96,19 @@
         <nz-form-item>
           <nz-form-label nzRequired>{{item.text}}</nz-form-label>
           <nz-form-control nzErrorTip="请填写 {{item.text}}!">
-            <input formControlName="{{item.fieldName}}"
+            <span class="color-preview-box" style="background-color:{{colorInput.value}}"></span>
+            <input style="width:90%"
+                   formControlName="{{item.fieldName}}"
                    nz-input
                    placeholder="{{item.description}}"
-                   [(ngModel)]="homepageSettings[item.ngModel]">
+                   [(ngModel)]="homepageSettings[item.ngModel]" #colorInput>
           </nz-form-control>
         </nz-form-item>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col>
+        <a nz-button nzType="default" (click)="$event.stopPropagation();resetColorSettings();" nz-tooltip nzTooltipTitle="重置为默认的深蓝色配色方案（保存后生效）" nzTooltipPlacement="right">重置配色方案数值</a>
       </div>
     </div>
 
@@ -121,13 +128,31 @@
       </div>
     </div>
 
-    <div nz-row>
-      <div nz-col nzSpan="24">
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="10">
         <nz-form-item>
-          <label nz-checkbox formControlName="isDisplayHuyaLiveUrl" nzRequired [(ngModel)]="homepageSettings.isDisplayHuyaLiveUrl">在左下角显示虎牙汉界的直播间跳转链接。</label>
+          <nz-form-label nzRequired>外部媒体跳转的显示文本（首页左下角，留空则不显示）</nz-form-label>
+          <nz-form-control nzErrorTip="请填写外部媒体显示文本!">
+            <input formControlName="outsideMediaLinkText"
+                   nz-input
+                   placeholder="请填写外部媒体显示文本"
+                   [(ngModel)]="homepageSettings.outsideMediaLinkText">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="14">
+        <nz-form-item>
+          <nz-form-label nzRequired>外部媒体跳转的链接地址（首页左下角，留空则不显示）</nz-form-label>
+          <nz-form-control nzErrorTip="请填写外部媒体跳转链接!">
+            <input formControlName="outsideMediaLinkUrl"
+                   nz-input
+                   placeholder="请填写跳转外部媒体的链接地址"
+                   [(ngModel)]="homepageSettings.outsideMediaLinkUrl">
+          </nz-form-control>
         </nz-form-item>
       </div>
     </div>
+
 
 
     <div nz-row>

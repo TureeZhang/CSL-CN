@@ -84,7 +84,7 @@ export class HomepageComponent implements OnInit {
       this.isLoadingLastModifyWikis = true;
       setTimeout(() => {
         let nextPageIndex: number = this.pageIndex + 1;
-        if (nextPageIndex > Math.ceil(this.lastModifyWikis.length / 5)) {
+        if (nextPageIndex > Math.ceil(this.lastModifyWikis?.length / 5)) {
           nextPageIndex = 1;
         }
         this.pageIndex = nextPageIndex;
@@ -109,7 +109,7 @@ export class HomepageComponent implements OnInit {
 
   private pagination(pageNo, pageSize, array): WikiListItemDto[] {
     let offset: number = (pageNo - 1) * pageSize;
-    return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
+    return (offset + pageSize >= array?.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
   }
 
 

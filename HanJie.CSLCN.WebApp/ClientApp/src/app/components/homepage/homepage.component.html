@@ -1,14 +1,12 @@
 <div nz-row nzType="flex" nzJustify="center" ngAlign="middle" style="background:#001529;height:147px;text-align:center;color:white;line-height:147px;">
   <div nz-col nzXl="12" nzXs="24">
     <div>
-      <!--todo :Release 记得改回来-->
-      <img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/logo-header.png" />
-      <!--<img src="/assets/logo-header.png" alt="Alternate Text" />-->
+      <img src="{{homepageSettings?.homepageLogoPath}}" />
     </div>
   </div>
   <div nz-col nzXl="12" nzXs="0" style="font-size:large;">
     <div>
-      <span><markdown [data]="homepageSettings.websiteDescription"></markdown></span>
+      <span><markdown [data]="homepageSettings?.websiteDescription"></markdown></span>
     </div>
   </div>
 </div>
@@ -16,7 +14,7 @@
 <div class="ant-black-font" nz-row nzType="flex" nzJustify="center" ngAlign="middle" style="margin-top:3px;">
   <div nz-col nzXXl="4" nzXl="7" nzLg="7" nzMd="12" nzSm="24" nzXs="24">
     <div class="content-header-board">
-      {{homepageSettings.boardTitleA}}
+      {{homepageSettings?.boardTitleA}}
     </div>
     <div class="content-list-warpper" style="margin-left:12px;margin-top:12px;">
       <div>
@@ -82,7 +80,7 @@
         <p style="display:inline-block;cursor:pointer;" routerLink="/wiki-passage/developer-diaries"><img src="/assets/category-icon/developer-diaries.png" />维基引擎开发日志</p>
       </div>
       <div style="margin-bottom:8px;">
-        <a href="https://www.huya.com/codelive" rel="nofollow" target="_blank"><i nz-icon nzType="tag" nzTheme="outline"></i> 前往汉界的虎牙直播间现场</a>
+        <a href="{{homepageSettings?.outsideMediaLinkUrl}}" rel="nofollow" target="_blank"><i nz-icon nzType="tag" nzTheme="outline"></i> {{homepageSettings?.outsideMediaLinkText}}</a>
       </div>
     </div>
   </div>
@@ -98,26 +96,26 @@
 
       <div nz-col nzLg="13" nzMd="24" nzSm="24" nzXs="24">
         <div class="content-header-board">
-          {{homepageSettings.boardTitleB}}
+          {{homepageSettings?.boardTitleB}}
         </div>
 
         <div class="content-text" style="height:80px;overflow:auto;">
           <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
-          <markdown [data]="homepageSettings.boardContentB"></markdown>
+          <markdown [data]="homepageSettings?.boardContentB"></markdown>
         </div>
         <div class="content-header-board">
-          {{homepageSettings.boardTitleC}}
+          {{homepageSettings?.boardTitleC}}
         </div>
         <div class="content-text" style="height:80px;overflow:auto;">
           <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
-          <markdown [data]="homepageSettings.boardContentC"></markdown>
+          <markdown [data]="homepageSettings?.boardContentC"></markdown>
         </div>
         <div class="content-header-board">
-          {{homepageSettings.boardTitleD}}
+          {{homepageSettings?.boardTitleD}}
         </div>
         <div class="content-text" style="height:155px;overflow:auto;">
           <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
-          <markdown [data]="homepageSettings.boardContentD"></markdown>
+          <markdown [data]="homepageSettings?.boardContentD"></markdown>
         </div>
       </div>
 
@@ -132,7 +130,7 @@
       <div nz-col nzSpan="24">
         <div nz-col nzSpan="24">
           <div class="content-header-board" style="margin-bottom:12px;">
-            {{homepageSettings.boardTitleF}}
+            {{homepageSettings?.boardTitleF}}
           </div>
           <div nz-row nzJustify="center" style="text-align:center;">
             <div nz-col nzXl="6" nzLg="8" nzMd="8" nzSm="12" nzXs="12" style="width:172px;" *ngFor="let item of dlcInfoes">
@@ -157,13 +155,9 @@
 
 <ng-template #recentUpdateList>
   <div class="content-header-board">
-    {{homepageSettings.boardTitleE}}
+    {{homepageSettings?.boardTitleE}}
   </div>
 
-  <!-- todo: Release 记得改回来 -->
-  <!--<img src="{{globalService.clientAppConfigs.qiniuCdnHostUri}}/shared/homepage-thumb.png" alt="Alternate Text" />-->
-  <!--<img *ngIf="item==null" src="/assets/homepage-thumb.png" alt="Alternate Text" style="width:100%" />-->
-  <!--<ng-container *ngIf="item!=null">-->
   <nz-list class="ant-black-font last-modify-wiki-container"
            [nzDataSource]="lastModifyWikisDisplay"
            [nzRenderItem]="item"

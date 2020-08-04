@@ -8,8 +8,8 @@
             [(nzCollapsed)]="isCollapsed"
             [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
     <!-- #001529 -->
-    <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url(/assets/logo.png)"></div>
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
+    <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url({{homepageSettings?.mainLogoPath}})"></div>
+    <ul #nzMenuSiderUl nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
       <!-- #001529 -->
       <ng-template #errorMenu>
         <li nz-menu-item>
