@@ -35,4 +35,8 @@ CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skyli
 
 ## 开发计划
 
-![开发计划](/README/develop-plane.png)
+我们已启用自动化版本控制与进度追踪系统：
+
+- 版本功能列表确认：<https://github.com/TureeZhang/CSL-CN/milestone>
+
+- 实时开发进度追踪与查询：<https://github.com/TureeZhang/CSL-CN/projects/1>
