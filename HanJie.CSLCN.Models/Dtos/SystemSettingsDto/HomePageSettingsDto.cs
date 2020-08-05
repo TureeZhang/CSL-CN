@@ -24,18 +24,41 @@ namespace HanJie.CSLCN.Models.Dtos.SystemSettingsDto
         public string BoardContentC { get; set; }
         public string BoardContentD { get; set; }
 
-
+        /// <summary>
+        /// 菜单栏背景色
+        /// </summary>
         public string MenuBackgroundColor { get; set; }
-        public string MenuSecondaryBackgroundColor { get; set; }
-        public string MenuBackgroundFocusColor { get; set; }
+        /// <summary>
+        /// 菜单组子项背景色
+        /// </summary>
+        public string MenuGroupitemBackgroundColor { get; set; }
+        /// <summary>
+        /// 菜单选中文字色
+        /// </summary>
         public string MenuTextFocusColor { get; set; }
-        
+        /// <summary>
+        /// 菜单选中背景色
+        /// </summary>
+        public string MenuBackgroundFocusColor { get; set; }
+        /// <summary>
+        /// 菜单文字色
+        /// </summary>
+        public string MenuTextColor{ get; set; }
+        /// <summary>
+        /// 菜单组文字色
+        /// </summary>
         public string MenuGroupTextColor { get; set; }
-        public string MenuGroupTextHoverColor { get; set; }
-        public string MenuSecondaryTextColor { get; set; }
-        public string MenuSecondaryTextHoverColor { get; set; }
-        public string HeaderBoardBackgroundColor { get; set; }
+        /// <summary>
+        /// 悬停色
+        /// </summary>
+        public string MenuHoverColor { get;set; }
+        /// <summary>
+        /// 悬停背景色
+        /// </summary>
+        public string MenuHoverBackgroundColor { get; set; }
+
         public string HeaderBoardTextColor { get; set; }
+        public string HeaderBoardBackgroundColor { get; set; }
         public string LittleBoardTitleTextColor { get; set; }
         public string LittleBoardBackgroundColor { get; set; }
 

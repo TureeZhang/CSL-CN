@@ -5,10 +5,6 @@ export class HomepageSettingsDto {
   public mainLogoPath: string;
   public homepageLogoPath: string;
 
-  public menuBackgroundColor: string;
-  public menuGroupitemBackgroundColor: string;
-  public menuBackgroundFocusColor: string;
-  public menuTextFocusColor: string;
 
   public boardTitleA: string;
   public boardTitleB: string;
@@ -21,12 +17,17 @@ export class HomepageSettingsDto {
   public boardContentC: string;
   public boardContentD: string;
 
+  public menuBackgroundColor: string;
+  public menuGroupitemBackgroundColor: string;
+  public menuTextFocusColor: string;
+  public menuBackgroundFocusColor: string;
+  public menuTextColor: string;
   public menuGroupTextColor: string;
-  public menuItemTextColor: string;
   public menuHoverColor: string;
+  public menuHoverBackgroundColor: string;
 
-  public headerBoardBackgroundColor: string;
   public headerBoardTextColor: string;
+  public headerBoardBackgroundColor: string;
   public littleBoardTitleTextColor: string;
   public littleBoardBackgroundColor: string;
 

@@ -53,12 +53,13 @@ export class AdminHomepageSettingsComponent implements OnInit {
       menuBackgroundColor: ['#001529', [Validators.required]],
       menuGroupitemBackgroundColor: ['#000c17', [Validators.required]],
 
-      menuBackgroundFocusColor: ['#1890ff', [Validators.required]],
       menuTextFocusColor: ['', [Validators.required]],
+      menuBackgroundFocusColor: ['#1890ff', [Validators.required]],
 
+      menuTextColor: ['', [Validators.required]],
       menuGroupTextColor: ['', [Validators.required]],
-      menuItemTextColor: ['', [Validators.required]],
       menuHoverColor: ['', [Validators.required]],
+      menuHoverBackgroundColor: ['', [Validators.required]],
 
       headerBoardBackgroundColor: ['', [Validators.required]],
       headerBoardTextColor: ['', [Validators.required]],
@@ -107,12 +108,13 @@ export class AdminHomepageSettingsComponent implements OnInit {
       //菜单背景色
       new HomepageColorSettingsDto("菜单分组背景色", "menuBackgroundColor", "菜单分组背景色", "menuBackgroundColor"),
       new HomepageColorSettingsDto("二级菜单背景色", "menuGroupitemBackgroundColor", "二级菜单背景色", "menuGroupitemBackgroundColor"),
-      new HomepageColorSettingsDto("选中菜单背景色", "menuBackgroundFocusColor", "选中菜单背景色", "menuBackgroundFocusColor"),
-      new HomepageColorSettingsDto("选中菜单文字色", "menuTextFocusColor", "选中菜单文字色", "menuTextFocusColor"),
+      new HomepageColorSettingsDto("菜单选中文字色", "menuTextFocusColor", "选中菜单文字色", "menuTextFocusColor"),
+      new HomepageColorSettingsDto("菜单选中背景色", "menuBackgroundFocusColor", "选中菜单背景色", "menuBackgroundFocusColor"),
       //菜单文字色
+      new HomepageColorSettingsDto("菜单文字色", "menuTextColor", "菜单文字色", "menuTextColor"),
       new HomepageColorSettingsDto("菜单分组文字色", "menuGroupTextColor", "菜单分组文字色", "menuGroupTextColor"),
-      new HomepageColorSettingsDto("菜单文字颜色", "menuItemTextColor", "菜单文字颜色", "menuItemTextColor"),
       new HomepageColorSettingsDto("菜单悬停文字色", "menuHoverColor", "菜单悬停文字色", "menuHoverColor"),
+      new HomepageColorSettingsDto("菜单悬停背景色", "menuHoverBackgroundColor", "菜单悬停背景色", "menuHoverBackgroundColor"),
       //主页版块色
       new HomepageColorSettingsDto("大版块背景色", "headerBoardBackgroundColor", "大版块背景色", "headerBoardBackgroundColor"),
       new HomepageColorSettingsDto("大版块文字色", "headerBoardTextColor", "大版块文字色", "headerBoardTextColor"),
@@ -158,7 +160,7 @@ export class AdminHomepageSettingsComponent implements OnInit {
       menuBackgroundColor: "#001529",
       menuGroupitemBackgroundColor: "#000c17",
       menuBackgroundFocusColor: "#1890ff",
-      menuItemTextColor: "1",
+      menuTextColor: "1",
       menuTextFocusColor: "2",
       headerBoardBackgroundColor: "3",
       headerBoardTextColor: "4"

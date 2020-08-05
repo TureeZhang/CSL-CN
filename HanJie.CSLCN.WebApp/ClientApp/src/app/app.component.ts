@@ -45,7 +45,12 @@ export class AppComponent implements OnInit {
     this.systemSettingsService.get<HomepageSettingsDto>(SystemSettingTypeEnum.HomePage).subscribe(response => {
       this.homepageSettings = response;
       document.body.style.cssText += `--menu-groupitem-background-color: ${this.homepageSettings?.menuGroupitemBackgroundColor};`;
+      document.body.style.cssText += `--menu-text-focus-color: ${this.homepageSettings?.menuTextFocusColor};`;
       document.body.style.cssText += `--menu-background-focus-color: ${this.homepageSettings?.menuBackgroundFocusColor};`;
+      document.body.style.cssText += `--menu-text-color: ${this.homepageSettings?.menuTextColor};`;
+      document.body.style.cssText += `--menu-group-text-color: ${this.homepageSettings?.menuGroupTextColor};`;
+      document.body.style.cssText += `--menu-hover-color: ${this.homepageSettings?.menuHoverColor};`;
+      document.body.style.cssText += `--menu-hover-backgroundcolor: ${this.homepageSettings?.menuHoverBackgroundColor};`;
 
     });
 
