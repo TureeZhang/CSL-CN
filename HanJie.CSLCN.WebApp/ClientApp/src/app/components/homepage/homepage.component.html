@@ -133,12 +133,12 @@
             {{homepageSettings?.boardTitleF}}
           </div>
           <div nz-row nzJustify="center" style="text-align:center;">
-            <div nz-col nzXl="6" nzLg="8" nzMd="8" nzSm="12" nzXs="12" style="width:172px;" *ngFor="let item of dlcInfoes">
+            <div nz-col nzXl="6" nzLg="8" nzMd="8" nzSm="12" nzXs="12" style="width:172px;" *ngFor="let item of friendlyLinks">
               <div>
                 <img src="{{item.icon}}" alt="Alternate Text" routerLink="{{item.url}}" style="cursor:pointer;" />
               </div>
               <div>
-                <a routerLink="{{item.url}}">{{item.name}}</a>
+                <a href="{{item.url}}" style="cursor:pointer;" target="_blank">{{item.name}}</a>
               </div>
             </div>
           </div>

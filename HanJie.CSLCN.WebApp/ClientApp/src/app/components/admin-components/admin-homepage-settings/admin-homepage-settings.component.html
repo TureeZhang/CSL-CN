@@ -116,12 +116,12 @@
     <div nz-row>
       <div nz-col nzSpan="24">
         <nz-form-item>
-          <nz-form-label nzRequired>友情链接</nz-form-label>
+          <nz-form-label nzRequired>友情链接（每行一个，自动识别。语法：汉界的一颗小虎牙|/assets/dlc/logo1.png|http://www.cities-skylines.cn ，使用短竖线分隔即可 ）</nz-form-label>
           <nz-form-control nzErrorTip="请填写友情链接!">
             <textarea formControlName="friendlyWebsiteUrls"
                       nz-input rows="2"
-                      placeholder="格式：名称#链接#图片地址。每行一个，换行填写，自动识别。"
-                      [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+                      placeholder="格式：[名称][图片地址][url]。每行一个，换行填写，自动识别。"
+                      [nzAutosize]="{ minRows: 6, maxRows: 9 }"
                       [(ngModel)]="homepageSettings.friendlyWebsiteUrls"></textarea>
           </nz-form-control>
         </nz-form-item>
