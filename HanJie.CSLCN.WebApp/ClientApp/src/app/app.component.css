@@ -24,8 +24,8 @@
 /*菜单自定义开始*/
 
 /*选中菜单文字颜色*/
-:host ::ng-deep .ant-menu-dark .ant-menu-item-selected .anticon + span {
-  color: var(--menu-text-focus-color);
+:host ::ng-deep .ant-menu-dark .ant-menu-item-selected {
+  color: var(--menu-text-focus-color) !important;
 }
 /*选中菜单背景色*/
 :host ::ng-deep .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
@@ -48,7 +48,6 @@
 /*悬停色*/
 :host ::ng-deep .ant-menu-dark .ant-menu-item-active, .ant-menu-dark .ant-menu-item:hover, .ant-menu-dark .ant-menu-submenu-active, .ant-menu-dark .ant-menu-submenu-open, .ant-menu-dark .ant-menu-submenu-selected, .ant-menu-dark .ant-menu-submenu-title:hover {
   color: var(--menu-hover-color);
-  background: var(--menu-hover-backgroundcolor);
 }
 /*菜单自定义结束*/
 

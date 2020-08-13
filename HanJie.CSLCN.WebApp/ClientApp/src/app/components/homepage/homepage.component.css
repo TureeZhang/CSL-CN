@@ -2,14 +2,22 @@
   color: rgba(0,0,0,.85);
 }
 
+.header-big-board {
+  background: var(--header-board-background-color);
+  height: 147px;
+  text-align: center;
+  color: var(--header-board-text-color);
+  line-height: 147px;
+}
+
 .content-header-board {
-  background: lightslategrey;
+  background: var(--little-board-background-color);
   text-align: left;
   padding-left: 5px;
   border: 1px solid #cccccc;
   height: 31px;
   line-height: 31px;
-  color: white;
+  color: var(--little-board-title-text-color);
   font-size: medium;
   border-radius: 5px;
 }

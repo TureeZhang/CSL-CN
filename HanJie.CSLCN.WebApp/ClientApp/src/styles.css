@@ -18,4 +18,13 @@ body {
   --menu-hover-color: #fff;
   /*悬停背景色*/
   --menu-hover-backgroundcolor: transparent;
+  /**/
+  /*首页顶部大板块文字颜色*/
+  --header-board-text-color: white;
+  /*首页顶部大板块背景色*/
+  --header-board-background-color: #001529;
+  /*首页小版块标题文字色*/
+  --little-board-title-text-color: white;
+  /*首页小版块背景色*/
+  --little-board-background-color: lightslategrey;
 }

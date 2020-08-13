@@ -96,7 +96,7 @@ namespace HanJie.CSLCN.Services
             T result = new T();
             foreach (SystemSetting item in settings)
             {
-                PropertyInfo propertyInfo = typeof(HomePageSettingsDto).GetProperty(item.Name);
+                PropertyInfo propertyInfo = typeof(HomePageSettingsDto).GetProperty(item.Name, BindingFlags.IgnoreCase|BindingFlags.Public|BindingFlags.Instance);
                 if (propertyInfo != null)
                 {
                     object value = settings.Find(setting => string.Equals(setting.Name, propertyInfo.Name, StringComparison.OrdinalIgnoreCase)).Value;
