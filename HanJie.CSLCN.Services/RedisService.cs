@@ -21,7 +21,10 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis, nameof(GlobalConfigs.AppSettings.Redis));
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Host, nameof(GlobalConfigs.AppSettings.Redis.Host));
-            Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Password, nameof(GlobalConfigs.AppSettings.Redis.Password));
+            if (RunAs.Debug)
+            {
+                Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Password, nameof(GlobalConfigs.AppSettings.Redis.Password));
+            }
 
             ConfigurationOptions options = new ConfigurationOptions();
             options.EndPoints.Add($"{GlobalConfigs.AppSettings.Redis.Host}:{GlobalConfigs.AppSettings.Redis.Port}");

@@ -158,7 +158,6 @@ namespace HanJie.CSLCN.WebApp
         {
             services.AddSingleton<ClientAppService>();
             services.AddSingleton<RedisService>();
-            services.AddScoped<WikiPassageService>();
         }
 
         /// <summary>
@@ -177,6 +176,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddScoped<QiniuService>();
             services.AddScoped<SystemSettingService>();
             services.AddScoped<StorageService>();
+            services.AddScoped<WikiPassageService>();
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace HanJie.CSLCN.WebApp
         private void StartTask()
         {
             WikiPassageService wikiPassageService = GlobalService.ServiceProvider.GetService<WikiPassageService>();
-            wikiPassageService.StartViewsCountUpdateTask(wikiPassageService);
+            WikiPassageService.StartViewsCountUpdateTask(wikiPassageService);
         }
     }
 }

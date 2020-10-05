@@ -25,7 +25,7 @@ namespace HanJie.CSLCN.Services
 
         #region 访问量统计
         private RedisService _redisService;
-        private Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary => GetViewsDictionaryCache().Result;
+        private static Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary => GetViewsDictionaryCache().Result;
 
         private static Task viewsCountTask;
         /// <summary>
@@ -398,15 +398,15 @@ namespace HanJie.CSLCN.Services
 
 
         #region 访问量统计
-        private async Task<Dictionary<int, Dictionary<string, ViewsCountDto>>> GetViewsDictionaryCache()
+        private static async Task<Dictionary<int, Dictionary<string, ViewsCountDto>>> GetViewsDictionaryCache()
         {
-            Ensure.NotNull(this._redisService, nameof(_redisService));
-            Dictionary<int, Dictionary<string, ViewsCountDto>> result = this._redisService.ObjectGet<Dictionary<int, Dictionary<string, ViewsCountDto>>>(StringConsts.ViewsCountDictionary);
+            RedisService redisService = GlobalService.ServiceProvider.GetService<RedisService>();
+            Dictionary<int, Dictionary<string, ViewsCountDto>> result = redisService.ObjectGet<Dictionary<int, Dictionary<string, ViewsCountDto>>>(StringConsts.ViewsCountDictionary);
 
             if (result == null)
             {
                 result = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
-                await this._redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, result);
+                await redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, result);
             }
 
             return result;
@@ -457,7 +457,7 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
+        public static void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
         {
             try
             {
@@ -473,7 +473,7 @@ namespace HanJie.CSLCN.Services
                  {
                      while (true)
                      {
-                         this.LockViewsDictionary(dic =>
+                         LockViewsDictionary(dic =>
                                     {
                                         lock (WikiPassageService._viewsCountTaskLock)
                                         {
@@ -496,6 +496,7 @@ namespace HanJie.CSLCN.Services
                                                     viewsCountItem.Value.NewViews = 0;
                                                 }
                                             }
+                                            _ = GlobalService.ServiceProvider.GetService<RedisService>().ObjectSetAsync(StringConsts.ViewsCountDictionary, dic);
                                         }
                                     });
                          if (RunAs.Debug)
@@ -522,12 +523,12 @@ namespace HanJie.CSLCN.Services
         /// 锁定保护，防止两个冲突的进程同时访问 Dictionary 
         /// </summary>
         /// <param name="action"></param>
-        public void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
+        public static void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
         {
             //此锁锁定 新增访问量 与 结算访问量 同时访问的情况，保护 ViewsDictionary 唯一性
             lock (WikiPassageService._viewsCountDictionaryLock)
             {
-                action(this.ViewsDictionary);
+                action(ViewsDictionary);
             }
         }
         #endregion
