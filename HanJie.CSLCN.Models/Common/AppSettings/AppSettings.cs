@@ -20,6 +20,13 @@ namespace HanJie.CSLCN.Models.Common.AppSettings
         /// </summary>
         public string Md5Sold { get; set; }
 
+        /// <summary>
+        /// 上传文件的本地存储位置。
+        /// 
+        /// 注意，如果填写了此项配置，则使用本地存储。如果此项为空，则使用七牛存储。
+        /// </summary>
+        public string LocalUploadFilePath { get; set; }
+
         public QiniuConfig QiniuConfig { get; set; }
 
         public Redis Redis { get; set; }

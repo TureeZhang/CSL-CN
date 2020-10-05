@@ -12,6 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HanJie.CSLCN.Services
 {
@@ -23,7 +24,9 @@ namespace HanJie.CSLCN.Services
         public static Tuple<DateTime, List<WikiListItemDto>> WikiListCaches { get; private set; }
 
         #region 访问量统计
-        private static Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
+        private RedisService _redisService;
+        private Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary => GetViewsDictionaryCache().Result;
+
         private static Task viewsCountTask;
         /// <summary>
         /// 对访问量缓存对象的保护锁
@@ -39,6 +42,7 @@ namespace HanJie.CSLCN.Services
 
         public WikiPassageService()
         {
+            this._redisService = GlobalService.ServiceProvider.GetService<RedisService>();
         }
 
         public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
@@ -392,7 +396,21 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
+
         #region 访问量统计
+        private async Task<Dictionary<int, Dictionary<string, ViewsCountDto>>> GetViewsDictionaryCache()
+        {
+            Ensure.NotNull(this._redisService, nameof(_redisService));
+            Dictionary<int, Dictionary<string, ViewsCountDto>> result = this._redisService.ObjectGet<Dictionary<int, Dictionary<string, ViewsCountDto>>>(StringConsts.ViewsCountDictionary);
+
+            if (result == null)
+            {
+                result = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
+                await this._redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, result);
+            }
+
+            return result;
+        }
         public void AddViewsCount(int passageId, IPAddress ip)
         {
             try
@@ -427,6 +445,7 @@ namespace HanJie.CSLCN.Services
                             viewsCountDto.LastUpdateTime = DateTime.Now;
                             dic[passageId].Add(ipAddress, viewsCountDto);
                         }
+                        this._redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, dic).GetAwaiter();
                     }
 
                 });
@@ -438,7 +457,7 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public static void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
+        public void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
         {
             try
             {
@@ -454,7 +473,7 @@ namespace HanJie.CSLCN.Services
                  {
                      while (true)
                      {
-                         LockViewsDictionary(dic =>
+                         this.LockViewsDictionary(dic =>
                                     {
                                         lock (WikiPassageService._viewsCountTaskLock)
                                         {
@@ -503,12 +522,12 @@ namespace HanJie.CSLCN.Services
         /// 锁定保护，防止两个冲突的进程同时访问 Dictionary 
         /// </summary>
         /// <param name="action"></param>
-        public static void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
+        public void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
         {
             //此锁锁定 新增访问量 与 结算访问量 同时访问的情况，保护 ViewsDictionary 唯一性
             lock (WikiPassageService._viewsCountDictionaryLock)
             {
-                action(WikiPassageService.ViewsDictionary);
+                action(this.ViewsDictionary);
             }
         }
         #endregion

@@ -14,7 +14,6 @@ namespace HanJie.CSLCN.Services
 
         public RedisService()
         {
-            throw new NotImplementedException();
             Connect();
         }
 
@@ -25,7 +24,7 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Password, nameof(GlobalConfigs.AppSettings.Redis.Password));
 
             ConfigurationOptions options = new ConfigurationOptions();
-            options.SslHost = $"{GlobalConfigs.AppSettings.Redis.Host}:{GlobalConfigs.AppSettings.Redis.Port}";
+            options.EndPoints.Add($"{GlobalConfigs.AppSettings.Redis.Host}:{GlobalConfigs.AppSettings.Redis.Port}");
             options.Password = GlobalConfigs.AppSettings.Redis.Password;
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(options);
             this._db = redis.GetDatabase();

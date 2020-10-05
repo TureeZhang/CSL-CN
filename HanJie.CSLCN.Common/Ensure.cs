@@ -21,6 +21,27 @@ namespace HanJie.CSLCN.Common
                 throw new ArgumentNullException(parameterName);
         }
 
+        public static void ArrayNotEmpty<T>(ICollection<T> list, string parameterName)
+        {
+            Ensure.NotNull(parameterName, nameof(parameterName));
+            Ensure.NotNull(list, nameof(list));
+
+            if (list == null || list.Count <= 0)
+            {
+                throw new ArgumentNullException("作为参数传入时，列表的数量不能为 0 或者空。");
+            }
+        }
+
+        public static void ArrayNotEmpty(object[] array, string parameterName)
+        {
+            Ensure.NotNull(parameterName, nameof(parameterName));
+
+            if (array == null || array.Length <= 0)
+            {
+                throw new ArgumentNullException("作为参数传入时，数组的数量不能为 0 或者空。");
+            }
+        }
+
         public static void IsDatabaseId(int id, string parameterName)
         {
             Ensure.NotNull(parameterName, nameof(parameterName));
