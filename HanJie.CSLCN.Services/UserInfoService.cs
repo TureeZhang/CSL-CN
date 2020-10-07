@@ -131,7 +131,7 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(userName, nameof(userName));
 
-            UserInfo userInfo = this.CSLDbContext.UserInfoes.Where(item => item.UserName == userName).FirstOrDefault();
+            UserInfo userInfo = CSLDbContext.UserInfoes.Where(item => item.UserName == userName).FirstOrDefault();
             if (userInfo == null)
                 return false;
 
@@ -230,11 +230,11 @@ namespace HanJie.CSLCN.Services
             List<UserInfo> editors = null;
             if (recentDaysCount <= 0)
             {
-                editors = await this.CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToListAsync();
+                editors = await CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToListAsync();
             }
             else
             {
-                editors = await this.CSLDbContext.UserInfoes
+                editors = await CSLDbContext.UserInfoes
                     .Where(item => item.IsAdmin && DateTime.Now.AddDays(-recentDaysCount) <= item.LastCommitDateTime)
                     .OrderByDescending(item => item.LastModifyDate)
                     .ToListAsync();

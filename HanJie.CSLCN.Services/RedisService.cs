@@ -10,7 +10,7 @@ namespace HanJie.CSLCN.Services
 {
     public class RedisService
     {
-        private IDatabase _db;
+        private static IDatabase _db;
 
         public RedisService()
         {
@@ -19,6 +19,9 @@ namespace HanJie.CSLCN.Services
 
         private void Connect()
         {
+            if (RedisService._db != null)
+                return;
+
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis, nameof(GlobalConfigs.AppSettings.Redis));
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Host, nameof(GlobalConfigs.AppSettings.Redis.Host));
             if (RunAs.Debug)
@@ -30,7 +33,7 @@ namespace HanJie.CSLCN.Services
             options.EndPoints.Add($"{GlobalConfigs.AppSettings.Redis.Host}:{GlobalConfigs.AppSettings.Redis.Port}");
             options.Password = GlobalConfigs.AppSettings.Redis.Password;
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(options);
-            this._db = redis.GetDatabase();
+            RedisService._db = redis.GetDatabase();
         }
 
         public async Task<bool> ObjectSetAsync<T>(string key, T value) where T : class, new()
@@ -38,14 +41,14 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(key, nameof(key));
             Ensure.NotNull(value, nameof(value));
 
-            return await this._db.StringSetAsync(key, JsonConvert.SerializeObject(value));
+            return await _db.StringSetAsync(key, JsonConvert.SerializeObject(value));
         }
 
         public T ObjectGet<T>(string key) where T : class, new()
         {
             Ensure.NotNull(key, nameof(key));
 
-            RedisValue queryResult = this._db.StringGet(key);
+            RedisValue queryResult = _db.StringGet(key);
 
             if (!queryResult.HasValue)
                 return null;

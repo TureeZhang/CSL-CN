@@ -156,8 +156,7 @@ namespace HanJie.CSLCN.WebApp
         /// <param name="services"></param>
         private void RegisterSingletons(ref IServiceCollection services)
         {
-            services.AddSingleton<ClientAppService>();
-            services.AddSingleton<RedisService>();
+            services.AddSingleton<CommonHelper>();
         }
 
         /// <summary>
@@ -177,6 +176,8 @@ namespace HanJie.CSLCN.WebApp
             services.AddScoped<SystemSettingService>();
             services.AddScoped<StorageService>();
             services.AddScoped<WikiPassageService>();
+            services.AddSingleton<ClientAppService>();
+            services.AddSingleton<RedisService>();
         }
 
         /// <summary>
