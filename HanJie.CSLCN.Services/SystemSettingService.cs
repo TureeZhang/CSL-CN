@@ -16,14 +16,14 @@ namespace HanJie.CSLCN.Services
     {
         public SystemSetting Get(SystemSettingTypeEnum type, string name)
         {
-            SystemSetting result = base.CSLDbContext.SystemSettings.Where(item =>
+            SystemSetting result = CSLDbContext.SystemSettings.Where(item =>
             item.Type == type && string.Equals(name, item.Name, StringComparison.OrdinalIgnoreCase))?.FirstOrDefault();
             return result;
         }
 
         public List<SystemSetting> ListDataModel()
         {
-            List<SystemSetting> result = base.CSLDbContext.SystemSettings.ToList();
+            List<SystemSetting> result = CSLDbContext.SystemSettings.ToList();
             return result;
         }
 
@@ -116,7 +116,7 @@ namespace HanJie.CSLCN.Services
 
         private List<SystemSetting> ListSettings(SystemSettingTypeEnum settingType)
         {
-            List<SystemSetting> settings = base.CSLDbContext.SystemSettings.Where(item => item.Type == settingType).ToList();
+            List<SystemSetting> settings = CSLDbContext.SystemSettings.Where(item => item.Type == settingType).ToList();
             return settings;
         }
     }

@@ -48,7 +48,7 @@ var clipboard_response_1 = require("../../models/clipboard-response");
 var drawer_statu_service_1 = require("../../services/drawer-statu.service");
 var uploader_usage_enum_1 = require("../../models/uploader-usage.enum");
 var UploaderComponent = /** @class */ (function () {
-    function UploaderComponent(qiniuUploadService, http, globalService, imgService, clipboardService, drawerRef) {
+    function UploaderComponent(qiniuUploadService, http, globalService, imgService, clipboardService, drawerRef, httpHelper) {
         var _this = this;
         this.qiniuUploadService = qiniuUploadService;
         this.http = http;
@@ -56,6 +56,7 @@ var UploaderComponent = /** @class */ (function () {
         this.imgService = imgService;
         this.clipboardService = clipboardService;
         this.drawerRef = drawerRef;
+        this.httpHelper = httpHelper;
         this.fileList = [];
         this.isShowUploadButton = true;
         this.host = this;
@@ -69,14 +70,21 @@ var UploaderComponent = /** @class */ (function () {
                     case 0:
                         uploadFullName = this.directoryPath + "/" + item.file.name;
                         token = null;
-                        return [4 /*yield*/, this.qiniuUploadService.getQiniuUploadToken(uploadFullName).then(function (data) { return token = data; })];
+                        return [4 /*yield*/, this.qiniuUploadService.getUploadToken(uploadFullName).then(function (data) { return token = data; })];
                     case 1:
                         _a.sent();
                         formData = new FormData();
-                        // tslint:disable-next-line:no-any
-                        formData.append('file', item.file);
-                        formData.append('key', uploadFullName);
-                        formData.append('token', token);
+                        if (token === "use-local-storage") {
+                            formData.append('file', item.file);
+                            item.action = this.httpHelper.getHostUrl() + "/api/upload/localstorage";
+                        }
+                        else {
+                            // Create a FormData here to store files and other parameters.
+                            // tslint:disable-next-line:no-any
+                            formData.append('file', item.file);
+                            formData.append('key', uploadFullName);
+                            formData.append('token', token);
+                        }
                         req = new http_1.HttpRequest('POST', item.action, formData, {
                             reportProgress: true,
                             withCredentials: false

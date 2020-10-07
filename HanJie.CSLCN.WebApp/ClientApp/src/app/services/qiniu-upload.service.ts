@@ -8,7 +8,7 @@ import { promise } from 'protractor';
 @Injectable({ providedIn: "root" })
 export class QiniuUploadService implements OnInit {
 
-  private qiniuUploadUrl: string = "/api/qiniuupload";
+  private uploadUrl: string = "/api/upload";
   private token: string;
 
   constructor(private httpHelper: CSLHttpHelper) {
@@ -19,9 +19,9 @@ export class QiniuUploadService implements OnInit {
 
   }
 
-  getQiniuUploadToken(localFileName: string): Promise<any> {
+  getUploadToken(localFileName: string): Promise<any> {
     localFileName = encodeURI(localFileName);
-    let promise: Promise<any> = this.httpHelper.get<any>(this.qiniuUploadUrl + "?storageFullName=" + localFileName)
+    let promise: Promise<any> = this.httpHelper.get<any>(this.uploadUrl + "?storageFullName=" + localFileName)
       .toPromise();
 
     return promise;

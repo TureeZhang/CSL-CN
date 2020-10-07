@@ -112,15 +112,15 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(qiniuStorageInfo, nameof(qiniuStorageInfo));
 
-            QiniuStorageInfo entityToUpdate = this.CSLDbContext.QiniuStorageInfoes.Where(item => item.FullName == qiniuStorageInfo.FullName).FirstOrDefault();
+            QiniuStorageInfo entityToUpdate = CSLDbContext.QiniuStorageInfoes.Where(item => item.FullName == qiniuStorageInfo.FullName).FirstOrDefault();
 
             if (entityToUpdate != null)
-                this.CSLDbContext.QiniuStorageInfoes.Remove(entityToUpdate);
+                CSLDbContext.QiniuStorageInfoes.Remove(entityToUpdate);
 
             qiniuStorageInfo.CreateDate = DateTime.Now;
             qiniuStorageInfo.LastModifyDate = DateTime.Now;
-            EntityEntry<QiniuStorageInfo> entry = await this.CSLDbContext.QiniuStorageInfoes.AddAsync(qiniuStorageInfo);
-            await this.CSLDbContext.SaveChangesAsync();
+            EntityEntry<QiniuStorageInfo> entry = await CSLDbContext.QiniuStorageInfoes.AddAsync(qiniuStorageInfo);
+            await CSLDbContext.SaveChangesAsync();
 
             return entry.Entity;
         }

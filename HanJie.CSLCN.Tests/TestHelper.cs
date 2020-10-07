@@ -12,6 +12,12 @@ namespace HanJie.CSLCN.Tests
         {
             AppSettings appSettings = new AppSettings();
             appSettings.Md5Sold = "";
+            appSettings.Redis = new Redis()
+            {
+                Host = "118.31.20.44",
+                Port = 6380,
+                Password = "1B6EA65D-4AE0-4A6A-B2FA-28841D622C20"
+            };
 
             GlobalConfigs.AppSettings = appSettings;
         }
