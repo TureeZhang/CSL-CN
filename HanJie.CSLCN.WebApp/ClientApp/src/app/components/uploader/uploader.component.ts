@@ -62,8 +62,9 @@ export class UploaderComponent implements OnInit {
 
         const formData = new FormData();
         if (token === "use-local-storage") {
+            ImgService.isLocalStorage = true;
             formData.append('file', item.file as any);
-            item.action = this.httpHelper.getHostUrl() + "/api/upload/localstorage";
+            item.action = this.httpHelper.getBackServerHostUrl() + "/api/upload/localstorage";
         }
         else {
             // Create a FormData here to store files and other parameters.
@@ -109,9 +110,11 @@ export class UploaderComponent implements OnInit {
         }
 
         if (data.type === "success") {
-            let storageInfo: any = data.file.response.info;
-            this.imageMarkdownString = this.getImageMarkdownString(storageInfo.FullName);
-            this.fileUrl = this.imgService.getFileUrl(storageInfo.FullName);
+            let fileName: string = data.file.response.downloadUrl;
+            if (fileName == null)
+                fileName = data.file.response.info.FullName;
+            this.imageMarkdownString = this.getImageMarkdownString(fileName);
+            this.fileUrl = this.imgService.getFileUrl(fileName);
         }
     }
 

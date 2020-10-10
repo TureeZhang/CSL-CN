@@ -28,6 +28,8 @@ export class HomepageComponent implements OnInit {
     public pageIndex: number = 1;
     public pageItemTotals: number;
     public friendlyLinks: any[];
+    public isCreateModPassageShow: boolean = false;
+    public isOkLoading: boolean = false;
 
     //自动翻页展示
     public autoPageTimer: NodeJS.Timer;
@@ -125,6 +127,17 @@ export class HomepageComponent implements OnInit {
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
     }
 
+    createModPassage(): void {
+        this.isCreateModPassageShow = true;
+    }
 
+    handleOk() {
+        this.isOkLoading = true;
+        setTimeout(() => { this.isOkLoading = false; this.isCreateModPassageShow = false; }, 1500);
+    }
+
+    handleCancel(): void {
+        this.isCreateModPassageShow = false;
+    }
 
 }

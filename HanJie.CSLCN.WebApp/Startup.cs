@@ -168,12 +168,12 @@ namespace HanJie.CSLCN.WebApp
         /// <param name="services"></param>
         private void RegisterScoped(ref IServiceCollection services)
         {
+            services.AddScoped<SystemSettingService>();
             services.AddScoped<UserStatuService>();
             services.AddScoped<MenuService>();
             services.AddScoped<UserInfoService>();
             services.AddScoped<DonatorRankService>();
             services.AddScoped<QiniuService>();
-            services.AddScoped<SystemSettingService>();
             services.AddScoped<StorageService>();
             services.AddScoped<WikiPassageService>();
             services.AddSingleton<ClientAppService>();

@@ -109,7 +109,7 @@ namespace HanJie.CSLCN.Services
             this._userStatuService.LogoutSuccess(id);
         }
 
-        public override async Task<UserInfo> AddAsync(UserInfo userInfo)
+        public new async Task<UserInfo> AddAsync(UserInfo userInfo)
         {
             Ensure.NotNull(userInfo, nameof(userInfo));
             Ensure.NotNull(userInfo.IsAdmin, nameof(userInfo.IsAdmin));

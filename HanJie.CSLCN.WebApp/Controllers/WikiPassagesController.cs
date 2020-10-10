@@ -31,6 +31,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
 
+
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public async Task<JsonResult> GetAsync(string id)
@@ -113,6 +114,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
             throw new NotImplementedException();
         }
 
-
+        [HttpPost("/api/wikipassages")]
+        public async Task<IActionResult> Add([FromBody] WikiPassageDto dto)
+        {
+            await this._wikiPassageService.AddAsync(new WikiPassage().ConvertFromDtoModel(dto), base.CurrentUser.Id);
+            return Ok();
+        }
     }
 }

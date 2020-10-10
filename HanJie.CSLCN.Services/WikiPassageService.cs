@@ -467,13 +467,10 @@ namespace HanJie.CSLCN.Services
                          try
                          {
 
-                             File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + Environment.NewLine);
                              LockViewsDictionary(dic =>
                              {
-                                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "into1" + Environment.NewLine);
                                  foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
                                  {
-                                     File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "into foreach" + Environment.NewLine);
                                      int passageId = item.Key;
                                      int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
 
@@ -486,13 +483,11 @@ namespace HanJie.CSLCN.Services
                                  }
                                  foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
                                  {
-                                     File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "into clear foreach" + Environment.NewLine);
                                      foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
                                      {
                                          viewsCountItem.Value.NewViews = 0;
                                      }
                                  }
-                                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "into clear dic" + Environment.NewLine);
                                  _ = GlobalService.ServiceProvider.GetService<RedisService>().ObjectSetAsync(StringConsts.ViewsCountDictionary, dic);
                              });
                              if (RunAs.Debug)
@@ -501,13 +496,13 @@ namespace HanJie.CSLCN.Services
                              }
                              if (RunAs.Release)
                              {
-                                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "sleep point" + Environment.NewLine);
+                                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "counter lifecycle once complete, sleep point checke." + Environment.NewLine);
                                  Thread.Sleep(20 * 1000);  //20秒
                              }
                          }
                          catch (Exception ex)
                          {
-                             File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "catch ex inside task: " + Environment.NewLine + ex.ToString());
+                             File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "counter catch ex inside task: " + Environment.NewLine + ex.ToString());
                          }
                      }
                  });
@@ -515,7 +510,7 @@ namespace HanJie.CSLCN.Services
             catch (Exception ex)
             {
                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "ex:" + ex.ToString() + Environment.NewLine);
-                new LogService().Log(message: "访问量统计：新增访问量出现异常。",
+                new LogService().Log(message: "访问量统计：启动访问量统计系统前出错",
                          parameters: new { ex = ex.ToString(), wikiPassageService = wikiPassageService.ToString() });
             }
 
@@ -608,5 +603,13 @@ namespace HanJie.CSLCN.Services
 
         #endregion
 
+        public Task<WikiPassage> AddAsync(WikiPassage data, int currentUserId)
+        {
+            Ensure.NotNull(data, nameof(data));
+            Ensure.IsDatabaseId(currentUserId, nameof(currentUserId));
+
+            data.MainAuthors = currentUserId.ToString();
+            return base.AddAsync(data);
+        }
     }
 }

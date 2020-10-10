@@ -33,7 +33,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
             string token = string.Empty;
             if (!string.IsNullOrEmpty(GlobalConfigs.AppSettings.LocalUploadFilePath))
-                token = "use-local-storage";
+                token = StringConsts.UseLocalStorage;
             else
                 token = this._qiniuService.GetUploadToken(storageFullName);
 
@@ -57,7 +57,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
             uploadFile.FileStream = ms;
 
             string result = this._storageService.Save(uploadFile)[0];
-            return Json(new { fileName = result });
+            string fullPathPrefix = GlobalConfigs.AppSettings.LocalUploadFilePath.Replace("/wwwroot", "").Replace("\\", "/");
+            if (!fullPathPrefix.EndsWith("/"))
+                fullPathPrefix = fullPathPrefix + "/";
+            return Json(new { downloadUrl = $"{fullPathPrefix}{result}" });
 
         }
     }

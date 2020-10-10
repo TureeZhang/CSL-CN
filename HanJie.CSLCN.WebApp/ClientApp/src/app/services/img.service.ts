@@ -6,26 +6,31 @@ import { GlobalService } from './global.service';
 @Injectable({ providedIn: "root" })
 export class ImgService implements OnInit {
 
+    public static isLocalStorage: boolean = false;
 
-  constructor(private globalService: GlobalService) {
+    constructor(private globalService: GlobalService,
+        private httpHelper: CSLHttpHelper) {
 
-  }
+    }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-  }
+    }
 
-  getCdnMarkdownString(storageFullName: string): string {
-    let imgUrl: string = this.getFileUrl(storageFullName);
-    let result: string = `![${storageFullName}](${imgUrl})`;
+    getCdnMarkdownString(storageFullName: string): string {
+        let imgUrl: string = this.getFileUrl(storageFullName);
+        let result: string = `![${storageFullName}](${imgUrl})`;
 
-    return result;
-  }
+        return result;
+    }
 
-  getFileUrl(storageFullName: string): string {
-    let fileUrl: string = `${this.globalService.clientAppConfigs.qiniuCdnHostUri}/${storageFullName}`;
-    return fileUrl;
-  }
+    getFileUrl(storageFullName: string): string {
+        let fileUrl: string = this.httpHelper.getBackServerHostUrl() + "/api/download?fname=" + encodeURI(storageFullName);
+        if (!ImgService.isLocalStorage) {
+            fileUrl = `${this.globalService.clientAppConfigs.qiniuCdnHostUri}/${storageFullName}`;
+        }
+        return fileUrl;
+    }
 
 
 }

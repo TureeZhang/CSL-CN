@@ -49,3 +49,10 @@
   padding: 4px 16px;
   text-align: left !important;
 }
+
+.mod-guide-wrapper {
+  font-size: x-large;
+  font-weight: 600;
+  font-family: fantasy, 幼圆;
+  margin: 16px;
+}
