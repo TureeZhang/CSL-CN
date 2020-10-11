@@ -39,6 +39,11 @@ namespace HanJie.CSLCN.Datas
         public DbSet<SystemSetting> SystemSettings { get; set; }
 
         /// <summary>
+        /// 维基分类
+        /// </summary>
+        public DbSet<WikiCategory> WikiCategories { get; set; }
+
+        /// <summary>
         /// 日志
         /// </summary>
         public DbSet<Log> Logs { get; set; }

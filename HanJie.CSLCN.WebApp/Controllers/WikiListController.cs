@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +24,19 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        [Route("/api/wikilist")]
+        public async Task<IActionResult> List(int? categoryId)
         {
-            List<WikiListItemDto> wikiListItemDtos = await this._wikiPassageService.ListAllPassageGenerals();
+            List<WikiListItemDto> wikiListItemDtos = null;
+            if (categoryId.HasValue)
+            {
+                Ensure.IsDatabaseId(categoryId.Value, nameof(categoryId));
+                wikiListItemDtos = await this._wikiPassageService.ListCategories(categoryId.Value);
+            }
+            else
+            {
+                wikiListItemDtos = await this._wikiPassageService.ListAllPassageGenerals();
+            }
             return Json(wikiListItemDtos);
         }
 

@@ -15,16 +15,21 @@ namespace HanJie.CSLCN.Services
         where TDtoType : BaseDtoModel<TDtoType, TDataModelType>, new()
         where TDataModelType : BaseDataModel<TDataModelType, TDtoType>, new()     //约束继承此基类的子类必须拥有传输模型和数据模型，且数据模型和传输模型必须继承自 BaseDtoModel 和 BaseDataModel
     {
-        public static CSLDbContext CSLDbContext { get; set; }
+        private static CSLDbContext _cslDbContext;
+        public static CSLDbContext CSLDbContext => GetDbContextSingleton();
         public CommonHelper CommonHelper { get; set; }
 
         public BaseService()
         {
             this.CommonHelper = GlobalService.ServiceProvider.GetService<CommonHelper>();
-            if (CSLDbContext == null)
-            {
-                CSLDbContext = new CSLDbContext();
-            }
+        }
+
+        private static CSLDbContext GetDbContextSingleton()
+        {
+            if (_cslDbContext == null)
+                _cslDbContext = new CSLDbContext();
+
+            return _cslDbContext;
         }
 
         public T GetService<T>()
@@ -117,6 +122,12 @@ namespace HanJie.CSLCN.Services
         public virtual List<TDataModelType> List()
         {
             List<TDataModelType> results = CSLDbContext.Set<TDataModelType>().ToList();
+            return results;
+        }
+
+        public virtual List<TDataModelType> ListWhere(Func<TDataModelType, bool> predicate)
+        {
+            List<TDataModelType> results = CSLDbContext.Set<TDataModelType>().Where(predicate).ToList();
             return results;
         }
 

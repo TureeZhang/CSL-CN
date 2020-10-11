@@ -21,13 +21,16 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         private readonly WikiPassageService _wikiPassageService;
         private readonly UserInfoService _userInfoService;
+        private readonly WikiCategoryService _wikiCategoryService;
 
         public WikiPassagesController(WikiPassageService wikiPassageService,
             UserInfoService userInfoService,
+            WikiCategoryService wikiCategoryService,
             UserStatuService userStatuService) : base(userStatuService)
         {
             this._userInfoService = userInfoService;
             this._wikiPassageService = wikiPassageService;
+            this._wikiCategoryService = wikiCategoryService;
         }
 
 
@@ -41,8 +44,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             wikiPassageDto.AnchorTitles = await this._wikiPassageService.CollectAnchorTitlesAsync(wikiPassageDto.Content);
             wikiPassageDto.MainAuthors = this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
             wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
-            wikiPassageDto.BreadCrumbs = wikiPassage.ParentPassageId != 0 ? this._wikiPassageService.CollectBreadCrumbs(wikiPassageDto) : null;
-            wikiPassageDto.ChildPageBreadCrumbs = await this._wikiPassageService.CollectChildPageBreadCrumbs(wikiPassageDto);
+            wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? this._wikiPassageService.CollectBreadCrumbs(wikiPassageDto) : null;
 
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
             wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(editingUserId));
@@ -91,6 +93,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [MyAuthorize]
         public async Task<IActionResult> PostAsync([FromBody]WikiPassageDto dto)
         {
+            if (!base.CurrentUser.IsAdmin)
+            {
+                return new UnauthorizedResult();
+            }
+
             dto.MainAuthors = new List<UserInfoDto> { base.CurrentUser };
             WikiPassage wikiPassage = await this._wikiPassageService.Create(dto);
             WikiPassageDto wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
@@ -112,13 +119,6 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public void Delete(int id)
         {
             throw new NotImplementedException();
-        }
-
-        [HttpPost("/api/wikipassages")]
-        public async Task<IActionResult> Add([FromBody] WikiPassageDto dto)
-        {
-            await this._wikiPassageService.AddAsync(new WikiPassage().ConvertFromDtoModel(dto), base.CurrentUser.Id);
-            return Ok();
         }
     }
 }

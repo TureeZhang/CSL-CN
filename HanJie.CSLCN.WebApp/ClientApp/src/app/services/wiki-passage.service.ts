@@ -3,6 +3,7 @@ import { CSLHttpHelper } from '../commons/http-helper';
 import { Observable } from 'rxjs';
 import { WikiPassageDto } from '../models/wiki-passage-dto';
 import { encode } from 'punycode';
+import { WikiListItemDto } from '../models/wiki-list-item-dto';
 
 @Injectable({ providedIn: "root" })
 export class WikiPassageService implements OnInit {
@@ -26,7 +27,7 @@ export class WikiPassageService implements OnInit {
     return this.httpHelper.put<WikiPassageDto, WikiPassageDto>(this.wikiPassageUrl, dto);
   }
 
-  postWikiPassage(dto: WikiPassageDto): Observable<WikiPassageDto> {
+  create(dto: WikiPassageDto): Observable<WikiPassageDto> {
     return this.httpHelper.post<WikiPassageDto, WikiPassageDto>(this.wikiPassageUrl, dto);
   }
 
@@ -40,6 +41,6 @@ export class WikiPassageService implements OnInit {
 
   imStillOnlineCall(passageId: number): Observable<boolean> {
     return this.httpHelper.get<boolean>(`${this.wikiImStillOnlineCallUrl}?passageId=${passageId}`);
-  }
+    }
 
 }

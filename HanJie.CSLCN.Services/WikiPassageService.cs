@@ -120,15 +120,7 @@ namespace HanJie.CSLCN.Services
             List<WikiListItemDto> wikiListItems = new List<WikiListItemDto>();
             foreach (WikiPassage item in wikiPassageDtos)
             {
-                WikiListItemDto dto = new WikiListItemDto();
-                dto.Id = item.Id;
-                dto.Title = item.Title;
-                dto.Description = await PickDescriptionFromContent(item.Content);
-                dto.RoutePath = item.RoutePath;
-                dto.CoverUrl = await PickCoverUrlFromContentFirstImage(item.Content);
-                dto.LastModifyDate = item.LastModifyDate.ToString("yyyy-MM-dd HH:mm:ss");
-                dto.LastModifyUser = new UserInfoDto { Id = item.LastModifyUserId };
-                wikiListItems.Add(dto);
+                wikiListItems.Add(await CovertToWikiListModel(item));
             }
 
             //Cache
@@ -137,17 +129,32 @@ namespace HanJie.CSLCN.Services
             return wikiListItems;
         }
 
-        public virtual async Task<List<BreadCrumbDto>> CollectChildPageBreadCrumbs(WikiPassageDto wikiPassageDto)
+        public async Task<List<WikiListItemDto>> ListCategories(int categoryId)
         {
-            List<BreadCrumbDto> results = new List<BreadCrumbDto>();
-            List<WikiPassage> childPassages = await CSLDbContext.WikiPassages.Where(item => item.ParentPassageId == wikiPassageDto.Id).ToListAsync();
-            foreach (WikiPassage item in childPassages)
+            Ensure.IsDatabaseId(categoryId, nameof(categoryId));
+
+            List<WikiListItemDto> results = new List<WikiListItemDto>();
+            List<WikiPassage> wikiPassages = base.ListWhere(item => item.CategoryId == categoryId);
+            foreach (WikiPassage item in wikiPassages)
             {
-                BreadCrumbDto breadCrumbDto = new BreadCrumbDto { Name = item.Title, Url = item.RoutePath };
-                results.Add(breadCrumbDto);
+                results.Add(await CovertToWikiListModel(item));
             }
 
             return results;
+        }
+
+        private async Task<WikiListItemDto> CovertToWikiListModel(WikiPassage wikiPassage)
+        {
+            WikiListItemDto dto = new WikiListItemDto();
+            dto.Id = wikiPassage.Id;
+            dto.Title = wikiPassage.Title;
+            dto.Description = await PickDescriptionFromContent(wikiPassage.Content);
+            dto.RoutePath = wikiPassage.RoutePath;
+            dto.CoverUrl = await PickCoverUrlFromContentFirstImage(wikiPassage.Content);
+            dto.LastModifyDate = wikiPassage.LastModifyDate.ToString("yyyy-MM-dd HH:mm:ss");
+            dto.LastModifyUser = new UserInfoDto { Id = wikiPassage.LastModifyUserId };
+
+            return dto;
         }
 
         public virtual List<BreadCrumbDto> CollectBreadCrumbs(WikiPassageDto wikiPassageDto)
@@ -155,22 +162,9 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
 
             List<BreadCrumbDto> results = new List<BreadCrumbDto>();
-            List<BreadCrumbDto> parents = new List<BreadCrumbDto>();
-            while (true)
-            {
-                WikiPassage parentPassage = base.GetById(wikiPassageDto.ParentPassageId);
-                parents.Add(new BreadCrumbDto { Name = parentPassage.Title, Url = $"/wiki-passage/{parentPassage.RoutePath}" });
-
-                if (parentPassage.ParentPassageId == 0)
-                {
-                    break;
-                }
-            }
-
-            for (int i = parents.Count - 1; i >= 0; i--)
-            {
-                results.Add(parents[i]);
-            }
+            WikiCategoryService wikiCategoryService = base.GetService<WikiCategoryService>();
+            WikiCategory wikiCategory = wikiCategoryService.GetById(wikiPassageDto.CategoryId);
+            results.Add(new BreadCrumbDto { Name = wikiCategory.Name, Url = "/wiki-list" });//$"/wiki-passage/{parentPassage.RoutePath}"
 
             return results;
         }
@@ -226,10 +220,16 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
             Ensure.NotNull(wikiPassageDto.Title, nameof(wikiPassageDto.Title));
-            Ensure.NotNull(wikiPassageDto.RoutePath, nameof(wikiPassageDto.RoutePath));
 
-            if ((await GetByRoutePathAsync(wikiPassageDto.RoutePath)) != null)
-                throw new ArgumentException($"指定的路径名称已存在：{wikiPassageDto.RoutePath}");
+            if (string.IsNullOrEmpty(wikiPassageDto.RoutePath))
+            {
+                wikiPassageDto.RoutePath = Guid.NewGuid().ToString("n");
+            }
+            else
+            {
+                if ((await GetByRoutePathAsync(wikiPassageDto.RoutePath)) != null)
+                    throw new ArgumentException($"指定的路径名称已存在：{wikiPassageDto.RoutePath}");
+            }
 
             wikiPassageDto.Content = "施工中🚧";
             WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);

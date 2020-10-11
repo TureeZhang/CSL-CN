@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule, NzLayoutModule, NzBreadCrumbModule, NzGridModule, NzFormModule, NzButtonModule, NzDividerModule, NzIconModule, NzAffixModule, NzDropDownModule, NzMenuModule, NzPaginationModule, NzInputModule, NzInputNumberModule, NzSelectModule, NzAvatarModule, NzCarouselModule, NzPopoverModule, NzStatisticModule, NzTableModule, NzToolTipModule, NzDrawerModule, NzSpinModule, NzAnchorModule, NzTabsModule, NzBadgeModule, NzDescriptionsModule, NzTableComponent, NzEmptyComponent, NzModalModule } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule, NzLayoutModule, NzBreadCrumbModule, NzGridModule, NzFormModule, NzButtonModule, NzDividerModule, NzIconModule, NzAffixModule, NzDropDownModule, NzMenuModule, NzPaginationModule, NzInputModule, NzInputNumberModule, NzSelectModule, NzAvatarModule, NzCarouselModule, NzPopoverModule, NzStatisticModule, NzTableModule, NzToolTipModule, NzDrawerModule, NzSpinModule, NzAnchorModule, NzTabsModule, NzBadgeModule, NzDescriptionsModule, NzTableComponent, NzEmptyComponent, NzModalModule, NzTagModule, NzCollapseModule } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,6 +33,7 @@ import { EditorListBoardComponent } from './components/editor-devote-info-list/e
 import { EditorComponent } from './components/editor/editor.component';
 import { EditorTableComponent } from './components/editor/editor-table/editor-table.component';
 import { EditorH1Component } from './components/editor/editor-h1/editor-h1.component';
+import { CreateWikiPassageComponent } from './create-wiki-passage/create-wiki-passage.component';
 
 registerLocaleData(zh);
 
@@ -62,8 +63,8 @@ registerLocaleData(zh);
         //指令
         HtmlRenderDirective,
         EditorTableComponent,
-        EditorH1Component
-
+        EditorH1Component,
+        CreateWikiPassageComponent
     ],
     imports: [
         BrowserModule,
@@ -118,7 +119,9 @@ registerLocaleData(zh);
         NzTabsModule,
         NzBadgeModule,
         NzDescriptionsModule,
-        NzModalModule
+        NzModalModule,
+        NzTagModule,
+        NzCollapseModule
     ],
     providers: [{ provide: NZ_I18N, useValue: zh_CN }],
     bootstrap: [AppComponent],

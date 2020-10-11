@@ -14,9 +14,9 @@ namespace HanJie.CSLCN.Models.Dtos
         public UserInfoDto LastModifyUser { get; set; }
         public List<UserInfoDto> MainAuthors { get; set; }
         public List<UserInfoDto> CoAuthors { get; set; }
-        public int ParentPassageId { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryUrl { get; set; }
         public List<BreadCrumbDto> BreadCrumbs { get; set; }
-        public List<BreadCrumbDto> ChildPageBreadCrumbs { get; set; }
         public UserInfoDto EditingUser { get; set; }
         public int TotalViewsCount { get; set; }
     }

@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\models\wiki-category-dto.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ClientApp\node_modules\ngx-markdown-editor\ngx-markdown-editor.metadata.json" />
     <Content Include="ClientApp\node_modules\ngx-markdown-editor\package.json" />
   </ItemGroup>
@@ -69,6 +73,7 @@
     <TypeScriptCompile Include="ClientApp\node_modules\ngx-markdown-editor\lib\resize-sensor\resize-sensor.component.d.ts" />
     <TypeScriptCompile Include="ClientApp\node_modules\ngx-markdown-editor\ngx-markdown-editor.d.ts" />
     <TypeScriptCompile Include="ClientApp\node_modules\ngx-markdown-editor\public_api.d.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\wiki-category-dto.ts" />
   </ItemGroup>
 
   <ProjectExtensions>
