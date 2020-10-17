@@ -31,7 +31,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             if (categoryId.HasValue)
             {
                 Ensure.IsDatabaseId(categoryId.Value, nameof(categoryId));
-                wikiListItemDtos = await this._wikiPassageService.ListCategories(categoryId.Value);
+                wikiListItemDtos = await this._wikiPassageService.ListCategoriesAsync(categoryId.Value);
             }
             else
             {

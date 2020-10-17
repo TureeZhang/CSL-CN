@@ -51,7 +51,7 @@ namespace HanJie.CSLCN.WebApp
             //将数据库上下文对象加入DI容器
             Console.WriteLine($"ConnStr:{GlobalConfigs.AppSettings.ConnectionString}");
             services.AddDbContext<CSLDbContext>
-                (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString));  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
+                (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString), ServiceLifetime.Transient);  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
 
             services.AddCors(setupAction =>
             {
@@ -88,19 +88,19 @@ namespace HanJie.CSLCN.WebApp
                 ExceptionHandlerOptions exceptionHandlerOptions = new ExceptionHandlerOptions();
                 exceptionHandlerOptions.ExceptionHandler = async (httpContext) =>
                 {
-                    await Task.Run(() =>
-                    {
-                        try
-                        {
-                            IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
-                            new LogService().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
-                        }
-                        catch (Exception ex)
-                        {
-                            _ = File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs_{DateTime.Now}.txt"), ex.ToString());
-                            throw;
-                        }
-                    });
+                    await Task.Run(async () =>
+                   {
+                       try
+                       {
+                           IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
+                           await new LogService().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
+                       }
+                       catch (Exception ex)
+                       {
+                           _ = File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs_{DateTime.Now}.txt"), ex.ToString());
+                           throw;
+                       }
+                   });
                 };
                 app.UseExceptionHandler(exceptionHandlerOptions);
             }

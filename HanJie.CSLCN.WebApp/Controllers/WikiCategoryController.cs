@@ -32,7 +32,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             List<WikiCategoryDto> results = redisService.ObjectGet<List<WikiCategoryDto>>(StringConsts.WikiCategoryCacheKey);
             if (results == null)
             {
-                results = this._wikiCategoryService.ListDtos();
+                results = await this._wikiCategoryService.ListDtos();
                 await redisService.ObjectSetAsync(StringConsts.WikiCategoryCacheKey, results);
             }
 

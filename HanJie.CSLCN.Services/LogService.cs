@@ -6,12 +6,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
     public class LogService : BaseService<LogDto, Log>
     {
-        public new virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
+        public async new virtual Task Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
         {
             Ensure.NotNull(message, nameof(message));
 
@@ -22,7 +23,7 @@ namespace HanJie.CSLCN.Services
             if (parameters != null)
                 log.ParametersJson = JsonConvert.SerializeObject(parameters);
 
-           base.Add(log);
+          await base.AddAsync(log);
         }
 
 

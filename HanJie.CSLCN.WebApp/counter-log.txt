@@ -2191,3 +2191,73 @@ System.AggregateException: One or more errors occurred. (Timeout performing GET 
    at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
    at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
    at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398<---
+2020-10-14 10:59:21counter catch ex inside task: 
+System.AggregateException: One or more errors occurred. (Timeout performing GET (5000ms), active: GET ViewsCountDictionary, next: INFO ** possible thread-theft indicated; see https://stackexchange.github.io/StackExchange.Redis/ThreadTheft ** , inst: 0, qu: 0, qs: 1, aw: False, rs: CompletePendingMessageSync, ws: Idle, in: 0, in-pipe: 2267, out-pipe: 0, serverEndpoint: 118.31.20.44:6380, mc: 1/1/0, mgr: 9 of 10 available, clientName: DESKTOP-CONUESE, IOCP: (Busy=1,Free=999,Min=16,Max=1000), WORKER: (Busy=6,Free=32761,Min=16,Max=32767), v: 2.1.58.34321 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)) ---> StackExchange.Redis.RedisTimeoutException: Timeout performing GET (5000ms), active: GET ViewsCountDictionary, next: INFO ** possible thread-theft indicated; see https://stackexchange.github.io/StackExchange.Redis/ThreadTheft ** , inst: 0, qu: 0, qs: 1, aw: False, rs: CompletePendingMessageSync, ws: Idle, in: 0, in-pipe: 2267, out-pipe: 0, serverEndpoint: 118.31.20.44:6380, mc: 1/1/0, mgr: 9 of 10 available, clientName: DESKTOP-CONUESE, IOCP: (Busy=1,Free=999,Min=16,Max=1000), WORKER: (Busy=6,Free=32761,Min=16,Max=32767), v: 2.1.58.34321 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2807
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
+   at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at HanJie.CSLCN.Services.WikiPassageService.get_ViewsDictionary() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 28
+   at HanJie.CSLCN.Services.WikiPassageService.LockViewsDictionary(Action`1 action) in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 528
+   at HanJie.CSLCN.Services.WikiPassageService.<>c__DisplayClass30_0.<StartViewsCountUpdateTask>b__0() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 470
+---> (Inner Exception #0) StackExchange.Redis.RedisTimeoutException: Timeout performing GET (5000ms), active: GET ViewsCountDictionary, next: INFO ** possible thread-theft indicated; see https://stackexchange.github.io/StackExchange.Redis/ThreadTheft ** , inst: 0, qu: 0, qs: 1, aw: False, rs: CompletePendingMessageSync, ws: Idle, in: 0, in-pipe: 2267, out-pipe: 0, serverEndpoint: 118.31.20.44:6380, mc: 1/1/0, mgr: 9 of 10 available, clientName: DESKTOP-CONUESE, IOCP: (Busy=1,Free=999,Min=16,Max=1000), WORKER: (Busy=6,Free=32761,Min=16,Max=32767), v: 2.1.58.34321 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2807
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
+   at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398<---
+2020-10-14 11:25:38counter catch ex inside task: 
+System.AggregateException: One or more errors occurred. (Timeout performing GET (5000ms), next: GET ViewsCountDictionary, inst: 0, qu: 0, qs: 2, aw: False, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, serverEndpoint: 118.31.20.44:6380, mc: 1/1/0, mgr: 10 of 10 available, clientName: DESKTOP-CONUESE, IOCP: (Busy=2,Free=998,Min=16,Max=1000), WORKER: (Busy=14,Free=32753,Min=16,Max=32767), v: 2.1.58.34321 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)) ---> StackExchange.Redis.RedisTimeoutException: Timeout performing GET (5000ms), next: GET ViewsCountDictionary, inst: 0, qu: 0, qs: 2, aw: False, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, serverEndpoint: 118.31.20.44:6380, mc: 1/1/0, mgr: 10 of 10 available, clientName: DESKTOP-CONUESE, IOCP: (Busy=2,Free=998,Min=16,Max=1000), WORKER: (Busy=14,Free=32753,Min=16,Max=32767), v: 2.1.58.34321 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2807
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
+   at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at HanJie.CSLCN.Services.WikiPassageService.get_ViewsDictionary() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 28
+   at HanJie.CSLCN.Services.WikiPassageService.LockViewsDictionary(Action`1 action) in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 528
+   at HanJie.CSLCN.Services.WikiPassageService.<>c__DisplayClass30_0.<StartViewsCountUpdateTask>b__0() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 470
+---> (Inner Exception #0) StackExchange.Redis.RedisTimeoutException: Timeout performing GET (5000ms), next: GET ViewsCountDictionary, inst: 0, qu: 0, qs: 2, aw: False, rs: ReadAsync, ws: Idle, in: 0, in-pipe: 0, out-pipe: 0, serverEndpoint: 118.31.20.44:6380, mc: 1/1/0, mgr: 10 of 10 available, clientName: DESKTOP-CONUESE, IOCP: (Busy=2,Free=998,Min=16,Max=1000), WORKER: (Busy=14,Free=32753,Min=16,Max=32767), v: 2.1.58.34321 (Please take a look at this article for some common client-side issues that can cause timeouts: https://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2807
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
+   at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398<---
+2020-10-14 11:25:43counter catch ex inside task: 
+System.AggregateException: One or more errors occurred. (SocketFailure (ReadSocketError/TimedOut, last-recv: 5) on 118.31.20.44:6380/Interactive, Idle/Faulted, last: GET, origin: ReadFromPipe, outstanding: 3, last-read: 1543s ago, last-write: 1s ago, keep-alive: 60s, state: ConnectedEstablished, mgr: 8 of 10 available, in: 0, in-pipe: 0, out-pipe: 0, last-heartbeat: 0s ago, last-mbeat: 0s ago, global: 0s ago, v: 2.1.58.34321) ---> StackExchange.Redis.RedisConnectionException: SocketFailure (ReadSocketError/TimedOut, last-recv: 5) on 118.31.20.44:6380/Interactive, Idle/Faulted, last: GET, origin: ReadFromPipe, outstanding: 3, last-read: 1543s ago, last-write: 1s ago, keep-alive: 60s, state: ConnectedEstablished, mgr: 8 of 10 available, in: 0, in-pipe: 0, out-pipe: 0, last-heartbeat: 0s ago, last-mbeat: 0s ago, global: 0s ago, v: 2.1.58.34321 ---> System.Net.Sockets.SocketException: 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+   at Pipelines.Sockets.Unofficial.Internal.Throw.Socket(Int32 errorCode) in /_/src/Pipelines.Sockets.Unofficial/Internal/Throw.cs:line 59
+   at Pipelines.Sockets.Unofficial.SocketAwaitableEventArgs.GetResult() in /_/src/Pipelines.Sockets.Unofficial/SocketAwaitableEventArgs.cs:line 74
+   at Pipelines.Sockets.Unofficial.SocketConnection.DoReceiveAsync() in /_/src/Pipelines.Sockets.Unofficial/SocketConnection.Receive.cs:line 64
+   at System.IO.Pipelines.PipeCompletion.ThrowLatchedException()
+   at System.IO.Pipelines.Pipe.GetReadResult(ReadResult& result)
+   at System.IO.Pipelines.Pipe.GetReadAsyncResult()
+   at StackExchange.Redis.PhysicalConnection.ReadFromPipe()
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2824
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
+   at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at HanJie.CSLCN.Services.WikiPassageService.get_ViewsDictionary() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 28
+   at HanJie.CSLCN.Services.WikiPassageService.LockViewsDictionary(Action`1 action) in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 528
+   at HanJie.CSLCN.Services.WikiPassageService.<>c__DisplayClass30_0.<StartViewsCountUpdateTask>b__0() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 470
+---> (Inner Exception #0) StackExchange.Redis.RedisConnectionException: SocketFailure (ReadSocketError/TimedOut, last-recv: 5) on 118.31.20.44:6380/Interactive, Idle/Faulted, last: GET, origin: ReadFromPipe, outstanding: 3, last-read: 1543s ago, last-write: 1s ago, keep-alive: 60s, state: ConnectedEstablished, mgr: 8 of 10 available, in: 0, in-pipe: 0, out-pipe: 0, last-heartbeat: 0s ago, last-mbeat: 0s ago, global: 0s ago, v: 2.1.58.34321 ---> System.Net.Sockets.SocketException: 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+   at Pipelines.Sockets.Unofficial.Internal.Throw.Socket(Int32 errorCode) in /_/src/Pipelines.Sockets.Unofficial/Internal/Throw.cs:line 59
+   at Pipelines.Sockets.Unofficial.SocketAwaitableEventArgs.GetResult() in /_/src/Pipelines.Sockets.Unofficial/SocketAwaitableEventArgs.cs:line 74
+   at Pipelines.Sockets.Unofficial.SocketConnection.DoReceiveAsync() in /_/src/Pipelines.Sockets.Unofficial/SocketConnection.Receive.cs:line 64
+   at System.IO.Pipelines.PipeCompletion.ThrowLatchedException()
+   at System.IO.Pipelines.Pipe.GetReadResult(ReadResult& result)
+   at System.IO.Pipelines.Pipe.GetReadAsyncResult()
+   at StackExchange.Redis.PhysicalConnection.ReadFromPipe()
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 2824
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in /_/src/StackExchange.Redis/RedisBase.cs:line 54
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
+   at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398<---

@@ -116,7 +116,7 @@ namespace HanJie.CSLCN.Services
                     return WikiListCaches.Item2;
             }
 
-            List<WikiPassage> wikiPassageDtos = List();
+            List<WikiPassage> wikiPassageDtos = await ListAsync();
             List<WikiListItemDto> wikiListItems = new List<WikiListItemDto>();
             foreach (WikiPassage item in wikiPassageDtos)
             {
@@ -129,12 +129,12 @@ namespace HanJie.CSLCN.Services
             return wikiListItems;
         }
 
-        public async Task<List<WikiListItemDto>> ListCategories(int categoryId)
+        public async Task<List<WikiListItemDto>> ListCategoriesAsync(int categoryId)
         {
             Ensure.IsDatabaseId(categoryId, nameof(categoryId));
 
             List<WikiListItemDto> results = new List<WikiListItemDto>();
-            List<WikiPassage> wikiPassages = base.ListWhere(item => item.CategoryId == categoryId);
+            List<WikiPassage> wikiPassages = base.ListWhereAsync(item => item.CategoryId == categoryId);
             foreach (WikiPassage item in wikiPassages)
             {
                 results.Add(await CovertToWikiListModel(item));
@@ -157,13 +157,13 @@ namespace HanJie.CSLCN.Services
             return dto;
         }
 
-        public virtual List<BreadCrumbDto> CollectBreadCrumbs(WikiPassageDto wikiPassageDto)
+        public virtual async Task<List<BreadCrumbDto>> CollectBreadCrumbsAsync(WikiPassageDto wikiPassageDto)
         {
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
 
             List<BreadCrumbDto> results = new List<BreadCrumbDto>();
             WikiCategoryService wikiCategoryService = base.GetService<WikiCategoryService>();
-            WikiCategory wikiCategory = wikiCategoryService.GetById(wikiPassageDto.CategoryId);
+            WikiCategory wikiCategory = await wikiCategoryService.GetById(wikiPassageDto.CategoryId);
             results.Add(new BreadCrumbDto { Name = wikiCategory.Name, Url = "/wiki-list" });//$"/wiki-passage/{parentPassage.RoutePath}"
 
             return results;
@@ -467,7 +467,7 @@ namespace HanJie.CSLCN.Services
                          try
                          {
 
-                             LockViewsDictionary(dic =>
+                             LockViewsDictionary(async dic =>
                              {
                                  foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
                                  {
@@ -476,7 +476,7 @@ namespace HanJie.CSLCN.Services
 
                                      if (newViewsCount > 0)
                                      {
-                                         WikiPassage wikiPassage = wikiPassageService.GetById(passageId);
+                                         WikiPassage wikiPassage = await wikiPassageService.GetById(passageId);
                                          wikiPassage.TotalViewsCount += newViewsCount;
                                          _ = wikiPassageService.UpdateAsync(wikiPassage, false);
                                      }

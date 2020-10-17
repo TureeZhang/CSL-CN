@@ -24,9 +24,9 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            List<WikiPassageDto> datas = this._wikiPassageService.ListDtos();
+            List<WikiPassageDto> datas =await this._wikiPassageService.ListDtos();
             return Json(datas);
         }
 

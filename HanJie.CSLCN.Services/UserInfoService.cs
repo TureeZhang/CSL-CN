@@ -42,9 +42,9 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public virtual List<UserInfoDto> ListDtoes()
+        public async virtual Task<List<UserInfoDto>> ListDtoes()
         {
-            List<UserInfo> datas = base.List();
+            List<UserInfo> datas = await base.ListAsync();
             List<UserInfoDto> dtos = new List<UserInfoDto>();
             foreach (UserInfo item in datas)
             {
@@ -127,22 +127,22 @@ namespace HanJie.CSLCN.Services
 
         }
 
-        public bool IsUserNameDuplicated(string userName)
+        public async Task<bool> IsUserNameDuplicated(string userName)
         {
             Ensure.NotNull(userName, nameof(userName));
 
-            UserInfo userInfo = CSLDbContext.UserInfoes.Where(item => item.UserName == userName).FirstOrDefault();
+            UserInfo userInfo = await CSLDbContext.UserInfoes.Where(item => item.UserName == userName).AsQueryable().FirstOrDefaultAsync();
             if (userInfo == null)
                 return false;
 
             return true;
         }
 
-        public IEnumerable<DonatorRankDto> BindDonatorUserInfo(params DonatorRankDto[] dtos)
+        public async Task<IEnumerable<DonatorRankDto>> BindDonatorUserInfo(params DonatorRankDto[] dtos)
         {
             foreach (DonatorRankDto item in dtos)
             {
-                UserInfo user = this.GetById(item.UserId);
+                UserInfo user = await this.GetById(item.UserId);
                 item.UserNickName = user.NickName;
                 item.AvatarUrl = user.AvatarUrl;
                 item.PersonalHomepageUrl = user.PersonalHomepageUrl;
@@ -191,14 +191,14 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        public List<UserInfoDto> CollectAuthorInfoes(string[] userIds)
+        public async Task<List<UserInfoDto>> CollectAuthorInfoes(string[] userIds)
         {
             Ensure.NotNull(userIds, nameof(userIds));
 
             List<UserInfoDto> result = new List<UserInfoDto>();
             foreach (string item in userIds)
             {
-                UserInfo userInfo = GetById(Convert.ToInt32(item));
+                UserInfo userInfo = await GetById(Convert.ToInt32(item));
                 UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(userInfo);
                 result.Add(dto);
             }
@@ -215,11 +215,11 @@ namespace HanJie.CSLCN.Services
         ///     2.最后活跃时间更新为现在。
         /// </summary>
         /// <param name="id"></param>
-        public virtual async void UpdateLastCommitInfo(int id)
+        public virtual async Task UpdateLastCommitInfo(int id)
         {
             Ensure.IsDatabaseId(id, nameof(id));
 
-            UserInfo userInfo = GetById(id);
+            UserInfo userInfo = await GetById(id);
             userInfo.CommitTimesCount += 1;
             userInfo.LastCommitDateTime = DateTime.Now;
             await UpdateAsync(userInfo);

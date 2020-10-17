@@ -7,6 +7,7 @@ using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HanJie.CSLCN.WebApp.Controllers
 {
@@ -39,7 +40,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             wikiListItemDtos = wikiListItemDtos.OrderByDescending(item => item.LastModifyDate).Take(20).ToList();
             foreach (var item in wikiListItemDtos)
             {
-                UserInfoDto userInfoDto = new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(item.LastModifyUser.Id) ??
+                UserInfoDto userInfoDto = new UserInfoDto().ConvertFromDataModel((await this._userInfoService.GetById(item.LastModifyUser.Id)) ??
                     throw new ArgumentException($"user not exist. id={item.LastModifyUser.Id}"));
                 item.LastModifyUser = userInfoDto;
             }

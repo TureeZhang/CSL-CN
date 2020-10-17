@@ -42,12 +42,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
             WikiPassage wikiPassage = await this._wikiPassageService.GetByRoutePathAsync(id);
             WikiPassageDto wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
             wikiPassageDto.AnchorTitles = await this._wikiPassageService.CollectAnchorTitlesAsync(wikiPassageDto.Content);
-            wikiPassageDto.MainAuthors = this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-            wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
-            wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? this._wikiPassageService.CollectBreadCrumbs(wikiPassageDto) : null;
+            wikiPassageDto.MainAuthors =await this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+            wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? await this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
+            wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? await this._wikiPassageService.CollectBreadCrumbsAsync(wikiPassageDto) : null;
 
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
-            wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(editingUserId));
+            wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(await this._userInfoService.GetById(editingUserId));
 
             //
             //此处是有意不做等待的，阅读量的统计不应当影响文本内容的返回。

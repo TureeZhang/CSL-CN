@@ -25,9 +25,9 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public List<UserInfoDto> List()
+        public async Task<List<UserInfoDto>> List()
         {
-            return this._userInfoService.ListDtoes();
+            return await this._userInfoService.ListDtoes();
         }
 
         [HttpGet("{id}")]
@@ -38,11 +38,11 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
 
         [HttpGet]
         [Route("/api/admin/adminuserinfo/isduplicated")]
-        public JsonResult IsUserNameDuplicated(string userName)
+        public async Task<JsonResult> IsUserNameDuplicated(string userName)
         {
             Ensure.NotNull(userName, nameof(userName));
 
-            bool result = this._userInfoService.IsUserNameDuplicated(userName);
+            bool result =await this._userInfoService.IsUserNameDuplicated(userName);
             return Json(result);
         }
 

@@ -29,11 +29,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public string Get(int id)
+        public async Task<string> Get(int id)
         {
             Ensure.NotNull(id, nameof(id));
 
-            QiniuStorageInfo dto = this._qiniuService.GetById(id);
+            QiniuStorageInfo dto = await this._qiniuService.GetById(id);
             return dto.FullName;
         }
 

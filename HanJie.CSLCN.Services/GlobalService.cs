@@ -4,7 +4,7 @@ using System;
 
 namespace HanJie.CSLCN.Services
 {
-    public static class GlobalService
+    public class GlobalService
     {
         public static IServiceProvider ServiceProvider { get; set; }
     }
