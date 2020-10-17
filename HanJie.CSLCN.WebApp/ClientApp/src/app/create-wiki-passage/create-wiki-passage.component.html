@@ -1,0 +1,40 @@
+<span class="btn-create-passage"><button nz-button nzType="primary" nzSize="small" (click)="createModPassage()"><i nz-icon nzType="plus"></i><ng-content></ng-content></button></span>
+<nz-modal [(nzVisible)]="isCreateModPassageShow"
+          nzTitle="新建文档"
+          (nzOnCancel)="handleCancel()"
+          (nzOnOk)="submitForm(validateForm.value)"
+          [nzOkLoading]="isSubmitLoading"
+          nzOkText="创建">
+  <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+    <nz-form-item>
+      <nz-form-label>分类：</nz-form-label>
+      <nz-form-control nzErrorTip="请选择文章分类！">
+        <nz-select formControlName="categoryId" nzPlaceHolder="请选择文章分类" [nzLoading]="isLoadingCategory">
+          <!--<nz-option nzValue="1" nzLabel="经营"></nz-option>
+          <nz-option nzValue="2" nzLabel="元数据"></nz-option>
+          <nz-option nzValue="3" nzLabel="MOD 百科"></nz-option>
+          <nz-option nzValue="4" nzLabel="其他"></nz-option>-->
+          <nz-option *ngFor="let item of categories|async" nzValue="{{item.id}}" nzLabel="{{item.name}}"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>标题：</nz-form-label>
+      <nz-form-control nzErrorTip="请输入文档标题！">
+        <input nz-input formControlName="title" placeholder="请输入文档主标题" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-collapse [nzBordered]="false" nzActive="false">
+      <nz-collapse-panel nzHeader="高级选项" nzActive="false">
+        <nz-form-item>
+          <nz-form-label>用户友好链接：</nz-form-label>
+          <nz-form-control nzErrorTip="请输入用户友好链接！">
+            <input #routePath nz-input formControlName="routePath" placeholder="请输入用户友好链接！" (blur)="replaceBlackSpace()" value="validateForm.value.routePath" />
+          </nz-form-control>
+          <div style="margin-top:6px;"><nz-tag [nzColor]="'blue'">将在分享的链接中显示为：www.cities-skylines.cn/wiki-passages/{{routePath.value}}</nz-tag></div>
+        </nz-form-item>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+  </form>
+</nz-modal>

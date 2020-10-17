@@ -11,7 +11,7 @@ export class CSLHttpHelper {
   /***
    *服务端主 host 地址段前缀
    ***/
-  private cslHostUrl: string = this.getHostUrl();
+  private cslHostUrl: string = this.getBackServerHostUrl();
 
   constructor(private http: HttpClient) { }
 
@@ -60,7 +60,7 @@ export class CSLHttpHelper {
       });
   }
 
-  getHostUrl(): string {
+  getBackServerHostUrl(): string {
     let host: string = document.location.host;
     let apiHostUrl: string = "http://";
 

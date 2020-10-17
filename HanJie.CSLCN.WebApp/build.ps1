@@ -24,5 +24,10 @@ Copy-Item -Path * -Destination ../../../bin/Release/netcoreapp2.2/publish/wwwroo
 
 Invoke-Item ../../../bin/Release/netcoreapp2.2/publish/
 
+<#
+<meta name="keywords" content="城市天际线,新手,攻略,MOD,教程,视频,百科,维基,虎牙汉界">
+<meta name="description" content="汉界的一颗小虎牙,你可以免费查阅的 城市天际线 在线百科全书。百科全书 初学者指南 功能列表 MOD 推荐 经营 里程碑列表 信息视图列表 道路 交通 公共交通运输">
+#>
+
 Write-Host "--END-- at " [DateTime]::Now
 Read-Host

@@ -49,3 +49,41 @@
   padding: 4px 16px;
   text-align: left !important;
 }
+
+.mod-guide-wrapper {
+  font-size: x-large;
+  font-weight: 600;
+  font-family: fantasy, 幼圆;
+  display: inline-block;
+  min-width: 180px;
+  max-width: 230px;
+  width: 100%;
+  border: 1px solid #ababab;
+  border-radius: 5px;
+  padding: 16px 32px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+  .mod-guide-wrapper:hover {
+    animation: mod-box-hover .2s ease forwards;
+  }
+
+@keyframes mod-box-hover {
+  from {
+  }
+
+  to {
+    position: relative;
+    bottom: .5px;
+    right: .5px;
+    box-shadow: 3px 3px 1px #dedede;
+  }
+}
+
+.btn-create-passage {
+  position: relative;
+  bottom: 2px;
+  float: right;
+  right: 4px;
+}

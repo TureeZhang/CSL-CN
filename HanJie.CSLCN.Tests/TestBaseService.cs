@@ -19,8 +19,8 @@ namespace HanJie.CSLCN.Tests
         {
             var service = new WikiPassageService();
 
-            await service.AddAsync(BuildOneEntity());
-            WikiPassage passage = service.GetById(1);
+            await service.AddAsync(BuildOneEntity(),1);
+            WikiPassage passage = await service.GetById(1);
 
             Assert.NotNull(passage);
         }
@@ -29,12 +29,12 @@ namespace HanJie.CSLCN.Tests
         public async Task TestBaseServiceDbDelte_ShouldDeleteAsync()
         {
             WikiPassageService service = new WikiPassageService();
-            await service.AddAsync(BuildOneEntity());
+            await service.AddAsync(BuildOneEntity(),1);
 
-            WikiPassage passageToFind = service.GetById(1);
+            WikiPassage passageToFind = await service.GetById(1);
 
             await service.DeleteByIdAsync(1);
-            WikiPassage passage = service.GetById(1);
+            WikiPassage passage = await service.GetById(1);
 
             Assert.NotNull(passageToFind);
             Assert.Null(passage);
@@ -44,13 +44,13 @@ namespace HanJie.CSLCN.Tests
         public async Task TestBaseServiceDbUpdate_ShouldUpdate()
         {
             WikiPassageService service = new WikiPassageService();
-            await service.AddAsync(BuildOneEntity());
+            await service.AddAsync(BuildOneEntity(),1);
 
-            WikiPassage passage = service.GetById(1);
+            WikiPassage passage = await service.GetById(1);
             passage.Content = "这是修改后的内容";
 
             await service.UpdateAsync(passage);
-            Assert.True(service.GetById(1).Content == "这是修改后的内容");
+            Assert.True((await service.GetById(1)).Content == "这是修改后的内容");
         }
 
         private WikiPassage BuildOneEntity()

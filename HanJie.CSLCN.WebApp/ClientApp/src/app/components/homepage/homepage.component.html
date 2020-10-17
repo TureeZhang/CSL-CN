@@ -15,6 +15,8 @@
   <div nz-col nzXXl="4" nzXl="7" nzLg="7" nzMd="12" nzSm="24" nzXs="24">
     <div class="content-header-board">
       {{homepageSettings?.boardTitleA}}
+      <!--创建MOD文档弹窗-->
+      <create-wiki-passage class="btn-create-passage" *ngIf="isAdmin">新的主题</create-wiki-passage>
     </div>
     <div class="content-list-warpper" style="margin-left:12px;margin-top:12px;">
       <div>
@@ -87,35 +89,36 @@
 
   <div nz-col nzLg="0" nzMd="12" nzSm="24" nzXs="24">
     <!--最近更新-->
-    <ng-container *ngTemplateOutlet="recentUpdateList"></ng-container>
+    <ng-container *ngTemplateOutlet="recentUpdateList">
+    </ng-container>
   </div>
 
   <div nz-col nzXXl="20" nzXl="17" nzLg="17" nzMd="24" nzSm="24" nzXs="24">
 
     <div nz-row style="height:480px;">
-
       <div nz-col nzLg="13" nzMd="24" nzSm="24" nzXs="24">
-        <div class="content-header-board">
-          {{homepageSettings?.boardTitleB}}
-        </div>
+        <!--中间版块风格A：网站信息版块群-->
+        <div *ngIf="homepageSettings != null else loading">
+          <ng-container *ngIf="homepageSettings.layoutStyle=='A'">
+            <ng-container *ngTemplateOutlet="siteInfoBoards"></ng-container>
+          </ng-container>
 
-        <div class="content-text" style="height:80px;overflow:auto;">
-          <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
-          <markdown [data]="homepageSettings?.boardContentB"></markdown>
-        </div>
-        <div class="content-header-board">
-          {{homepageSettings?.boardTitleC}}
-        </div>
-        <div class="content-text" style="height:80px;overflow:auto;">
-          <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
-          <markdown [data]="homepageSettings?.boardContentC"></markdown>
-        </div>
-        <div class="content-header-board">
-          {{homepageSettings?.boardTitleD}}
-        </div>
-        <div class="content-text" style="height:155px;overflow:auto;">
-          <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
-          <markdown [data]="homepageSettings?.boardContentD"></markdown>
+          <!--中间版块风格B：MOD 推荐-->
+          <ng-container *ngIf="homepageSettings.layoutStyle=='B'">
+            <div class="content-header-board">
+              MOD 百科全书
+            </div>
+            <div style="height:425px;overflow:auto;margin-top: 6px;margin-left: 6px;">
+
+              <nz-spin nzSimple *ngIf="isLoadingModPassage else modPassages"></nz-spin>
+
+              <ng-template #modPassages>
+                <div *ngFor="let item of modCategoryWikis;let i = index;" class="mod-guide-wrapper" style="background: linear-gradient(45deg, {{colors[i]}}, transparent);" routerLink="/wiki-passage/{{item.routePath}}">
+                  {{item.title}}
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
         </div>
       </div>
 
@@ -123,7 +126,6 @@
         <!--最近更新-->
         <ng-container *ngTemplateOutlet="recentUpdateList"></ng-container>
       </div>
-
     </div>
 
     <div nz-row nzJustify="center">
@@ -186,3 +188,30 @@
   </nz-list>
   <!--</ng-container>-->
 </ng-template>
+
+<!--网站信息版块群-->
+<ng-template #siteInfoBoards>
+  <div class="content-header-board">
+    {{homepageSettings?.boardTitleB}}
+  </div>
+  <div class="content-text" style="height:80px;overflow:auto;">
+    <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
+    <markdown [data]="homepageSettings?.boardContentB"></markdown>
+  </div>
+  <div class="content-header-board">
+    {{homepageSettings?.boardTitleC}}
+  </div>
+  <div class="content-text" style="height:80px;overflow:auto;">
+    <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
+    <markdown [data]="homepageSettings?.boardContentC"></markdown>
+  </div>
+  <div class="content-header-board">
+    {{homepageSettings?.boardTitleD}}
+  </div>
+  <div class="content-text" style="height:155px;overflow:auto;">
+    <nz-skeleton [nzActive]="true" *ngIf="isLoadingBoardContent"></nz-skeleton>
+    <markdown [data]="homepageSettings?.boardContentD"></markdown>
+  </div>
+</ng-template>
+<ng-template #loading><p>Loading...</p></ng-template>
+

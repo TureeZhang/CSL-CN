@@ -55,7 +55,7 @@
       </nz-breadcrumb>
       <div style="padding:4px; background: #fff; min-height: 785px;">
         <!--Angular 路由出口-->
-        <router-outlet></router-outlet>
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
       </div>
     </nz-content>
     <nz-footer style="text-align: center;">

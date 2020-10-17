@@ -33,7 +33,7 @@ namespace HanJie.CSLCN.Tests
             await service.AddFirstChildMenuAsync("校园 DLC", 4);
             await service.AddFirstChildMenuAsync("开发者日志（十八）", 4);
 
-            Assert.True(service.GetById(1).Name == "主页");
+            Assert.True((await service.GetById(1)).Name == "主页");
         }
 
         [Fact]

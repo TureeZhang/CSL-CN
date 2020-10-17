@@ -3,6 +3,7 @@ using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Dtos.SystemSettingsDto;
 using HanJie.CSLCN.Models.Enums;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace HanJie.CSLCN.Services
 {
     public class SystemSettingService : BaseService<SystemSettingDto, SystemSetting>
     {
+        private static object _settingGetLock = new object();
+
         public SystemSetting Get(SystemSettingTypeEnum type, string name)
         {
             SystemSetting result = CSLDbContext.SystemSettings.Where(item =>
@@ -21,17 +24,17 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        public List<SystemSetting> ListDataModel()
+        public async Task<List<SystemSetting>> ListDataModelAsync()
         {
-            List<SystemSetting> result = CSLDbContext.SystemSettings.ToList();
+            List<SystemSetting> result = await CSLDbContext.SystemSettings.ToListAsync();
             return result;
         }
 
-        public override List<SystemSetting> List()
+        public async override Task<List<SystemSetting>> ListAsync()
         {
             SystemSettingDto result = new SystemSettingDto();
 
-            List<SystemSetting> settings = ListDataModel();
+            List<SystemSetting> settings = await ListDataModelAsync();
             foreach (PropertyInfo prop in typeof(SystemSettingTypeEnum).GetProperties())
             {
                 string propName = prop.Name;
@@ -42,11 +45,11 @@ namespace HanJie.CSLCN.Services
             return settings;
         }
 
-        public SystemSettingDto ListAsDto()
+        public async Task<SystemSettingDto> ListAsDto()
         {
             SystemSettingDto result = new SystemSettingDto();
 
-            List<SystemSetting> systemSettings = List();
+            List<SystemSetting> systemSettings = await ListAsync();
             foreach (string propName in typeof(SystemSettingTypeEnum).GetEnumNames())
             {
                 string propValue = systemSettings.Where(item => string.Equals(propName, item.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault().Value;
@@ -75,10 +78,13 @@ namespace HanJie.CSLCN.Services
 
         public HomePageSettingsDto GetHomePageSettings()
         {
-            List<SystemSetting> settings = ListSettings(SystemSettingTypeEnum.HomePageSettings);
-            HomePageSettingsDto homePageSettings = LoadSettingItems<HomePageSettingsDto>(settings);
+            lock (_settingGetLock)
+            {
+                List<SystemSetting> settings = ListSettings(SystemSettingTypeEnum.HomePageSettings).Result;
+                HomePageSettingsDto homePageSettings = LoadSettingItems<HomePageSettingsDto>(settings);
 
-            return homePageSettings;
+                return homePageSettings;
+            }
         }
 
         public virtual async void UpdateHomePageSettings(HomePageSettingsDto dto)
@@ -96,7 +102,7 @@ namespace HanJie.CSLCN.Services
             T result = new T();
             foreach (SystemSetting item in settings)
             {
-                PropertyInfo propertyInfo = typeof(HomePageSettingsDto).GetProperty(item.Name, BindingFlags.IgnoreCase|BindingFlags.Public|BindingFlags.Instance);
+                PropertyInfo propertyInfo = typeof(HomePageSettingsDto).GetProperty(item.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                 if (propertyInfo != null)
                 {
                     object value = settings.Find(setting => string.Equals(setting.Name, propertyInfo.Name, StringComparison.OrdinalIgnoreCase)).Value;
@@ -114,9 +120,9 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        private List<SystemSetting> ListSettings(SystemSettingTypeEnum settingType)
+        private async Task<List<SystemSetting>> ListSettings(SystemSettingTypeEnum settingType)
         {
-            List<SystemSetting> settings = CSLDbContext.SystemSettings.Where(item => item.Type == settingType).ToList();
+            List<SystemSetting> settings = await CSLDbContext.SystemSettings.Where(item => item.Type == settingType).AsQueryable().ToListAsync();
             return settings;
         }
     }

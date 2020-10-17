@@ -11,6 +11,9 @@ import { WikiListItemDto } from '../../models/wiki-list-item-dto';
 import { LastModifyWikisService } from '../../services/last-modify-wikis.service';
 import { SystemSettingTypeEnum } from '../../models/enums/system-setting-type-enum';
 import { HomepageSettingsDto } from '../../models/admin/homepage-settings-dto';
+import { WikiPassageService } from '../../services/wiki-passage.service';
+import { WikiListService } from '../../services/wiki-list.service';
+import { UserInfoService } from '../../services/user-info.service';
 
 @Component({
     selector: 'homepage',
@@ -28,6 +31,11 @@ export class HomepageComponent implements OnInit {
     public pageIndex: number = 1;
     public pageItemTotals: number;
     public friendlyLinks: any[];
+    public modCategoryWikis: WikiListItemDto[];
+    public colors: string[] = ["#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ffffff", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ffffff", "#ef00ff"];
+    public isLoadingModPassage: boolean = true;
+    public currentUser: UserInfoDto;
+    public isAdmin: boolean = false;
 
     //自动翻页展示
     public autoPageTimer: NodeJS.Timer;
@@ -36,7 +44,9 @@ export class HomepageComponent implements OnInit {
     constructor(private menuService: MenuService,
         public globalService: GlobalService,
         private lastModifyWikisService: LastModifyWikisService,
-        private systemSettingsService: SystemSettingsService) {
+        private systemSettingsService: SystemSettingsService,
+        private wikiListService: WikiListService,
+        private userInfoService: UserInfoService) {
 
     }
 
@@ -53,6 +63,13 @@ export class HomepageComponent implements OnInit {
         this.isLoadingBoardContent = false;
 
         this.getNewEditWikiPassages();
+        this.listCategoryPassages(3);//Mod推荐
+
+        //检查是否为管理员
+        this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
+            this.currentUser = response;
+            this.isAdmin = response.isAdmin;
+        });
     }
 
     loadDlcInfoes(): void {
@@ -125,6 +142,11 @@ export class HomepageComponent implements OnInit {
         return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
     }
 
-
+    listCategoryPassages(categoryId: number): void {
+        this.wikiListService.listCategoryPassages(categoryId).subscribe((response) => {
+            this.modCategoryWikis = response;
+            this.isLoadingModPassage = false;
+        }, () => { this.isLoadingModPassage = false; })
+    }
 
 }

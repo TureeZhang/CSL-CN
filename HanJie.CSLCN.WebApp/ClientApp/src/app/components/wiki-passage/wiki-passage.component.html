@@ -25,17 +25,6 @@
         <span>{{wikiPassage?.title}}</span>
         <ng-container *ngIf="pageStatus==0 && isAdmin && !isEditLocked">
           <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()" style="margin-left:16px;"><i nz-icon nzType="edit"></i>编 辑</button>
-          <button nz-button nz-dropdown [nzDropdownMenu]="menu" (click)="createChildPage()" style="margin-left: 16px;"><i nz-icon nzType="file-text"></i>创建子文档<i nz-icon nzType="down"></i></button>
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item *ngFor="let item of wikiPassage.childPageBreadCrumbs" (click)="gotoChildPage(item.url)">
-                <a>子文档：{{item.name}}</a>
-              </li>
-              <li nz-menu-item *ngIf="wikiPassage.childPageBreadCrumbs.length==0">
-                <a>-暂无子级文档-</a>
-              </li>
-            </ul>
-          </nz-dropdown-menu>
         </ng-container>
         <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton" (click)="update()" style="margin-left:16px;"><i nz-icon nzType="save"></i>保 存</button>
         <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon nzType="upload"></i>上传图片</button>

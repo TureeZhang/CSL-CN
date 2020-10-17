@@ -12,7 +12,8 @@ export class WikiPassageDto {
     anchorTitles: AnchorTitle[];
     mainAuthors: UserInfoDto[];
     coAuthors: UserInfoDto[];
-    parentPassageId: number;
+    categoryId: number;
+    categoryUrl: string;
     breadCrumbs: BreadCrumbDto[];
     childPageBreadCrumbs: BreadCrumbDto[];
     editingUser: UserInfoDto;

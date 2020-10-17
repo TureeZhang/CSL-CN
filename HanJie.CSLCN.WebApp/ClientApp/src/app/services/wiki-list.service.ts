@@ -14,5 +14,9 @@ export class WikiListService {
 
   list(): Observable<WikiListItemDto[]> {
     return this.http.get<WikiListItemDto[]>(this.wikiListUrl);
-  }
+    }
+
+    listCategoryPassages(categoryId: number): Observable<WikiListItemDto[]> {
+        return this.http.get(`${this.wikiListUrl}?categoryId=${categoryId}`);
+    }
 }

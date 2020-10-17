@@ -72,6 +72,12 @@ export class AppComponent implements OnInit {
         });
     }
 
+    onActivate(event) {
+        window.scroll(0, 0);
+        //or document.body.scrollTop = 0;
+        //or document.querySelector('body').scrollTo(0,0)
+    }
+
     tryRestoreLoginUserInfo(): void {
         this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
             UserInfoService.CurrentUser = response;

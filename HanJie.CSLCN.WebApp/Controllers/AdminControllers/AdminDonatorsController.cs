@@ -34,16 +34,16 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public IActionResult ListAll()
+        public async Task<IActionResult> ListAll()
         {
             List<DonatorRankDto> dtos = new List<DonatorRankDto>();
-            List<DonatorRank> list = this._donatorRankService.List();
+            List<DonatorRank> list =await this._donatorRankService.ListAsync();
             foreach (DonatorRank item in list)
             {
                 DonatorRankDto dto = new DonatorRankDto().ConvertFromDataModel(item);
                 dtos.Add(dto);
             }
-            dtos = this._userInfoService.BindDonatorUserInfo(dtos.ToArray()).ToList();
+            dtos = (await this._userInfoService.BindDonatorUserInfo(dtos.ToArray())).ToList();
 
             return Json(dtos);
         }
@@ -55,7 +55,7 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
 
             DonatorRank entity = await this._donatorRankService.CreateAsync(dto);
             dto = new DonatorRankDto().ConvertFromDataModel(entity);
-            dto = this._userInfoService.BindDonatorUserInfo(dto).FirstOrDefault();
+            dto = (await this._userInfoService.BindDonatorUserInfo(dto)).FirstOrDefault();
 
             return Json(dto);
         }

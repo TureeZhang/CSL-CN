@@ -188,26 +188,26 @@ export class WikiPassageComponent implements OnInit {
     });
   }
 
-  createChildPage(): void {
-    let drawerRef: NzDrawerRef = this.drawerService.create<AdminCreateWikipassageComponent, { prefix: string, parentPassageId: number }>({
-      nzTitle: "添加子文档",
-      nzPlacement: 'right',
-      nzWidth: 320,
-      nzContent: AdminCreateWikipassageComponent,
-      nzContentParams: {
-        prefix: this.routePath + '@',
-        parentPassageId: this.wikiPassage.id
-      }
-    });
-    drawerRef.afterOpen.subscribe(response => { });
-    drawerRef.afterClose.subscribe(response => {
-      this.router.navigate([`/wiki-passage/${response.routePath}`]);
-    });
-  }
+  //createChildPage(): void {
+  //  let drawerRef: NzDrawerRef = this.drawerService.create<AdminCreateWikipassageComponent, { prefix: string, parentPassageId: number }>({
+  //    nzTitle: "添加子文档",
+  //    nzPlacement: 'right',
+  //    nzWidth: 320,
+  //    nzContent: AdminCreateWikipassageComponent,
+  //    nzContentParams: {
+  //      prefix: this.routePath + '@',
+  //      parentPassageId: this.wikiPassage.id
+  //    }
+  //  });
+  //  drawerRef.afterOpen.subscribe(response => { });
+  //  drawerRef.afterClose.subscribe(response => {
+  //    this.router.navigate([`/wiki-passage/${response.routePath}`]);
+  //  });
+  //}
 
-  gotoChildPage(routePath: string) {
-    this.router.navigate([`/wiki-passage/${routePath}`]);
-  }
+  //gotoChildPage(routePath: string) {
+  //  this.router.navigate([`/wiki-passage/${routePath}`]);
+  //}
 
 }
 

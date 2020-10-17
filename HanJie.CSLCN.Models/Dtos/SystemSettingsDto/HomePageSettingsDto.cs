@@ -66,6 +66,9 @@ namespace HanJie.CSLCN.Models.Dtos.SystemSettingsDto
         public string OutsideMediaLinkText { get; set; }
         public string OutsideMediaLinkUrl { get; set; }
 
-
+        /// <summary>
+        /// 首页布局风格
+        /// </summary>
+        public string LayoutStyle { get; set; }
     }
 }

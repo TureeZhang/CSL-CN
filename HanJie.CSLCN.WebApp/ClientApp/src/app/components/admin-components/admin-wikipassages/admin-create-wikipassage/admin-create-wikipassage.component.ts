@@ -22,7 +22,7 @@ export class AdminCreateWikipassageComponent {
   @Input()
   public prefix: string;
   @Input()
-  public parentPassageId: number = 0;
+  public categoryId: number = 0;
 
   constructor(private formBuilder: FormBuilder,
     private wikiPassageService: WikiPassageService,
@@ -77,8 +77,8 @@ export class AdminCreateWikipassageComponent {
     }
     console.log(data);
     data.routePath = `${this.prefix}${data.routePath}`;
-    data.parentPassageId = this.parentPassageId;
-    this.wikiPassageService.postWikiPassage(data).subscribe(response => {
+    data.categoryId = this.categoryId;
+    this.wikiPassageService.create(data).subscribe(response => {
       this.globalService.successTip(`创建子文档成功：《${response.title}》（/wiki-passage/${response.routePath}）`);
       this.drawerRef.close(response);
     });
