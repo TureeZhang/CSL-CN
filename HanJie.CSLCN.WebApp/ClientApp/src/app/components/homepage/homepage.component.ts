@@ -32,7 +32,7 @@ export class HomepageComponent implements OnInit {
     public pageItemTotals: number;
     public friendlyLinks: any[];
     public modCategoryWikis: WikiListItemDto[];
-    public colors: string[] = ["#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ffffff", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ffffff", "#ef00ff"];
+    //public colors: string[] = ["#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ffffff", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ef00ff", "#00ff72", "#fff700", "#00d0ff", "#ff0047", "#00fff3", "#ffffff", "#ef00ff"];
     public isLoadingModPassage: boolean = true;
     public currentUser: UserInfoDto;
     public isAdmin: boolean = false;

@@ -29,5 +29,11 @@ namespace HanJie.CSLCN.Models.DataModels
 
         [Required]
         public int TotalViewsCount { get; set; }
+
+        //[Required]
+        //public bool IsRowEnd { get; set; }
+
+        //[Required]
+        //public bool IsHomepageShow { get; set; }
     }
 }

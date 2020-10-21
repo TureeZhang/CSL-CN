@@ -217,7 +217,7 @@ export function markedOptionsFactory(): MarkedOptions {
   const renderer = new MarkedRenderer();
 
   renderer.table = (header: string, body: string) => {
-    return '<div style="overflow:auto"><table class="table table-bordered fix_head_table" style="min-width:850px;">' + "<thead>" + header + "</thead>" + "<tbody>" + body + "</tbody>" + '</table></div>';
+      return '<div class="fix_head_table"><table class="table table-bordered" style="min-width:850px;">' + "<thead>" + header + "</thead>" + "<tbody>" + body + "</tbody>" + '</table></div>';
   };
 
   renderer.image = (href: string, title: string, text: string) => {

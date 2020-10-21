@@ -1,16 +1,29 @@
 :host ::ng-deep .fix_head_table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 750px;
 }
 
-  :host ::ng-deep .fix_head_table thead tr {
-    display: block;
-    color: white;
-    background-color: black;
+  :host ::ng-deep .fix_head_table thead th {
+    position: sticky;
+    top: -1px;
+    text-align: center;
   }
 
-  :host ::ng-deep .fix_head_table th,
+:host ::ng-deep table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+:host ::ng-deep th, td {
+  padding: 8px 16px;
+}
+
+:host ::ng-deep th {
+  background: #eee;
+}
+
+/*:host ::ng-deep .fix_head_table th,
   :host ::ng-deep .fix_head_table td {
     text-align: center;
     width: 200px;
@@ -22,7 +35,7 @@
     width: 100%;
     overflow: auto;
     max-height: 450px;
-  }
+  }*/
 
 h1 span {
   margin-bottom: 20px;

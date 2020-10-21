@@ -52,9 +52,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
             //
             //此处是有意不做等待的，阅读量的统计不应当影响文本内容的返回。
 
-            TaskAwaiter taskAwaiter = Task.Run(() =>
+            TaskAwaiter taskAwaiter = Task.Run(async () =>
              {
-                 this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
+                await this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
              }).GetAwaiter();
 
             return new JsonResult(wikiPassageDto);
@@ -111,7 +111,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public async Task Put([FromBody]WikiPassageDto dto)
         {
             await this._wikiPassageService.UpdateAsync(dto, base.CurrentUser.Id);
-            this._userInfoService.UpdateLastCommitInfo(base.CurrentUser.Id);
+            await this._userInfoService.UpdateLastCommitInfo(base.CurrentUser.Id);
         }
 
         // DELETE api/<controller>/5
