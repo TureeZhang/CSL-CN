@@ -51,23 +51,64 @@
 }
 
 .mod-guide-wrapper {
-  font-size: x-large;
+  font-size: xx-small;
   font-weight: 600;
-  font-family: fantasy, 幼圆;
-  display: inline-block;
-  min-width: 180px;
-  max-width: 230px;
-  width: 100%;
-  border: 1px solid #ababab;
-  border-radius: 5px;
+  font-family: Consolas幼圆;
+  border: 1px solid #f5f6fa;
+  border-radius: 1px;
   padding: 16px 32px;
-  margin: 2px;
+  margin: 9px;
   cursor: pointer;
+  background-color: #fafbfd;
+  height: 99px;
 }
 
-  .mod-guide-wrapper:hover {
-    animation: mod-box-hover .2s ease forwards;
-  }
+.mod-guide-img {
+  float: left;
+  position: relative;
+  top: 10px;
+  left: -9px;
+  background-color: white;
+  border-radius: 30px;
+  max-height: 38px;
+  max-width: 38px;
+}
+
+.mod-guide-h3 {
+  font-size: xx-small;
+  font-weight: 600;
+  font-family: Consolas幼圆;
+  display: inline-block;
+}
+
+.mod-guide-desc {
+  color: #778b9e;
+  font-size: 9pt;
+  font-weight: normal;
+  height: 1.5em;
+  line-height: 1.5em;
+  display: block;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.view-modpassage-icon {
+  font-size: 24px;
+  color: #b9c4d4;
+  position: relative;
+  top: -2px;
+}
+
+.mod-guide-wrapper:hover {
+  box-shadow: 2px 2px 9pt rgba(0,0,0,.1);
+  transform: translate(0, -6px);
+  background-color: #fff;
+  border-radius: 3px;
+  transition: all .2s ease-in-out;
+}
 
 @keyframes mod-box-hover {
   from {
@@ -77,7 +118,8 @@
     position: relative;
     bottom: .5px;
     right: .5px;
-    box-shadow: 3px 3px 1px #dedede;
+    box-shadow: 3px 3px 1px #fbfbfb;
+    background-color: white;
   }
 }
 
@@ -86,4 +128,10 @@
   bottom: 2px;
   float: right;
   right: 4px;
+}
+
+.passage-block {
+  cursor: pointer;
+  margin-right: 1em;
+  line-height: 39px;
 }

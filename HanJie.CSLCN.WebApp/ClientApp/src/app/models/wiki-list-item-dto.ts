@@ -7,4 +7,5 @@ export class WikiListItemDto {
     routePath: string;
     coverUrl: string;
     lastModifyUser: UserInfoDto;
+    totalViewsCount: number;
 }

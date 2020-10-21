@@ -153,6 +153,7 @@ namespace HanJie.CSLCN.Services
             dto.CoverUrl = await PickCoverUrlFromContentFirstImage(wikiPassage.Content);
             dto.LastModifyDate = wikiPassage.LastModifyDate.ToString("yyyy-MM-dd HH:mm:ss");
             dto.LastModifyUser = new UserInfoDto { Id = wikiPassage.LastModifyUserId };
+            dto.TotalViewsCount = wikiPassage.TotalViewsCount;
 
             return dto;
         }
@@ -340,7 +341,7 @@ namespace HanJie.CSLCN.Services
 
         public virtual async Task<string> PickCoverUrlFromContentFirstImage(string content)
         {
-            string result = "./assets/logo-header.png";
+            string result = "./assets/mod-cover-default.jpg";
 
             if (string.IsNullOrEmpty(content))
                 return result;
@@ -405,7 +406,7 @@ namespace HanJie.CSLCN.Services
 
             return result;
         }
-        public void AddViewsCount(int passageId, IPAddress ip)
+        public async Task AddViewsCount(int passageId, IPAddress ip)
         {
             try
             {
@@ -443,17 +444,15 @@ namespace HanJie.CSLCN.Services
             }
             catch (Exception ex)
             {
-                base.Log(message: "访问量统计：新增访问量出现异常。",
-                    parameters: new { ex = ex.ToString(), passageId, ip = ip.ToString() });
+                await base.Log(message: "访问量统计：新增访问量出现异常。",
+                     parameters: new { ex = ex.ToString(), passageId, ip = ip.ToString() });
             }
         }
 
-        public static void StartViewsCountUpdateTask(WikiPassageService wikiPassageService)
+        public async static Task StartViewsCountUpdateTask()
         {
             try
             {
-
-                Ensure.NotNull(wikiPassageService, nameof(wikiPassageService));
 
                 if (WikiPassageService.viewsCountTask != null)
                 {
@@ -476,9 +475,10 @@ namespace HanJie.CSLCN.Services
 
                                      if (newViewsCount > 0)
                                      {
+                                         WikiPassageService wikiPassageService = GlobalService.ServiceProvider.GetService<WikiPassageService>();
                                          WikiPassage wikiPassage = await wikiPassageService.GetById(passageId);
                                          wikiPassage.TotalViewsCount += newViewsCount;
-                                         _ = wikiPassageService.UpdateAsync(wikiPassage, false);
+                                         await wikiPassageService.UpdateAsync(wikiPassage, false);
                                      }
                                  }
                                  foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
@@ -510,8 +510,8 @@ namespace HanJie.CSLCN.Services
             catch (Exception ex)
             {
                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "ex:" + ex.ToString() + Environment.NewLine);
-                new LogService().Log(message: "访问量统计：启动访问量统计系统前出错",
-                         parameters: new { ex = ex.ToString(), wikiPassageService = wikiPassageService.ToString() });
+                await new LogService().Log(message: "访问量统计：启动访问量统计系统前出错",
+                         parameters: new { ex = ex.ToString() });
             }
 
         }
@@ -609,6 +609,8 @@ namespace HanJie.CSLCN.Services
             Ensure.IsDatabaseId(currentUserId, nameof(currentUserId));
 
             data.MainAuthors = currentUserId.ToString();
+            //data.IsRowEnd = false;
+            //data.IsHomepageShow = false;
             return base.AddAsync(data);
         }
     }
