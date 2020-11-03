@@ -68,6 +68,8 @@ namespace HanJie.CSLCN.WebApp
             this.RegisterSingletons(ref services);
             //注册作用域对象
             this.RegisterScoped(ref services);
+            //注册每次访问都返回一个新实例的对象
+            this.RegisterTransient(ref services);
 
             //提供 服务提供 对象。
             GlobalService.ServiceProvider = services.BuildServiceProvider();
@@ -175,10 +177,21 @@ namespace HanJie.CSLCN.WebApp
             services.AddScoped<DonatorRankService>();
             services.AddScoped<QiniuService>();
             services.AddScoped<StorageService>();
-            services.AddScoped<WikiPassageService>();
             services.AddScoped<ClientAppService>();
             services.AddScoped<RedisService>();
             services.AddScoped<WikiCategoryService>();
+        }
+
+        /// <summary>
+        /// 注册每次访问都返回一个新实例（Transient）的对象。
+        /// 
+        /// 备注：
+        ///     对象在每次被调用时都会返回一个新实例。
+        /// </summary>
+        /// <param name="services"></param>
+        private void RegisterTransient(ref IServiceCollection services)
+        {
+            services.AddTransient<WikiPassageService>();
         }
 
         /// <summary>
