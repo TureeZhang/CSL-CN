@@ -2279,3 +2279,39 @@ System.AggregateException: One or more errors occurred. (Timeout performing GET 
    at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in /_/src/StackExchange.Redis/RedisDatabase.cs:line 2374
    at HanJie.CSLCN.Services.RedisService.ObjectGet[T](String key) in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 51
    at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398<---
+2020-11-17 01:51:26counter catch ex inside task: 
+System.AggregateException: One or more errors occurred. (It was not possible to connect to the redis server(s). UnableToConnect on 118.31.20.44:6380/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 0s ago, last-write: 0s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 5s ago, v: 2.1.58.34321) ---> StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). UnableToConnect on 118.31.20.44:6380/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 0s ago, last-write: 0s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 5s ago, v: 2.1.58.34321
+   at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(ConfigurationOptions configuration, TextWriter log) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1160
+   at HanJie.CSLCN.Services.RedisService.Connect() in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 35
+   at HanJie.CSLCN.Services.RedisService..ctor() in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 17
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCreateInstance(CreateInstanceCallSite createInstanceCallSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(IServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScoped(ScopedCallSite scopedCallSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(IServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass1_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at HanJie.CSLCN.Services.WikiPassageService.get_ViewsDictionary() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 28
+   at HanJie.CSLCN.Services.WikiPassageService.LockViewsDictionary(Action`1 action) in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 528
+   at HanJie.CSLCN.Services.WikiPassageService.<>c.<StartViewsCountUpdateTask>b__30_0() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 469
+---> (Inner Exception #0) StackExchange.Redis.RedisConnectionException: It was not possible to connect to the redis server(s). UnableToConnect on 118.31.20.44:6380/Interactive, Initializing/NotStarted, last: NONE, origin: BeginConnectAsync, outstanding: 0, last-read: 0s ago, last-write: 0s ago, keep-alive: 60s, state: Connecting, mgr: 10 of 10 available, last-heartbeat: never, global: 5s ago, v: 2.1.58.34321
+   at StackExchange.Redis.ConnectionMultiplexer.ConnectImpl(ConfigurationOptions configuration, TextWriter log) in /_/src/StackExchange.Redis/ConnectionMultiplexer.cs:line 1160
+   at HanJie.CSLCN.Services.RedisService.Connect() in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 35
+   at HanJie.CSLCN.Services.RedisService..ctor() in D:\CSL-CN\HanJie.CSLCN.Services\RedisService.cs:line 17
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCreateInstance(CreateInstanceCallSite createInstanceCallSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(IServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScoped(ScopedCallSite scopedCallSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(IServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass1_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngine.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService[T](IServiceProvider provider)
+   at HanJie.CSLCN.Services.WikiPassageService.GetViewsDictionaryCache() in D:\CSL-CN\HanJie.CSLCN.Services\WikiPassageService.cs:line 398<---
