@@ -1,4 +1,4 @@
-﻿using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Dtos;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System;
@@ -33,15 +33,20 @@ namespace HanJie.CSLCN.WebApp.MyFilters
                 requestInfos.Add(requestInfo);
                 _ips.TryAdd(requestInfo.IpAddress, requestInfos);
             }
+
+
         }
 
         public static void StartIPsCount()
         {
             Task.Run(() =>
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ips.txt");
-                File.WriteAllText(path, JsonConvert.SerializeObject(_ips.OrderByDescending(item => item.Value.Count)));
-                Thread.Sleep(10 * 60 * 1000);
+                while (true)
+                {
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ips.txt");
+                    File.WriteAllText(path, JsonConvert.SerializeObject(_ips.OrderByDescending(item => item.Value.Count)));
+                    Thread.Sleep(10 * 60 * 1000);
+                }
             });
 
 
