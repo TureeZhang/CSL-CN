@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using HanJie.CSLCN.Models.Enums;
 using System.IO;
+using HanJie.CSLCN.WebApp.MyFilters;
 
 namespace HanJie.CSLCN.WebApp
 {
@@ -200,6 +201,7 @@ namespace HanJie.CSLCN.WebApp
         private async Task StartTask()
         {
             await WikiPassageService.StartViewsCountUpdateTask();
+            RequestLogFilter.StartIPsCount();
         }
     }
 }
