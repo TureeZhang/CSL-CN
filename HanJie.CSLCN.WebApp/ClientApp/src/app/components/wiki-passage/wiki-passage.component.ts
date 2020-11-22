@@ -43,7 +43,7 @@ export class WikiPassageComponent implements OnInit {
   /***
    * 页面状态。（处于展示状态，或有权限的用户正在进行编辑时显示md编辑器）
    ***/
-  public pageStatus: WikiPassagePageStatusEnum = WikiPassagePageStatusEnum.Editing;
+  public pageStatus: WikiPassagePageStatusEnum = WikiPassagePageStatusEnum.Displaying;
 
   public isAdmin: boolean = false;
 
