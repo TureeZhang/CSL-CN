@@ -13,6 +13,7 @@ import { AdminCreateWikipassageComponent } from '../admin-components/admin-wikip
 import { GlobalService } from '../../services/global.service';
 import { BreadCrumbDto } from '../../models/bread-crumb';
 import { UserInfoDto } from '../../models/user-info-dto';
+import { EditorComponent } from '../editor/editor.component';
 
 @Component({
   selector: 'wiki-passage',
@@ -42,7 +43,7 @@ export class WikiPassageComponent implements OnInit {
   /***
    * 页面状态。（处于展示状态，或有权限的用户正在进行编辑时显示md编辑器）
    ***/
-  public pageStatus: WikiPassagePageStatusEnum = WikiPassagePageStatusEnum.Displaying;
+  public pageStatus: WikiPassagePageStatusEnum = WikiPassagePageStatusEnum.Editing;
 
   public isAdmin: boolean = false;
 

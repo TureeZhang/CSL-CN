@@ -19,6 +19,8 @@
     "@angular/platform-browser": "~9.1.9",
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
+    "@ctrl/ngx-codemirror": "^4.0.2",
+    "codemirror": "^5.58.3",
     "core-js": "^2.6.11",
     "ng-zorro-antd": "^9.1.2",
     "ngx-clipboard": "^12.3.0",

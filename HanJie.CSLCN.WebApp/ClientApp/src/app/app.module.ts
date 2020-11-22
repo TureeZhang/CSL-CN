@@ -31,9 +31,8 @@ import { AdminHomepageSettingsComponent } from './components/admin-components/ad
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 import { EditorListBoardComponent } from './components/editor-devote-info-list/editor-list-board/editor-list-board.component';
 import { EditorComponent } from './components/editor/editor.component';
-import { EditorTableComponent } from './components/editor/editor-table/editor-table.component';
-import { EditorH1Component } from './components/editor/editor-h1/editor-h1.component';
 import { CreateWikiPassageComponent } from './create-wiki-passage/create-wiki-passage.component';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 registerLocaleData(zh);
 
@@ -62,8 +61,6 @@ registerLocaleData(zh);
         EditorComponent,
         //指令
         HtmlRenderDirective,
-        EditorTableComponent,
-        EditorH1Component,
         CreateWikiPassageComponent
     ],
     imports: [
@@ -121,7 +118,8 @@ registerLocaleData(zh);
         NzDescriptionsModule,
         NzModalModule,
         NzTagModule,
-        NzCollapseModule
+        NzCollapseModule,
+        CodemirrorModule
     ],
     providers: [{ provide: NZ_I18N, useValue: zh_CN }],
     bootstrap: [AppComponent],
@@ -131,9 +129,7 @@ registerLocaleData(zh);
         AdminCreateDonatorComponent,
         AdminCreateWikipassageComponent,
         NzTableComponent,
-        NzEmptyComponent,
-        EditorTableComponent,
-        EditorH1Component
+        NzEmptyComponent
     ]
 })
 export class AppModule { }

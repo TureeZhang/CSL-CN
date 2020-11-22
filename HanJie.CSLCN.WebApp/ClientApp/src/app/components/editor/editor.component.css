@@ -1,0 +1,5 @@
+:host ::ng-deep .CodeMirror {
+  font-family: inherit;
+  height: 670px;
+  border-radius: 3px;
+}

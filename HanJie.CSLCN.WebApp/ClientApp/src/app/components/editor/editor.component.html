@@ -1,5 +1,6 @@
-<textarea rows="4" nz-input [(ngModel)]="markdown"></textarea>
-
-<button style="margin:8px;" nz-button nzType="primary" (click)="createDynamicTable()">解析</button>
-
-<div html-render></div>
+<!--<ngx-codemirror [(ngModel)]="content" [options]="options"></ngx-codemirror>-->
+<ngx-codemirror [(ngModel)]="contentModel"
+                (ngModelChange)="contentModelChange.emit(contentModel)"
+                [options]="options"
+                autoFocus="true"></ngx-codemirror>
+<!--https://stackoverflow.com/questions/50618050/how-to-create-custom-input-component-with-ngmodel-working-in-angular-6-->

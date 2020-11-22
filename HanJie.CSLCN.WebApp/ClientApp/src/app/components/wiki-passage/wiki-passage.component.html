@@ -81,7 +81,8 @@
 
         <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
 
-        <md-editor *ngIf="pageStatus==1"
+        <editor *ngIf="pageStatus==1" required name="Content" [(contentModel)]="wikiPassage.content" ngDefaultControl></editor>
+        <!--<md-editor *ngIf="pageStatus==1"
                    name="Content"
                    [upload]="doUpload"
                    [preRender]="preRenderFunc"
@@ -90,7 +91,7 @@
                    [mode]="'editor'"
                    required
                    maxlength="6000">
-        </md-editor>
+        </md-editor>-->
 
       </div>
     </div>
