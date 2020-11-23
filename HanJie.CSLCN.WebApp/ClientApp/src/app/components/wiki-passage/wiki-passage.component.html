@@ -27,8 +27,6 @@
           <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()" style="margin-left:16px;"><i nz-icon nzType="edit"></i>编 辑</button>
         </ng-container>
         <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton" (click)="update()" style="margin-left:16px;"><i nz-icon nzType="save"></i>保 存</button>
-        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" (click)="openUploader()" style="margin-left:16px;"><i nz-icon nzType="upload"></i>上传图片</button>
-        <a *ngIf="pageStatus==1 && isAdmin" nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-left:16px;"><i nz-icon nzType="save"></i>表格编辑器</a>
       </h1>
 
 
@@ -41,7 +39,7 @@
 
 
       <div nz-row nzType="flex">
-        <div nz-col nzSpan="24" class="editors-board">
+        <div nz-col nzSpan="24" class="editors-board" *ngIf="pageStatus==0">
 
           <ul style="text-decoration:none;margin-bottom:0px;">
             <li>
@@ -77,7 +75,7 @@
         </div>
       </div>
 
-      <div style="margin-bottom:40px;">
+      <div style="margin-bottom:40px;margin-top:24px;">
 
         <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
 

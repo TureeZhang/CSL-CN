@@ -1,5 +1,44 @@
+:host {
+  background: #f5f5f5;
+  padding: 24px;
+  padding-top:8px;
+  display: block;
+  border-radius:5px;
+}
+
 :host ::ng-deep .CodeMirror {
   font-family: inherit;
   height: 670px;
   border-radius: 3px;
+}
+
+.markdown-preview-box {
+  height: 670px;
+  display: block;
+  overflow: auto;
+}
+
+
+.card-container ::ng-deep p {
+  margin: 0;
+}
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-content {
+  margin-top: -16px;
+}
+
+  .card-container ::ng-deep > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+    background: #fff;
+    padding: 16px;
+  }
+
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-tab {
+  border-color: transparent;
+  background: transparent;
+}
+
+.card-container ::ng-deep > .ant-tabs-card .ant-tabs-tab-active {
+  border-color: #fff;
+  background: #fff;
 }

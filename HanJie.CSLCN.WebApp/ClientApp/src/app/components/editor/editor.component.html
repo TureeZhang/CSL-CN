@@ -1,6 +1,44 @@
-<!--<ngx-codemirror [(ngModel)]="content" [options]="options"></ngx-codemirror>-->
-<ngx-codemirror [(ngModel)]="contentModel"
-                (ngModelChange)="contentModelChange.emit(contentModel)"
-                [options]="options"
-                autoFocus="true"></ngx-codemirror>
 <!--https://stackoverflow.com/questions/50618050/how-to-create-custom-input-component-with-ngmodel-working-in-angular-6-->
+
+<div class="card-container">
+  <nz-tabset nzType="line">
+    <nz-tab [nzTitle]="title1Tpl" [nzForceRender]="true">
+      <ng-template #title1Tpl>
+        <i nz-icon nzType="edit" nzTheme="fill"></i>
+        编辑
+      </ng-template>
+      <div style="margin-bottom:12px">
+        <button nz-button nzType="default" (click)="openUploader()" style="margin-right:16px;"><i nz-icon nzType="upload"></i>上传图片</button>
+        <a nz-button nzType="default" href="https://www.tablesgenerator.com/markdown_tables" target="_blank" style="margin-right:16px;"><i nz-icon nzType="save"></i>表格编辑器</a>
+        <nz-button-group>
+          <button nz-button nzType="default" style="" nz-popconfirm
+                  nzPopconfirmTitle="这将覆盖现有草稿（如果存在的话），继续吗?"
+                  nzPopconfirmPlacement="top"
+                  (nzOnConfirm)="saveLocalStorage()">
+            <i nz-icon nzType="save"></i>保存草稿
+          </button>
+          <button nz-button nzType="default" style="" nz-popconfirm
+                  nzPopconfirmTitle="恢复草稿会覆盖现有全部内容，继续吗?"
+                  nzPopconfirmPlacement="top"
+                  (nzOnConfirm)="restoreLocalStorage()">
+            <i nz-icon nzType="rollback"></i>恢复草稿
+          </button>
+        </nz-button-group>
+      </div>
+      <div>
+        <ngx-codemirror [(ngModel)]="contentModel"
+                        (ngModelChange)="contentModelChange.emit(contentModel)"
+                        [options]="options"
+                        autoFocus="true"></ngx-codemirror>
+      </div>
+    </nz-tab>
+    <nz-tab [nzTitle]="title2Tpl" [nzForceRender]="true">
+      <ng-template #title2Tpl>
+        <i nz-icon nzType="eye" nzTheme="outline"></i>
+        预览
+      </ng-template>
+      <markdown class="markdown-preview-box" [data]="contentModel"></markdown>
+    </nz-tab>
+  </nz-tabset>
+</div>
+
