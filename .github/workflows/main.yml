@@ -5,7 +5,7 @@ name: Release cities-skylines.cn
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  release:
+  push:
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -26,15 +26,15 @@ jobs:
       # Runs a single command using the runners shell
       - name: Publish Dotnet
         run: |
-          echo publish .netcore app,
+          echo "publish .netcore app",
           dotnet clearn ./HanJie.CSLCN.WebApp,
           dotnet publish -c:Release ./HanJie.CSLCN.WebApp
 
       # Runs a set of commands using the runners shell
       - name: Publish Angular Client App
         run: |
-          echo build angular client app,
-          cd ./HanJie.CSLCN.WebApp/ClientApp
+          echo "build angular client app",
+          cd ./HanJie.CSLCN.WebApp/ClientApp,
           ng build --prod
 
   
