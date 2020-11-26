@@ -33,7 +33,7 @@ jobs:
       - name: Publish Angular Client App
         run: |
           cd ./HanJie.CSLCN.WebApp/ClientApp
-          npm install
+          # npm install
           ng build --prod
 
   
