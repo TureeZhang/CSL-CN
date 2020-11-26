@@ -28,7 +28,7 @@ jobs:
         run: |
           echo publish .netcore app,
           dotnet clearn ./HanJie.CSLCN.WebApp,
-          dotnet public -o:Release ./HanJie.CSLCN.WebApp
+          dotnet public -c:Release ./HanJie.CSLCN.WebApp
 
       # Runs a set of commands using the runners shell
       - name: Publish Angular Client App
