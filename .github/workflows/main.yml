@@ -32,9 +32,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Publish Angular Client App
         run: |
-          Get-Location
           cd ./HanJie.CSLCN.WebApp/ClientApp
-          Get-Location
+          npm install
           ng build --prod
 
   
