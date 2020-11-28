@@ -12,15 +12,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Clean Publish Directory
-        run: |
-          dotnet clean ./HanJie.CSLCN.WebApp
-          dotnet publish -c:Release ./HanJie.CSLCN.WebApp
+      # - name: Publish NetCoreApp
+      #   run: |
+      #     dotnet clean ./HanJie.CSLCN.WebApp
+      #     dotnet publish -c:Release ./HanJie.CSLCN.WebApp
 
       - name: Publish Angular Client App
         run: |
           cd ./HanJie.CSLCN.WebApp/ClientApp
-          npm install
+          [System.IO.Directory]::CreateDirectory("node_modules")
+          Copy-Item -Path D:\CSL-CN\HanJie.CSLCN.WebApp\ClientApp\node_modules\* -Destination .\node_modules\ -Force -Recurse
           ng build --prod
 
   
