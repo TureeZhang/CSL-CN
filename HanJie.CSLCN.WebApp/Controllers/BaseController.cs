@@ -37,10 +37,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
                 Response.StatusCode = 404;
             }
 
-            ValidateUserIsLogined();
+            SetLoginedUserInfo();
         }
 
-        public void ValidateUserIsLogined()
+        public void SetLoginedUserInfo()
         {
             string loginedUserCookie = base.Request.Cookies["current-logined-user-guid"];
 

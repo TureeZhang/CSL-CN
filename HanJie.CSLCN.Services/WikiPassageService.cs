@@ -496,7 +496,6 @@ namespace HanJie.CSLCN.Services
                              }
                              if (RunAs.Release)
                              {
-                                 File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "counter lifecycle once complete, sleep point checke." + Environment.NewLine);
                                  Thread.Sleep(20 * 1000);  //20秒
                              }
                          }
