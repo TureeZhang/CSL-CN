@@ -33,6 +33,8 @@ import { EditorListBoardComponent } from './components/editor-devote-info-list/e
 import { EditorComponent } from './components/editor/editor.component';
 import { CreateWikiPassageComponent } from './create-wiki-passage/create-wiki-passage.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { QuestionComponent } from './components/question/question.component';
+import { CreateQuestionComponent } from './components/create-question/create-question.component';
 
 registerLocaleData(zh);
 
@@ -61,7 +63,9 @@ registerLocaleData(zh);
         EditorComponent,
         //指令
         HtmlRenderDirective,
-        CreateWikiPassageComponent
+        CreateWikiPassageComponent,
+        QuestionComponent,
+        CreateQuestionComponent
     ],
     imports: [
         BrowserModule,

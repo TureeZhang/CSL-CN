@@ -13,6 +13,8 @@ import { WikiListComponent } from './components/wiki-list/wiki-list.component';
 import { AdminHomepageSettingsComponent } from './components/admin-components/admin-homepage-settings/admin-homepage-settings.component';
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 import { EditorComponent } from './components/editor/editor.component';
+import { QuestionComponent } from './components/question/question.component';
+import { CreateQuestionComponent } from './components/create-question/create-question.component';
 
 const routes: Routes = [
     //主站路由
@@ -26,6 +28,8 @@ const routes: Routes = [
     { path: "wiki-list", component: WikiListComponent },
     { path: "editor-list", component: EditorDevoteInfoListComponent },
     { path: "editor", component: EditorComponent },
+    { path: "question", component: QuestionComponent },
+    { path: "question/create", component: CreateQuestionComponent },
     //管理界面路由
     { path: "admin", component: AdminHomepageComponent },
     { path: "admin/userinfoes", component: AdminUserInfoesComponent },

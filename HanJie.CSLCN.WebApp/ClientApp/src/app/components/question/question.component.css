@@ -1,0 +1,52 @@
+:host::ng-deep {
+  color: black !important;
+}
+
+  :host::ng-deep .ant-list-item {
+    justify-content: normal;
+  }
+
+    :host::ng-deep .ant-list-item:nth-child(odd) {
+      background-color: #f7f7f7;
+    }
+
+    :host::ng-deep .ant-list-item:hover {
+      background-color: #eef8ff;
+      transition: all .2s ease-in-out;
+      cursor: pointer;
+    }
+
+.container {
+  padding: 16px;
+  width: 100%;
+}
+
+h2 {
+  line-height: 64px;
+}
+
+.line-number-box {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  margin: 0 9px;
+}
+
+.question-item-warpper {
+  text-align: left;
+}
+
+.question-board-wrapper {
+  margin-left: 11px;
+  padding-left: 26px;
+  border-left: 1px solid lightgray;
+}
+
+.tags {
+  margin-top: 4px;
+}
+
+.tag-item {
+  cursor: pointer;
+}

@@ -1,0 +1,11 @@
+
+<div class="wrapper">
+
+  <nz-tag class="alert" nzColor="orange" nzMode="closeable"><i nz-icon nzType="alert" nzTheme="outline"> </i> 你的问题必须接受严格的言论审查，并仅在审核通过后显示，以确保不包含与游戏无关的敏感信息。</nz-tag>
+
+  <form action="/" method="post" class="form">
+    <input [(ngModel)]="title" type="text" name="question-title" value="" class="title" placeholder="请输入标题（建议30字以内）" /> {{title.length}}/40
+    <editor [(ngModel)]="content"></editor>
+  </form>
+
+</div>

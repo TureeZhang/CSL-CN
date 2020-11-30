@@ -1,0 +1,54 @@
+<div class="container">
+
+  <div nz-row>
+    <div nz-col nzSpan="24">
+      <h2>热点问题</h2>
+    </div>
+  </div>
+
+  <nz-list nzBordered [nzHeader]="header" nzFooter="——我是有底线的——">
+    <ng-template #header>
+      <button routerLink="/question/create" nz-button nzType="primary" nzSize="large" style="width:120px;"><i nz-icon nzType="plus" nzTheme="outline"></i>我要提问</button>
+      <span style="margin-left:14px;color:gray;">| * 你的问题必须接受严格的言论审查，并仅在审核通过后显示，以确保不包含与游戏无关的敏感信息。</span>
+    </ng-template>
+    <nz-list-item *ngFor="let item of data" routerLink="">
+      <div>
+        <div class="line-number-box">
+          <div>
+            0
+          </div>
+          <div>
+            赞同
+          </div>
+        </div>
+        <div class="line-number-box">
+          <div>
+            0
+          </div>
+          <div>
+            回答
+          </div>
+        </div>
+        <div class="line-number-box">
+          <div>
+            0
+          </div>
+          <div>
+            浏览
+          </div>
+        </div>
+      </div>
+      <div class="question-board-wrapper">
+        <div>{{item}}</div>
+        <div class="tags">
+          <nz-tag class="tag-item" nzColor="blue">堵车</nz-tag>
+          <nz-tag class="tag-item" nzColor="blue">教育</nz-tag>
+          <nz-tag class="tag-item" nzColor="blue">公共交通</nz-tag>
+          <nz-tag class="tag-item" nzColor="blue">工业</nz-tag>
+          <nz-tag class="tag-item" nzColor="blue">国企</nz-tag>
+        </div>
+      </div>
+    </nz-list-item>
+  </nz-list>
+
+</div>
