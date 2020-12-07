@@ -111,9 +111,7 @@ export class AdminCreateUserInfoComponent implements OnInit {
       this.userInfoForm.controls[item].markAsDirty();            //标记为已触碰并修改
       this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
     }
-    console.log(data);
     this.userInfoService.create(data).subscribe(response => {
-      console.log(response);
       this.drawerRef.close(response);
     });
   }

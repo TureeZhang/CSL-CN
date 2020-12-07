@@ -37,10 +37,7 @@ namespace HanJie.CSLCN.Services
         /// <param name="dto"></param>
         protected virtual async Task<TDataModelType> AddAsync(TDataModelType data)
         {
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
+            Ensure.NotNull(data, nameof(data));
 
             data.CreateDate = DateTime.Now;
             data.LastModifyDate = DateTime.Now;

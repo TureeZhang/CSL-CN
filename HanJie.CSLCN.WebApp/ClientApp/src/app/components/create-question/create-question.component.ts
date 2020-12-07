@@ -15,4 +15,10 @@ export class CreateQuestionComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    submitForm(): void {
+        for (const item in this.userInfoForm.controls) {
+            this.userInfoForm.controls[item].markAsDirty();            //标记为已触碰并修改
+            this.userInfoForm.controls[item].updateValueAndValidity(); //再次执行校验
+        }
+    }
 }
