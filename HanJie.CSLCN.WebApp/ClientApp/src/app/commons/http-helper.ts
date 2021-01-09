@@ -20,14 +20,10 @@ export class CSLHttpHelper {
    * @param url API 接口相对路径。eg. "/api/menus"
    */
   get<TResult>(url: string): Observable<TResult> {
-    let host: CSLHttpHelper = this;
-
     return this.http.get<TResult>(this.cslHostUrl + url);
   }
 
   put<TData, TResult>(url: string, datas: TData): Observable<TResult> {
-    let host: CSLHttpHelper = this;
-
     return this.http.put<TResult>(this.cslHostUrl + url,
       JSON.stringify(datas),
       {
@@ -41,8 +37,6 @@ export class CSLHttpHelper {
    * @param url API 接口相对路径。eg. "/api/menus"
    */
   post<TData, TResult>(url: string, datas: TData): Observable<TResult> {   //object仅允许传输对象，其中的方法不允许被调用。在此处作为承载数据的模型类型
-    let host: CSLHttpHelper = this;
-
     return this.http.post<TResult>(this.cslHostUrl + url,
       JSON.stringify(datas),
       {

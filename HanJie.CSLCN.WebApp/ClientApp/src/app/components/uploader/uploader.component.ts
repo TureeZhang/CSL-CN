@@ -13,7 +13,6 @@ import { ClipboardService, IClipboardResponse } from 'ngx-clipboard';
 import { ClipboardResponse } from '../../models/clipboard-response';
 import { DrawerStatuService } from '../../services/drawer-statu.service';
 import { UploaderUsageEnum } from '../../models/uploader-usage.enum';
-import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 import { CSLHttpHelper } from '../../commons/http-helper';
 
 @Component({
@@ -24,13 +23,13 @@ import { CSLHttpHelper } from '../../commons/http-helper';
 export class UploaderComponent implements OnInit {
 
     public fileList: Array<UploadFile> = [];
-    public isShowUploadButton: boolean = true;
+    public isShowUploadButton = true;
     public host: UploaderComponent = this;
     public imageMarkdownString: string = null;
     public fileUrl: string;
 
     @Input()
-    public directoryPath: string = "shared";
+    public directoryPath = "shared";
     @Input()
     public usage: UploaderUsageEnum = UploaderUsageEnum.wiki;
 
@@ -54,7 +53,7 @@ export class UploaderComponent implements OnInit {
 
     customRequest = async (item: UploadXHRArgs) => {
 
-        let uploadFullName = this.directoryPath + "/" + item.file.name;
+        const uploadFullName = this.directoryPath + "/" + item.file.name;
 
         let token: string = null;
         await this.qiniuUploadService.getUploadToken(uploadFullName).then(data => token = data);

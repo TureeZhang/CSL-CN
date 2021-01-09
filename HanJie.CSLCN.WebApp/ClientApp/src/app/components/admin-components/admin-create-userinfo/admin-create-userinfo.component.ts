@@ -56,7 +56,7 @@ export class AdminCreateUserInfoComponent implements OnInit {
   };
 
 
-  userNameAsyncValidator = (control: FormControl): Observable<any> => {
+  userNameAsyncValidator = (control: FormControl): Observable<any> => { //注意，此处是一个变量，变量的值是 lambda 表达式。而非 userNameAsyncValidator(control:FormControl) 方法
     return new Observable((observer: Observer<ValidationErrors | null>) => {
       if (this.timerForUsernameDuplicated !== null) { //请求防抖
         clearTimeout(this.timerForUsernameDuplicated);

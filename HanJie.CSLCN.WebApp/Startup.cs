@@ -163,6 +163,7 @@ namespace HanJie.CSLCN.WebApp
         private void RegisterSingletons(ref IServiceCollection services)
         {
             services.AddSingleton<CommonHelper>();
+            services.AddSingleton<SensitiveWordHelper>();
         }
 
         /// <summary>

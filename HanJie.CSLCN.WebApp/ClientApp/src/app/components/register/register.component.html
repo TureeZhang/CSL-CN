@@ -1,16 +1,86 @@
-<div nz-row nzType="flex">
-
-  <!--左侧居中天际线Logo-->
-  <div nz-col nzSpan="18" nzJustify="center" nzAlign="middle">
-    <img src="~/assets/logo-header.png" alt="Alternate Text" />
-  </div>
-
-  <!--右侧注册框-->
-  <div nz-col nzSpan="6" nzJustify="center" nzAlign="middle">
-    <div>
-      <input nz-input placeholder="用户名" />
-      <input nz-input [type]="password" placeholder="密码" />
-      <input nz-input [type]="password" placeholder="重复密码" />
+<div style="padding:24px">
+  <div nz-row class="form-card">
+    <div nz-col nzSpan="24">
+      <h2>注册新用户</h2>
+    </div>
+    <div nz-col nzSpan="24">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username" nzRequired>用户名</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入用户名">
+            <input nz-input type="text" id="username" formControlName="username" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
+            <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>重复密码</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+            <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+            <ng-template #errorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                请重复输入密码
+              </ng-container>
+              <ng-container *ngIf="control.hasError('confirm')">
+                两次输入的密码不一致
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">电子邮件</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="输入的内容不是电子邮箱">
+            <input nz-input formControlName="email" id="email" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
+            <span>
+              昵称
+              <i nz-icon nz-tooltip nzTooltipTitle="昵称可以多次随意修改" nzType="question-circle" nzTheme="outline"></i>
+            </span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="nicknameErrorTpl" nzValidatingTip="正在检查敏感词...">
+            <input nz-input id="nickname" formControlName="nickname" />
+            <ng-template #nicknameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">请填写昵称</ng-container>
+              <ng-container *ngIf="control.hasError('sensitive')">昵称包含敏感词</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired>验证码</nz-form-label>
+          <nz-form-control [nzSm]="14"
+                           [nzXs]="24"
+                           nzErrorTip="请输入验证码!"
+                           nzExtra="我们必须确认注册是由“人类”发起的。（代码编程也能发送注册请求，但非人工智能选手不懂得机器识别验证码）">
+            <div nz-row [nzGutter]="8">
+              <div nz-col [nzSpan]="12">
+                <input nz-input formControlName="captcha" id="captcha" />
+              </div>
+              <div nz-col [nzSpan]="12">
+                <button nz-button (click)="getCaptcha($event)">刷新</button>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <label nz-checkbox formControlName="agree">
+              <span>我已阅读并同意用户注册 <a>许可协议</a></span>
+            </label>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">提交</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
     </div>
   </div>
 </div>

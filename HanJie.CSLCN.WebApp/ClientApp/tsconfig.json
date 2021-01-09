@@ -19,5 +19,9 @@
       "dom",
       "es5"
     ]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": false,
+    "strictInjectionParameters": true
   }
 }

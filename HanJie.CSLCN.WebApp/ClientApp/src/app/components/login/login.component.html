@@ -31,12 +31,15 @@
                 <span>记住我的登录状态</span>
               </label>
               <a class="login-form-forgot">忘记密码？</a>
-              <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isSubmitting">登 录</button>
-              <nz-alert nzType="warning"
+              <button nz-button class="login-form-button" [nzType]="'primary'" [nzLoading]="isSubmitting" style="margin-top:12px;">登 录</button>
+              <div style="margin-top: 12px;">
+                <span>或 <a routerLink="/register">立即注册!</a></span>
+              </div>
+              <!--<nz-alert nzType="warning"
                         nzCloseable
                         nzMessage="站点为个人名义备案，不具备保护公民个人信息的应急预案和安全措施等，因而无计划开放面向普通用户的注册。"
                         style="margin-top:20px;">
-              </nz-alert>
+              </nz-alert>-->
             </nz-form-control>
           </nz-form-item>
         </form>

@@ -18,10 +18,46 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\sensitive-words\反动词库.txt" />
+    <None Remove="Assets\sensitive-words\广告.txt" />
+    <None Remove="Assets\sensitive-words\政治类.txt" />
+    <None Remove="Assets\sensitive-words\敏感词.txt" />
+    <None Remove="Assets\sensitive-words\暴恐词库.txt" />
+    <None Remove="Assets\sensitive-words\民生词库.txt" />
+    <None Remove="Assets\sensitive-words\涉枪涉爆违法信息关键词.txt" />
+    <None Remove="Assets\sensitive-words\网址.txt" />
+    <None Remove="Assets\sensitive-words\色情词库.txt" />
     <None Remove="ClientApp\src\app\models\wiki-category-dto.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\sensitive-words\反动词库.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\广告.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\政治类.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\敏感词.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\暴恐词库.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\民生词库.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\涉枪涉爆违法信息关键词.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\网址.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\sensitive-words\色情词库.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ClientApp\node_modules\ngx-markdown-editor\ngx-markdown-editor.metadata.json" />
     <Content Include="ClientApp\node_modules\ngx-markdown-editor\package.json" />
   </ItemGroup>
