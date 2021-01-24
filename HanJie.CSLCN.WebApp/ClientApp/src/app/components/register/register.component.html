@@ -13,7 +13,7 @@
         </nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入密码">
             <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
           </nz-form-control>
         </nz-form-item>
@@ -32,7 +32,10 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">电子邮件</nz-form-label>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">
+            <span>电子邮件</span>
+            <i nz-icon nz-tooltip nzTooltipTitle="用于找回密码" nzType="question-circle" nzTheme="outline"></i>
+          </nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="输入的内容不是电子邮箱">
             <input nz-input formControlName="email" id="email" />
           </nz-form-control>
@@ -53,17 +56,17 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired>验证码</nz-form-label>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired>手机号</nz-form-label>
           <nz-form-control [nzSm]="14"
                            [nzXs]="24"
-                           nzErrorTip="请输入验证码!"
-                           nzExtra="我们必须确认注册是由“人类”发起的。（代码编程也能发送注册请求，但非人工智能选手不懂得机器识别验证码）">
+                           nzErrorTip="请输入短信验证码!"
+                           nzExtra="按照公安备案要求，必须留存用户的手机号码以备查验。请放心，您的信息将被加密保存，其他用户均不可见。">
             <div nz-row [nzGutter]="8">
               <div nz-col [nzSpan]="12">
                 <input nz-input formControlName="captcha" id="captcha" />
               </div>
               <div nz-col [nzSpan]="12">
-                <button nz-button (click)="getCaptcha($event)">刷新</button>
+                <button nz-button (click)="getCaptcha($event)">发送验证码</button>
               </div>
             </div>
           </nz-form-control>
