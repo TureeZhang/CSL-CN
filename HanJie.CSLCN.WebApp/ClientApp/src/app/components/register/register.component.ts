@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
 import { AsyncValidatorService } from '../../services/async-validator.service';
+
 
 @Component({
   selector: 'register',
@@ -12,6 +13,8 @@ export class RegisterComponent implements OnInit {
 
   validateForm!: FormGroup;
   timerForNicknameDuplicated!: NodeJS.Timer;
+  timerForSmsCodeOK: NodeJS.Timer;
+  isSendSmsCodeButtonEnable: boolean = false;
 
   constructor(private asyncValidatorService: AsyncValidatorService,
     private fb: FormBuilder) {
@@ -24,14 +27,24 @@ export class RegisterComponent implements OnInit {
 
   private buildForm(): void {
     this.validateForm = this.fb.group({
-      username: [null, [Validators.required]],
+      username: [null, [Validators.required, Validators.pattern("[a-zA-Z0-9]{5,15}")]],
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
       email: [null, [Validators.email, Validators.required]],
-      nickname: [null, [Validators.required], [this.isSensitiveNickName]],
-      phoneNumber: [null, [Validators.required]],
-      captcha: [null, [Validators.required]],
-      agree: [false]
+      nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.isSensitiveNickName]],
+      phoneNumberPrefix: ['+86', [Validators.required]],
+      phoneNumber: ['1888888888', [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)]],
+      smsCode: [null, [Validators.required, Validators.pattern(/[0-9]/)], [this.isSmsCodeOK]],
+      agree: [false, Validators.required]
+    });
+
+    this.validateForm.controls["phoneNumber"].statusChanges.subscribe(valid => {
+      if (valid === "VALID") {
+        this.isSendSmsCodeButtonEnable = true;
+      }
+      else {
+        this.isSendSmsCodeButtonEnable = false;
+      }
     });
   }
 
@@ -56,10 +69,6 @@ export class RegisterComponent implements OnInit {
     return {};
   };
 
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
-  }
-  
   isSensitiveNickName = (control: FormControl): Observable<any> => { //注意，此处是一个变量，变量的值是 lambda 表达式。而非 isSensitiveNickName(control:FormControl) 方法
     return new Observable((observer: Observer<ValidationErrors | null>) => {
       if (this.timerForNicknameDuplicated !== null) { //请求防抖
@@ -78,4 +87,30 @@ export class RegisterComponent implements OnInit {
       }, 1000);
     });
   }
+
+  isSmsCodeOK = (control: FormControl): Observable<any> => {  //注意，此处是一个变量，变量的值是 lambda 表达式。而非 isSmsCodeOK(control:FormControl) 方法
+    return new Observable((observer: Observer<ValidationErrors | null>) => {
+      if (this.timerForSmsCodeOK !== null) {
+        clearTimeout(this.timerForSmsCodeOK);
+      }
+      this.timerForSmsCodeOK = setTimeout(() => { //请求防抖
+        const smsCode = control.value;
+        this.asyncValidatorService.isSmsCodeOK(this.validateForm.controls["phoneNumber"].value, smsCode).subscribe(response => {
+          if (response === true) {
+            observer.next({ error: false, smsCodeOK: true });
+          }
+          else {
+            observer.next({ error: true, smsCodeOK: false });
+          }
+        });
+      }, 1000);
+    });
+  }
+
+  sendSmsCode(): void {
+    this.validateForm.controls["phoneNumber"].disable();
+    console.log("验证通过，发送手机验证码");
+  }
+
+
 }

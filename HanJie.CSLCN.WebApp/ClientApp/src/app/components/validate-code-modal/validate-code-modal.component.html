@@ -1,0 +1,9 @@
+<button nz-button [disabled]="disabled" (click)="showModal($event)"><ng-content></ng-content></button>
+<nz-modal [(nzVisible)]="isVisiable" [nzTitle]="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <div nz-row>
+    <div nz-col nzSpan="24" class="align-center" style="text-align">
+      <img src="/" alt="请输入验证码" />
+      <input type="number" name="validateCode" value="" />
+    </div>
+  </div>
+</nz-modal>

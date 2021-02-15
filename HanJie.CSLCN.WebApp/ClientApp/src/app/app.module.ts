@@ -31,10 +31,11 @@ import { AdminHomepageSettingsComponent } from './components/admin-components/ad
 import { EditorDevoteInfoListComponent } from './components/editor-devote-info-list/editor-devote-info-list.component';
 import { EditorListBoardComponent } from './components/editor-devote-info-list/editor-list-board/editor-list-board.component';
 import { EditorComponent } from './components/editor/editor.component';
-import { CreateWikiPassageComponent } from './create-wiki-passage/create-wiki-passage.component';
+import { CreateWikiPassageComponent } from './components/create-wiki-passage/create-wiki-passage.component';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { QuestionComponent } from './components/question/question.component';
 import { CreateQuestionComponent } from './components/create-question/create-question.component';
+import { ValidateCodeModalComponent } from './components/validate-code-modal/validate-code-modal.component';
 
 registerLocaleData(zh);
 
@@ -65,7 +66,8 @@ registerLocaleData(zh);
         HtmlRenderDirective,
         CreateWikiPassageComponent,
         QuestionComponent,
-        CreateQuestionComponent
+        CreateQuestionComponent,
+        ValidateCodeModalComponent
     ],
     imports: [
         BrowserModule,

@@ -61,6 +61,7 @@
   cursor: pointer;
   background-color: #fafbfd;
   height: 99px;
+  min-width:186px;
 }
 
 .mod-guide-img {
