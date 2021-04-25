@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
       email: [null, [Validators.email, Validators.required]],
       nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.isSensitiveNickName]],
       phoneNumberPrefix: ['+86', [Validators.required]],
-      phoneNumber: ['1888888888', [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)]],
       smsCode: [null, [Validators.required, Validators.pattern(/[0-9]/)], [this.isSmsCodeOK]],
       agree: [false, Validators.required]
     });

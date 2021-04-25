@@ -81,5 +81,13 @@ namespace HanJie.CSLCN.Common
             if (!(value >= minValueInclude))
                 throw new ArgumentOutOfRangeException($"参数 {parameterName} 的值应当 ≥ {minValueInclude}");
         }
+
+        public static void NotContainsSensitiveWord(string content, string parameterName)
+        {
+            bool isContainsSensitiveWord = new SensitiveWordHelper().IsContainsSensitiveWord(content);
+
+            if (isContainsSensitiveWord)
+                throw new Exception("内容包含敏感词汇");
+        }
     }
 }
