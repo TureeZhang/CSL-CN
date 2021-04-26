@@ -21,11 +21,14 @@ using Microsoft.AspNetCore.Diagnostics;
 using HanJie.CSLCN.Models.Enums;
 using System.IO;
 using HanJie.CSLCN.WebApp.MyFilters;
+using HanJie.CSLCN.Plugins.Interfaces;
+using System.Reflection;
 
 namespace HanJie.CSLCN.WebApp
 {
     public class Startup
     {
+        private List<Type> _plugins;
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -197,6 +200,8 @@ namespace HanJie.CSLCN.WebApp
         private void RegisterTransient(ref IServiceCollection services)
         {
             services.AddTransient<WikiPassageService>();
+            services.AddScoped<SMSService>();
+            services.AddScoped<ISMSServicePlugin>();
         }
 
         /// <summary>
@@ -207,5 +212,6 @@ namespace HanJie.CSLCN.WebApp
             await WikiPassageService.StartViewsCountUpdateTask();
             RequestLogFilter.StartIPsCount();
         }
+
     }
 }

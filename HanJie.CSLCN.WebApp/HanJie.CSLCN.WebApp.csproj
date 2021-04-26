@@ -111,6 +111,9 @@
     <TypeScriptCompile Include="ClientApp\node_modules\ngx-markdown-editor\public_api.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\wiki-category-dto.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\" />
+  </ItemGroup>
 
   <ProjectExtensions>
     <VisualStudio>
