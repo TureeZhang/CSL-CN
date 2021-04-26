@@ -66,6 +66,7 @@ namespace HanJie.CSLCN.Services
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
+        /// <param name="updateLastModifyData">更新最后修改时间。此参数影响“贡献者”界面的排序，最后提交的用户会被按顺序显示。</param>
         public virtual async Task UpdateAsync(TDataModelType data, bool updateLastModifyData = true)
         {
             if (data == null)

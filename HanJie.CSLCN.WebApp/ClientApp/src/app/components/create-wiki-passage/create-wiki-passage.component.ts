@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { WikiCategoryService } from '../services/wiki-category.service';
+import { WikiCategoryService } from '../../services/wiki-category.service';
 import { Observable, Observer } from 'rxjs';
-import { WikiCategoryDto } from '../models/wiki-category-dto';
+import { WikiCategoryDto } from '../../models/wiki-category-dto';
 import { FormGroup, FormBuilder, Validators, FormControl, ValidationErrors } from '@angular/forms';
-import { WikiPassageDto } from '../models/wiki-passage-dto';
-import { WikiPassageService } from '../services/wiki-passage.service';
+import { WikiPassageDto } from '../../models/wiki-passage-dto';
+import { WikiPassageService } from '../../services/wiki-passage.service';
 import { Router } from '@angular/router';
 
 @Component({

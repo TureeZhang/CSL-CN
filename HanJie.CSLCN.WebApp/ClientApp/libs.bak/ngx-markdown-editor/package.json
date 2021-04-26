@@ -57,9 +57,11 @@
     "typescript": "^3.1.6",
     "zone.js": "^0.8.26"
   },
+  "es2015_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-markdown-editor.js",
   "es2015": "fesm2015/ngx-markdown-editor.js",
   "esm2015": "esm2015/ngx-markdown-editor.js",
   "esm5": "esm5/ngx-markdown-editor.js",
+  "fesm2015_ivy_ngcc": "__ivy_ngcc__/fesm2015/ngx-markdown-editor.js",
   "fesm2015": "fesm2015/ngx-markdown-editor.js",
   "fesm5_ivy_ngcc": "__ivy_ngcc__/fesm5/ngx-markdown-editor.js",
   "fesm5": "fesm5/ngx-markdown-editor.js",
@@ -95,6 +97,8 @@
     "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by NGCC. This is not allowed.\\nPlease delete and rebuild the package, without compiling with NGCC, before attempting to publish.\\nNote that NGCC may have been run by importing this package into another project that is being built with Ivy enabled.\\n')\" && exit 1"
   },
   "__processed_by_ivy_ngcc__": {
+    "es2015": "9.1.11",
+    "fesm2015": "9.1.11",
     "fesm5": "9.1.11",
     "module": "9.1.11",
     "typings": "9.1.11"

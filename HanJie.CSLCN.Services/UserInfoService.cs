@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Common;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using HanJie.CSLCN.Models.Enums;
+using HanJie.CSLCN.Models.Consts;
 
 namespace HanJie.CSLCN.Services
 {
@@ -116,7 +118,9 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(userInfo.NickName, nameof(userInfo.NickName));
             Ensure.NotNull(userInfo.Password, nameof(userInfo.Password));
             Ensure.NotNull(userInfo.UserName, nameof(userInfo.UserName));
-            Ensure.NotNull(userInfo.AvatarUrl, nameof(userInfo.AvatarUrl));
+
+            if (string.IsNullOrEmpty(userInfo.AvatarUrl))
+                userInfo.AvatarUrl = this.GetService<SystemSettingService>().Get(SystemSettingTypeEnum.UserSettings, SystemSettingsNameStringConsts.DefaultUserAvatarUrl).Value;
 
             userInfo.Password = new CommonHelper().GetMd5Base64StringUsePrivateSold(userInfo.Password);
             userInfo.PersonalHomepageUrl = string.IsNullOrWhiteSpace(userInfo.PersonalHomepageUrl) ? null : userInfo.PersonalHomepageUrl;

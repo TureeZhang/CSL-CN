@@ -17,4 +17,8 @@ export class AsyncValidatorService {
     return this.httpHelper.get<boolean>(`${this.url}/sensitiveword?testword=${testword}`);
   }
 
+  isSmsCodeOK(phoneNumber: string, smsCode: string): Observable<boolean> {
+    return this.httpHelper.get<boolean>(`${this.url}/smsCode?phoneNumber=${phoneNumber}&smsCode=${smsCode}`);
+  }
+
 }

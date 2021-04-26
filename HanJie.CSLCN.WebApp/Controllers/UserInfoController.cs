@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +16,14 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class UserInfoController : BaseController
     {
         private UserInfoService _userInfoService;
+        private SensitiveWordHelper _sensitiveWordHelper;
 
         public UserInfoController(UserInfoService userInfoService,
-            UserStatuService userStatuService) : base(userStatuService)
+            UserStatuService userStatuService,
+            SensitiveWordHelper sensitiveWordHelper) : base(userStatuService)
         {
             _userInfoService = userInfoService;
+            _sensitiveWordHelper = sensitiveWordHelper;
         }
 
         [HttpGet]
@@ -34,9 +39,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPut]
-        public string Put()
+        public async Task<IActionResult> Put(UserInfoDto userInfo)
         {
-            throw new NotImplementedException();
+            Ensure.NotNull(userInfo, nameof(userInfo));
+            Ensure.NotContainsSensitiveWord(userInfo.NickName, nameof(userInfo.NickName));
+
+            await this._userInfoService.UpdateAsync(new UserInfo().ConvertFromDtoModel(userInfo), true);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
