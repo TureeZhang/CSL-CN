@@ -23,6 +23,8 @@ using System.IO;
 using HanJie.CSLCN.WebApp.MyFilters;
 using HanJie.CSLCN.Plugins.Interfaces;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using HanJie.CSLCN.Plugins.Officials;
 
 namespace HanJie.CSLCN.WebApp
 {
@@ -69,6 +71,10 @@ namespace HanJie.CSLCN.WebApp
                     builder.WithOrigins("http://localhost:4200");
                     builder.Build();
                 });
+            });
+
+            services.AddLogging(loggingBuilder => {
+                loggingBuilder.AddSeq("http://localhost:5341");
             });
 
             //×¢²áµ¥Àý¶ÔÏó
@@ -201,7 +207,7 @@ namespace HanJie.CSLCN.WebApp
         {
             services.AddTransient<WikiPassageService>();
             services.AddScoped<SMSService>();
-            services.AddScoped<ISMSServicePlugin>();
+            services.AddScoped<SMSServicePlugin>();
         }
 
         /// <summary>
