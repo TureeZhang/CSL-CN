@@ -201,7 +201,6 @@ namespace HanJie.CSLCN.WebApp
         {
             services.AddTransient<WikiPassageService>();
             services.AddScoped<SMSService>();
-            services.AddScoped<ISMSServicePlugin>();
         }
 
         /// <summary>

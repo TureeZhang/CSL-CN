@@ -27,7 +27,7 @@ namespace HanJie.CSLCN.Services
         /// <returns></returns>
         private string GetExistAvailableCode()
         {
-
+            throw new NotImplementedException();
         }
     }
 }
