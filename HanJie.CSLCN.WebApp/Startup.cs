@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Models;
@@ -57,7 +56,7 @@ namespace HanJie.CSLCN.WebApp
             //CSLDbContext.Instance.Database.EnsureCreated();
             //CSLDbContext.Instance.Database.Migrate();
 
-            //½«Êý¾Ý¿âÉÏÏÂÎÄ¶ÔÏó¼ÓÈëDIÈÝÆ÷
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½DIï¿½ï¿½ï¿½ï¿½
             Console.WriteLine($"ConnStr:{GlobalConfigs.AppSettings.ConnectionString}");
             services.AddDbContext<CSLDbContext>
                 (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString), ServiceLifetime.Transient);  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
@@ -73,20 +72,21 @@ namespace HanJie.CSLCN.WebApp
                 });
             });
 
-            services.AddLogging(loggingBuilder => {
+            services.AddLogging(loggingBuilder =>
+            {
                 loggingBuilder.AddSeq("http://localhost:5341");
             });
 
-            //×¢²áµ¥Àý¶ÔÏó
+            //×¢ï¿½áµ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             this.RegisterSingletons(ref services);
-            //×¢²á×÷ÓÃÓò¶ÔÏó
+            //×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             this.RegisterScoped(ref services);
-            //×¢²áÃ¿´Î·ÃÎÊ¶¼·µ»ØÒ»¸öÐÂÊµÀýµÄ¶ÔÏó
+            //×¢ï¿½ï¿½Ã¿ï¿½Î·ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
             this.RegisterTransient(ref services);
 
-            //Ìá¹© ·þÎñÌá¹© ¶ÔÏó¡£
+            //ï¿½á¹© ï¿½ï¿½ï¿½ï¿½ï¿½á¹© ï¿½ï¿½ï¿½ï¿½
             GlobalService.ServiceProvider = services.BuildServiceProvider();
-            //Æô¶¯¼Æ»®ÈÎÎñ
+            //ï¿½ï¿½ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½
             StartTask().GetAwaiter();
         }
 
@@ -122,6 +122,7 @@ namespace HanJie.CSLCN.WebApp
 
             app.UseCors("local-angular-app");
             app.UseFileServer();
+            app.UseRouting();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -129,11 +130,11 @@ namespace HanJie.CSLCN.WebApp
             });
 
             app.UseStatusCodePagesWithReExecute("/homepage/{0}");
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
 
@@ -154,19 +155,19 @@ namespace HanJie.CSLCN.WebApp
         }
 
         /// <summary>
-        /// ÔÚ Startup ¹¹Ôìº¯ÊýÖÐÍê³ÉÈ«¾ÖÖØÒªµÄ³õÊ¼»¯²Ù×÷¡£
+        /// ï¿½ï¿½ Startup ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Òªï¿½Ä³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void Globalinitialize()
         {
-            //½« AppSettings.json ÅäÖÃÎÄ¼þÖÐµÄÖµ°ó¶¨µ½Ç¿ÀàÐÍÄ£ÐÍ
+            //ï¿½ï¿½ AppSettings.json ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ðµï¿½Öµï¿½ó¶¨µï¿½Ç¿ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
             GlobalConfigs.AppSettings = this.Configuration.GetSection("AppSettings").Get<AppSettings>();
         }
 
         /// <summary>
-        /// ×¢²áµ¥Àý¶ÔÏó¡£
+        /// ×¢ï¿½áµ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// 
-        /// ±¸×¢£º
-        ///     ¶ÔÏóÈ«¾ÖÈ«Ìå³ÉÔ±ºÍ·ÃÎÊ¹²Ïí£¬½ö´´½¨Ò»´Î£¬ÈÎºÎµ÷ÓÃ½Ô·µ»ØÍ¬Ò»¶ÔÏó£¬ÉúÃüÖÜÆÚÎª³ÌÐòÆô¶¯ÖÁ³ÌÐò½áÊø¡£
+        /// ï¿½ï¿½×¢ï¿½ï¿½
+        ///     ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½È«ï¿½ï¿½ï¿½Ô±ï¿½Í·ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î£ï¿½ï¿½ÎºÎµï¿½ï¿½Ã½Ô·ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="services"></param>
         private void RegisterSingletons(ref IServiceCollection services)
@@ -176,10 +177,10 @@ namespace HanJie.CSLCN.WebApp
         }
 
         /// <summary>
-        /// ×¢²á×÷ÓÃÓò(scope)¶ÔÏó¡£
+        /// ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(scope)ï¿½ï¿½ï¿½ï¿½
         /// 
-        /// ±¸×¢£º
-        ///     ¶ÔÏóÔÚÃ¿¸öÇëÇóÆÚ¼ä´´½¨Ò»´Î¡£
+        /// ï¿½ï¿½×¢ï¿½ï¿½
+        ///     ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ä´´ï¿½ï¿½Ò»ï¿½Î¡ï¿½
         /// </summary>
         /// <param name="services"></param>
         private void RegisterScoped(ref IServiceCollection services)
@@ -197,24 +198,20 @@ namespace HanJie.CSLCN.WebApp
         }
 
         /// <summary>
-        /// ×¢²áÃ¿´Î·ÃÎÊ¶¼·µ»ØÒ»¸öÐÂÊµÀý£¨Transient£©µÄ¶ÔÏó¡£
+        /// ×¢ï¿½ï¿½Ã¿ï¿½Î·ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½Transientï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
         /// 
-        /// ±¸×¢£º
-        ///     ¶ÔÏóÔÚÃ¿´Î±»µ÷ÓÃÊ±¶¼»á·µ»ØÒ»¸öÐÂÊµÀý¡£
+        /// ï¿½ï¿½×¢ï¿½ï¿½
+        ///     ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á·µï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="services"></param>
         private void RegisterTransient(ref IServiceCollection services)
         {
             services.AddTransient<WikiPassageService>();
             services.AddScoped<SMSService>();
-<<<<<<< HEAD
-=======
-            services.AddScoped<SMSServicePlugin>();
->>>>>>> 850a91a311ecc47da20236cd48350ec7f20c7a9d
         }
 
         /// <summary>
-        /// Æô¶¯¼Æ»®ÈÎÎñ
+        /// ï¿½ï¿½ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private async Task StartTask()
         {
