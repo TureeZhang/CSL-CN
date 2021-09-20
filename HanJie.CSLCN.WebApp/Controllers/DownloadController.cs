@@ -32,7 +32,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [Route("/api/download")]
         public IActionResult LocalStorage(string fname)
         {
-            FileStream fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", fname.Substring(1)), FileMode.Open);
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", fname.Substring(1));
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            FileStream fs = new FileStream(filePath, FileMode.Open);
             string contentType = string.Empty;
             bool isSuccess = new FileExtensionContentTypeProvider().TryGetContentType(fname, out contentType);
 
