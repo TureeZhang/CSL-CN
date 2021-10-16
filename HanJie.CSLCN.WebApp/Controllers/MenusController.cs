@@ -17,11 +17,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
 
         #region 数据服务
-        private MenuService _menuService { get; set; }
+        private IMenuService _menuService { get; set; }
         #endregion
 
-        public MenusController(MenuService menuService,
-            UserStatuService userStatuService) : base(userStatuService)
+        public MenusController(IMenuService menuService,
+            IUserStatuService userStatuService) : base(userStatuService)
         {
             _menuService = menuService;
         }

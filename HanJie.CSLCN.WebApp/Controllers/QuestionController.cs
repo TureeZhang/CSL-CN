@@ -9,7 +9,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 {
     public class QuestionController : BaseController
     {
-        public QuestionController(UserStatuService userStatuService)
+        public QuestionController(IUserStatuService userStatuService)
             : base(userStatuService)
         {
         }

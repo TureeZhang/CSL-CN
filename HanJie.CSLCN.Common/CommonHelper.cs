@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HanJie.CSLCN.Common
 {
-    public class CommonHelper : BaseHelper
+    public class CommonHelper : BaseHelper, ICommonHelper
     {
         /// <summary>
         /// 获取字符串的MD5-BASE64字符串（采用加盐）

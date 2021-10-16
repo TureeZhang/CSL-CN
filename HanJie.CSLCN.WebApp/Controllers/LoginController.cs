@@ -16,9 +16,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class LoginController : Controller
     {
 
-        private UserInfoService _userInfoService { get; set; }
+        private IUserInfoService _userInfoService { get; set; }
 
-        public LoginController(UserInfoService userInfoService)
+        public LoginController(IUserInfoService userInfoService)
         {
             _userInfoService = userInfoService;
         }

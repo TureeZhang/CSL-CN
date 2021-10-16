@@ -16,13 +16,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [ApiController]
     public class BaseController : Controller
     {
-        private UserStatuService _userStatuService;
+        private IUserStatuService _userStatuService;
 
         protected UserInfoDto CurrentUser { get; private set; }
 
         protected bool IsLogin => this.CurrentUser != null;
 
-        public BaseController(UserStatuService userStatuService)
+        public BaseController(IUserStatuService userStatuService)
         {
             _userStatuService = userStatuService;
         }

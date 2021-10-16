@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HanJie.CSLCN.Services
 {
-    public class ClientAppService
+    public class ClientAppService : IClientAppService
     {
 
         public static ConfigsDto ConfigsDto { get; private set; }

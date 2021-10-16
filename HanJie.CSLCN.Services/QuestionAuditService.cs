@@ -1,4 +1,5 @@
 ﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Enums;
@@ -9,8 +10,14 @@ using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
-    public class QuestionAuditService : BaseService<QuestionDto, Question>
+    public class QuestionAuditService : BaseService<QuestionDto, Question>, IQuestionAuditService
     {
+        public QuestionAuditService(CSLDbContext cslDbContext, ICommonHelper commonHelper) :
+            base(cslDbContext, commonHelper)
+        {
+
+        }
+
         public async Task Rejected(int id, string reason, int auditorUserId)
         {
             Ensure.IsDatabaseId(id, nameof(id));

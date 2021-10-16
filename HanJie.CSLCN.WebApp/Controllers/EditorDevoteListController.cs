@@ -12,13 +12,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [Route("api/[controller]")]
     public class EditorDevoteListController : Controller
     {
-        private readonly UserInfoService _userInfoService;
-        private readonly WikiPassageService _wikiPassageService;
+        private readonly IUserInfoService _userInfoService;
+        private readonly IWikiPassageService _wikiPassageService;
         public static Tuple<DateTime, List<EditorDevoteInfoDto>> EditorDevoteInfoCaches { get; private set; }
         public static Tuple<DateTime, List<EditorDevoteInfoDto>> EditorDevoteInfoMonthlyCaches { get; private set; }
 
-        public EditorDevoteListController(UserInfoService userInfoService,
-            WikiPassageService wikiPassageService)
+        public EditorDevoteListController(IUserInfoService userInfoService,
+            IWikiPassageService wikiPassageService)
         {
             _userInfoService = userInfoService;
             _wikiPassageService = wikiPassageService;

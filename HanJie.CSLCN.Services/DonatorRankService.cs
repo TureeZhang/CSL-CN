@@ -7,11 +7,19 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
 
 namespace HanJie.CSLCN.Services
 {
-    public class DonatorRankService : BaseService<DonatorRankDto, DonatorRank>
+    public class DonatorRankService : BaseService<DonatorRankDto, DonatorRank>, IDonatorRankService
     {
+
+        public DonatorRankService(CSLDbContext cslDbContext,ICommonHelper commonHelper)
+            :base(cslDbContext,commonHelper)
+        {
+            
+        }
+
         public async Task<List<DonatorRankDto>> GetDonatorAllRanksOrderbyTotalCountAsync()
         {
             List<DonatorRank> donatorRanks = await CSLDbContext.DonatorRanks.ToListAsync();

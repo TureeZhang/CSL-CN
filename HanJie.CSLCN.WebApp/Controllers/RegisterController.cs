@@ -13,9 +13,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class RegisterController : Controller
     {
 
-        private UserInfoService _userInfoService;
+        private IUserInfoService _userInfoService;
 
-        public RegisterController(UserInfoService userInfoService)
+        public RegisterController(IUserInfoService userInfoService)
         {
             this._userInfoService = userInfoService;
         }

@@ -15,12 +15,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [ApiController]
     public class UploadController : BaseController
     {
-        private QiniuService _qiniuService;
-        private StorageService _storageService;
+        private IQiniuService _qiniuService;
+        private IStorageService _storageService;
 
-        public UploadController(QiniuService qiniuService,
-            UserStatuService userStatuService,
-            StorageService storageService) : base(userStatuService)
+        public UploadController(IQiniuService qiniuService,
+            IUserStatuService userStatuService,
+            IStorageService storageService) : base(userStatuService)
         {
             this._qiniuService = qiniuService;
             this._storageService = storageService;

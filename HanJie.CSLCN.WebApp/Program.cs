@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Services.BackgroundTasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace HanJie.CSLCN.WebApp
@@ -31,8 +33,12 @@ namespace HanJie.CSLCN.WebApp
                          config.SetBasePath(Directory.GetCurrentDirectory());
                          config.AddJsonFile(RunAs.Debug ? "appsettings.Debug.json" : "appsettings.Release.json", optional: true, reloadOnChange: true);
                      })
+                     .UseStartup<Startup>()
                      .UseUrls("http://localhost:5000")
-                     .UseStartup<Startup>();
+                     .ConfigureServices((hostContext, services) =>
+                     {
+                         services.AddHostedService<ViewersCountTask>();
+                     });
         }
     }
 }

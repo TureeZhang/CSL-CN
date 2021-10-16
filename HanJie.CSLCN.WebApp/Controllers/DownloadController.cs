@@ -17,12 +17,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [ApiController]
     public class DownloadController : BaseController
     {
-        private QiniuService _qiniuService;
-        private StorageService _storageService;
+        private IQiniuService _qiniuService;
+        private IStorageService _storageService;
 
-        public DownloadController(QiniuService qiniuService,
-            UserStatuService userStatuService,
-            StorageService storageService) : base(userStatuService)
+        public DownloadController(IQiniuService qiniuService,
+            IUserStatuService userStatuService,
+            IStorageService storageService) : base(userStatuService)
         {
             this._qiniuService = qiniuService;
             this._storageService = storageService;

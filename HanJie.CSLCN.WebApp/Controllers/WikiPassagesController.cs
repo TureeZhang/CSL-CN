@@ -19,14 +19,14 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class WikiPassagesController : BaseController
     {
 
-        private readonly WikiPassageService _wikiPassageService;
-        private readonly UserInfoService _userInfoService;
-        private readonly WikiCategoryService _wikiCategoryService;
+        private readonly IWikiPassageService _wikiPassageService;
+        private readonly IUserInfoService _userInfoService;
+        private readonly IWikiCategoryService _wikiCategoryService;
 
-        public WikiPassagesController(WikiPassageService wikiPassageService,
-            UserInfoService userInfoService,
-            WikiCategoryService wikiCategoryService,
-            UserStatuService userStatuService) : base(userStatuService)
+        public WikiPassagesController(IWikiPassageService wikiPassageService,
+            IUserInfoService userInfoService,
+            IWikiCategoryService wikiCategoryService,
+            IUserStatuService userStatuService) : base(userStatuService)
         {
             this._userInfoService = userInfoService;
             this._wikiPassageService = wikiPassageService;
@@ -42,7 +42,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             WikiPassage wikiPassage = await this._wikiPassageService.GetByRoutePathAsync(id);
             WikiPassageDto wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
             wikiPassageDto.AnchorTitles = await this._wikiPassageService.CollectAnchorTitlesAsync(wikiPassageDto.Content);
-            wikiPassageDto.MainAuthors =await this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+            wikiPassageDto.MainAuthors = await this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
             wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? await this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
             wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? await this._wikiPassageService.CollectBreadCrumbsAsync(wikiPassageDto) : null;
 
@@ -54,7 +54,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
             TaskAwaiter taskAwaiter = Task.Run(async () =>
              {
-                await this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
+                 await this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
              }).GetAwaiter();
 
             return new JsonResult(wikiPassageDto);
@@ -91,7 +91,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         // POST api/<controller>
         [HttpPost]
         [MyAuthorize]
-        public async Task<IActionResult> PostAsync([FromBody]WikiPassageDto dto)
+        public async Task<IActionResult> PostAsync([FromBody] WikiPassageDto dto)
         {
             if (!base.CurrentUser.IsAdmin)
             {
@@ -108,7 +108,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         // PUT api/<controller>/5
         [HttpPut]
         [MyAuthorize]
-        public async Task Put([FromBody]WikiPassageDto dto)
+        public async Task Put([FromBody] WikiPassageDto dto)
         {
             await this._wikiPassageService.UpdateAsync(dto, base.CurrentUser.Id);
             await this._userInfoService.UpdateLastCommitInfo(base.CurrentUser.Id);

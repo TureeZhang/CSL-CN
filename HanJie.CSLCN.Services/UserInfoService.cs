@@ -10,16 +10,25 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Models.Consts;
+using HanJie.CSLCN.Datas;
 
 namespace HanJie.CSLCN.Services
 {
-    public partial class UserInfoService : BaseService<UserInfoDto, UserInfo>
+    public partial class UserInfoService : BaseService<UserInfoDto, UserInfo>, IUserInfoService
     {
-        private UserStatuService _userStatuService;
+        private readonly ISystemSettingService _systemSettingService;
+        private readonly IUserStatuService _userStatuService;
 
-        public UserInfoService()
+        public UserInfoService(
+            ISystemSettingService systemSettingService,
+            IUserStatuService userStatuService,
+            CSLDbContext cslDbContext,
+            ICommonHelper commonHelper
+            )
+            : base(cslDbContext, commonHelper)
         {
-            this._userStatuService = base.GetService<UserStatuService>();
+            this._systemSettingService = systemSettingService;
+            this._userStatuService = userStatuService;
         }
 
         public virtual UserInfoDto UserLoginAutoHandler(UserInfoDto userInfo)
@@ -120,7 +129,7 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(userInfo.UserName, nameof(userInfo.UserName));
 
             if (string.IsNullOrEmpty(userInfo.AvatarUrl))
-                userInfo.AvatarUrl = this.GetService<SystemSettingService>().Get(SystemSettingTypeEnum.UserSettings, SystemSettingsNameStringConsts.DefaultUserAvatarUrl).Value;
+                userInfo.AvatarUrl = this._systemSettingService.Get(SystemSettingTypeEnum.UserSettings, SystemSettingsNameStringConsts.DefaultUserAvatarUrl).Value;
 
             userInfo.Password = new CommonHelper().GetMd5Base64StringUsePrivateSold(userInfo.Password);
             userInfo.PersonalHomepageUrl = string.IsNullOrWhiteSpace(userInfo.PersonalHomepageUrl) ? null : userInfo.PersonalHomepageUrl;

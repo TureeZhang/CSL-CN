@@ -15,10 +15,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class WikiListController : BaseController
     {
 
-        private WikiPassageService _wikiPassageService { get; set; }
+        private IWikiPassageService _wikiPassageService { get; set; }
 
-        public WikiListController(WikiPassageService wikiPassageService,
-            UserStatuService userStatuService) : base(userStatuService)
+        public WikiListController(IWikiPassageService wikiPassageService,
+            IUserStatuService userStatuService) : base(userStatuService)
         {
             _wikiPassageService = wikiPassageService;
         }

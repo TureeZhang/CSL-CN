@@ -1,15 +1,22 @@
-﻿using HanJie.CSLCN.Models.DataModels;
+﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
+using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Enums;
-using HanJie.CSLCN.Plugins.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HanJie.CSLCN.Services
 {
-    public class SMSService : BaseService<SmsDto, Sms>
+    public class SMSService : BaseService<SmsDto, Sms>, ISMSService
     {
+
+        public SMSService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
+            : base(cslDbContext, commonHelper)
+        {
+
+        }
 
         public void SendSms(string phoneNumber, string content, TimeSpan expireAfter)
         {

@@ -20,10 +20,10 @@ using Microsoft.AspNetCore.Diagnostics;
 using HanJie.CSLCN.Models.Enums;
 using System.IO;
 using HanJie.CSLCN.WebApp.MyFilters;
-using HanJie.CSLCN.Plugins.Interfaces;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using HanJie.CSLCN.Plugins.Officials;
+using Microsoft.Extensions.Hosting;
+using HanJie.CSLCN.Services.Providers;
 
 namespace HanJie.CSLCN.WebApp
 {
@@ -44,7 +44,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddMvc(options =>
             {
                 options.Filters.Add(new RequestLogFilter());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             // In production, the Angular files will be served from this directory
             //services.AddSpaStaticFiles(configuration =>
@@ -56,7 +56,6 @@ namespace HanJie.CSLCN.WebApp
             //CSLDbContext.Instance.Database.EnsureCreated();
             //CSLDbContext.Instance.Database.Migrate();
 
-            //�����ݿ������Ķ������DI����
             Console.WriteLine($"ConnStr:{GlobalConfigs.AppSettings.ConnectionString}");
             services.AddDbContext<CSLDbContext>
                 (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString), ServiceLifetime.Transient);  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
@@ -77,21 +76,13 @@ namespace HanJie.CSLCN.WebApp
                 loggingBuilder.AddSeq("http://localhost:5341");
             });
 
-            //ע�ᵥ������
-            this.RegisterSingletons(ref services);
-            //ע�����������
-            this.RegisterScoped(ref services);
-            //ע��ÿ�η��ʶ�����һ����ʵ���Ķ���
-            this.RegisterTransient(ref services);
-
-            //�ṩ �����ṩ ����
-            GlobalService.ServiceProvider = services.BuildServiceProvider();
-            //����ƻ�����
-            StartTask().GetAwaiter();
+            this.RegisterSingletons(services);
+            this.RegisterScoped(services);
+            this.RegisterTransient(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -108,7 +99,7 @@ namespace HanJie.CSLCN.WebApp
                        try
                        {
                            IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
-                           await new LogService().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
+                           await app.ApplicationServices.GetService<ILogService>().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
                        }
                        catch (Exception ex)
                        {
@@ -137,8 +128,6 @@ namespace HanJie.CSLCN.WebApp
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-
-
             //app.UseSpa(spa =>
             //{
             //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -154,68 +143,45 @@ namespace HanJie.CSLCN.WebApp
 
         }
 
-        /// <summary>
-        /// �� Startup ���캯�������ȫ����Ҫ�ĳ�ʼ��������
-        /// </summary>
         private void Globalinitialize()
         {
-            //�� AppSettings.json �����ļ��е�ֵ�󶨵�ǿ����ģ��
             GlobalConfigs.AppSettings = this.Configuration.GetSection("AppSettings").Get<AppSettings>();
         }
 
-        /// <summary>
-        /// ע�ᵥ������
-        /// 
-        /// ��ע��
-        ///     ����ȫ��ȫ���Ա�ͷ��ʹ����������һ�Σ��κε��ýԷ���ͬһ������������Ϊ������������������
         /// </summary>
         /// <param name="services"></param>
-        private void RegisterSingletons(ref IServiceCollection services)
+        private void RegisterSingletons(IServiceCollection services)
         {
-            services.AddSingleton<CommonHelper>();
-            services.AddSingleton<SensitiveWordHelper>();
+            services.AddSingleton<ICommonHelper, CommonHelper>();
+            services.AddSingleton<ISensitiveWordHelper, SensitiveWordHelper>();
+            services.AddSingleton<IStaticDictionariesProvider, StaticDictionariesProvider>();
+            services.AddSingleton<IRedisService, RedisService>();
         }
 
-        /// <summary>
-        /// ע��������(scope)����
-        /// 
-        /// ��ע��
-        ///     ������ÿ�������ڼ䴴��һ�Ρ�
-        /// </summary>
-        /// <param name="services"></param>
-        private void RegisterScoped(ref IServiceCollection services)
+        private void RegisterTransient(IServiceCollection services)
         {
-            services.AddScoped<SystemSettingService>();
-            services.AddScoped<UserStatuService>();
-            services.AddScoped<MenuService>();
-            services.AddScoped<UserInfoService>();
-            services.AddScoped<DonatorRankService>();
-            services.AddScoped<QiniuService>();
-            services.AddScoped<StorageService>();
-            services.AddScoped<ClientAppService>();
-            services.AddScoped<RedisService>();
-            services.AddScoped<WikiCategoryService>();
+            services.AddTransient<ISystemSettingService, SystemSettingService>();
+            services.AddTransient<IUserStatuService, UserStatuService>();
+            services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IUserInfoService, UserInfoService>();
+            services.AddTransient<IDonatorRankService, DonatorRankService>();
+            services.AddTransient<IQiniuService, QiniuService>();
+            services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IClientAppService, ClientAppService>();
+            services.AddTransient<IWikiCategoryService, WikiCategoryService>();
+            services.AddTransient<ILogService, LogService>();
+            services.AddTransient<IWikiPassageService, WikiPassageService>();
+            services.AddTransient<ISMSService, SMSService>();
         }
 
-        /// <summary>
-        /// ע��ÿ�η��ʶ�����һ����ʵ����Transient���Ķ���
-        /// 
-        /// ��ע��
-        ///     ������ÿ�α�����ʱ���᷵��һ����ʵ����
-        /// </summary>
-        /// <param name="services"></param>
-        private void RegisterTransient(ref IServiceCollection services)
+        private void RegisterScoped(IServiceCollection services)
         {
-            services.AddTransient<WikiPassageService>();
-            services.AddScoped<SMSService>();
+
         }
 
-        /// <summary>
-        /// ����ƻ�����
-        /// </summary>
-        private async Task StartTask()
+        private void StartTask(IWikiPassageService wikiPassageService)
         {
-            await WikiPassageService.StartViewsCountUpdateTask();
+            //todo: 陆续会将后台任务迁移到 BackgroundService 中
             RequestLogFilter.StartIPsCount();
         }
 

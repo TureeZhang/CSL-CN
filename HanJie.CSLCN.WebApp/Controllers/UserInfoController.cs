@@ -15,12 +15,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [ApiController]
     public class UserInfoController : BaseController
     {
-        private UserInfoService _userInfoService;
-        private SensitiveWordHelper _sensitiveWordHelper;
+        private IUserInfoService _userInfoService;
+        private ISensitiveWordHelper _sensitiveWordHelper;
 
-        public UserInfoController(UserInfoService userInfoService,
-            UserStatuService userStatuService,
-            SensitiveWordHelper sensitiveWordHelper) : base(userStatuService)
+        public UserInfoController(IUserInfoService userInfoService,
+            IUserStatuService userStatuService,
+            ISensitiveWordHelper sensitiveWordHelper) : base(userStatuService)
         {
             _userInfoService = userInfoService;
             _sensitiveWordHelper = sensitiveWordHelper;

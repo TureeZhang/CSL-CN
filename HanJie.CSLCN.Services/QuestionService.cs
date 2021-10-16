@@ -1,4 +1,5 @@
 ﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Enums;
@@ -11,6 +12,12 @@ namespace HanJie.CSLCN.Services
 {
     public class QuestionService : BaseService<QuestionDto, Question>
     {
+        public QuestionService(CSLDbContext cslDbContext,ICommonHelper commonHelper)
+            :base(cslDbContext,commonHelper)
+        {
+
+        }
+
         /// <summary>
         /// 获取审核通过的问题
         /// </summary>

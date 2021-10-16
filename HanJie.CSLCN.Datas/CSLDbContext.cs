@@ -1,5 +1,4 @@
-﻿using HanJie.CSLCN.Common;
-using HanJie.CSLCN.Models.DataModels;
+﻿using HanJie.CSLCN.Models.DataModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

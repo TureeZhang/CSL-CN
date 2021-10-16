@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
-    public class RedisService
+    public class RedisService : IRedisService
     {
         private static IDatabase _db;
 
@@ -24,14 +24,11 @@ namespace HanJie.CSLCN.Services
 
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis, nameof(GlobalConfigs.AppSettings.Redis));
             Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Host, nameof(GlobalConfigs.AppSettings.Redis.Host));
-            if (RunAs.Debug)
-            {
-                Ensure.NotNull(GlobalConfigs.AppSettings.Redis.Password, nameof(GlobalConfigs.AppSettings.Redis.Password));
-            }
 
             ConfigurationOptions options = new ConfigurationOptions();
             options.EndPoints.Add($"{GlobalConfigs.AppSettings.Redis.Host}:{GlobalConfigs.AppSettings.Redis.Port}");
             options.Password = GlobalConfigs.AppSettings.Redis.Password;
+            options.AbortOnConnectFail = false;
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(options);
             RedisService._db = redis.GetDatabase();
         }

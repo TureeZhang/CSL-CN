@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="Autofac.Extras.Moq" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,4 +23,8 @@
     <ProjectReference Include="..\HanJie.CSLCN.WebApp\HanJie.CSLCN.WebApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Autofac.Extensions.DependencyInjection" />
+    <None Remove="Autofac.Extras.Moq" />
+  </ItemGroup>
 </Project>

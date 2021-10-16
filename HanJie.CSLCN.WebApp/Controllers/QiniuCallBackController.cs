@@ -19,9 +19,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class QiniuCallBackController : ControllerBase
     {
 
-        private QiniuService _qiniuService;
+        private IQiniuService _qiniuService;
 
-        public QiniuCallBackController(QiniuService qiniuService)
+        public QiniuCallBackController(IQiniuService qiniuService)
         {
             this._qiniuService = qiniuService;
         }
