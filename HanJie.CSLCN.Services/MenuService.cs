@@ -1,4 +1,6 @@
-﻿using HanJie.CSLCN.Models.DataModels;
+﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
+using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
-    public class MenuService : BaseService<MenuDto, Menu>
+    public class MenuService : BaseService<MenuDto, Menu>, IMenuService
     {
-        public MenuService()
+        public MenuService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
+            : base(cslDbContext, commonHelper)
         {
 
         }

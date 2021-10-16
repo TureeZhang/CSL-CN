@@ -14,9 +14,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class ConfigsController : ControllerBase
     {
 
-        private readonly ClientAppService _clientAppService;
+        private readonly IClientAppService _clientAppService;
 
-        public ConfigsController(ClientAppService clientAppService)
+        public ConfigsController(IClientAppService clientAppService)
         {
             _clientAppService = clientAppService;
         }

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace HanJie.CSLCN.Services
 {
-    public class StorageService
+    public class StorageService : IStorageService
     {
         public StorageService()
         {
@@ -55,7 +55,7 @@ namespace HanJie.CSLCN.Services
 
         }
 
-        private void SaveTo(string path,FileStream fileStream)
+        private void SaveTo(string path, FileStream fileStream)
         {
 
         }

@@ -1,4 +1,6 @@
-﻿using HanJie.CSLCN.Models.DataModels;
+﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
+using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using System;
 using System.Collections.Generic;
@@ -7,12 +9,14 @@ using System.Text;
 
 namespace HanJie.CSLCN.Services
 {
-    public class UserStatuService : BaseService<UserInfoDto, UserInfo>
+    public class UserStatuService : BaseService<UserInfoDto, UserInfo>, IUserStatuService
     {
         public static Dictionary<string, UserInfoDto> LoginedUsers { get; set; } = new Dictionary<string, UserInfoDto>();
 
-        public UserStatuService()
+        public UserStatuService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
+            : base(cslDbContext, commonHelper)
         {
+
         }
 
 

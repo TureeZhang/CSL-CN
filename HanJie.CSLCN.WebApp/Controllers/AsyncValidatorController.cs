@@ -16,9 +16,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [Route("api/[controller]")]
     public class AsyncValidatorController : Controller
     {
-        private SensitiveWordHelper _sensitiveWordHelper;
+        private ISensitiveWordHelper _sensitiveWordHelper;
 
-        public AsyncValidatorController(SensitiveWordHelper sensitiveWordHelper)
+        public AsyncValidatorController(ISensitiveWordHelper sensitiveWordHelper)
         {
             _sensitiveWordHelper = sensitiveWordHelper;
         }

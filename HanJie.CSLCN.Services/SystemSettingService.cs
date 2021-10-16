@@ -1,4 +1,5 @@
 ﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Models.Dtos.SystemSettingsDto;
@@ -13,9 +14,15 @@ using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
-    public class SystemSettingService : BaseService<SystemSettingDto, SystemSetting>
+    public class SystemSettingService : BaseService<SystemSettingDto, SystemSetting>, ISystemSettingService
     {
         private static object _settingGetLock = new object();
+
+        public SystemSettingService(CSLDbContext cslDbcontext,ICommonHelper commonHelper)
+            :base(cslDbcontext,commonHelper)
+        {
+
+        }
 
         public SystemSetting Get(SystemSettingTypeEnum type, string name)
         {

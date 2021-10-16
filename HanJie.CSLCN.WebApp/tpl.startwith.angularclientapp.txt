@@ -1,8 +1,3 @@
-angular-clientapp/main-es2015.969e143ff35e4b4b1b64.js	1332760	FoyuZjXZpzpUjhmfCGdX3Nm-vvDu	16066604354994586	application/javascript	0	
-angular-clientapp/main-es5.969e143ff35e4b4b1b64.js	1481103	Fky539GBT9v4G-V_2BKRzI--ukau	16066604358445041	application/javascript	0	
-angular-clientapp/polyfills-es2015.96e1c1a897051f3961e5.js	36993	FnKtTMwKORauRZgZlEfN6t1tOAVw	16066604360494012	application/javascript	0	
-angular-clientapp/polyfills-es5.0463eec6663de221eb58.js	132246	FgruNL0GfVpqCmHvIkVCH4eZjtob	16066604362657132	application/javascript	0	
-angular-clientapp/runtime-es2015.0dae8cbc97194c7caed4.js	1485	Fqmq_PSfSRRQk_yDHv2bji9scbuc	16066604364321509	application/javascript	0	
-angular-clientapp/runtime-es5.0dae8cbc97194c7caed4.js	1485	Fqmq_PSfSRRQk_yDHv2bji9scbuc	16066604366206543	application/javascript	0	
-angular-clientapp/scripts.07c15a709ca6f0be093e.js	14793	FmJJGo3mD5JWKHyF-JCLCnjS5Z6k	16066604368097738	application/javascript	0	
-angular-clientapp/styles.1b8ec501dd95651bd6af.css	522814	FoR4rmx7WVDp2q227WfOjia7_7C0	16066604370649124	text/css	0	
+version https://git-lfs.github.com/spec/v1
+oid sha256:d555db600f5c774cec7bcda15e470f549cc35e5d7c31220dc559ab137743e3e2
+size 1053

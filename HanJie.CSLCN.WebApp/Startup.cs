@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Models;
@@ -21,11 +20,16 @@ using Microsoft.AspNetCore.Diagnostics;
 using HanJie.CSLCN.Models.Enums;
 using System.IO;
 using HanJie.CSLCN.WebApp.MyFilters;
+using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using HanJie.CSLCN.Services.Providers;
 
 namespace HanJie.CSLCN.WebApp
 {
     public class Startup
     {
+        private List<Type> _plugins;
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -40,7 +44,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddMvc(options =>
             {
                 options.Filters.Add(new RequestLogFilter());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             // In production, the Angular files will be served from this directory
             //services.AddSpaStaticFiles(configuration =>
@@ -52,7 +56,6 @@ namespace HanJie.CSLCN.WebApp
             //CSLDbContext.Instance.Database.EnsureCreated();
             //CSLDbContext.Instance.Database.Migrate();
 
-            //½«Êı¾İ¿âÉÏÏÂÎÄ¶ÔÏó¼ÓÈëDIÈİÆ÷
             Console.WriteLine($"ConnStr:{GlobalConfigs.AppSettings.ConnectionString}");
             services.AddDbContext<CSLDbContext>
                 (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString), ServiceLifetime.Transient);  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
@@ -68,21 +71,18 @@ namespace HanJie.CSLCN.WebApp
                 });
             });
 
-            //×¢²áµ¥Àı¶ÔÏó
-            this.RegisterSingletons(ref services);
-            //×¢²á×÷ÓÃÓò¶ÔÏó
-            this.RegisterScoped(ref services);
-            //×¢²áÃ¿´Î·ÃÎÊ¶¼·µ»ØÒ»¸öĞÂÊµÀıµÄ¶ÔÏó
-            this.RegisterTransient(ref services);
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSeq("http://localhost:5341");
+            });
 
-            //Ìá¹© ·şÎñÌá¹© ¶ÔÏó¡£
-            GlobalService.ServiceProvider = services.BuildServiceProvider();
-            //Æô¶¯¼Æ»®ÈÎÎñ
-            StartTask().GetAwaiter();
+            this.RegisterSingletons(services);
+            this.RegisterScoped(services);
+            this.RegisterTransient(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -99,7 +99,7 @@ namespace HanJie.CSLCN.WebApp
                        try
                        {
                            IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
-                           await new LogService().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
+                           await app.ApplicationServices.GetService<ILogService>().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
                        }
                        catch (Exception ex)
                        {
@@ -113,6 +113,7 @@ namespace HanJie.CSLCN.WebApp
 
             app.UseCors("local-angular-app");
             app.UseFileServer();
+            app.UseRouting();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -120,14 +121,12 @@ namespace HanJie.CSLCN.WebApp
             });
 
             app.UseStatusCodePagesWithReExecute("/homepage/{0}");
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
-
-
 
             //app.UseSpa(spa =>
             //{
@@ -144,68 +143,47 @@ namespace HanJie.CSLCN.WebApp
 
         }
 
-        /// <summary>
-        /// ÔÚ Startup ¹¹Ôìº¯ÊıÖĞÍê³ÉÈ«¾ÖÖØÒªµÄ³õÊ¼»¯²Ù×÷¡£
-        /// </summary>
         private void Globalinitialize()
         {
-            //½« AppSettings.json ÅäÖÃÎÄ¼şÖĞµÄÖµ°ó¶¨µ½Ç¿ÀàĞÍÄ£ĞÍ
             GlobalConfigs.AppSettings = this.Configuration.GetSection("AppSettings").Get<AppSettings>();
         }
 
-        /// <summary>
-        /// ×¢²áµ¥Àı¶ÔÏó¡£
-        /// 
-        /// ±¸×¢£º
-        ///     ¶ÔÏóÈ«¾ÖÈ«Ìå³ÉÔ±ºÍ·ÃÎÊ¹²Ïí£¬½ö´´½¨Ò»´Î£¬ÈÎºÎµ÷ÓÃ½Ô·µ»ØÍ¬Ò»¶ÔÏó£¬ÉúÃüÖÜÆÚÎª³ÌĞòÆô¶¯ÖÁ³ÌĞò½áÊø¡£
         /// </summary>
         /// <param name="services"></param>
-        private void RegisterSingletons(ref IServiceCollection services)
+        private void RegisterSingletons(IServiceCollection services)
         {
-            services.AddSingleton<CommonHelper>();
-            services.AddSingleton<SensitiveWordHelper>();
+            services.AddSingleton<ICommonHelper, CommonHelper>();
+            services.AddSingleton<ISensitiveWordHelper, SensitiveWordHelper>();
+            services.AddSingleton<IStaticDictionariesProvider, StaticDictionariesProvider>();
+            services.AddSingleton<IRedisService, RedisService>();
         }
 
-        /// <summary>
-        /// ×¢²á×÷ÓÃÓò(scope)¶ÔÏó¡£
-        /// 
-        /// ±¸×¢£º
-        ///     ¶ÔÏóÔÚÃ¿¸öÇëÇóÆÚ¼ä´´½¨Ò»´Î¡£
-        /// </summary>
-        /// <param name="services"></param>
-        private void RegisterScoped(ref IServiceCollection services)
+        private void RegisterTransient(IServiceCollection services)
         {
-            services.AddScoped<SystemSettingService>();
-            services.AddScoped<UserStatuService>();
-            services.AddScoped<MenuService>();
-            services.AddScoped<UserInfoService>();
-            services.AddScoped<DonatorRankService>();
-            services.AddScoped<QiniuService>();
-            services.AddScoped<StorageService>();
-            services.AddScoped<ClientAppService>();
-            services.AddScoped<RedisService>();
-            services.AddScoped<WikiCategoryService>();
+            services.AddTransient<ISystemSettingService, SystemSettingService>();
+            services.AddTransient<IUserStatuService, UserStatuService>();
+            services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IUserInfoService, UserInfoService>();
+            services.AddTransient<IDonatorRankService, DonatorRankService>();
+            services.AddTransient<IQiniuService, QiniuService>();
+            services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IClientAppService, ClientAppService>();
+            services.AddTransient<IWikiCategoryService, WikiCategoryService>();
+            services.AddTransient<ILogService, LogService>();
+            services.AddTransient<IWikiPassageService, WikiPassageService>();
+            services.AddTransient<ISMSService, SMSService>();
         }
 
-        /// <summary>
-        /// ×¢²áÃ¿´Î·ÃÎÊ¶¼·µ»ØÒ»¸öĞÂÊµÀı£¨Transient£©µÄ¶ÔÏó¡£
-        /// 
-        /// ±¸×¢£º
-        ///     ¶ÔÏóÔÚÃ¿´Î±»µ÷ÓÃÊ±¶¼»á·µ»ØÒ»¸öĞÂÊµÀı¡£
-        /// </summary>
-        /// <param name="services"></param>
-        private void RegisterTransient(ref IServiceCollection services)
+        private void RegisterScoped(IServiceCollection services)
         {
-            services.AddTransient<WikiPassageService>();
+
         }
 
-        /// <summary>
-        /// Æô¶¯¼Æ»®ÈÎÎñ
-        /// </summary>
-        private async Task StartTask()
+        private void StartTask(IWikiPassageService wikiPassageService)
         {
-            await WikiPassageService.StartViewsCountUpdateTask();
+            //todo: é™†ç»­ä¼šå°†åå°ä»»åŠ¡è¿ç§»åˆ° BackgroundService ä¸­
             RequestLogFilter.StartIPsCount();
         }
+
     }
 }

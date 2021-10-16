@@ -1,1 +1,3 @@
-{"contentType":null,"authorizationHeader":null,"callBackUrl":"http://www.cities-skylines.cn/api/qiniucallback","callBackBody":""}
+version https://git-lfs.github.com/spec/v1
+oid sha256:0fe90e701cc4feba1dd83db72e4d3ae3a03bbfc25ce891be2e38bc526ad74717
+size 129

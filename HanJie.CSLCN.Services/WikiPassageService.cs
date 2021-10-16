@@ -13,30 +13,43 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using HanJie.CSLCN.Datas;
+using HanJie.CSLCN.Services.Providers;
 
 namespace HanJie.CSLCN.Services
 {
-    public class WikiPassageService : BaseService<WikiPassageDto, WikiPassage>
+    public class WikiPassageService : BaseService<WikiPassageDto, WikiPassage>, IWikiPassageService
     {
         private static Dictionary<int, WikiPassageLockingInfo> WikiEditingStatusDictionary = new Dictionary<int, WikiPassageLockingInfo>();
         private object _editingStatusLock = new object();
 
         public static Tuple<DateTime, List<WikiListItemDto>> WikiListCaches { get; private set; }
 
-        #region 访问量统计
-        private RedisService _redisService;
-        private static Dictionary<int, Dictionary<string, ViewsCountDto>> ViewsDictionary => GetViewsDictionaryCache().Result;
+        private readonly IWikiCategoryService _wikiCategoryService;
 
-        private static Task viewsCountTask;
+        #region 访问量统计
+        private readonly IRedisService _redisService;
+        private readonly ILogService _logService;
+        private readonly IStaticDictionariesProvider _staticDictionariesProvider;
         /// <summary>
         /// 对访问量缓存对象的保护锁
         /// </summary>
         private static object _viewsCountDictionaryLock = new object();
         #endregion
 
-        public WikiPassageService()
+        public WikiPassageService(
+            IWikiCategoryService wikiCategoryService,
+            IRedisService redisService,
+            ILogService logService,
+            IStaticDictionariesProvider staticDictionariesProvider,
+            CSLDbContext cslDbContext,
+            ICommonHelper commonHelper)
+            : base(cslDbContext, commonHelper)
         {
-            this._redisService = GlobalService.ServiceProvider.GetService<RedisService>();
+            this._wikiCategoryService = wikiCategoryService;
+            this._redisService = redisService;
+            this._logService = logService;
+            this._staticDictionariesProvider = staticDictionariesProvider;
         }
 
         public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
@@ -163,8 +176,7 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
 
             List<BreadCrumbDto> results = new List<BreadCrumbDto>();
-            WikiCategoryService wikiCategoryService = base.GetService<WikiCategoryService>();
-            WikiCategory wikiCategory = await wikiCategoryService.GetById(wikiPassageDto.CategoryId);
+            WikiCategory wikiCategory = await this._wikiCategoryService.GetById(wikiPassageDto.CategoryId);
             results.Add(new BreadCrumbDto { Name = wikiCategory.Name, Url = "/wiki-list" });//$"/wiki-passage/{parentPassage.RoutePath}"
 
             return results;
@@ -393,19 +405,6 @@ namespace HanJie.CSLCN.Services
 
 
         #region 访问量统计
-        private static async Task<Dictionary<int, Dictionary<string, ViewsCountDto>>> GetViewsDictionaryCache()
-        {
-            RedisService redisService = GlobalService.ServiceProvider.GetService<RedisService>();
-            Dictionary<int, Dictionary<string, ViewsCountDto>> result = redisService.ObjectGet<Dictionary<int, Dictionary<string, ViewsCountDto>>>(StringConsts.ViewsCountDictionary);
-
-            if (result == null)
-            {
-                result = new Dictionary<int, Dictionary<string, ViewsCountDto>>();
-                await redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, result);
-            }
-
-            return result;
-        }
         public async Task AddViewsCount(int passageId, IPAddress ip)
         {
             try
@@ -444,87 +443,21 @@ namespace HanJie.CSLCN.Services
             }
             catch (Exception ex)
             {
-                await base.Log(message: "访问量统计：新增访问量出现异常。",
+                await this._logService.Log(message: "访问量统计：新增访问量出现异常。",
                      parameters: new { ex = ex.ToString(), passageId, ip = ip.ToString() });
             }
-        }
-
-        public async static Task StartViewsCountUpdateTask()
-        {
-            try
-            {
-
-                if (WikiPassageService.viewsCountTask != null)
-                {
-                    return;
-                }
-
-                WikiPassageService.viewsCountTask = Task.Run(() =>
-                 {
-                     while (true)
-                     {
-                         try
-                         {
-
-                             LockViewsDictionary(async dic =>
-                             {
-                                 foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
-                                 {
-                                     int passageId = item.Key;
-                                     int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
-
-                                     if (newViewsCount > 0)
-                                     {
-                                         WikiPassageService wikiPassageService = GlobalService.ServiceProvider.GetService<WikiPassageService>();
-                                         WikiPassage wikiPassage = await wikiPassageService.GetById(passageId);
-                                         wikiPassage.TotalViewsCount += newViewsCount;
-                                         await wikiPassageService.UpdateAsync(wikiPassage, false);
-                                     }
-                                 }
-                                 foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
-                                 {
-                                     foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
-                                     {
-                                         viewsCountItem.Value.NewViews = 0;
-                                     }
-                                 }
-                                 _ = GlobalService.ServiceProvider.GetService<RedisService>().ObjectSetAsync(StringConsts.ViewsCountDictionary, dic);
-                             });
-                             if (RunAs.Debug)
-                             {
-                                 Thread.Sleep(5 * 1000);    //5秒
-                             }
-                             if (RunAs.Release)
-                             {
-                                 Thread.Sleep(20 * 1000);  //20秒
-                             }
-                         }
-                         catch (Exception ex)
-                         {
-                             File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "counter catch ex inside task: " + Environment.NewLine + ex.ToString());
-                         }
-                     }
-                 });
-            }
-            catch (Exception ex)
-            {
-                File.AppendAllText("counter-log.txt", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "ex:" + ex.ToString() + Environment.NewLine);
-                await new LogService().Log(message: "访问量统计：启动访问量统计系统前出错",
-                         parameters: new { ex = ex.ToString() });
-            }
-
         }
 
         /// <summary>
         /// 锁定保护，防止两个冲突的进程同时访问 Dictionary 
         /// </summary>
         /// <param name="action"></param>
-        public static void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
+        public void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action)
         {
             //此锁锁定 新增访问量 与 结算访问量 同时访问的情况，保护 ViewsDictionary 唯一性
-            lock (WikiPassageService._viewsCountDictionaryLock)
+            lock (_viewsCountDictionaryLock)
             {
-                action(ViewsDictionary);
+                action(_staticDictionariesProvider.WikiPassageViewersCountDictionary);
             }
         }
         #endregion

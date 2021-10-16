@@ -6,7 +6,7 @@ using ToolGood.Words;
 
 namespace HanJie.CSLCN.Common
 {
-    public class SensitiveWordHelper : BaseHelper
+    public class SensitiveWordHelper : BaseHelper, ISensitiveWordHelper
     {
         private static List<string> _sensitiveWords { get; set; }
         private static StringSearchEx _stringSearcher { get; set; }

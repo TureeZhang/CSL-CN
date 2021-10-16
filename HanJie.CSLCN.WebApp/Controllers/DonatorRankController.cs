@@ -14,11 +14,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
     [Route("api/[controller]")]
     public class DonatorRankController : Controller
     {
-        private DonatorRankService _donatorRankService { get; set; }
-        private UserInfoService _userInfoService { get; set; }
+        private IDonatorRankService _donatorRankService { get; set; }
+        private IUserInfoService _userInfoService { get; set; }
 
-        public DonatorRankController(DonatorRankService donatorRankService,
-            UserInfoService userInfoService)
+        public DonatorRankController(IDonatorRankService donatorRankService,
+            IUserInfoService userInfoService)
         {
             _donatorRankService = donatorRankService;
             _userInfoService = userInfoService;

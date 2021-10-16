@@ -33,6 +33,11 @@ namespace HanJie.CSLCN.Models.DataModels
         [Required]
         public DateTime LastModifyDate { get; set; }
 
+        public BaseDataModel()
+        {
+            
+        }
+
         /// <summary>
         /// 将传输模型转换为数据模型。
         /// </summary>

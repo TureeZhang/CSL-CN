@@ -6,6 +6,8 @@ namespace HanJie.CSLCN.Models.Enums
 {
     public enum SystemSettingTypeEnum
     {
-        HomePageSettings = 0
+        HomePageSettings = 0,
+        UserSettings = 1,
+        Others = 100
     }
 }

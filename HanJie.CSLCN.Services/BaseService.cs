@@ -17,18 +17,14 @@ namespace HanJie.CSLCN.Services
         where TDataModelType : BaseDataModel<TDataModelType, TDtoType>, new()     //约束继承此基类的子类必须拥有传输模型和数据模型，且数据模型和传输模型必须继承自 BaseDtoModel 和 BaseDataModel
     {
 
-        public CSLDbContext CSLDbContext { get; private set; }
-        public CommonHelper CommonHelper { get; set; }
+        public readonly CSLDbContext CSLDbContext;
+        public readonly ICommonHelper CommonHelper;
+        private readonly ILogService _logService;
 
-        public BaseService()
+        public BaseService(CSLDbContext cslDbContext,ICommonHelper commonHelper)
         {
-            this.CSLDbContext = GlobalService.ServiceProvider.GetService<CSLDbContext>();
-            this.CommonHelper = GlobalService.ServiceProvider.GetService<CommonHelper>();
-        }
-
-        public T GetService<T>()
-        {
-            return GlobalService.ServiceProvider.GetService<T>();
+            this.CSLDbContext = cslDbContext;
+            this.CommonHelper = commonHelper;
         }
 
         /// <summary>
@@ -66,6 +62,7 @@ namespace HanJie.CSLCN.Services
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
+        /// <param name="updateLastModifyData">更新最后修改时间。此参数影响“贡献者”界面的排序，最后提交的用户会被按顺序显示。</param>
         public virtual async Task UpdateAsync(TDataModelType data, bool updateLastModifyData = true)
         {
             if (data == null)
@@ -124,7 +121,7 @@ namespace HanJie.CSLCN.Services
 
         public async virtual Task Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
         {
-            await new LogService().Log(message, logLevel, parameters);
+            await this._logService.Log(message, logLevel, parameters);
         }
     }
 }

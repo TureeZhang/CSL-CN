@@ -13,10 +13,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
 {
     public class SystemSettingsController : BaseController
     {
-        private readonly SystemSettingService _systemSettingsService;
+        private readonly ISystemSettingService _systemSettingsService;
 
-        public SystemSettingsController(SystemSettingService systemSettingsService
-            , UserStatuService userStatuService) : base(userStatuService)
+        public SystemSettingsController(ISystemSettingService systemSettingsService
+            , IUserStatuService userStatuService) : base(userStatuService)
         {
             this._systemSettingsService = systemSettingsService;
         }

@@ -11,11 +11,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
 {
     public class WikiCategoryController : BaseController
     {
-        private WikiCategoryService _wikiCategoryService;
+        private IWikiCategoryService _wikiCategoryService;
 
-        public WikiCategoryController(UserStatuService userStatuService,
-            WikiCategoryService wikiCategoryService,
-            RedisService redisService)
+        public WikiCategoryController(IUserStatuService userStatuService,
+            IWikiCategoryService wikiCategoryService,
+            IRedisService redisService)
             : base(userStatuService)
         {
             this._wikiCategoryService = wikiCategoryService;

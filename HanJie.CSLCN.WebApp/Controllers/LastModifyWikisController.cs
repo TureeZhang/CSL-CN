@@ -16,12 +16,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public static Tuple<DateTime, List<WikiListItemDto>> LastModifyWikisCaches { get; private set; }
 
 
-        private readonly WikiPassageService _wikiPassageService;
-        private readonly UserInfoService _userInfoService;
+        private readonly IWikiPassageService _wikiPassageService;
+        private readonly IUserInfoService _userInfoService;
 
-        public LastModifyWikisController(WikiPassageService wikiPassageService,
-            UserInfoService userInfoService,
-            UserStatuService userStatuService) : base(userStatuService)
+        public LastModifyWikisController(IWikiPassageService wikiPassageService,
+            IUserInfoService userInfoService,
+            IUserStatuService userStatuService) : base(userStatuService)
         {
             this._wikiPassageService = wikiPassageService;
             this._userInfoService = userInfoService;

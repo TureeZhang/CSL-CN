@@ -16,9 +16,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class QiniuStorageInfoController : ControllerBase
     {
 
-        private QiniuService _qiniuService;
+        private IQiniuService _qiniuService;
 
-        public QiniuStorageInfoController(QiniuService qiniuService)
+        public QiniuStorageInfoController(IQiniuService qiniuService)
         {
             this._qiniuService = qiniuService;
         }

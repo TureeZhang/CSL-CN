@@ -1,4 +1,5 @@
 ﻿using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.Consts;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
@@ -15,13 +16,14 @@ using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
-    public class QiniuService : BaseService<QiniuStorageInfoDto, QiniuStorageInfo>
+    public class QiniuService : BaseService<QiniuStorageInfoDto, QiniuStorageInfo>, IQiniuService
     {
         private readonly Mac _mac;
         private readonly List<string> _validQiniuCallBackUrls;
         private readonly string _qiniuCallBackUrl;
 
-        public QiniuService()
+        public QiniuService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
+            : base(cslDbContext, commonHelper)
         {
             this._mac = new Mac(GlobalConfigs.AppSettings.QiniuConfig.AccessKey, GlobalConfigs.AppSettings.QiniuConfig.SecretKey);
             this._validQiniuCallBackUrls = new List<string>() { GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl, "http://www.cities-skylines.cn/api/qiniucallbacktest" };
