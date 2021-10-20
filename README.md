@@ -20,7 +20,7 @@ CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skyli
 
 **服务器：**
 
-- [.NetCore 2.2](https://docs.microsoft.com/zh-cn/aspnet/?view=aspnetcore-2.2#pivot=core)
+- [.NetCore 3.1](https://docs.microsoft.com/zh-cn/aspnet/core/?view=aspnetcore-3.1)
 - [EF Core 2.2](https://docs.microsoft.com/zh-cn/ef/core/index)
 
 **浏览器：**
