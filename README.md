@@ -2,6 +2,10 @@
 
 《汉界的一颗小虎牙》 - 你可以免费查阅的 城市天际线 在线百科全书 www.cities-skylines.cn 。
 
+## Docker 支持
+
+**[aa940724/cslcn](https://hub.docker.com/r/aa940724/cslcn)**
+
 ## 这是什么 ?
 
 CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skylines Wiki of China 。
@@ -30,8 +34,8 @@ CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skyli
 
 ## 配置要求
 
-* Linux(推荐): 1核1G - 5MB 带宽
-* Windows: 1核2G - 5MB 带宽
+* Linux(推荐): 1核1G - 1MB 带宽
+* Windows: 1核2G - 1MB 带宽
 
 ## 开发计划
 
