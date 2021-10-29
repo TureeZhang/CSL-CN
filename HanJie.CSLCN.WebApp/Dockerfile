@@ -1,6 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+﻿FROM mcr.microsoft.com/dotnet/aspnet:3.1
 USER root
 COPY . /csl-cn
 WORKDIR /csl-cn
-EXPOSE 80/tcp
-CMD ["dotnet","HanJie.CSLCN.WebApp","--urls=http://0.0.0.0:80"]
+VOLUME ["/csl-cn/appsettings.Release.json"]
+EXPOSE 5000/tcp
+CMD ["dotnet","HanJie.CSLCN.WebApp.dll","--urls=http://0.0.0.0:5000"]

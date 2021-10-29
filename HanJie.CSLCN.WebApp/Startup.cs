@@ -88,8 +88,7 @@ namespace HanJie.CSLCN.WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            if (!env.IsDevelopment())
+            else
             {
                 ExceptionHandlerOptions exceptionHandlerOptions = new ExceptionHandlerOptions();
                 exceptionHandlerOptions.ExceptionHandler = async (httpContext) =>
@@ -109,7 +108,18 @@ namespace HanJie.CSLCN.WebApp
                    });
                 };
                 app.UseExceptionHandler(exceptionHandlerOptions);
+                app.UseExceptionHandler("/index.html");
             }
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
 
             app.UseCors("local-angular-app");
             app.UseFileServer();

@@ -34,7 +34,7 @@ namespace HanJie.CSLCN.WebApp
                          config.AddJsonFile(RunAs.Debug ? "appsettings.Debug.json" : "appsettings.Release.json", optional: true, reloadOnChange: true);
                      })
                      .UseStartup<Startup>()
-                     .UseUrls("http://localhost:5000")
+                     .UseUrls("http://0.0.0.0:5000")
                      .ConfigureServices((hostContext, services) =>
                      {
                          services.AddHostedService<ViewersCountTask>();
