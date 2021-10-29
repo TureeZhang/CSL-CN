@@ -2,6 +2,10 @@
 
 《汉界的一颗小虎牙》 - 你可以免费查阅的 城市天际线 在线百科全书 www.cities-skylines.cn 。
 
+## Docker 支持
+
+**[aa940724/cslcn](https://hub.docker.com/r/aa940724/cslcn)**
+
 ## 这是什么 ?
 
 CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skylines Wiki of China 。
@@ -20,7 +24,7 @@ CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skyli
 
 **服务器：**
 
-- [.NetCore 2.2](https://docs.microsoft.com/zh-cn/aspnet/?view=aspnetcore-2.2#pivot=core)
+- [.NetCore 3.1](https://docs.microsoft.com/zh-cn/aspnet/core/?view=aspnetcore-3.1)
 - [EF Core 2.2](https://docs.microsoft.com/zh-cn/ef/core/index)
 
 **浏览器：**
@@ -30,13 +34,13 @@ CSL-CN 是一个内容发布管理引擎的早期雏形，全称是 Cities-Skyli
 
 ## 配置要求
 
-* Linux(推荐): 1核1G - 5MB 带宽
-* Windows: 1核2G - 5MB 带宽
+* Linux(推荐): 1核1G - 1MB 带宽
+* Windows: 1核2G - 1MB 带宽
 
 ## 开发计划
 
 我们已启用自动化版本控制与进度追踪系统：
 
-- 版本功能列表确认：<https://github.com/TureeZhang/CSL-CN/milestone>
+- 版本功能列表确认：<https://github.com/TureeZhang/CSL-CN/milestone/1>
 
 - 实时开发进度追踪与查询：<https://github.com/TureeZhang/CSL-CN/projects/1>
