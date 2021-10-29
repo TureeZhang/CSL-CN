@@ -9,7 +9,7 @@ docker buildx build -t aa940724/cslcn:1.3 --push --platform linux/arm64,linux/am
 **运行 cslcn 的 Docker 镜像：**
 
 ```
-docker run -d --name cslcn -v /root/cslcn/appsettings.Release.json:/csl-cn/appsettings.Release.json --network host aa940724/cslcn:1.2
+docker run -d --name cslcn -v /root/cslcn/appsettings.Release.json:/csl-cn/appsettings.Release.json -v /root/cslcn/wwwroot/assets:/csl-cn/wwwroot/assets --network host aa940724/cslcn:1.4
 ```
 
 **Nginx 配置：**
