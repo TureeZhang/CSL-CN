@@ -11,3 +11,16 @@ docker buildx build -t aa940724/cslcn:1.3 --push --platform linux/arm64,linux/am
 ```
 docker run -d --name cslcn -v /root/cslcn/appsettings.Release.json:/csl-cn/appsettings.Release.json --network host aa940724/cslcn:1.2
 ```
+
+**Nginx 配置：**
+
+```
+server {
+        listen 80;
+        
+        location /
+        {
+                proxy_pass http://localhost:5000;
+        }
+}
+```
