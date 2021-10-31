@@ -20,7 +20,7 @@ server {
         
         location /
         {
-                proxy_pass http://localhost:5000;
+                proxy_pass http://localhost:5500;
         }
 }
 ```
