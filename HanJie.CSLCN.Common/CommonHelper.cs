@@ -26,7 +26,7 @@ namespace HanJie.CSLCN.Common
             Ensure.NotNull(hostValue, nameof(hostValue));
 
             if (hostValue != "www.cities-skylines.cn" &&
-                hostValue != "localhost:5000" &&
+                hostValue != "localhost:5500" &&
                 hostValue != "localhost:4200")
             {
                 return false;

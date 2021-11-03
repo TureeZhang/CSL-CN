@@ -181,7 +181,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddTransient<IWikiCategoryService, WikiCategoryService>();
             services.AddTransient<ILogService, LogService>();
             services.AddTransient<IWikiPassageService, WikiPassageService>();
-            services.AddTransient<ISMSService, SMSService>();
+            services.AddTransient<ISmsService, SmsService>();
         }
 
         private void RegisterScoped(IServiceCollection services)

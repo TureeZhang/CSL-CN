@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ToolGood.Words;
 
@@ -19,12 +20,12 @@ namespace HanJie.CSLCN.Common
 
             if (SensitiveWordHelper._stringSearcher == null)
             {
-                StringSearchEx stringSearcher = new StringSearchEx();
-                stringSearcher.SetKeywords(SensitiveWordHelper._sensitiveWords);
-                SensitiveWordHelper._stringSearcher = stringSearcher;
+                SensitiveWordHelper._stringSearcher = new StringSearchEx();
+                SensitiveWordHelper._stringSearcher.SetKeywords(SensitiveWordHelper._sensitiveWords);
             }
 
-            return SensitiveWordHelper._stringSearcher.ContainsAny(testWord);
+            bool isContainsSensitiveWords = SensitiveWordHelper._stringSearcher.ContainsAny(testWord);
+            return isContainsSensitiveWords;
         }
 
         private void LoadSensitiveWords()
@@ -33,7 +34,9 @@ namespace HanJie.CSLCN.Common
             List<string> sensitiveWords = new List<string>();
             foreach (string item in Directory.GetFiles(fileDirectoryPath))
             {
-                sensitiveWords.AddRange(File.ReadAllLines(item, Encoding.UTF8));
+                string[] words = File.ReadAllText(item, Encoding.UTF8).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                words = words.Select(item => item.Remove("\r").Remove("\n")).ToArray();
+                sensitiveWords.AddRange(words);
             }
             SensitiveWordHelper._sensitiveWords = sensitiveWords;
         }

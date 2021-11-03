@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
-    public interface ISMSService
+    public interface ISmsService
     {
-        void SendSms(string phoneNumber, string content, TimeSpan expireAfter);
-        void SendValidateCode(string phoneNumber, int code, TimeSpan expireAfter);
+        Task<string> SendValidateCode(string phoneNumber);
     }
 }

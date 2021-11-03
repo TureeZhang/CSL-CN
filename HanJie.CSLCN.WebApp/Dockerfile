@@ -3,5 +3,5 @@ USER root
 COPY . /csl-cn
 WORKDIR /csl-cn
 VOLUME ["/csl-cn/appsettings.Release.json"]
-EXPOSE 5000/tcp
-CMD ["dotnet","HanJie.CSLCN.WebApp.dll","--urls=http://0.0.0.0:5000"]
+EXPOSE 5500/tcp
+CMD ["dotnet","HanJie.CSLCN.WebApp.dll","--urls=http://0.0.0.0:5500"]

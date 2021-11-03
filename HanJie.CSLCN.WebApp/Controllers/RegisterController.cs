@@ -21,7 +21,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewUser([FromForm] UserInfoDto userInfoDto)
+        public async Task<IActionResult> RegistNewUser([FromForm] UserInfoDto userInfoDto)
         {
             Ensure.NotNull(userInfoDto, nameof(userInfoDto));
 

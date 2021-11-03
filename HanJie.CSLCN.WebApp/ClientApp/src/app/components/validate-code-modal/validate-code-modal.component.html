@@ -2,7 +2,7 @@
 <nz-modal [(nzVisible)]="isVisiable" [nzTitle]="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
   <div nz-row class="align-center">
     <div nz-col nzSpan="24">
-      <img src="/" alt="请输入验证码" />
+      <img src="/api/validate" alt="请输入验证码" />
     </div>
     <div nz-col nzSpan="24">
       <input type="number" name="validateCode" value="" />

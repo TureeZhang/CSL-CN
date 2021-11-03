@@ -65,7 +65,7 @@ export class CSLHttpHelper {
       apiHostUrl += "www.huyahanjie.com"
     }
     else {
-      apiHostUrl += "localhost:5000";
+      apiHostUrl += "localhost:5500";
     }
 
     return apiHostUrl;

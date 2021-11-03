@@ -10,5 +10,7 @@ namespace HanJie.CSLCN.Common
 
         public static readonly string UseLocalStorage = "use-local-storage";
         public static readonly string WikiCategoryCacheKey = "wiki-categories-cachekey";
+
+        public static readonly string ValidateCodeCache = "validatecode-cache";
     }
 }
