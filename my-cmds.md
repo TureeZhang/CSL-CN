@@ -14,6 +14,8 @@ docker run -d --name cslcn -v /root/cslcn/appsettings.Release.json:/csl-cn/appse
 
 **Nginx 配置：**
 
+也见知乎 <https://zhuanlan.zhihu.com/p/137146854>
+
 ```
 server {
         listen 80;
