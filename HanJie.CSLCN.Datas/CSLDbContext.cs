@@ -47,6 +47,11 @@ namespace HanJie.CSLCN.Datas
         /// </summary>
         public DbSet<Log> Logs { get; set; }
 
+        /// <summary>
+        /// 维基文档阅读量统计
+        /// </summary>
+        public DbSet<WikiPassageViewersCounts> WikiPassageViewersCounts { get; set; }
+
         public CSLDbContext(DbContextOptions<CSLDbContext> options)
             : base(options)
         {

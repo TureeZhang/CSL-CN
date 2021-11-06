@@ -1,6 +1,7 @@
 ﻿using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.MyExceptions;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,18 +15,22 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
 
         private IUserInfoService _userInfoService;
+        private readonly IHumanMachineValidateService _humanMachineValidateService;
 
-        public RegisterController(IUserInfoService userInfoService)
+        public RegisterController(IUserInfoService userInfoService,
+            IHumanMachineValidateService  humanMachineValidateService)
         {
             this._userInfoService = userInfoService;
+            this._humanMachineValidateService = humanMachineValidateService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistNewUser([FromForm] UserInfoDto userInfoDto)
+        public async Task<IActionResult> RegistNewUser([FromForm] UserInfoDto userInfoDto,[FromQuery]string smsCode)
         {
             Ensure.NotNull(userInfoDto, nameof(userInfoDto));
+            Ensure.NotNull(smsCode, nameof(smsCode));
 
-            await this._userInfoService.AddAsync(new UserInfo().ConvertFromDtoModel(userInfoDto));
+            this._userInfoService.RegisterNewUser(userInfoDto, smsCode);
             return Ok();
         }
     }

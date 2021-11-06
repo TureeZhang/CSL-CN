@@ -13,9 +13,13 @@ namespace HanJie.CSLCN.Services
     public class HumanMachineValidateService : IHumanMachineValidateService
     {
 
-        public HumanMachineValidateService(IRedisService redisService)
+        private const string SmsValiCodeCacheKey = "sms-vali-code-cachekey";
+
+        public HumanMachineValidateService(IRedisService redisService,
+            ISmsService smsService)
         {
             this._redisService = redisService;
+            this._smsService = smsService;
         }
 
         public async Task<string> GetCodeImageBase64String(string clientId)
@@ -40,6 +44,21 @@ namespace HanJie.CSLCN.Services
             return string.Equals(userInputCode, actualCode, StringComparison.OrdinalIgnoreCase);
         }
 
+        public async Task SendSmsValidateCode(string phoneNumber)
+        {
+            string smsCode = await this._smsService.SendValidateCode(phoneNumber);
+            await this._redisService.StringSetAsync($"{SmsValiCodeCacheKey}{phoneNumber}",smsCode,new TimeSpan(0,10,0));
+        }
+
+
+        public async Task<bool> IsSmsCodeEqual(string phoneNumber, string smsCode)
+        {
+            string codeCache = await this._redisService.StringGetAsync($"{SmsValiCodeCacheKey}{phoneNumber}");
+            bool isValide = string.Equals(codeCache, smsCode);
+
+            return isValide;
+        }
+
         #region 生成验证码图片
 
         /*CopyRight at https://www.cnblogs.com/tlmbem/p/10800943.html#:~:text=C%23生成随机验证码.%20可以生成验证码类型有“字母字符串”%20、“常用的汉字”、“简单的数学运算”%E3%80%82.%20生成的验证码图片有jpeg和gif两种格式%E3%80%82.%20生成随机验证码包括数字字母和汉字两种形式%2C汉字形式利用GB2312编码表生成而且是常用的汉字%E3%80%82.,GB2312%20字符编码分布表：.%20分区范围.%20符号类型.%20第01区.*/
@@ -51,6 +70,7 @@ namespace HanJie.CSLCN.Services
         //64位图片字符串开头描述
         private const string imageStr = "data:image/{0};base64,";
         private readonly IRedisService _redisService;
+        private readonly ISmsService _smsService;
 
         ///<summary>
         ///生成随机验证码（数字字母）

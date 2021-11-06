@@ -15,7 +15,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [HttpGet]
         public IEnumerable<string> Get(string phoneNumber,string validateCode)
         {
-            this.
+            throw new NotImplementedException();
         }
     }
 }

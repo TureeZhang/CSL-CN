@@ -19,6 +19,8 @@ namespace HanJie.CSLCN.Services
         Task UpdateLastCommitInfo(int id);
         UserInfoDto UserLoginAutoHandler(UserInfoDto userInfo);
         Task<UserInfo> GetById(int id);
-        Task UpdateAsync(UserInfo userInfo, bool updateLastModifyData);
+        Task UpdateAsync(UserInfo userInfo);
+        Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode);
+        List<UserInfoDto> ListUnAuditedUsers();
     }
 }

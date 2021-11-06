@@ -27,6 +27,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
+        [Route("/api/qiniucallback")]
         public async Task<string> Post()
         {
 

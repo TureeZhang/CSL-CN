@@ -27,9 +27,6 @@ namespace HanJie.CSLCN.Models.DataModels
 
         public int CategoryId { get; set; }
 
-        [Required]
-        public int TotalViewsCount { get; set; }
-
         //[Required]
         //public bool IsRowEnd { get; set; }
 

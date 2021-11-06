@@ -15,11 +15,11 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
     [Route("api/admin/[controller]")]
     public class AdminSystemSettingsController : AdminBaseController
     {
-        private readonly SystemSettingService _systemSettingsService;
+        private readonly ISystemSettingService _systemSettingsService;
 
 
-        public AdminSystemSettingsController(SystemSettingService systemSettingsService,
-            UserStatuService userStatuService) : base(userStatuService)
+        public AdminSystemSettingsController(ISystemSettingService systemSettingsService,
+            IUserStatuService userStatuService) : base(userStatuService)
         {
             this._systemSettingsService = systemSettingsService;
         }

@@ -11,5 +11,6 @@ namespace HanJie.CSLCN.Services
         Task<DonatorRank> CreateAsync(DonatorRankDto data);
         Task<List<DonatorRankDto>> GetDonatorAllRanksOrderbyTotalCountAsync();
         Task<List<DonatorRankDto>> GetDonatorMontlyRanksOrderbyTotalCountAsync();
+        Task<List<DonatorRank>> ListAsync();
     }
 }

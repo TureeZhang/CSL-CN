@@ -109,6 +109,7 @@ namespace HanJie.CSLCN.WebApp
                 };
                 app.UseExceptionHandler(exceptionHandlerOptions);
                 app.UseExceptionHandler("/index.html");
+
             }
 
             app.Use(async (context, next) =>
@@ -182,6 +183,8 @@ namespace HanJie.CSLCN.WebApp
             services.AddTransient<ILogService, LogService>();
             services.AddTransient<IWikiPassageService, WikiPassageService>();
             services.AddTransient<ISmsService, SmsService>();
+            services.AddTransient<IHumanMachineValidateService, HumanMachineValidateService>();
+            services.AddTransient<IWikiPassageViewersCountsService, WikiPassageViewersCountsService>();
         }
 
         private void RegisterScoped(IServiceCollection services)

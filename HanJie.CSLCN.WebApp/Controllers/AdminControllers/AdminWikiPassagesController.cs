@@ -15,10 +15,10 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
     [ApiController]
     public class AdminWikiPassagesController : AdminBaseController
     {
-        private readonly WikiPassageService _wikiPassageService;
+        private readonly IWikiPassageService _wikiPassageService;
 
-        public AdminWikiPassagesController(UserStatuService userStatuService,
-            WikiPassageService wikiPassageService) : base(userStatuService)
+        public AdminWikiPassagesController(IUserStatuService userStatuService,
+            IWikiPassageService wikiPassageService) : base(userStatuService)
         {
             this._wikiPassageService = wikiPassageService;
         }

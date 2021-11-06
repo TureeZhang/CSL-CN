@@ -62,17 +62,11 @@ namespace HanJie.CSLCN.Services
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
-        /// <param name="updateLastModifyData">更新最后修改时间。此参数影响“贡献者”界面的排序，最后提交的用户会被按顺序显示。</param>
-        public virtual async Task UpdateAsync(TDataModelType data, bool updateLastModifyData = true)
+        public virtual async Task UpdateAsync(TDataModelType data)
         {
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
+            Ensure.NotNull(data, nameof(data));
 
-            if (updateLastModifyData)
-                data.LastModifyDate = DateTime.Now;
-
+            data.LastModifyDate = DateTime.Now;
             TDataModelType entity = await CSLDbContext.Set<TDataModelType>().FindAsync(data.Id);
             Type modelType = typeof(TDataModelType);
             foreach (string propName in typeof(TDataModelType).GetProperties().Select(p => p.Name).ToList())

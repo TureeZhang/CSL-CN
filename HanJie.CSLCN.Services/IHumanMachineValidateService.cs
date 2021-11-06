@@ -6,5 +6,6 @@ namespace HanJie.CSLCN.Services
     {
         Task<string> GetCodeImageBase64String(string clientId);
         Task<bool> IsValidateCodeEqualAsync(string clientId, string userInputCode);
+        Task<bool>IsSmsCodeEqual(string phoneNumber, string smsCode);
     }
 }

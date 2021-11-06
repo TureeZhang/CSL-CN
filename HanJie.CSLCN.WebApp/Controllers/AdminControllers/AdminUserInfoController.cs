@@ -16,10 +16,10 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
     public class AdminUserInfoController : AdminBaseController
     {
 
-        private UserInfoService _userInfoService { get; set; }
+        private IUserInfoService _userInfoService { get; set; }
 
-        public AdminUserInfoController(UserInfoService userInfoService
-            , UserStatuService userStatuService) : base(userStatuService)
+        public AdminUserInfoController(IUserInfoService userInfoService
+            , IUserStatuService userStatuService) : base(userStatuService)
         {
             this._userInfoService = userInfoService;
         }

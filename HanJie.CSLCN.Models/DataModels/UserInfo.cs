@@ -69,5 +69,16 @@ namespace HanJie.CSLCN.Models.DataModels
         /// 最后编辑文档的时间（最后活跃时间）
         /// </summary>
         public DateTime? LastCommitDateTime { get; set; }
+
+        /// <summary>
+        /// 手机号码
+        /// </summary>
+        [MaxLength(64)]
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// 是否已审核
+        /// </summary>
+        public bool IsAudited { get; set; }
     }
 }

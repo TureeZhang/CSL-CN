@@ -16,12 +16,12 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
     public class AdminDonatorsController : AdminBaseController
     {
 
-        private DonatorRankService _donatorRankService;
-        private readonly UserInfoService _userInfoService;
+        private IDonatorRankService _donatorRankService;
+        private readonly IUserInfoService _userInfoService;
 
-        public AdminDonatorsController(UserStatuService userStatuService,
-            DonatorRankService donatorRankService,
-            UserInfoService userInfoService) : base(userStatuService)
+        public AdminDonatorsController(IUserStatuService userStatuService,
+            IDonatorRankService donatorRankService,
+            IUserInfoService userInfoService) : base(userStatuService)
         {
             this._donatorRankService = donatorRankService;
             this._userInfoService = userInfoService;

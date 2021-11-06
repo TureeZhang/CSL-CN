@@ -63,18 +63,6 @@ namespace HanJie.CSLCN.Services
             throw new NotImplementedException();
         }
 
-        private void SendValidateCode(string phoneNumber, int code, TimeSpan expireAfter)
-        {
-            throw new NotImplementedException();
-        }
 
-        /// <summary>
-        /// 发送
-        /// </summary>
-        /// <returns></returns>
-        private string GetExistAvailableCode()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

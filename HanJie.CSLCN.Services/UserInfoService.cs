@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Models.Consts;
 using HanJie.CSLCN.Datas;
+using HanJie.CSLCN.Models.MyExceptions;
 
 namespace HanJie.CSLCN.Services
 {
@@ -18,17 +19,20 @@ namespace HanJie.CSLCN.Services
     {
         private readonly ISystemSettingService _systemSettingService;
         private readonly IUserStatuService _userStatuService;
+        private readonly IHumanMachineValidateService _humanMachineValidateService;
 
         public UserInfoService(
             ISystemSettingService systemSettingService,
             IUserStatuService userStatuService,
             CSLDbContext cslDbContext,
-            ICommonHelper commonHelper
+            ICommonHelper commonHelper,
+            IHumanMachineValidateService humanMachineValidateService
             )
             : base(cslDbContext, commonHelper)
         {
             this._systemSettingService = systemSettingService;
             this._userStatuService = userStatuService;
+            this._humanMachineValidateService = humanMachineValidateService;
         }
 
         public virtual UserInfoDto UserLoginAutoHandler(UserInfoDto userInfo)
@@ -249,7 +253,7 @@ namespace HanJie.CSLCN.Services
             {
                 editors = await CSLDbContext.UserInfoes
                     .Where(item => item.IsAdmin && DateTime.Now.AddDays(-recentDaysCount) <= item.LastCommitDateTime)
-                    .OrderByDescending(item => item.LastModifyDate)
+                    .OrderByDescending(item => item.LastCommitDateTime)
                     .ToListAsync();
             }
 
@@ -277,6 +281,33 @@ namespace HanJie.CSLCN.Services
                 if (item.LastCommitDateTime != null)
                     dto.LastCommitDateTime = item.LastCommitDateTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
                 results.Add(dto);
+            }
+
+            return results;
+        }
+
+        public async Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto,string userInputSmsCode)
+        {
+            Ensure.NotNull(userInfoDto, nameof(userInfoDto));
+            Ensure.NotNull(userInfoDto.PhoneNumber, nameof(userInfoDto.PhoneNumber));
+
+            bool isValidatePhone = await this._humanMachineValidateService.IsSmsCodeEqual(userInfoDto.PhoneNumber, userInputSmsCode);
+            if (!isValidatePhone)
+                throw new UserException($"发往 {userInfoDto.PhoneNumber} 的手机验证码核对有误，验证失败。请正确输入短信中包含的验证码，然后重试。");
+
+            userInfoDto.IsAudited = false;
+            await AddAsync(new UserInfo().ConvertFromDtoModel(userInfoDto));
+            return userInfoDto;
+        }
+
+        public List<UserInfoDto> ListUnAuditedUsers()
+        {
+            List<UserInfoDto> results = new List<UserInfoDto>();
+
+            List<UserInfo> users = base.CSLDbContext.UserInfoes.Where(user => user.IsAudited == false).ToList();
+            foreach (UserInfo item in users)
+            {
+                results.Add(new UserInfoDto().ConvertFromDataModel(item));
             }
 
             return results;

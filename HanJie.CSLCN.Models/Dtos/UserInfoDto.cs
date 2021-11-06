@@ -78,5 +78,15 @@ namespace HanJie.CSLCN.Models.Dtos
         /// </summary>
         public string LastCommitDateTime { get; set; }
 
+        /// <summary>
+        /// 手机号码
+        /// </summary>
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// 管理员是否已审核
+        /// </summary>
+        public bool IsAudited { get; set; }
+
     }
 }

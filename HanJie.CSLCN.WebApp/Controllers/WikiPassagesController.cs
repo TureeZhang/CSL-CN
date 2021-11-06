@@ -22,18 +22,19 @@ namespace HanJie.CSLCN.WebApp.Controllers
         private readonly IWikiPassageService _wikiPassageService;
         private readonly IUserInfoService _userInfoService;
         private readonly IWikiCategoryService _wikiCategoryService;
+        private readonly IWikiPassageViewersCountsService _wikiPassageViewersCountsService;
 
         public WikiPassagesController(IWikiPassageService wikiPassageService,
             IUserInfoService userInfoService,
             IWikiCategoryService wikiCategoryService,
+            IWikiPassageViewersCountsService wikiPassageViewersCountsService,
             IUserStatuService userStatuService) : base(userStatuService)
         {
             this._userInfoService = userInfoService;
             this._wikiPassageService = wikiPassageService;
             this._wikiCategoryService = wikiCategoryService;
+            this._wikiPassageViewersCountsService = wikiPassageViewersCountsService;
         }
-
-
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
@@ -45,6 +46,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             wikiPassageDto.MainAuthors = await this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
             wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? await this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
             wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? await this._wikiPassageService.CollectBreadCrumbsAsync(wikiPassageDto) : null;
+            wikiPassageDto.TotalViewsCount = this._wikiPassageViewersCountsService.GetByWikiPassageId(wikiPassage.Id).ViewersCount;
 
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
             wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(await this._userInfoService.GetById(editingUserId));

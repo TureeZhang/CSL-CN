@@ -33,9 +33,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
-        public string Post(UserInfoDto userInfo)
+        public IActionResult Post(UserInfoDto userInfo)
         {
-            throw new NotImplementedException();
+            if (userInfo.Id != base.CurrentUser.Id)
+                return new NotFoundResult();
+
+            this._userInfoService.UpdateAsync(new UserInfo().ConvertFromDtoModel(userInfo));
+            return Ok();
         }
 
         [HttpPut]
@@ -44,7 +48,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             Ensure.NotNull(userInfo, nameof(userInfo));
             Ensure.NotContainsSensitiveWord(userInfo.NickName, nameof(userInfo.NickName));
 
-            await this._userInfoService.UpdateAsync(new UserInfo().ConvertFromDtoModel(userInfo), true);
+            await this._userInfoService.UpdateAsync(new UserInfo().ConvertFromDtoModel(userInfo));
             return Ok();
         }
 
@@ -53,6 +57,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         {
             throw new NotImplementedException();
         }
+
 
     }
 }

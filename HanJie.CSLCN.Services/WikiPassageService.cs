@@ -31,6 +31,8 @@ namespace HanJie.CSLCN.Services
         private readonly IRedisService _redisService;
         private readonly ILogService _logService;
         private readonly IStaticDictionariesProvider _staticDictionariesProvider;
+        private readonly IWikiPassageViewersCountsService _wikiPassageViewersCountsService;
+
         /// <summary>
         /// 对访问量缓存对象的保护锁
         /// </summary>
@@ -43,6 +45,7 @@ namespace HanJie.CSLCN.Services
             ILogService logService,
             IStaticDictionariesProvider staticDictionariesProvider,
             CSLDbContext cslDbContext,
+            IWikiPassageViewersCountsService wikiPassageViewersCountsService,
             ICommonHelper commonHelper)
             : base(cslDbContext, commonHelper)
         {
@@ -50,6 +53,7 @@ namespace HanJie.CSLCN.Services
             this._redisService = redisService;
             this._logService = logService;
             this._staticDictionariesProvider = staticDictionariesProvider;
+            this._wikiPassageViewersCountsService = wikiPassageViewersCountsService;
         }
 
         public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
@@ -166,7 +170,7 @@ namespace HanJie.CSLCN.Services
             dto.CoverUrl = await PickCoverUrlFromContentFirstImage(wikiPassage.Content);
             dto.LastModifyDate = wikiPassage.LastModifyDate.ToString("yyyy-MM-dd HH:mm:ss");
             dto.LastModifyUser = new UserInfoDto { Id = wikiPassage.LastModifyUserId };
-            dto.TotalViewsCount = wikiPassage.TotalViewsCount;
+            dto.TotalViewsCount = this._wikiPassageViewersCountsService.GetByWikiPassageId(wikiPassage.Id).ViewersCount;
 
             return dto;
         }

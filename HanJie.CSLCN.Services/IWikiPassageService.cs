@@ -19,6 +19,7 @@ namespace HanJie.CSLCN.Services
         bool IsPassageLocked(int passageId);
         Task<bool> IsRoutePathExist(string routePath);
         Task<List<WikiListItemDto>> ListAllPassageGenerals(bool readFromDatabaseImmediately = false);
+        Task<List<WikiPassageDto>> ListDtos();
         Task<List<WikiPassageDto>> ListAsCooperatePassageDtoes(int userId);
         Task<List<WikiPassage>> ListAsCooperatePassages(int userId);
         Task<List<WikiPassageDto>> ListAsMainAuthorPassageDtoes(int userId);
@@ -30,7 +31,7 @@ namespace HanJie.CSLCN.Services
         void UnlockPassageEditingStatus(int passageId);
         void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action);
         Task UpdateAsync(WikiPassageDto wikiPassageDto, int currentUserId);
-        Task UpdateAsync(WikiPassage wikiPassage, bool updateLastModifyData = true);
+        Task UpdateAsync(WikiPassage wikiPassage);
         Task<WikiPassage> GetById(int id);
         Task AddViewsCount(int passageId, IPAddress ip);
     }
