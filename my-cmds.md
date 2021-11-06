@@ -18,12 +18,46 @@ docker run -d --name cslcn -v /root/cslcn/appsettings.Release.json:/csl-cn/appse
 
 ```
 server {
+	listen 80;
+        server_name www.cities-skylines.cn cities-skylines.cn *.cities-skylines.cn;
+	
+        location /
+        {
+                proxy_pass http://localhost:5500;
+                proxy_http_version 1.1;
+                proxy_set_header   Upgrade $http_upgrade;
+                proxy_set_header   Connection keep-alive;
+                proxy_set_header   Host $host;
+                proxy_cache_bypass $http_upgrade;
+                proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header   X-Forwarded-Proto $scheme;
+	}
+}
+
+server {
         listen 80;
-        server_name cities-skylines.cn *.cities-skylines.cn;
+        server_name docker.cities-skylines.cn;
 
         location /
         {
-                proxy_pass http://localhost:5000;
+                proxy_pass http://localhost:9000;
+                proxy_http_version 1.1;
+                proxy_set_header   Upgrade $http_upgrade;
+                proxy_set_header   Connection keep-alive;
+                proxy_set_header   Host $host;
+                proxy_cache_bypass $http_upgrade;
+                proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header   X-Forwarded-Proto $scheme;
+        }
+}
+
+server {
+        listen 80;
+        server_name seq.cities-skylines.cn;
+
+        location /
+        {
+                proxy_pass http://localhost:8080;
                 proxy_http_version 1.1;
                 proxy_set_header   Upgrade $http_upgrade;
                 proxy_set_header   Connection keep-alive;
