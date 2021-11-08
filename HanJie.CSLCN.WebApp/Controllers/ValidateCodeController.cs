@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace HanJie.CSLCN.WebApp.Controllers
 {
     [Route("api/[controller]")]
-    public class HumanMachineValidateController : BaseController
+    public class ValidateCodeController : BaseController
     {
-        private readonly IHumanMachineValidateService _humanMachineValidateService;
+        private readonly IValidateCodeService _humanMachineValidateService;
 
-        public HumanMachineValidateController(
-            IHumanMachineValidateService humanMachineValidateService,
+        public ValidateCodeController(
+            IValidateCodeService humanMachineValidateService,
             IUserStatuService userStatuService)
             : base(userStatuService)
         {

@@ -17,6 +17,7 @@ export class AdminHomepageComponent implements OnInit {
 
     private init(): void {
         this.data.push(
+            new AdminHomepageCard("/admin/audit", "auditTemplate", "审核", "查看并审核内容", "audit"),
             new AdminHomepageCard("/admin/userinfoes", "userinfoAvatarTemplate", "用户", "查看并管理注册用户信息", "user"),
             new AdminHomepageCard("/admin/donators", "donatorRankTemplate", "捐赠", "查看并管理捐赠者统计数据", "heart"),
             new AdminHomepageCard("/admin/wikipassages", "wikiPassageTemplate", "文章", "查看并管理维基文档", "file-text"),

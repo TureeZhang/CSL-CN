@@ -61,6 +61,10 @@ namespace HanJie.CSLCN.Services
         private void SendSms(string phoneNumber, string content, TimeSpan expireAfter)
         {
             throw new NotImplementedException();
+
+            //发送完成后送入冷却列表 10 分钟。
+            if (RunAs.Release)
+                InsertPauseList(phoneNumber);
         }
 
 

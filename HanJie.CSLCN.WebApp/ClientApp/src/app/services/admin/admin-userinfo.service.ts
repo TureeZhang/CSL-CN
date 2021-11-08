@@ -12,8 +12,8 @@ export class AdminUserInfoService {
 
   }
 
-  list(): Observable<UserInfoDto[]> {
-    let datas: Observable<UserInfoDto[]> = this.cslHttpHelper.get<UserInfoDto[]>(this.url);
+  list(onlyUnAudited: boolean): Observable<UserInfoDto[]> {
+    let datas: Observable<UserInfoDto[]> = this.cslHttpHelper.get<UserInfoDto[]>(`${this.url}?onlyUnAudited=${onlyUnAudited}`);
     return datas;
   }
 

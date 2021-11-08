@@ -69,4 +69,8 @@ export class UserInfoService {
 
     }
 
+    register(user: UserInfoDto,smsCode:string): Observable<any> {
+        return this.httpHelper.post(`/api/register/RegistNewUser?smscode=${smsCode}`, user);
+    }
+
 }

@@ -19,20 +19,20 @@ namespace HanJie.CSLCN.Services
     {
         private readonly ISystemSettingService _systemSettingService;
         private readonly IUserStatuService _userStatuService;
-        private readonly IHumanMachineValidateService _humanMachineValidateService;
+        private readonly IValidateCodeService _validateCodeService;
 
         public UserInfoService(
             ISystemSettingService systemSettingService,
             IUserStatuService userStatuService,
             CSLDbContext cslDbContext,
             ICommonHelper commonHelper,
-            IHumanMachineValidateService humanMachineValidateService
+            IValidateCodeService humanMachineValidateService
             )
             : base(cslDbContext, commonHelper)
         {
             this._systemSettingService = systemSettingService;
             this._userStatuService = userStatuService;
-            this._humanMachineValidateService = humanMachineValidateService;
+            this._validateCodeService = humanMachineValidateService;
         }
 
         public virtual UserInfoDto UserLoginAutoHandler(UserInfoDto userInfo)
@@ -57,9 +57,9 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public async virtual Task<List<UserInfoDto>> ListDtoes()
+        public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyUnAudited)
         {
-            List<UserInfo> datas = await base.ListAsync();
+            List<UserInfo> datas = onlyUnAudited ? await base.CSLDbContext.UserInfoes.Where(user => user.IsAudited == false).ToListAsync() : await base.ListAsync();
             List<UserInfoDto> dtos = new List<UserInfoDto>();
             foreach (UserInfo item in datas)
             {
@@ -286,17 +286,22 @@ namespace HanJie.CSLCN.Services
             return results;
         }
 
-        public async Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto,string userInputSmsCode)
+        public async Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode)
         {
             Ensure.NotNull(userInfoDto, nameof(userInfoDto));
             Ensure.NotNull(userInfoDto.PhoneNumber, nameof(userInfoDto.PhoneNumber));
 
-            bool isValidatePhone = await this._humanMachineValidateService.IsSmsCodeEqual(userInfoDto.PhoneNumber, userInputSmsCode);
+            bool isValidatePhone = await this._validateCodeService.IsSmsCodeEqual(userInfoDto.PhoneNumberPrefix + userInfoDto.PhoneNumber, userInputSmsCode);
             if (!isValidatePhone)
                 throw new UserException($"发往 {userInfoDto.PhoneNumber} 的手机验证码核对有误，验证失败。请正确输入短信中包含的验证码，然后重试。");
 
             userInfoDto.IsAudited = false;
-            await AddAsync(new UserInfo().ConvertFromDtoModel(userInfoDto));
+            UserInfo userInfo = new UserInfo().ConvertFromDtoModel(userInfoDto);
+            userInfo.CreateDate = DateTime.Now;
+            userInfo.LastModifyDate = DateTime.Now;
+            userInfo.Password = this.CommonHelper.GetMd5Base64StringUsePrivateSold(userInfo.Password);
+            await AddAsync(userInfo);
+
             return userInfoDto;
         }
 
@@ -312,5 +317,20 @@ namespace HanJie.CSLCN.Services
 
             return results;
         }
+
+        public override async Task UpdateAsync(UserInfo data)
+        {
+            Ensure.NotNull(data.Id, nameof(data.Id));
+
+            UserInfo userInfo = await base.CSLDbContext.UserInfoes.FindAsync(data.Id);
+            userInfo = Mapper.Map<UserInfo>(data, userInfo);
+
+            userInfo.IsAudited = false;
+            userInfo.LastModifyDate = DateTime.Now;
+
+            base.CSLDbContext.UserInfoes.Update(userInfo);
+        }
+
+
     }
 }

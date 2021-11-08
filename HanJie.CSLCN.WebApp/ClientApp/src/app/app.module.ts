@@ -36,6 +36,7 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { QuestionComponent } from './components/question/question.component';
 import { CreateQuestionComponent } from './components/create-question/create-question.component';
 import { ValidateCodeModalComponent } from './components/validate-code-modal/validate-code-modal.component';
+import { AdminAuditComponent } from './components/admin-components/admin-audit/admin-audit.component';
 
 registerLocaleData(zh);
 
@@ -67,7 +68,8 @@ registerLocaleData(zh);
         CreateWikiPassageComponent,
         QuestionComponent,
         CreateQuestionComponent,
-        ValidateCodeModalComponent
+        ValidateCodeModalComponent,
+        AdminAuditComponent
     ],
     imports: [
         BrowserModule,

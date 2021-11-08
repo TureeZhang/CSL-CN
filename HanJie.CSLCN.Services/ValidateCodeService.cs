@@ -10,12 +10,12 @@ using HanJie.CSLCN.Common;
 
 namespace HanJie.CSLCN.Services
 {
-    public class HumanMachineValidateService : IHumanMachineValidateService
+    public class ValidateCodeService : IValidateCodeService
     {
 
         private const string SmsValiCodeCacheKey = "sms-vali-code-cachekey";
 
-        public HumanMachineValidateService(IRedisService redisService,
+        public ValidateCodeService(IRedisService redisService,
             ISmsService smsService)
         {
             this._redisService = redisService;
@@ -35,7 +35,7 @@ namespace HanJie.CSLCN.Services
             return imgBase64Str;
         }
 
-        public async Task<bool> IsValidateCodeEqualAsync(string clientId,string userInputCode)
+        public async Task<bool> IsValidateCodeEqualAsync(string clientId, string userInputCode)
         {
             Ensure.NotNull(clientId, nameof(clientId));
             Ensure.NotNull(userInputCode, nameof(userInputCode));
@@ -47,7 +47,7 @@ namespace HanJie.CSLCN.Services
         public async Task SendSmsValidateCode(string phoneNumber)
         {
             string smsCode = await this._smsService.SendValidateCode(phoneNumber);
-            await this._redisService.StringSetAsync($"{SmsValiCodeCacheKey}{phoneNumber}",smsCode,new TimeSpan(0,10,0));
+            await this._redisService.StringSetAsync($"{SmsValiCodeCacheKey}{phoneNumber}", smsCode, new TimeSpan(0, 10, 0));
         }
 
 

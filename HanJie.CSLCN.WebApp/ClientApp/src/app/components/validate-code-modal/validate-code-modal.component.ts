@@ -1,4 +1,5 @@
 import { Component, ContentChild, EventEmitter, Input, OnInit, Output, ViewRef } from '@angular/core';
+import { CSLHttpHelper } from 'src/app/commons/http-helper';
 
 @Component({
   selector: 'validate-code-modal',
@@ -18,12 +19,18 @@ export class ValidateCodeModalComponent implements OnInit {
   title: string = "人机验证";
 
   @Output()
-  onValid: EventEmitter<null> = new EventEmitter();
+  onClickOk: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() { }
+  public validateCodeImgBase64: string;
+  public userInputCode : string;
+
+  constructor(private cslHttpHelper: CSLHttpHelper) { 
+
+
+  }
 
   ngOnInit(): void {
-
+    this.refreshValidateCode();
   }
 
   handleCancel(): void {
@@ -32,12 +39,18 @@ export class ValidateCodeModalComponent implements OnInit {
 
   handleOk(): void {
     this.isVisiable = false;
-    this.onValid.emit();
+    this.onClickOk.emit(this.userInputCode);
   }
 
   showModal(e: Event): void {
     e.preventDefault();
     this.isVisiable = true;
+  }
+
+  refreshValidateCode():void{
+    this.cslHttpHelper.get<string>("/api/ValidateCode").subscribe(res => {
+      this.validateCodeImgBase64 = res;
+    });
   }
 
 }

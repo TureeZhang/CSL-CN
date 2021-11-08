@@ -8,18 +8,20 @@
       <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username" nzRequired>用户名</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="usernameErrorTpl">
+          <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="usernameErrorTpl" nzValidatingTip="正在检查用户名是否可用...">
             <input nz-input type="text" id="username" formControlName="username" autocomplete="off" />
             <ng-template #usernameErrorTpl let-control>
               <ng-contianer *ngIf="control.hasError('required')">请填写用户名</ng-contianer>
               <ng-contianer *ngIf="control.hasError('pattern')">请使用英文字母、数字，长度 6~15 位</ng-contianer>
+              <ng-contianer *ngIf="control.hasError('existed')">用户已存在</ng-contianer>
             </ng-template>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入密码">
-            <input nz-input type="password" id="password" formControlName="password" autocomplete="off" (ngModelChange)="updateConfirmValidator()" />
+            <input nz-input type="password" id="password" formControlName="password" autocomplete="off"
+              (ngModelChange)="updateConfirmValidator()" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -34,15 +36,6 @@
                 两次输入的密码不一致
               </ng-container>
             </ng-template>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">
-            <span>电子邮件</span>
-            <i nz-icon nz-tooltip nzTooltipTitle="用于重置密码" nzType="question-circle" nzTheme="outline"></i>
-          </nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="输入的内容不是电子邮箱">
-            <input nz-input formControlName="email" id="email" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -63,11 +56,9 @@
         </nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>手机号</nz-form-label>
-          <nz-form-control [nzSm]="14"
-                           [nzXs]="24"
-                           [nzValidateStatus]="validateForm.controls['phoneNumber']"
-                           [nzErrorTip]="phoneNumberErrorTpl"
-                           nzExtra="按照公安备案要求，必须留存用户的手机号码以备查验。请放心，您的信息将被加密保存，其他用户均不可见。（如有来自海外用户的验证需求，请想办法联系骚汉，可以灵活处理）">
+          <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['phoneNumber']"
+            [nzErrorTip]="phoneNumberErrorTpl"
+            nzExtra="按照公安备案要求，交互式网站必须留存用户的至少一项实名信息以备查验。请放心，你的信息将被加密保存，其他用户均不可见。（如有来自海外用户的验证需求，请想办法联系骚汉，可以灵活处理）">
             <ng-template #phoneNumberErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">请填写手机号码</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">请填写格式正确的手机号码</ng-container>
@@ -78,37 +69,41 @@
                   <ng-template #addOnBeforeTemplate>
                     <nz-select formControlName="phoneNumberPrefix" style="width:70px;">
                       <!--https://flagpedia.asia/emoji-->
-                      <nz-option nzCustomContent nzLabel="+86" nzValue="+86"><img src="/assets/nations/cn.png" alt="US" />+86</nz-option>
+                      <nz-option nzCustomContent nzLabel="+86" nzValue="+86"><img src="/assets/nations/cn.png"
+                          alt="US" />+86</nz-option>
                     </nz-select>
                   </ng-template>
                   <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
                 </nz-input-group>
               </div>
               <div nz-col [nzSpan]="6">
-                <validate-code-modal (onValid)="sendSmsCode()" [disabled]="!isSendSmsCodeButtonEnable">发送验证码</validate-code-modal>
+                <validate-code-modal (onClickOk)="sendSmsCode($event)" [disabled]="!isSendSmsCodeButtonEnable">发送验证码
+                </validate-code-modal>
               </div>
             </div>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="smsCode" nzRequired>短信验证码</nz-form-label>
-          <nz-form-control [nzSm]="14"
-                           [nzXs]="24"
-                           [nzErrorTip]="smsCodeErrorTpl"
-                           nzValidatingTip="正在比对验证码...">
+          <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="smsCodeErrorTpl" nzValidatingTip="正在比对验证码...">
             <ng-template #smsCodeErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">请填写手机验证码</ng-container>
-              <ng-container *ngIf="control.hasError('smsCodeOK')">验证码有误</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">请输入数字</ng-container>
             </ng-template>
-            <input formControlName="smsCode" id="smsCode" nz-input style="max-width:85px"/>
+            <input formControlName="smsCode" id="smsCode" nz-input style="max-width:85px" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-row class="register-area">
-          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6" [nzErrorTip]="'请阅读用户注册许可协议。'">
             <label nz-checkbox formControlName="agree">
-              <span>我已阅读并同意用户注册 <a>许可协议</a></span>
-            </label>
+              <span>我已阅读并同意用户注册</span>
+            </label><label style="font-weight: 600;color:cornflowerblue;" (click)="showAgreement()">许可协议</label> 。
+            <nz-modal [nzVisible]="isAgreementShow" nzTitle="用户注册许可协议" (nzOnOk)="closeAgreement()"
+              [nzCancelText]="null">
+              <div style="text-align: center;margin-top: 18px;">
+                <p>简单粗暴：<b>骚汉不想坐牢，别瞎搞就成～</b></p>
+              </div>
+            </nz-modal>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-row class="register-area">

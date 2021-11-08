@@ -110,17 +110,19 @@ namespace HanJie.CSLCN.WebApp
                 app.UseExceptionHandler(exceptionHandlerOptions);
                 app.UseExceptionHandler("/index.html");
 
+                //只有在正式环境才启用路由守卫。因为 debug 时前端时单独起的，不需要后段启用路由守卫策略。
+                app.Use(async (context, next) =>
+                 {
+                     await next();
+                     if (context.Response.StatusCode == 404)
+                     {
+                         context.Request.Path = "/index.html";
+                         await next();
+                     }
+                 });
+
             }
 
-            app.Use(async (context, next) =>
-            {
-                await next();
-                if (context.Response.StatusCode == 404)
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
 
             app.UseCors("local-angular-app");
             app.UseFileServer();
@@ -183,7 +185,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddTransient<ILogService, LogService>();
             services.AddTransient<IWikiPassageService, WikiPassageService>();
             services.AddTransient<ISmsService, SmsService>();
-            services.AddTransient<IHumanMachineValidateService, HumanMachineValidateService>();
+            services.AddTransient<IValidateCodeService, ValidateCodeService>();
             services.AddTransient<IWikiPassageViewersCountsService, WikiPassageViewersCountsService>();
         }
 

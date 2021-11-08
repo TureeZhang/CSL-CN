@@ -17,19 +17,30 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class AsyncValidatorController : Controller
     {
         private ISensitiveWordHelper _sensitiveWordHelper;
+        private readonly IUserInfoService _userInfoService;
 
-        public AsyncValidatorController(ISensitiveWordHelper sensitiveWordHelper)
+        public AsyncValidatorController(ISensitiveWordHelper sensitiveWordHelper,
+            IUserInfoService userInfoService)
         {
-            _sensitiveWordHelper = sensitiveWordHelper;
+            this._sensitiveWordHelper = sensitiveWordHelper;
+            this._userInfoService = userInfoService;
         }
 
 
         [Route("/api/[controller]/sensitiveword")]
         [HttpGet]
-        public IActionResult Index([FromQuery]string testword)
+        public IActionResult IsSensitiveWork([FromQuery] string testword)
         {
             bool isSensitiveWord = this._sensitiveWordHelper.IsContainsSensitiveWord(testword);
             return new JsonResult(isSensitiveWord);
+        }
+
+        [Route("/api/[controller]/usernameexisted")]
+        [HttpGet]
+        public async Task<IActionResult> IsUserNameExisted([FromQuery] string username)
+        {
+            bool isExisted = await this._userInfoService.IsUserNameDuplicated(username);
+            return new JsonResult(isExisted);
         }
     }
 }

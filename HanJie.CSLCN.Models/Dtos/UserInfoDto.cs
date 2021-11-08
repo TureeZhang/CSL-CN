@@ -84,6 +84,11 @@ namespace HanJie.CSLCN.Models.Dtos
         public string PhoneNumber { get; set; }
 
         /// <summary>
+        /// 手机号码前缀
+        /// </summary>
+        public string PhoneNumberPrefix { get; set; }
+
+        /// <summary>
         /// 管理员是否已审核
         /// </summary>
         public bool IsAudited { get; set; }

@@ -25,7 +25,7 @@ export class AdminUserInfoesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adminUserInfoService.list().subscribe(response => {
+    this.adminUserInfoService.list(false).subscribe(response => {
       this.datas = response;
       this.loading = false;
     });
