@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, Subscription } from 'rxjs';
 import { FormArray } from '@angular/forms';
-import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs, NzDrawerRef } from 'ng-zorro-antd';
+import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs, NzDrawerRef, NzUploadXHRArgs, NzUploadChangeParam } from 'ng-zorro-antd';
 import { QiniuUploadService } from '../../services/qiniu-upload.service';
 import { QiniuUploadParameters } from '../../models/qiniu-upload-parameters';
 import { HttpClient, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
@@ -51,12 +51,12 @@ export class UploaderComponent implements OnInit {
         console.log(this.fileList);
     }
 
-    customRequest = async (item: UploadXHRArgs) => {
+    customRequest = (item: NzUploadXHRArgs):Subscription => {
 
         const uploadFullName = this.directoryPath + "/" + item.file.name;
 
         let token: string = null;
-        await this.qiniuUploadService.getUploadToken(uploadFullName).then(data => token = data);
+        this.qiniuUploadService.getUploadToken(uploadFullName).then(data => token = data);
 
 
         const formData = new FormData();
@@ -96,7 +96,7 @@ export class UploaderComponent implements OnInit {
         );
     };
 
-    onUploadStatusChanged(data: UploadChangeParam): void {
+    onUploadStatusChanged(data: NzUploadChangeParam): void {
         if (data.type === "start") {
             this.isShowUploadButton = false;
             if (this.fileList.length > 1 && (data.file.name === this.fileList[0].name)) {

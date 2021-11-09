@@ -42,7 +42,7 @@
           <ng-template #nzTitleTpl>
             <i nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i> 作为主要编辑者
           </ng-template>
-          <div nz-row nzType="flex" nzJustify="left">
+          <div nz-row nzType="flex" nzJustify="start">
             <div nz-col nzXl="6" nzLg="6" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.mainAuthPassages">
               ▶ <a routerLink="/wiki-passage/{{passage.routePath}}">《{{passage.title}}》</a>
             </div>
@@ -59,7 +59,7 @@
           <ng-template #nzTitleTpl2>
             <i nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i> 参与编辑或校对
           </ng-template>
-          <div nz-row nzType="flex" nzJustify="left">
+          <div nz-row nzType="flex" nzJustify="start">
             <div nz-col nzXl="6" nzLg="6" nzMd="6" nzSm="12" nzXs="24" *ngFor="let passage of item.cooAuthPassages">
               ● <a routerLink="/wiki-passage/{{passage.routePath}}">《{{passage.title}}》</a>
             </div>

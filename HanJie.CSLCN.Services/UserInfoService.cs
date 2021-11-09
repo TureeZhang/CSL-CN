@@ -57,7 +57,7 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyUnAudited)
+        public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyUnAudited = false)
         {
             List<UserInfo> datas = onlyUnAudited ? await base.CSLDbContext.UserInfoes.Where(user => user.IsAudited == false).ToListAsync() : await base.ListAsync();
             List<UserInfoDto> dtos = new List<UserInfoDto>();

@@ -122,7 +122,7 @@ export class WikiPassageComponent implements OnInit {
         this.globalService.setBreadCrumbs(crumbs);
     }
 
-    private edit(): void {
+    public edit(): void {
         this.isLoadingEditButton = true;
         this.wikiPassageService.lockPassageEditingStatus(this.wikiPassage.id).subscribe(response => {
             if (response === true) {
@@ -145,7 +145,7 @@ export class WikiPassageComponent implements OnInit {
         }, 15000);
     }
 
-    private update(): void {
+    public update(): void {
         this.isLoadingSaveButton = true;
         if (this.wikiPassage.content != this.oldWikiPassageDtoContent) {
             this.wikiPassage.lastModifyUser = UserInfoService.CurrentUser;

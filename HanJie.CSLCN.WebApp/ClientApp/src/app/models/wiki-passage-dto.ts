@@ -18,4 +18,5 @@ export class WikiPassageDto {
     childPageBreadCrumbs: BreadCrumbDto[];
     editingUser: UserInfoDto;
     totalViewsCount: number;
+    lastModifyDate: string;
 }

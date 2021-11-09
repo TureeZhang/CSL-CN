@@ -29,7 +29,7 @@
         <ngx-codemirror [(ngModel)]="contentModel"
                         (ngModelChange)="contentModelChange.emit(contentModel)"
                         [options]="options"
-                        autoFocus="true"></ngx-codemirror>
+                        [autoFocus]="true"></ngx-codemirror>
       </div>
     </nz-tab>
     <nz-tab [nzTitle]="title2Tpl" [nzForceRender]="true">

@@ -19,7 +19,7 @@ export class CreateWikiPassageComponent implements OnInit {
 
     public isCreateModPassageShow: boolean = false;
     public isSubmitLoading: boolean = false;
-    public categories: Observable<WikiCategoryDto>;
+    public categories: Observable<WikiCategoryDto[]>;
     public validateForm: FormGroup;
     public isLoadingCategory: boolean = true;
 

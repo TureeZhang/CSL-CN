@@ -13,7 +13,7 @@ export class WikiCategoryService {
     constructor(private http: CSLHttpHelper) {
     }
 
-    list(): Observable<WikiCategoryDto> {
+    list(): Observable<WikiCategoryDto[]> {
         return this.http.get(this.url);
     }
 }

@@ -57,7 +57,7 @@
               </div>
             </div>
             <div nz-col nzSpan="15">
-              <div nz-row nzGutter="0" nzJustify="space-between">
+              <div nz-row [nzGutter]="0" nzJustify="space-between">
                 <div nz-col nzSpan="11" *ngFor="let item of boardTitles">
                   <nz-form-control nzErrorTip="请填写{{item.text}}!">
                     <nz-form-label nzRequired>{{item.text}}</nz-form-label>
@@ -91,7 +91,7 @@
     </div>
 
     <nz-divider nzText="主题色"></nz-divider>
-    <div nz-row nzGutter="16" nzJustify="space-between">
+    <div nz-row [nzGutter]="16" nzJustify="space-between">
       <div nz-col nzSpan="8" *ngFor="let item of colorSettings;let i = index">
         <nz-form-item>
           <nz-form-label nzRequired>{{item.text}}</nz-form-label>
@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <div nz-row nzGutter="16">
+    <div nz-row [nzGutter]="16">
       <div nz-col nzSpan="10">
         <nz-form-item>
           <nz-form-label nzRequired>外部媒体跳转的显示文本（首页左下角，留空则不显示）</nz-form-label>

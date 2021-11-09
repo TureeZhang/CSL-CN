@@ -13,4 +13,5 @@ export class UserInfoDto {
     descriptionWord: string;
     personalizedSignature: string;
     commitTimesCount: number;
+    lastCommitDateTime: string;
 }

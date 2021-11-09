@@ -1,0 +1,50 @@
+<div class="container">
+
+    <div nz-row>
+        <div nz-col nzSpan="24">
+            <h2>审核</h2>
+        </div>
+    </div>
+
+    <nz-tabset>
+        <nz-tab nzTitle="用户信息">
+            <nz-table #usersTable [nzData]="users" [nzLoading]="isUsersLoading">
+                <thead>
+                    <tr>
+                        <th>昵称</th>
+                        <th>头像</th>
+                        <th>个人主页</th>
+                        <th>个性签名</th>
+                        <th>审核状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of usersTable.data">
+                        <td>{{ data.nickName }}</td>
+                        <td>
+                            <nz-avatar [nzSize]="64" nzIcon="user" nzSrc="{{ data.avatarUrl }}"></nz-avatar>
+                        </td>
+                        <td><a href="{{data.personalHomepageUrl}}" target="_blank">{{data.personalHomepageUrl}}</a></td>
+                        <td>{{ data.personalizedSignature }}</td>
+                        <td><span nz-typography nzType="warning">等待审核</span></td>
+                        <td>
+                            <button nz-button nzType="primary">通过</button>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-button nzDanger>拒绝</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-tab>
+        <nz-tab nzTitle="评论">
+            Content of Tab Pane 2
+        </nz-tab>
+        <nz-tab nzTitle="文档">
+            Content of Tab Pane 3
+        </nz-tab>
+    </nz-tabset>
+
+
+
+</div>

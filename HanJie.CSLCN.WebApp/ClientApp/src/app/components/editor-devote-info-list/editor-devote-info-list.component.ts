@@ -4,6 +4,7 @@ import { DonatorRankService } from '../../services/donator-rank.service';
 import { GlobalService } from '../../services/global.service';
 import { EditorDevoteInfoDto } from '../../models/editor-devote-info-dto';
 import { EditorDevoteInfoService } from '../../services/editor-devote-info.service';
+import { NzTabChangeEvent } from 'ng-zorro-antd';
 
 @Component({
     selector: 'editor-devote-info-list',
@@ -43,7 +44,7 @@ export class EditorDevoteInfoListComponent implements OnInit {
         });
     }
 
-    onTabsetChange(event: { index: number }): void {
+    onTabsetChange(event: NzTabChangeEvent): void {
         if (event.index == 1 && this.allEditors == null) {
             this.getAllEditors();
         }

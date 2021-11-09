@@ -11,9 +11,9 @@
           <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="usernameErrorTpl" nzValidatingTip="正在检查用户名是否可用...">
             <input nz-input type="text" id="username" formControlName="username" autocomplete="off" />
             <ng-template #usernameErrorTpl let-control>
-              <ng-contianer *ngIf="control.hasError('required')">请填写用户名</ng-contianer>
-              <ng-contianer *ngIf="control.hasError('pattern')">请使用英文字母、数字，长度 6~15 位</ng-contianer>
-              <ng-contianer *ngIf="control.hasError('existed')">用户已存在</ng-contianer>
+              <ng-container *ngIf="control.hasError('required')">请填写用户名</ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">请使用英文字母、数字，长度 6~15 位</ng-container>
+              <ng-container *ngIf="control.hasError('existed')">用户已存在</ng-container>
             </ng-template>
           </nz-form-control>
         </nz-form-item>

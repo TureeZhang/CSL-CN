@@ -7,5 +7,8 @@ export class DonatorRankDto {
   avatarUrl: string;
   personalHomepageUrl: string;
   lastModifyDate: string;
-
+  orderId:string;
+  paymentUserNameSecretly:string;
+  paymentAccountSecretly:string;
+  paymentCompany:string;
 }

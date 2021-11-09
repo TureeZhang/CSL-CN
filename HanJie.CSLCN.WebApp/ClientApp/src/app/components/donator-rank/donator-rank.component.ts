@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DonatorRankService } from '../../services/donator-rank.service';
 import { DonatorRankDto } from '../../models/donator-rank-dto';
 import { UserInfoService } from '../../services/user-info.service';
-import { UploadFile, NzTabComponent } from 'ng-zorro-antd';
+import { UploadFile, NzTabComponent, NzTabChangeEvent } from 'ng-zorro-antd';
 import { GlobalService } from '../../services/global.service';
 
 @Component({
@@ -47,7 +47,7 @@ export class DonatorRankComponent implements OnInit {
     //file.type = ""
   }
 
-  onTabsetChange(event: { index: number, tab: NzTabComponent }): void {
+  onTabsetChange(event: NzTabChangeEvent): void {
     if (event.index == 1 && this.allRanks == null) {
       this.getAllRanks();
     }
