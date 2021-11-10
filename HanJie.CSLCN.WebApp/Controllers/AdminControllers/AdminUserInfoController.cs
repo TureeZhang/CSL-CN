@@ -25,9 +25,9 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public async Task<List<UserInfoDto>> List(bool onlyUnAudited)
+        public async Task<List<UserInfoDto>> List(bool onlyOnAuditing)
         {
-            return await this._userInfoService.ListDtoes(onlyUnAudited);
+            return await this._userInfoService.ListDtoes(onlyOnAuditing);
         }
 
         [HttpGet("{id}")]

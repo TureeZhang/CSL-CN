@@ -8,5 +8,6 @@ namespace HanJie.CSLCN.Services
     public interface IAuditService
     {
         Task<UserInfo> ConfirmUser(int userId);
+        Task RejectUser(int userId, string reason);
     }
 }

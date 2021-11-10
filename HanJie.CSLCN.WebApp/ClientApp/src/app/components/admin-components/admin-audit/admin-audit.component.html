@@ -7,7 +7,7 @@
     </div>
 
     <nz-tabset>
-        <nz-tab nzTitle="用户信息">
+        <nz-tab nzTitle="用户">
             <nz-table #usersTable [nzData]="users" [nzLoading]="isUsersLoading">
                 <thead>
                     <tr>
@@ -20,28 +20,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of usersTable.data">
-                        <td>{{ data.nickName }}</td>
+                    <tr *ngFor="let user of usersTable.data">
+                        <td>{{ user.nickName }}</td>
                         <td>
-                            <nz-avatar [nzSize]="64" nzIcon="user" nzSrc="{{ data.avatarUrl }}"></nz-avatar>
+                            <nz-avatar [nzSize]="64" nzIcon="user" nzSrc="{{ user.avatarUrl }}"></nz-avatar>
                         </td>
-                        <td><a href="{{data.personalHomepageUrl}}" target="_blank">{{data.personalHomepageUrl}}</a></td>
-                        <td>{{ data.personalizedSignature }}</td>
+                        <td><a href="{{user.personalHomepageUrl}}" target="_blank">{{user.personalHomepageUrl}}</a></td>
+                        <td>{{ user.personalizedSignature }}</td>
                         <td><span nz-typography nzType="warning">等待审核</span></td>
                         <td>
-                            <button nz-button nzType="primary">通过</button>
+                            <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="确认通过审核吗？"
+                                (nzOnConfirm)="confirmUser(user)">通过</button>
                             <nz-divider nzType="vertical"></nz-divider>
-                            <a nz-button nzDanger>拒绝</a>
+                            <a nz-button nzDanger (click)="showReasonInputModel(user)">拒绝</a>
+                            <nz-modal [(nzVisible)]="isReasonModalShow" nzTitle="将拒绝用户 {{user.nickName}}："
+                                nzCancelText="取消" (nzOnCancel)="isReasonModalShow=!isReasonModalShow"
+                                (nzOnOk)="rejectUser()">
+                                <input nz-input placeholder="请告知其审核不通过的原因。" [(ngModel)]="rejectReason" />
+                            </nz-modal>
                         </td>
                     </tr>
                 </tbody>
             </nz-table>
         </nz-tab>
         <nz-tab nzTitle="评论">
-            Content of Tab Pane 2
+            【@正在开发】
         </nz-tab>
         <nz-tab nzTitle="文档">
-            Content of Tab Pane 3
+            【@正在开发】
         </nz-tab>
     </nz-tabset>
 

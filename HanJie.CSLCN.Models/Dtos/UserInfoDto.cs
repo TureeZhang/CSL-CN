@@ -1,4 +1,5 @@
 ﻿using HanJie.CSLCN.Models.DataModels;
+using HanJie.CSLCN.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -89,9 +90,13 @@ namespace HanJie.CSLCN.Models.Dtos
         public string PhoneNumberPrefix { get; set; }
 
         /// <summary>
-        /// 管理员是否已审核
+        /// 审核状态
         /// </summary>
-        public bool IsAudited { get; set; }
+        public AuditStatusEnum AuditStatus { get; set; }
 
+        /// <summary>
+        /// 审核拒绝原因
+        /// </summary>
+        public string AuditRejectedReason { get; set; }
     }
 }

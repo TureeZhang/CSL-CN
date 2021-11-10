@@ -57,9 +57,9 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyUnAudited = false)
+        public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyOnAuditing = false)
         {
-            List<UserInfo> datas = onlyUnAudited ? await base.CSLDbContext.UserInfoes.Where(user => user.IsAudited == false).ToListAsync() : await base.ListAsync();
+            List<UserInfo> datas = onlyOnAuditing ? await base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus ==  AuditStatusEnum.OnAuditing).ToListAsync() : await base.ListAsync();
             List<UserInfoDto> dtos = new List<UserInfoDto>();
             foreach (UserInfo item in datas)
             {
@@ -138,6 +138,9 @@ namespace HanJie.CSLCN.Services
             userInfo.Password = new CommonHelper().GetMd5Base64StringUsePrivateSold(userInfo.Password);
             userInfo.PersonalHomepageUrl = string.IsNullOrWhiteSpace(userInfo.PersonalHomepageUrl) ? null : userInfo.PersonalHomepageUrl;
             userInfo.DescriptionWord = string.IsNullOrEmpty(userInfo.DescriptionWord) ? "这个刁民太懒了，什么都没有写。" : userInfo.DescriptionWord;
+
+            userInfo.CreateDate = DateTime.Now;
+            userInfo.LastModifyDate = DateTime.Now;
 
             UserInfo result = await base.AddAsync(userInfo);
             return result;
@@ -295,7 +298,7 @@ namespace HanJie.CSLCN.Services
             if (!isValidatePhone)
                 throw new UserException($"发往 {userInfoDto.PhoneNumber} 的手机验证码核对有误，验证失败。请正确输入短信中包含的验证码，然后重试。");
 
-            userInfoDto.IsAudited = false;
+            userInfoDto.AuditStatus = AuditStatusEnum.OnAuditing;
             UserInfo userInfo = new UserInfo().ConvertFromDtoModel(userInfoDto);
             userInfo.CreateDate = DateTime.Now;
             userInfo.LastModifyDate = DateTime.Now;
@@ -305,30 +308,14 @@ namespace HanJie.CSLCN.Services
             return userInfoDto;
         }
 
-        public List<UserInfoDto> ListUnAuditedUsers()
-        {
-            List<UserInfoDto> results = new List<UserInfoDto>();
-
-            List<UserInfo> users = base.CSLDbContext.UserInfoes.Where(user => user.IsAudited == false).ToList();
-            foreach (UserInfo item in users)
-            {
-                results.Add(new UserInfoDto().ConvertFromDataModel(item));
-            }
-
-            return results;
-        }
-
         public override async Task UpdateAsync(UserInfo data)
         {
             Ensure.NotNull(data.Id, nameof(data.Id));
 
-            UserInfo userInfo = await base.CSLDbContext.UserInfoes.FindAsync(data.Id);
-            userInfo = Mapper.Map<UserInfo>(data, userInfo);
+            data.LastModifyDate = DateTime.Now;
 
-            userInfo.IsAudited = false;
-            userInfo.LastModifyDate = DateTime.Now;
-
-            base.CSLDbContext.UserInfoes.Update(userInfo);
+            base.CSLDbContext.UserInfoes.Update(data);
+            await base.CSLDbContext.SaveChangesAsync();
         }
 
 

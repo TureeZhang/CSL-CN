@@ -1,144 +1,177 @@
 :host ::ng-deep ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+    width: 6px;
+    height: 6px;
 }
 
 :host ::ng-deep ::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
 }
 
 :host ::ng-deep ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
-  :host ::ng-deep ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0,0,0,0.4);
-  }
+ :host ::ng-deep ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
 
-  :host ::ng-deep ::-webkit-scrollbar-thumb:active {
-    background: rgba(0,0,0,.9);
-  }
+ :host ::ng-deep ::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, .9);
+}
+
 
 /*菜单自定义开始*/
 
+
 /*选中菜单文字颜色*/
+
 :host ::ng-deep .ant-menu-dark .ant-menu-item-selected {
-  color: var(--menu-text-focus-color) !important;
+    color: var(--menu-text-focus-color) !important;
 }
+
+
 /*选中菜单背景色*/
+
 :host ::ng-deep .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: var(--menu-background-focus-color);
+    background-color: var(--menu-background-focus-color);
 }
+
 
 /*菜单组子项背景色*/
+
 :host ::ng-deep .ant-menu-dark .ant-menu-inline.ant-menu-sub {
-  background-color: var(--menu-groupitem-background-color);
+    background-color: var(--menu-groupitem-background-color);
 }
 
+
 /*菜单文字颜色*/
-:host ::ng-deep .ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a {
-  color: var(--menu-text-color);
+
+:host ::ng-deep .ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-item-group-title,
+.ant-menu-dark .ant-menu-item>a {
+    color: var(--menu-text-color);
 }
+
+
 /*菜单组文字颜色*/
-:host ::ng-deep .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
-  color: var(--menu-group-text-color);
+
+:host ::ng-deep .ant-menu.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub {
+    color: var(--menu-group-text-color);
 }
+
+
 /*悬停色*/
-:host ::ng-deep .ant-menu-dark .ant-menu-item-active, .ant-menu-dark .ant-menu-item:hover, .ant-menu-dark .ant-menu-submenu-active, .ant-menu-dark .ant-menu-submenu-open, .ant-menu-dark .ant-menu-submenu-selected, .ant-menu-dark .ant-menu-submenu-title:hover {
-  color: var(--menu-hover-color);
+
+:host ::ng-deep .ant-menu-dark .ant-menu-item-active,
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-active,
+.ant-menu-dark .ant-menu-submenu-open,
+.ant-menu-dark .ant-menu-submenu-selected,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+    color: var(--menu-hover-color);
 }
+
+
 /*菜单自定义结束*/
 
 .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
 }
 
 .layout {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 nz-sider {
-  overflow: auto;
-  height: 100%;
-  position: fixed;
-  left: 0;
+    overflow: auto;
+    height: 100%;
+    position: fixed;
+    left: 0;
 }
 
 .right-layout {
-  margin-left: 200px;
+    margin-left: 200px;
 }
 
 nz-header {
-  background: #fff;
-  padding: 0;
+    background: #fff;
+    padding: 0;
 }
 
 nz-content {
-  margin: 24px 16px 0;
+    margin: 24px 16px 0;
 }
 
 .inner-content {
-  padding: 24px;
-  background: #fff;
-  text-align: center;
+    padding: 24px;
+    background: #fff;
+    text-align: center;
 }
 
 nz-footer {
-  text-align: center;
-  padding: 55px 50px 80px 50px;
+    text-align: center;
+    padding: 55px 50px 80px 50px;
 }
 
-
-
-
-.ant-layout, .ant-layout * {
-  box-sizing: border-box;
+.ant-layout,
+.ant-layout * {
+    box-sizing: border-box;
 }
 
 .anticon {
-  display: inline-block;
-  color: inherit;
-  font-style: normal;
-  line-height: 0;
-  text-align: center;
-  text-transform: none;
-  vertical-align: -.125em;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    color: inherit;
+    font-style: normal;
+    line-height: 0;
+    text-align: center;
+    text-transform: none;
+    vertical-align: -.125em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .ant-layout-sider-zero-width-trigger {
-  position: fixed;
-  top: 64px;
-  right: -36px;
-  z-index: 1;
-  width: 36px;
-  height: 42px;
-  color: #fff;
-  font-size: 18px;
-  line-height: 42px;
-  text-align: center;
-  background: #001529;
-  border-radius: 0 2px 2px 0;
-  cursor: pointer;
-  transition: background .3s ease;
+    position: fixed;
+    top: 64px;
+    right: -36px;
+    z-index: 1;
+    width: 36px;
+    height: 42px;
+    color: #fff;
+    font-size: 18px;
+    line-height: 42px;
+    text-align: center;
+    background: #001529;
+    border-radius: 0 2px 2px 0;
+    cursor: pointer;
+    transition: background .3s ease;
 }
 
-.ant-layout-sider-zero-width > * {
-  overflow: hidden;
+.ant-layout-sider-zero-width>* {
+    overflow: hidden;
 }
 
 .collapsed-trigger {
-  top: 0px;
-  left: 0px;
+    top: 0px;
+    left: 0px;
 }
 
 .discollapsed-trigger {
-  top: 0px;
-  left: 200px;
+    top: 0px;
+    left: 200px;
+}
+
+.login-user-avatar {
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.login-user-avatar:hover {
+    transform: scale(1.2);
 }

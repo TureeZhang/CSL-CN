@@ -13,7 +13,7 @@ export class AdminUserInfoService {
   }
 
   list(onlyUnAudited: boolean): Observable<UserInfoDto[]> {
-    let datas: Observable<UserInfoDto[]> = this.cslHttpHelper.get<UserInfoDto[]>(`${this.url}?onlyUnAudited=${onlyUnAudited}`);
+    let datas: Observable<UserInfoDto[]> = this.cslHttpHelper.get<UserInfoDto[]>(`${this.url}?onlyOnAuditing=${onlyUnAudited}`);
     return datas;
   }
 

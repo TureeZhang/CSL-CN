@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
 {
     [Route("api/admin/[controller]")]
-    [MyAuthorize]
+    [AdministratorOnly]
     [ApiController]
     public class AdminBaseController : Controller
     {

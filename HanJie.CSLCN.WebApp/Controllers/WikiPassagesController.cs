@@ -92,7 +92,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        [MyAuthorize]
+        [AdministratorOnly]
         public async Task<IActionResult> PostAsync([FromBody] WikiPassageDto dto)
         {
             if (!base.CurrentUser.IsAdmin)
@@ -109,7 +109,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         // PUT api/<controller>/5
         [HttpPut]
-        [MyAuthorize]
+        [AdministratorOnly]
         public async Task Put([FromBody] WikiPassageDto dto)
         {
             await this._wikiPassageService.UpdateAsync(dto, base.CurrentUser.Id);

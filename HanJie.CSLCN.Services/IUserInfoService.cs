@@ -12,7 +12,7 @@ namespace HanJie.CSLCN.Services
         Task<List<UserInfoDto>> CollectAuthorInfoes(string[] userIds);
         Task<bool> IsUserNameDuplicated(string userName);
         Task<List<UserInfo>> ListAllEditors();
-        Task<List<UserInfoDto>> ListDtoes(bool onlyUnAudited=false);
+        Task<List<UserInfoDto>> ListDtoes(bool onlyOnAuditing=false);
         Task<List<UserInfoDto>> ListEditorsDto(int countRecentDays = -1);
         Task<List<UserInfo>> ListRecentActiveEditors(int recentDaysCount = 0);
         void Logout(int id);
@@ -21,6 +21,5 @@ namespace HanJie.CSLCN.Services
         Task<UserInfo> GetById(int id);
         Task UpdateAsync(UserInfo userInfo);
         Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode);
-        List<UserInfoDto> ListUnAuditedUsers();
     }
 }

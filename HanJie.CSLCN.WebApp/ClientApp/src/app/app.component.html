@@ -40,7 +40,7 @@
           <iframe src="https://ghbtns.com/github-btn.html?user=TureeZhang&repo=CSL-CN&type=star&count=true" frameborder="0" scrolling="0" width="95px" height="25px" style="position:relative;top:10px;"></iframe>
           <button *ngIf="!isUserLogined" nz-button [nzSize]="'small'" routerLink="/login"><i nz-icon nzType="login"></i>编辑者入口</button>
           <span *ngIf="isUserLogined">
-            <nz-avatar nzIcon="user" nzSrc="{{currentUser.avatarUrl}}"></nz-avatar>
+            <nz-avatar nzIcon="user" nzSrc="{{currentUser.avatarUrl}}" class="login-user-avatar"></nz-avatar>
             {{currentUser.nickName}}（{{currentUser.userName}}）
             <button nz-button nzType="danger" [nzSize]="'small'" (click)="logout()" [nzLoading]="isExiting"><i nz-icon nzType="logout"></i>退出</button>
           </span>

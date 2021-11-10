@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Enums;
 
 namespace HanJie.CSLCN.Services
 {
@@ -22,10 +23,19 @@ namespace HanJie.CSLCN.Services
         public async Task<UserInfo> ConfirmUser(int userId)
         {
             UserInfo userInfo = await this._userInfoService.GetById(userId);
-            userInfo.IsAudited = true;
+            userInfo.AuditStatus =  AuditStatusEnum.OK;
 
             await this._userInfoService.UpdateAsync(userInfo);
             return userInfo;
+        }
+
+        public async Task RejectUser(int userId, string reason)
+        {
+            UserInfo user =await this._userInfoService.GetById(userId);
+            user.AuditStatus = AuditStatusEnum.Rejected;
+            user.AuditRejectedReason = reason;
+
+            await this._userInfoService.UpdateAsync(user);
         }
     }
 }

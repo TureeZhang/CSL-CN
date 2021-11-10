@@ -97,11 +97,12 @@
           <nz-form-control [nzSpan]="14" [nzOffset]="6" [nzErrorTip]="'请阅读用户注册许可协议。'">
             <label nz-checkbox formControlName="agree">
               <span>我已阅读并同意用户注册</span>
-            </label><label style="font-weight: 600;color:cornflowerblue;" (click)="showAgreement()">许可协议</label> 。
-            <nz-modal [nzVisible]="isAgreementShow" nzTitle="用户注册许可协议" (nzOnOk)="closeAgreement()"
+            </label><a style="font-weight: 600;" (click)="showAgreement()">许可协议</a> 。
+            <nz-modal [nzVisible]="isAgreementShow" nzTitle="用户注册许可协议" (nzOnCancel)="isAgreementShow=!isAgreementShow" (nzOnOk)="closeAgreement()"
               [nzCancelText]="null">
               <div style="text-align: center;margin-top: 18px;">
-                <p>简单粗暴：<b>骚汉不想坐牢，别瞎搞就成～</b></p>
+                <p><b>1.骚汉真的不想坐牢，别发布瞎搞言论就成</b></p>
+                <p><b>2.前期求稳诸事都审，造成不便恳请谅解～</b></p>
               </div>
             </nz-modal>
           </nz-form-control>
