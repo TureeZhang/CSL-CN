@@ -7,6 +7,7 @@ import { UserInfoDto } from 'src/app/models/user-info-dto';
 import { GlobalService } from 'src/app/services/global.service';
 import { SmsService } from 'src/app/services/sms.service';
 import { UserInfoService } from 'src/app/services/user-info.service';
+import { ValidateService } from 'src/app/services/validate.service';
 import { AsyncValidatorService } from '../../services/async-validator.service';
 
 
@@ -18,7 +19,6 @@ import { AsyncValidatorService } from '../../services/async-validator.service';
 export class RegisterComponent implements OnInit {
 
   validateForm!: FormGroup;
-  timerForNicknameDuplicated!: NodeJS.Timer;
   timerForUserNameExisted!: NodeJS.Timer;
   timerForSmsCodeOK: NodeJS.Timer;
   isSendSmsCodeButtonEnable: boolean = false;
@@ -29,7 +29,8 @@ export class RegisterComponent implements OnInit {
     private smsService: SmsService,
     private userInfoService: UserInfoService,
     private route: Router,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private validateService: ValidateService) {
 
   }
 
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
       username: [null, [Validators.required, Validators.pattern("[a-zA-Z0-9]{5,15}")], [this.isUserNameExist]],
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.isSensitiveNickName]],
+      nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.validateService.isContainSensitiveWords]],
       phoneNumberPrefix: ['+86', [Validators.required]],
       phoneNumber: [null, [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)]],
       smsCode: [null, [Validators.required, Validators.pattern(/[0-9]/)]],
@@ -104,24 +105,6 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  isSensitiveNickName = (control: FormControl): Observable<any> => { //注意，此处是一个变量，变量的值是 lambda 表达式。而非 isSensitiveNickName(control:FormControl) 方法
-    return new Observable((observer: Observer<ValidationErrors | null>) => {
-      if (this.timerForNicknameDuplicated !== null) { //请求防抖
-        clearTimeout(this.timerForNicknameDuplicated);
-      }
-      const nickName = control.value;
-      this.timerForNicknameDuplicated = setTimeout(() => {
-        this.asyncValidatorService.isContainSensitiveWord(nickName).subscribe(response => {
-          if (response === true) {
-            observer.next({ error: true, sensitive: true }); //必须返回 error:true 以标识此事件为校验错误
-          } else {
-            observer.next(null);
-          }
-          observer.complete();
-        });
-      }, 1000);
-    });
-  }
 
   sendSmsCode(userInputCode: string): void {
     var phoneNumberInput = this.validateForm.controls["phoneNumber"];

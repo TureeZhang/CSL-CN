@@ -4,11 +4,10 @@ using HanJie.CSLCN.Models.Dtos;
 
 namespace HanJie.CSLCN.Models.DataModels
 {
-
-    [Table("userinfoes")]
-    public class UserInfo:BaseUserInfo<UserInfo,UserInfoDto>
+    [Table("userinfoesaudits")]
+    public class UserInfoAudit : BaseUserInfo<UserInfoAudit, UserInfoAuditDto>
     {
-        public UserInfo()
+        public UserInfoAudit()
         {
         }
     }

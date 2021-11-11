@@ -1,84 +1,104 @@
-
 <nz-layout class="layout">
-  <nz-sider nzCollapsible
-            nzBreakpoint="xl"
-            [nzCollapsedWidth]="0"
-            (nzCollapsedChange)="onSiderCollapsedChange($event)"
-            [nzTrigger]="null"
-            [(nzCollapsed)]="isCollapsed"
+    <nz-sider nzCollapsible nzBreakpoint="xl" [nzCollapsedWidth]="0"
+        (nzCollapsedChange)="onSiderCollapsedChange($event)" [nzTrigger]="null" [(nzCollapsed)]="isCollapsed"
+        [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
+        <!-- #001529 -->
+        <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage"
+            style="height:236px;width:160px;cursor:pointer;background:url({{homepageSettings?.mainLogoPath}})"></div>
+        <ul #nzMenuSiderUl nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed"
             [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
-    <!-- #001529 -->
-    <div *ngIf="!isCollapsed" class="logo" routerLink="/homepage" style="height:236px;width:160px;cursor:pointer;background:url({{homepageSettings?.mainLogoPath}})"></div>
-    <ul #nzMenuSiderUl nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed" [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
-      <!-- #001529 -->
-      <ng-template #errorMenu>
-        <li nz-menu-item>
-          <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">正在获取菜单..</span></span>
-        </li>
-      </ng-template>
-      <ng-template #onlineMenu ngFor let-item [ngForOf]="menus" [ngForTrackBy]="trackbyMenuTitle">
-        <li *ngIf="item.menuItems&&item.menuItems.length>0;else submenu" nz-submenu>
-          <span title><i nz-icon nzType="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
-          <ul>
-            <li nz-menu-item *ngFor="let menuItem of item.menuItems" routerLink="/{{menuItem.path}}">{{menuItem.title}}</li>
-          </ul>
-        </li>
-        <ng-template #submenu>
-          <li nz-menu-item routerLink="/{{item.path}}">
-            <span><i nz-icon nzType="{{item.iconType}}"></i><span class="nav-text">{{item.title}}</span></span>
-          </li>
-        </ng-template>
-      </ng-template>
-      <!--控制显示获取菜单失败，还是遍历成功取得的菜单项-->
-      <div *ngIf="!menus;then errorMenu;else onlineMenu"></div>
-    </ul>
-  </nz-sider>
-  <nz-layout [ngClass]="{'right-layout':!isCollapsed}">
-    <nz-header style="background: #fff; padding:0;height:40px;line-height:40px;">
-      <div nz-row style="line-height:inherit;">
-        <div nz-col nzLg="24" nzXs="24" style="text-align:right;padding-right:12px;">
-          <iframe src="https://ghbtns.com/github-btn.html?user=TureeZhang&repo=CSL-CN&type=star&count=true" frameborder="0" scrolling="0" width="95px" height="25px" style="position:relative;top:10px;"></iframe>
-          <button *ngIf="!isUserLogined" nz-button [nzSize]="'small'" routerLink="/login"><i nz-icon nzType="login"></i>编辑者入口</button>
-          <span *ngIf="isUserLogined">
-            <nz-avatar nzIcon="user" nzSrc="{{currentUser.avatarUrl}}" class="login-user-avatar"></nz-avatar>
-            {{currentUser.nickName}}（{{currentUser.userName}}）
-            <button nz-button nzType="danger" [nzSize]="'small'" (click)="logout()" [nzLoading]="isExiting"><i nz-icon nzType="logout"></i>退出</button>
-          </span>
-        </div>
-      </div>
-    </nz-header>
-    <nz-content style="margin:0 16px;">
-      <nz-breadcrumb style="margin-top:6px;margin-bottom:6px;">
-        <nz-breadcrumb-item><a routerLink="/homepage">城市天际线：汉界的一颗小虎牙</a></nz-breadcrumb-item>
-        <nz-breadcrumb-item><a routerLink="/homepage">主页</a></nz-breadcrumb-item>
-        <nz-breadcrumb-item *ngFor="let item of breadCrumbs|async"><a routerLink="{{item.url}}">{{item.name}}</a></nz-breadcrumb-item>
-      </nz-breadcrumb>
-      <div style="padding:4px; background: #fff; min-height: 785px;">
-        <!--Angular 路由出口-->
-        <router-outlet (activate)="onActivate($event)"></router-outlet>
-      </div>
-    </nz-content>
-    <nz-footer style="text-align: center;">
-      <div>
+            <!-- #001529 -->
+            <ng-template #errorMenu>
+                <li nz-menu-item>
+                    <span><i nz-icon nzType="exclamation-circle"></i><span class="nav-text">正在获取菜单..</span></span>
+                </li>
+            </ng-template>
+            <ng-template #onlineMenu ngFor let-item [ngForOf]="menus" [ngForTrackBy]="trackbyMenuTitle">
+                <li *ngIf="item.menuItems&&item.menuItems.length>0;else submenu" nz-submenu>
+                    <span title><i nz-icon nzType="{{item.iconType}}"></i><span
+                            class="nav-text">{{item.title}}</span></span>
+                    <ul>
+                        <li nz-menu-item *ngFor="let menuItem of item.menuItems" routerLink="/{{menuItem.path}}">
+                            {{menuItem.title}}
+                        </li>
+                    </ul>
+                </li>
+                <ng-template #submenu>
+                    <li nz-menu-item routerLink="/{{item.path}}">
+                        <span><i nz-icon nzType="{{item.iconType}}"></i><span
+                                class="nav-text">{{item.title}}</span></span>
+                    </li>
+                </ng-template>
+            </ng-template>
+            <!--控制显示获取菜单失败，还是遍历成功取得的菜单项-->
+            <div *ngIf="!menus;then errorMenu;else onlineMenu"></div>
+        </ul>
+    </nz-sider>
+    <nz-layout [ngClass]="{'right-layout':!isCollapsed}">
+        <nz-header style="background: #fff; padding:0;height:40px;line-height:40px;">
+            <div nz-row style="line-height:inherit;">
+                <div nz-col nzLg="24" nzXs="24" style="text-align:right;padding-right:12px;">
+                    <iframe src="https://ghbtns.com/github-btn.html?user=TureeZhang&repo=CSL-CN&type=star&count=true"
+                        frameborder="0" scrolling="0" width="95px" height="25px"
+                        style="position:relative;top:10px;"></iframe>
+                    <button *ngIf="!isUserLogined" nz-button [nzSize]="'small'" routerLink="/login"><i nz-icon
+                            nzType="login"></i>编辑者入口</button>
+                    <span *ngIf="isUserLogined" class="login-user-avatar">
+                        <span routerLink="/account">
+                            <nz-avatar nzIcon="user" nzSrc="{{currentUser.avatarUrl}}">
+                            </nz-avatar>
+                            <a style="margin-left: 6px;" class="login-user-nickname">{{currentUser.nickName}}</a>
+                        </span>
+                        <button nz-button style="margin-left: 18px;" nzType="danger" [nzSize]="'small'"
+                            (click)="logout()" [nzLoading]="isExiting"><i nz-icon nzType="logout"></i>退出</button>
+                    </span>
+                </div>
+            </div>
+        </nz-header>
+        <nz-content style="margin:0 16px;">
+            <nz-breadcrumb style="margin-top:6px;margin-bottom:6px;">
+                <nz-breadcrumb-item><a routerLink="/homepage">城市天际线：汉界的一颗小虎牙</a></nz-breadcrumb-item>
+                <nz-breadcrumb-item><a routerLink="/homepage">主页</a></nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngFor="let item of breadCrumbs|async"><a
+                        routerLink="{{item.url}}">{{item.name}}</a>
+                </nz-breadcrumb-item>
+            </nz-breadcrumb>
+            <div style="padding:4px; background: #fff; min-height: 785px;">
+                <!--Angular 路由出口-->
+                <router-outlet (activate)="onActivate($event)"></router-outlet>
+            </div>
+        </nz-content>
+        <nz-footer style="text-align: center;">
+            <div>
 
-        Copy Rights. <a href="https://www.huya.com/codelive" target="_blank">虎牙汉界</a> ©2019 Followed at <a href="https://github.com/TureeZhang/CSL-CN">Github CSL-CN</a> or <a href="https://space.bilibili.com/242720226" target="_blank">Bilibi_虎牙汉界</a>
-      </div>
-      <div style="margin:0 auto; padding:20px 0;">
-        <img src="/assets/gongan.png" alt="浙公网安备" style="bottom: 2px; position: relative; border: 2px;"/> <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33040202000725" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;" /><p style="height:20px;line-height:20px;margin: 0px 5px 0px 5px; color:#939393;">浙公网安备 33040202000725号</p></a> <span style="position: relative; bottom: 1px;">|</span>
-        <a style="margin-left:5px;" href="https://beian.miit.gov.cn">浙ICP备19051457号-1</a> - All Rights Reserved.
-      </div>
-    </nz-footer>
-  </nz-layout>
+                Copy Rights. <a href="https://www.huya.com/codelive" target="_blank">虎牙汉界</a> ©2019 Followed at <a
+                    href="https://github.com/TureeZhang/CSL-CN">Github CSL-CN</a> or <a
+                    href="https://space.bilibili.com/242720226" target="_blank">Bilibi_虎牙汉界</a>
+            </div>
+            <div style="margin:0 auto; padding:20px 0;">
+                <img src="/assets/gongan.png" alt="浙公网安备" style="bottom: 2px; position: relative; border: 2px;" />
+                <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33040202000725"
+                    style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src=""
+                        style="float:left;" />
+                    <p style="height:20px;line-height:20px;margin: 0px 5px 0px 5px; color:#939393;">浙公网安备
+                        33040202000725号</p>
+                </a> <span style="position: relative; bottom: 1px;">|</span>
+                <a style="margin-left:5px;" href="https://beian.miit.gov.cn">浙ICP备19051457号-1</a> - All Rights Reserved.
+            </div>
+        </nz-footer>
+    </nz-layout>
 </nz-layout>
 
 <!--自定义 Trigger-->
 <div class="ant-layout-sider-zero-width-trigger ant-layout-sider-zero-width-trigger-left"
-     [ngClass]="{'collapsed-trigger':isCollapsed,'discollapsed-trigger':!isCollapsed}"
-     (click)="isCollapsed = !isCollapsed"
-     [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
-  <i nz-icon="" nztype="bars" class="anticon anticon-bars">
-    <svg viewBox="0 0 1024 1024" focusable="false" fill="currentColor" width="1em" height="1em" data-icon="bars" aria-hidden="true">
-      <path d="M912 192H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM104 228a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0z"></path>
-    </svg>
-  </i>
+    [ngClass]="{'collapsed-trigger':isCollapsed,'discollapsed-trigger':!isCollapsed}"
+    (click)="isCollapsed = !isCollapsed" [ngStyle]="{'background-color':homepageSettings?.menuBackgroundColor}">
+    <i nz-icon="" nztype="bars" class="anticon anticon-bars">
+        <svg viewBox="0 0 1024 1024" focusable="false" fill="currentColor" width="1em" height="1em" data-icon="bars"
+            aria-hidden="true">
+            <path
+                d="M912 192H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 284H328c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h584c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM104 228a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0zm0 284a56 56 0 10112 0 56 56 0 10-112 0z">
+            </path>
+        </svg>
+    </i>
 </div>

@@ -16,6 +16,7 @@ import { EditorComponent } from './components/editor/editor.component';
 import { QuestionComponent } from './components/question/question.component';
 import { CreateQuestionComponent } from './components/create-question/create-question.component';
 import { AdminAuditComponent } from './components/admin-components/admin-audit/admin-audit.component';
+import { AccountComponent } from './components/account/account.component';
 
 const routes: Routes = [
     //主站路由
@@ -31,6 +32,7 @@ const routes: Routes = [
     { path: "editor", component: EditorComponent },
     { path: "question", component: QuestionComponent },
     { path: "question/create", component: CreateQuestionComponent },
+    { path: "account", component: AccountComponent },
     //管理界面路由
     { path: "admin/audit", component: AdminAuditComponent },
     { path: "admin", component: AdminHomepageComponent },

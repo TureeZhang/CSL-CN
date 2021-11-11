@@ -21,5 +21,6 @@ namespace HanJie.CSLCN.Services
         Task<UserInfo> GetById(int id);
         Task UpdateAsync(UserInfo userInfo);
         Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode);
+        Task UpdateAccount(UserInfoAudit userInfo);
     }
 }

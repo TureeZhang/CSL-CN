@@ -1,3 +1,5 @@
+import { AuditStatusEnum } from "./enums/audit-status-enum";
+
 export class UserInfoDto {
     id: number;
     nickName: string;
@@ -14,4 +16,5 @@ export class UserInfoDto {
     personalizedSignature: string;
     commitTimesCount: number;
     lastCommitDateTime: string;
+    auditStatus: AuditStatusEnum;
 }

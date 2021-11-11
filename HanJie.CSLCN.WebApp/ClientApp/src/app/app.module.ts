@@ -37,6 +37,7 @@ import { QuestionComponent } from './components/question/question.component';
 import { CreateQuestionComponent } from './components/create-question/create-question.component';
 import { ValidateCodeModalComponent } from './components/validate-code-modal/validate-code-modal.component';
 import { AdminAuditComponent } from './components/admin-components/admin-audit/admin-audit.component';
+import { AccountComponent } from './components/account/account.component';
 
 registerLocaleData(zh);
 
@@ -50,6 +51,7 @@ registerLocaleData(zh);
         LoginComponent,
         DonatorRankComponent,
         UploaderComponent,
+        AccountComponent,
         //管理界面组件
         AdminHomepageComponent,
         AdminUserInfoesComponent,
@@ -69,7 +71,8 @@ registerLocaleData(zh);
         QuestionComponent,
         CreateQuestionComponent,
         ValidateCodeModalComponent,
-        AdminAuditComponent
+        AdminAuditComponent,
+        AccountComponent
     ],
     imports: [
         BrowserModule,

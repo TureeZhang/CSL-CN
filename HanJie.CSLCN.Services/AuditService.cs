@@ -23,6 +23,12 @@ namespace HanJie.CSLCN.Services
         public async Task<UserInfo> ConfirmUser(int userId)
         {
             UserInfo userInfo = await this._userInfoService.GetById(userId);
+            UserInfoAudit userInfoAuditCache = this._cslDbContext.UserInfoesAudit.Find(userInfo.Id);
+
+            userInfo.AvatarUrl = userInfo.AvatarUrl;
+            userInfo.NickName = userInfo.NickName;
+            userInfo.PersonalHomepageUrl = userInfo.PersonalHomepageUrl;
+            userInfo.PersonalizedSignature = userInfo.PersonalizedSignature;
             userInfo.AuditStatus =  AuditStatusEnum.OK;
 
             await this._userInfoService.UpdateAsync(userInfo);

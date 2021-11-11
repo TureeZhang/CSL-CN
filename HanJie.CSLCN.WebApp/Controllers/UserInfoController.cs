@@ -33,12 +33,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(UserInfoDto userInfo)
+        public IActionResult Post(UserInfoAuditDto userInfoAudit)
         {
-            if (userInfo.Id != base.CurrentUser.Id)
-                return new NotFoundResult();
-
-            this._userInfoService.UpdateAsync(new UserInfo().ConvertFromDtoModel(userInfo));
+            userInfoAudit.Id = base.CurrentUser.Id;
+            this._userInfoService.UpdateAccount(new UserInfoAudit().ConvertFromDtoModel(userInfoAudit));
             return Ok();
         }
 

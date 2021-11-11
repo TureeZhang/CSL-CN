@@ -44,7 +44,7 @@ export class UserInfoService {
             this.httpHelper.delete(this.loginApiUrl, userId).subscribe(response => {
                 UserInfoService.CurrentUser = null;
                 this.cookieService.deleteCookie(StringTagConsts.currentLoginedUserGuid);
-                resolve();
+                resolve(null);
             });
         });
     }
@@ -69,8 +69,13 @@ export class UserInfoService {
 
     }
 
-    register(user: UserInfoDto,smsCode:string): Observable<any> {
+    register(user: UserInfoDto, smsCode: string): Observable<any> {
         return this.httpHelper.post(`/api/register/RegistNewUser?smscode=${smsCode}`, user);
+    }
+
+
+    updateAccount(user: UserInfoDto): Observable<void> {
+        return this.httpHelper.post<UserInfoDto, void>(`/api/userinfo`, user);
     }
 
 }

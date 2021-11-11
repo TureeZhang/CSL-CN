@@ -59,7 +59,7 @@ namespace HanJie.CSLCN.Services
 
         public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyOnAuditing = false)
         {
-            List<UserInfo> datas = onlyOnAuditing ? await base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus ==  AuditStatusEnum.OnAuditing).ToListAsync() : await base.ListAsync();
+            List<UserInfo> datas = onlyOnAuditing ? await base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus == AuditStatusEnum.OnAuditing).ToListAsync() : await base.ListAsync();
             List<UserInfoDto> dtos = new List<UserInfoDto>();
             foreach (UserInfo item in datas)
             {
@@ -306,6 +306,23 @@ namespace HanJie.CSLCN.Services
             await AddAsync(userInfo);
 
             return userInfoDto;
+        }
+
+        public async Task UpdateAccount(UserInfoAudit userInfoAudit)
+        {
+            UserInfo userToUpdate = await base.GetById(userInfoAudit.Id);
+
+            await CacheUserNewInfoes(userInfoAudit);
+            userToUpdate.AuditStatus = AuditStatusEnum.OnAuditing;
+
+            await UpdateAsync(userToUpdate);
+        }
+
+        private async Task CacheUserNewInfoes(UserInfoAudit userInfoAudit)
+        {
+            this.CSLDbContext.UserInfoesAudit.Remove(userInfoAudit);
+            await this.CSLDbContext.UserInfoesAudit.AddAsync(userInfoAudit);
+            await this.CSLDbContext.SaveChangesAsync();
         }
 
         public override async Task UpdateAsync(UserInfo data)

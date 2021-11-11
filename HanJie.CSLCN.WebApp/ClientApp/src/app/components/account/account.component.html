@@ -1,0 +1,46 @@
+<div class="container">
+
+    <nz-tabset nzTabPosition="left">
+        <nz-tab [nzTitle]="userinfoTabTemplate">
+            <ng-template #userinfoTabTemplate> <i nz-icon nzType="user"></i>我的信息</ng-template>
+            <nz-spin [nzSpinning]="isUserInfoLoading">
+                <form nz-form [formGroup]="userinfoForm">
+                    {{(this.userInfoService.getCurrentLoginedUserInfo()|async).auditStatus}}
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="2" [nzXs]="24" nzRequired="true" nzFor="nickName">昵称</nz-form-label>
+                        <nz-form-control [nzSm]="14" nzXs="24" nzErrorTip="请填写昵称。" nzValidatingTip="正在检查敏感词...">
+                            <input nz-input formControlName="nickName" id="nickName">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="2" [nzXs]="24" nzFor="personalHomepageUrl">个人主页</nz-form-label>
+                        <nz-form-control [nzSm]="14" nzXs="24" nzErrorTip="请填写格式正确的 url 地址。">
+                            <input nz-input formControlName="personalHomepageUrl" id="personalHomepageUrl">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="2" [nzXs]="24" nzFor="personalizedSignature">个性签名</nz-form-label>
+                        <nz-form-control [nzSm]="14" nzXs="24" nzErrorTip="请不要在个性签名中填写敏感词汇。">
+                            <textarea nz-input rows="4" formControlName="personalizedSignature"
+                                id="personalizedSignature"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control nzSpan="14" nzOffset="2">
+                            <button nz-button nzType="primary" nz-popconfirm
+                                nzPopconfirmTitle="个人信息修改需要审核。在审核通过前，新的个人信息不会展示，请知晓。" nzPopconfirmPlacement="rightTop"
+                                (nzOnConfirm)="updateUserInfo()" [disabled]="!this.userinfoForm.valid">保存</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </nz-spin>
+        </nz-tab>
+        <nz-tab [nzTitle]="avatarTabTemplate">
+            <ng-template #avatarTabTemplate> <i nz-icon nzType="smile"></i>我的头像</ng-template>
+        </nz-tab>
+        <nz-tab [nzTitle]="keyTabTemplate">
+            <ng-template #keyTabTemplate> <i nz-icon nzType="key"></i>修改密码</ng-template>
+        </nz-tab>
+    </nz-tabset>
+
+</div>

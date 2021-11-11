@@ -13,17 +13,15 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
- :host ::ng-deep ::-webkit-scrollbar-thumb:hover {
+:host ::ng-deep ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.4);
 }
 
- :host ::ng-deep ::-webkit-scrollbar-thumb:active {
+:host ::ng-deep ::-webkit-scrollbar-thumb:active {
     background: rgba(0, 0, 0, .9);
 }
 
-
 /*菜单自定义开始*/
-
 
 /*选中菜单文字颜色*/
 
@@ -31,13 +29,11 @@
     color: var(--menu-text-focus-color) !important;
 }
 
-
 /*选中菜单背景色*/
 
 :host ::ng-deep .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
     background-color: var(--menu-background-focus-color);
 }
-
 
 /*菜单组子项背景色*/
 
@@ -45,35 +41,23 @@
     background-color: var(--menu-groupitem-background-color);
 }
 
-
 /*菜单文字颜色*/
 
-:host ::ng-deep .ant-menu-dark .ant-menu-item,
-.ant-menu-dark .ant-menu-item-group-title,
-.ant-menu-dark .ant-menu-item>a {
+:host ::ng-deep .ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item>a {
     color: var(--menu-text-color);
 }
 
-
 /*菜单组文字颜色*/
 
-:host ::ng-deep .ant-menu.ant-menu-dark,
-.ant-menu-dark .ant-menu-sub {
+:host ::ng-deep .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
     color: var(--menu-group-text-color);
 }
 
-
 /*悬停色*/
 
-:host ::ng-deep .ant-menu-dark .ant-menu-item-active,
-.ant-menu-dark .ant-menu-item:hover,
-.ant-menu-dark .ant-menu-submenu-active,
-.ant-menu-dark .ant-menu-submenu-open,
-.ant-menu-dark .ant-menu-submenu-selected,
-.ant-menu-dark .ant-menu-submenu-title:hover {
+:host ::ng-deep .ant-menu-dark .ant-menu-item-active, .ant-menu-dark .ant-menu-item:hover, .ant-menu-dark .ant-menu-submenu-active, .ant-menu-dark .ant-menu-submenu-open, .ant-menu-dark .ant-menu-submenu-selected, .ant-menu-dark .ant-menu-submenu-title:hover {
     color: var(--menu-hover-color);
 }
-
 
 /*菜单自定义结束*/
 
@@ -118,8 +102,7 @@ nz-footer {
     padding: 55px 50px 80px 50px;
 }
 
-.ant-layout,
-.ant-layout * {
+.ant-layout, .ant-layout * {
     box-sizing: border-box;
 }
 
@@ -168,10 +151,17 @@ nz-footer {
 }
 
 .login-user-avatar {
-    cursor: pointer;
-    transition: all 1s;
+    padding: 7px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    background: linear-gradient(315deg, #bbbbbb47, transparent);
 }
 
-.login-user-avatar:hover {
+.login-user-avatar nz-avatar {
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.login-user-avatar:hover nz-avatar {
     transform: scale(1.2);
 }
