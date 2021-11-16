@@ -110,7 +110,7 @@ namespace HanJie.CSLCN.WebApp
                 app.UseExceptionHandler(exceptionHandlerOptions);
                 app.UseExceptionHandler("/index.html");
 
-                //只有在正式环境才启用路由守卫。因为 debug 时前端时单独起的，不需要后段启用路由守卫策略。
+                //只有在正式环境才启用路由守卫。因为 debug 时前端是单独起的，不需要后段启用路由守卫策略。
                 app.Use(async (context, next) =>
                  {
                      await next();
@@ -122,7 +122,7 @@ namespace HanJie.CSLCN.WebApp
                  });
 
             }
-
+            
 
             app.UseCors("local-angular-app");
             app.UseFileServer();

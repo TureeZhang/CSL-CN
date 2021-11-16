@@ -1,9 +1,11 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, of, observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, of, observable, throwError } from 'rxjs';
 import { MenuDto } from '../models/menu-dto';
 import { catchError, map, tap, retry } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { JSDocCommentStmt } from '@angular/compiler';
+import { GlobalService } from '../services/global.service';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Injectable({ providedIn: "root" })
 export class CSLHttpHelper {
@@ -12,15 +14,22 @@ export class CSLHttpHelper {
    *服务端主 host 地址段前缀
    ***/
   private cslHostUrl: string = this.getBackServerHostUrl();
+  public static modalService: NzModalService;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private nzModalService: NzModalService) {
+    CSLHttpHelper.modalService = nzModalService;
+  }
 
   /**
    * 向服务端 API 发起 get 请求
    * @param url API 接口相对路径。eg. "/api/menus"
    */
   get<TResult>(url: string): Observable<TResult> {
-    return this.http.get<TResult>(this.cslHostUrl + url);
+    return this.http.get<TResult>(this.cslHostUrl + url)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   put<TData, TResult>(url: string, datas: TData): Observable<TResult> {
@@ -29,7 +38,10 @@ export class CSLHttpHelper {
       {
         headers:
           new HttpHeaders().append("Content-Type", "application/json")
-      });
+      })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -42,7 +54,10 @@ export class CSLHttpHelper {
       {
         headers:
           new HttpHeaders().append("Content-Type", "application/json")
-      });
+      })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   delete(url: string, id: number): Observable<object> {
@@ -51,7 +66,10 @@ export class CSLHttpHelper {
       {
         headers:
           new HttpHeaders().append("Content-Type", "application/json")
-      });
+      })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getBackServerHostUrl(): string {
@@ -61,14 +79,27 @@ export class CSLHttpHelper {
     if (host == "www.cities-skylines.cn") {
       apiHostUrl += "www.cities-skylines.cn";
     }
-    else if (host == "www.huyahanjie.com") {
-      apiHostUrl += "www.huyahanjie.com"
-    }
     else {
       apiHostUrl += "localhost:5500";
     }
 
     return apiHostUrl;
+  }
+
+  private handleError(err: HttpErrorResponse): Observable<never> {
+    if (err.status === 400) {
+      CSLHttpHelper.modalService.error({
+        nzTitle: '哦豁',
+        nzContent: err.error.errMsg
+      });
+    }else{
+      CSLHttpHelper.modalService.error({
+        nzTitle: '服务器错误（BUG，方便的话截图给骚汉哦感谢！）',
+        nzContent: err.error,
+        nzWidth:"90%"
+      });
+    }
+    return throwError(err.error.errMsg);
   }
 
 }

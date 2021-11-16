@@ -85,7 +85,6 @@ namespace HanJie.CSLCN.Services
         public async Task<TDataModelType> GetById(int id)
         {
             TDataModelType data = await CSLDbContext.Set<TDataModelType>().FindAsync(id);
-
             return data;
         }
 

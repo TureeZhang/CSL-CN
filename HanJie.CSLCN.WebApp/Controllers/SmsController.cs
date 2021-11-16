@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.MyExceptions;
 using HanJie.CSLCN.Services;
+using HanJie.CSLCN.WebApp.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace HanJie.CSLCN.WebApp.Controllers
 {
     [Route("api/[controller]")]
+    [TypeFilter(typeof(UserExceptionFilter))]
+    [ApiController]
     public class SmsController : Controller
     {
         private readonly IValidateCodeService _humanMachineValidateService;
@@ -23,6 +26,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         // GET: api/values
         [HttpPost]
+        [Route("/api/sms")]
         public async Task<IActionResult> Post([FromBody]Dictionary<string, string> pars)
         {
             string phoneNumber = null;

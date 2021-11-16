@@ -42,5 +42,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
             bool isExisted = await this._userInfoService.IsUserNameDuplicated(username);
             return new JsonResult(isExisted);
         }
+
+        [Route("/api/[controller]/nicknameexisted")]
+        [HttpGet]
+        public IActionResult IsNickNameExists(string nickName)
+        {
+            bool isExists = this._userInfoService.IsNickNameExists(nickName);
+            return new JsonResult(isExists);
+        }
     }
 }

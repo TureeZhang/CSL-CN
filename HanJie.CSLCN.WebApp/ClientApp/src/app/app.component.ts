@@ -57,9 +57,7 @@ export class AppComponent implements OnInit {
         });
         this.getMenus();
 
-        if (this.currentUser == null) {
-            this.tryRestoreLoginUserInfo();
-        }
+        this.tryRestoreLoginUserInfo();
 
         this.navigationEnd.subscribe(evt => {
             this.tryRestoreLoginUserInfo();
@@ -80,10 +78,12 @@ export class AppComponent implements OnInit {
     }
 
     tryRestoreLoginUserInfo(): void {
-        this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
-            UserInfoService.CurrentUser = response;
-            this.currentUser = response;
-            this.isUserLogined = this.currentUser.isLoginSuccess;
+        this.userInfoService.getCurrentLoginedUserInfo().subscribe(res => {
+            if (res.isLoginSuccess) {
+                this.currentUser = res;
+                UserInfoService.CurrentUser = res;
+                this.isUserLogined = res.isLoginSuccess;
+            }
         });
     }
 

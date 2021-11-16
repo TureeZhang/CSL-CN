@@ -2,7 +2,7 @@
 <nz-modal [(nzVisible)]="isVisiable" [nzTitle]="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
   <div nz-row class="align-center">
     <div nz-col nzSpan="24">
-      <label>请输入下图中的文字：</label>
+      <label>请输入下图中的文字（ *无需区分大小写 ）：</label>
     </div>
     <div nz-col nzSpan="24" style="margin-top:24px;text-align: center;cursor: pointer;">
       <img src="{{validateCodeImgBase64}}" alt="正在获取验证码..." (click)="refreshValidateCode()"/>

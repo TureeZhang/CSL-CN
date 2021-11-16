@@ -4,11 +4,12 @@ using HanJie.CSLCN.Models.Dtos;
 
 namespace HanJie.CSLCN.Models.DataModels
 {
-    [Table("userinfoesaudits")]
-    public class UserInfoAudit : BaseUserInfo<UserInfoAudit, UserInfoAuditDto>
+    public class UserInfoAudit : BaseDataModel<UserInfoAudit, UserInfoAuditDto>
     {
-        public UserInfoAudit()
-        {
-        }
+        public int UserId { get; set; }
+        public string NickName { get; set; }
+        public string AvatarUrl { get; set; }
+        public string PersonalHomepageUrl { get; set; }
+        public string PersonalizedSignature { get; set; }
     }
 }

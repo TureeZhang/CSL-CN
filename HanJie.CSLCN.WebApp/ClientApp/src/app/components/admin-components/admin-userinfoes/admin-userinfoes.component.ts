@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { NzDrawerService } from 'ng-zorro-antd';
 import { UserInfoDto } from '../../../models/user-info-dto';
 import { AdminUserInfoService } from '../../../services/admin/admin-userinfo.service';
-import { NzDrawerService } from 'ng-zorro-antd';
-import { AdminCreateUserInfoComponent } from '../admin-create-userinfo/admin-create-userinfo.component';
 import { DrawerStatuService } from '../../../services/drawer-statu.service';
 import { GlobalService } from '../../../services/global.service';
+import { AdminCreateUserInfoComponent } from '../admin-create-userinfo/admin-create-userinfo.component';
 
 @Component({
   selector: 'admin-userinfoes',
@@ -25,7 +24,7 @@ export class AdminUserInfoesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adminUserInfoService.list(false).subscribe(response => {
+    this.adminUserInfoService.list().subscribe(response => {
       this.datas = response;
       this.loading = false;
     });

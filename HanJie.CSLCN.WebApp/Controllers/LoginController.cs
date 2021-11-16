@@ -29,7 +29,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         /// <param name="userInfoDto"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult Post([FromBody]UserInfoDto userInfo)
+        public JsonResult Post([FromBody] UserInfoDto userInfo)
         {
             try
             {

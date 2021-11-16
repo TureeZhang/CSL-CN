@@ -57,9 +57,9 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public async virtual Task<List<UserInfoDto>> ListDtoes(bool onlyOnAuditing = false)
+        public async virtual Task<List<UserInfoDto>> ListDtoes()
         {
-            List<UserInfo> datas = onlyOnAuditing ? await base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus == AuditStatusEnum.OnAuditing).ToListAsync() : await base.ListAsync();
+            List<UserInfo> datas = await base.ListAsync();
             List<UserInfoDto> dtos = new List<UserInfoDto>();
             foreach (UserInfo item in datas)
             {
@@ -71,6 +71,21 @@ namespace HanJie.CSLCN.Services
 
             return dtos;
         }
+
+        public async Task<List<UserInfoAuditDto>> ListUnAuditorUsersInfo()
+        {
+            List<int> unAuditUserIds = await base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus == AuditStatusEnum.OnAuditing).Select(user => user.Id).ToListAsync();
+            List<UserInfoAudit> unAuditorUserInfoes = await base.CSLDbContext.UserInfoAudits.Where(user => unAuditUserIds.Contains(user.Id)).ToListAsync();
+
+            List<UserInfoAuditDto> results = new List<UserInfoAuditDto>();
+            foreach (var item in unAuditorUserInfoes)
+            {
+                results.Add(new UserInfoAuditDto().ConvertFromDataModel(item));
+            }
+
+            return results;
+        }
+
 
         private UserInfoDto ResotreLoginStatus(string cookieGuid)
         {
@@ -308,26 +323,35 @@ namespace HanJie.CSLCN.Services
             return userInfoDto;
         }
 
-        public async Task UpdateAccount(UserInfoAudit userInfoAudit)
+        public async Task UpdateAccount(UserInfo data)
         {
-            UserInfo userToUpdate = await base.GetById(userInfoAudit.Id);
+            UserInfo userToUpdate = await base.GetById(data.Id);
 
-            await CacheUserNewInfoes(userInfoAudit);
+            if (string.IsNullOrEmpty(data.AvatarUrl))
+                data.AvatarUrl = userToUpdate.AvatarUrl;
+
+            await CacheUserNewInfoes(Mapper.Map<UserInfoAudit>(data));
             userToUpdate.AuditStatus = AuditStatusEnum.OnAuditing;
 
             await UpdateAsync(userToUpdate);
         }
 
-        private async Task CacheUserNewInfoes(UserInfoAudit userInfoAudit)
+        private async Task CacheUserNewInfoes(UserInfoAudit data)
         {
-            this.CSLDbContext.UserInfoesAudit.Remove(userInfoAudit);
-            await this.CSLDbContext.UserInfoesAudit.AddAsync(userInfoAudit);
+            List<UserInfoAudit> existCaches = this.CSLDbContext.UserInfoAudits.Where(item => item.UserId == data.UserId).ToList();
+
+            foreach (var item in existCaches)
+            {
+                this.CSLDbContext.Remove(item);
+            }
+
+            await this.CSLDbContext.UserInfoAudits.AddAsync(data);
             await this.CSLDbContext.SaveChangesAsync();
         }
 
         public override async Task UpdateAsync(UserInfo data)
         {
-            Ensure.NotNull(data.Id, nameof(data.Id));
+            Ensure.IsDatabaseId(data.Id, nameof(data.Id));
 
             data.LastModifyDate = DateTime.Now;
 
@@ -335,6 +359,13 @@ namespace HanJie.CSLCN.Services
             await base.CSLDbContext.SaveChangesAsync();
         }
 
+        public bool IsNickNameExists(string nickName)
+        {
+            UserInfo user = base.CSLDbContext.UserInfoes.Where(item => string.Equals(nickName, item.NickName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            bool isExists = user != null;
+            return isExists;
+        }
 
     }
 }

@@ -38,7 +38,6 @@ export class ValidateCodeModalComponent implements OnInit {
   }
 
   handleOk(): void {
-    this.isVisiable = false;
     this.onClickOk.emit(this.userInputCode);
   }
 

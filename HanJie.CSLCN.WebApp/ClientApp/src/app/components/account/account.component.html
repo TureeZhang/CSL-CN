@@ -5,10 +5,15 @@
             <ng-template #userinfoTabTemplate> <i nz-icon nzType="user"></i>我的信息</ng-template>
             <nz-spin [nzSpinning]="isUserInfoLoading">
                 <form nz-form [formGroup]="userinfoForm">
-                    {{(this.userInfoService.getCurrentLoginedUserInfo()|async).auditStatus}}
                     <nz-form-item>
                         <nz-form-label [nzSm]="2" [nzXs]="24" nzRequired="true" nzFor="nickName">昵称</nz-form-label>
-                        <nz-form-control [nzSm]="14" nzXs="24" nzErrorTip="请填写昵称。" nzValidatingTip="正在检查敏感词...">
+                        <nz-form-control [nzSm]="14" nzXs="24" [nzErrorTip]="nicknameErrMsgTemplate"
+                            nzValidatingTip="正在检查敏感词...">
+                            <ng-template #nicknameErrMsgTemplate let-control>
+                                <ng-container *ngIf="control.hasError('required')">请填写昵称。</ng-container>
+                                <ng-container *ngIf="control.hasError('sensitive')">昵称存在敏感词。</ng-container>
+                                <ng-container *ngIf="control.hasError('existed')">昵称已被占用。</ng-container>
+                            </ng-template>
                             <input nz-input formControlName="nickName" id="nickName">
                         </nz-form-control>
                     </nz-form-item>
@@ -33,6 +38,13 @@
                         </nz-form-control>
                     </nz-form-item>
                 </form>
+                <nz-card nzTitle="以下个人信息正在审核中，将于审核通过后显示" *ngIf="(currentUser|async).auditStatus==10">
+                    <p><b>昵称：</b>{{(currentUser|async).nickName}}</p>
+                    <p><b>个人页面：</b><a
+                            href="{{(currentUser|async).personalHomepageUrl}}">{{(currentUser|async).personalHomepageUrl}}</a>
+                    </p>
+                    <p><b>个性签名：</b>{{(currentUser|async).personalizedSignature}}</p>
+                </nz-card>
             </nz-spin>
         </nz-tab>
         <nz-tab [nzTitle]="avatarTabTemplate">

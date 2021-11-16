@@ -8,9 +8,7 @@ using System.Text;
 
 namespace HanJie.CSLCN.Models.DataModels
 {
-    public class BaseUserInfo<TDataModelType, TDtoType> : BaseDataModel<TDataModelType, TDtoType>
-        where TDataModelType : class, new()
-        where TDtoType : class, new() //标记继承于此方法的必须是一个类，并且具备无参的构造函数
+    public class UserInfo : BaseDataModel<UserInfo, UserInfoDto>
     {
         /// <summary>
         /// 用户名

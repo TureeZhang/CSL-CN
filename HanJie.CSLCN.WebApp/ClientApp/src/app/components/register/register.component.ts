@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserInfo, userInfo } from 'os';
 import { observable, Observable, Observer } from 'rxjs';
+import { CSLHttpHelper } from 'src/app/commons/http-helper';
 import { UserInfoDto } from 'src/app/models/user-info-dto';
 import { GlobalService } from 'src/app/services/global.service';
 import { SmsService } from 'src/app/services/sms.service';
 import { UserInfoService } from 'src/app/services/user-info.service';
 import { ValidateService } from 'src/app/services/validate.service';
-import { AsyncValidatorService } from '../../services/async-validator.service';
+import { ValidateCodeModalComponent } from '../validate-code-modal/validate-code-modal.component';
 
 
 @Component({
@@ -21,16 +22,20 @@ export class RegisterComponent implements OnInit {
   validateForm!: FormGroup;
   timerForUserNameExisted!: NodeJS.Timer;
   timerForSmsCodeOK: NodeJS.Timer;
+  isValidateCodeModalShow: boolean = false;
   isSendSmsCodeButtonEnable: boolean = false;
   isAgreementShow: boolean = false;
 
-  constructor(private asyncValidatorService: AsyncValidatorService,
-    private globalService: GlobalService,
+  @ViewChild(ValidateCodeModalComponent, { static: true })
+  validateCodelModalComponent: ValidateCodeModalComponent;
+
+  constructor(private globalService: GlobalService,
     private smsService: SmsService,
     private userInfoService: UserInfoService,
     private route: Router,
     private fb: FormBuilder,
-    private validateService: ValidateService) {
+    private validateService: ValidateService,
+    private httpHelper: CSLHttpHelper) {
 
   }
 
@@ -40,10 +45,10 @@ export class RegisterComponent implements OnInit {
 
   private buildForm(): void {
     this.validateForm = this.fb.group({
-      username: [null, [Validators.required, Validators.pattern("[a-zA-Z0-9]{5,15}")], [this.isUserNameExist]],
+      username: [null, [Validators.required, Validators.pattern("[a-zA-Z0-9]{5,15}")], [this.validateService.isUserNameExists]],
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.validateService.isContainSensitiveWords]],
+      nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.validateService.isContainSensitiveWords, this.validateService.isNickNameExists]],
       phoneNumberPrefix: ['+86', [Validators.required]],
       phoneNumber: [null, [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)]],
       smsCode: [null, [Validators.required, Validators.pattern(/[0-9]/)]],
@@ -86,37 +91,18 @@ export class RegisterComponent implements OnInit {
     return {};
   };
 
-  isUserNameExist = (control: FormControl): Observable<any> => {
-    return new Observable((observer: Observer<ValidationErrors | null>) => {
-      if (this.timerForUserNameExisted != null) {
-        clearTimeout(this.timerForUserNameExisted);
-      }
-      const userName = control.value;
-      this.timerForUserNameExisted = setTimeout(() => {
-        this.asyncValidatorService.isUserNameExisted(userName).subscribe(response => {
-          if (response === true) {
-            observer.next({ error: true, existed: true }); //必须返回 error:true 以标识此事件为校验错误
-          } else {
-            observer.next(null);
-          }
-          observer.complete();
-        })
-      }, 1000);
-    })
-  }
-
-
   sendSmsCode(userInputCode: string): void {
     var phoneNumberInput = this.validateForm.controls["phoneNumber"];
     phoneNumberInput.disable();
 
     this.smsService.sendSmsValidateCode(this.validateForm.controls["phoneNumberPrefix"].value + phoneNumberInput.value, userInputCode).subscribe(data => {
+      this.isValidateCodeModalShow = false;
+      this.validateCodelModalComponent.refreshValidateCode();
       this.globalService.successTip(`验证通过：已向手机 ${phoneNumberInput.value} 发送验证码。`);
     },
       err => {
-        this.globalService.ErrorTip(err);
-      }
-    );
+        this.validateCodelModalComponent.refreshValidateCode();
+      });
   }
 
   showAgreement(): void {

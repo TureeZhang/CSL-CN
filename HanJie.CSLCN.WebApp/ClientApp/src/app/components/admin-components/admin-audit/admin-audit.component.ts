@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { UserInfo } from 'os';
 import { Observable } from 'rxjs';
+import { UserInfoAuditDto } from 'src/app/models/user-info-audit-dto';
 import { UserInfoDto } from 'src/app/models/user-info-dto';
 import { AdminUserInfoService } from 'src/app/services/admin/admin-userinfo.service';
 import { AuditService } from 'src/app/services/admin/audit.service';
@@ -14,11 +15,11 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class AdminAuditComponent implements OnInit {
 
-  public users: UserInfoDto[];
+  public users: UserInfoAuditDto[];
   public comments: Observable<any[]>;
   public wikiPassages: Observable<any[]>;
   public rejectReason: string;
-  public selectedUser: UserInfoDto;
+  public selectedUser: UserInfoAuditDto;
 
   public isUsersLoading: boolean = true;
   public isReasonModalShow: boolean = false;
@@ -37,14 +38,14 @@ export class AdminAuditComponent implements OnInit {
 
     host.users = [];
     host.isUsersLoading = true;
-    this.adminUserInfoService.list(true).subscribe(res => {
+    this.adminUserInfoService.listUnAuditUserInfoes().subscribe(res => {
       host.users = res;
       host.isUsersLoading = false;
     });
   }
 
-  confirmUser(user: UserInfoDto): void {
-    this.auditService.ConfirmUser(user.id).subscribe(res => {
+  confirmUser(user: UserInfoAuditDto): void {
+    this.auditService.ConfirmUser(user.userId).subscribe(res => {
       this.globalService.successTip(`成功：'${user.nickName}' 已通过审核。`)
       this.loadUsers();
     });
@@ -56,7 +57,7 @@ export class AdminAuditComponent implements OnInit {
       return;
     }
 
-    this.auditService.RejectUser(this.selectedUser.id, this.rejectReason).subscribe(res => {
+    this.auditService.RejectUser(this.selectedUser.userId, this.rejectReason).subscribe(res => {
       this.globalService.WarningTip(`成功：已拒绝用户 ${this.selectedUser.nickName} 的个人信息审核。`);
       this.rejectReason = "";
       this.isReasonModalShow = false;
@@ -65,7 +66,7 @@ export class AdminAuditComponent implements OnInit {
     });
   }
 
-  showReasonInputModel(user: UserInfoDto): void {
+  showReasonInputModel(user: UserInfoAuditDto): void {
     this.selectedUser = user;
     this.isReasonModalShow = true;
   }

@@ -42,7 +42,7 @@
                         frameborder="0" scrolling="0" width="95px" height="25px"
                         style="position:relative;top:10px;"></iframe>
                     <button *ngIf="!isUserLogined" nz-button [nzSize]="'small'" routerLink="/login"><i nz-icon
-                            nzType="login"></i>编辑者入口</button>
+                            nzType="login"></i>登陆</button>
                     <span *ngIf="isUserLogined" class="login-user-avatar">
                         <span routerLink="/account">
                             <nz-avatar nzIcon="user" nzSrc="{{currentUser.avatarUrl}}">

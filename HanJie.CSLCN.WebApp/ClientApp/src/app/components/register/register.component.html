@@ -46,11 +46,12 @@
             </span>
           </nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="nicknameErrorTpl" nzValidatingTip="正在检查敏感词...">
-            <input nz-input id="nickname" formControlName="nickname" />
+            <input nz-input id="nickname" formControlName="nickname" autocomplete="off"/>
             <ng-template #nicknameErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">请填写昵称</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">昵称包含特殊字符</ng-container>
               <ng-container *ngIf="control.hasError('sensitive')">昵称包含敏感词</ng-container>
+              <ng-container *ngIf="control.hasError('existed')">昵称已被占用</ng-container>
             </ng-template>
           </nz-form-control>
         </nz-form-item>
@@ -77,7 +78,7 @@
                 </nz-input-group>
               </div>
               <div nz-col [nzSpan]="6">
-                <validate-code-modal (onClickOk)="sendSmsCode($event)" [disabled]="!isSendSmsCodeButtonEnable">发送验证码
+                <validate-code-modal (onClickOk)="sendSmsCode($event)" [isVisiable]="isValidateCodeModalShow" [disabled]="!isSendSmsCodeButtonEnable">发送验证码
                 </validate-code-modal>
               </div>
             </div>

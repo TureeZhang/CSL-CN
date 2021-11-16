@@ -17,7 +17,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
         private IUserInfoService _userInfoService;
         private ISensitiveWordHelper _sensitiveWordHelper;
-
+        
         public UserInfoController(IUserInfoService userInfoService,
             IUserStatuService userStatuService,
             ISensitiveWordHelper sensitiveWordHelper) : base(userStatuService)
@@ -33,10 +33,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(UserInfoAuditDto userInfoAudit)
+        public IActionResult Post(UserInfoDto dto)
         {
-            userInfoAudit.Id = base.CurrentUser.Id;
-            this._userInfoService.UpdateAccount(new UserInfoAudit().ConvertFromDtoModel(userInfoAudit));
+            this._userInfoService.UpdateAccount(new UserInfo().ConvertFromDtoModel(dto));
             return Ok();
         }
 

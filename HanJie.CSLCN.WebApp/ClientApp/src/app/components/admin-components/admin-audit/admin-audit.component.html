@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let user of usersTable.data">
-                        <td>{{ user.id }}</td>
+                        <td>{{ user.userId }}</td>
                         <td>{{ user.nickName }}</td>
                         <td>
                             <nz-avatar [nzSize]="64" nzIcon="user" nzSrc="{{ user.avatarUrl }}"></nz-avatar>

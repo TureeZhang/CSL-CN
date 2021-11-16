@@ -24,7 +24,16 @@ namespace HanJie.CSLCN.Common
                 SensitiveWordHelper._stringSearcher.SetKeywords(SensitiveWordHelper._sensitiveWords);
             }
 
-            bool isContainsSensitiveWords = SensitiveWordHelper._stringSearcher.ContainsAny(testWord);
+            bool isContainsSensitiveWords = true;
+            try
+            {
+                isContainsSensitiveWords = SensitiveWordHelper._stringSearcher.ContainsAny(testWord);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("敏感词检测服务失败：" + ex);
+            }
+
             return isContainsSensitiveWords;
         }
 

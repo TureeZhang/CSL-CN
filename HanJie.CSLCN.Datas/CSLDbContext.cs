@@ -16,12 +16,13 @@ namespace HanJie.CSLCN.Datas
         /// <summary>
         /// 用户待审信息表
         /// </summary>
-        public DbSet<UserInfoAudit> UserInfoesAudit { get; set; }
+        public DbSet<UserInfoAudit> UserInfoAudits { get; set; }
 
         /// <summary>
         /// 存储主要的维基文章所使用的数据库表。
         /// </summary>
         public DbSet<WikiPassage> WikiPassages { get; set; }
+
         /// <summary>
         /// 主菜单信息表
         /// </summary>
