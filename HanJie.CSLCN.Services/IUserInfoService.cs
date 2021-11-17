@@ -24,5 +24,6 @@ namespace HanJie.CSLCN.Services
         Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode);
         Task UpdateAccount(UserInfo userInfo);
         bool IsNickNameExists(string nickName);
+        UserInfoAuditDto GetAuditingInfo(int userId);
     }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { AuditStatusEnum } from 'src/app/models/enums/audit-status-enum';
+import { UserInfoAuditDto } from 'src/app/models/user-info-audit-dto';
 import { UserInfoDto } from 'src/app/models/user-info-dto';
 import { GlobalService } from 'src/app/services/global.service';
 import { UserInfoService } from 'src/app/services/user-info.service';
@@ -13,9 +15,11 @@ import { ValidateService } from 'src/app/services/validate.service';
 })
 export class AccountComponent implements OnInit {
 
-  public currentUser: Observable<UserInfoDto>;
+  public currentUser: UserInfoDto;
+  public auditingUser: UserInfoAuditDto;
   public userinfoForm: FormGroup;
   public isUserInfoLoading: boolean = true;
+  public isAuditingInfoExist: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private globalService: GlobalService,
@@ -24,17 +28,25 @@ export class AccountComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.userinfoForm = this.formBuilder.group({
       id: [null, [Validators.required]],
-      nickName: [null, [Validators.required], [this.validateService.isContainSensitiveWords,this.validateService.isNickNameExists]],
+      nickName: [null, [Validators.required], [this.validateService.isContainSensitiveWords, this.validateService.isNickNameExists]],
       personalHomepageUrl: [null, [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
       personalizedSignature: [null]
     });
-    this.currentUser = this.userInfoService.getCurrentLoginedUserInfo();
-    this.currentUser.subscribe(res => {
+    this.userInfoService.getCurrentLoginedUserInfo().subscribe(res => {
+      this.currentUser = res;
       this.userinfoForm.patchValue(res);
       this.isUserInfoLoading = false;
+
+      if (res.auditStatus == AuditStatusEnum.OnAuditing) {
+        this.userInfoService.getAuditingInfo().subscribe(res => {
+          this.auditingUser = res;
+          this.isAuditingInfoExist = true;
+        });
+      }
+
     });
   }
 

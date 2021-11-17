@@ -20,7 +20,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
     {
         private IUserStatuService _userStatuService;
 
-        protected UserInfoDto CurrentUser { get; private set; }
+        protected UserInfoDto CurrentUser { get; set; }
 
         protected bool IsLogin => this.CurrentUser != null;
 

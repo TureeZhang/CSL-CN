@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
+using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
 using HanJie.CSLCN.WebApp.Attributes;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class AuditController : BaseController
     {
         private readonly IAuditService _auditService;
+        private readonly IUserInfoService _userInfoService;
 
         public AuditController(IUserStatuService userStatuService,
             IAuditService auditService,
@@ -23,6 +25,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             : base(userStatuService)
         {
             this._auditService = auditService;
+            this._userInfoService = userInfoService;
         }
 
         // GET: api/values
@@ -32,6 +35,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
             Ensure.IsDatabaseId(userId, nameof(userId));
 
             this._auditService.ConfirmUser(userId);
+            UserInfoDto deleteUser = null;
+            UserStatuService.LoginedUsers.TryRemove(UserStatuService.LoginedUsers.Where(item => item.Value.Id == userId).FirstOrDefault().Key, out deleteUser);
             return Ok();
         }
 

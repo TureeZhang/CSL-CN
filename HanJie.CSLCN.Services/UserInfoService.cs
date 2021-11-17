@@ -343,6 +343,7 @@ namespace HanJie.CSLCN.Services
             foreach (var item in existCaches)
             {
                 this.CSLDbContext.Remove(item);
+                await this.CSLDbContext.SaveChangesAsync();
             }
 
             await this.CSLDbContext.UserInfoAudits.AddAsync(data);
@@ -365,6 +366,11 @@ namespace HanJie.CSLCN.Services
 
             bool isExists = user != null;
             return isExists;
+        }
+
+        public UserInfoAuditDto GetAuditingInfo(int userId)
+        {
+            return Mapper.Map<UserInfoAuditDto>(base.CSLDbContext.UserInfoAudits.Find(userId));
         }
 
     }

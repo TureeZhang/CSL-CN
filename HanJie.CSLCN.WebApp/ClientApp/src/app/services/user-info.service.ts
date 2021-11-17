@@ -8,6 +8,7 @@ import { resolve } from 'url';
 import { reject } from 'q';
 import { CookieService } from './cookie.service';
 import { StringTagConsts } from '../models/consts/string-tag-consts';
+import { UserInfoAuditDto } from '../models/user-info-audit-dto';
 
 @Injectable({ providedIn: "root" })
 export class UserInfoService {
@@ -76,6 +77,10 @@ export class UserInfoService {
 
     updateAccount(user: UserInfoDto): Observable<void> {
         return this.httpHelper.post<UserInfoDto, void>(`/api/userinfo`, user);
+    }
+
+    getAuditingInfo():Observable<UserInfoAuditDto>{
+        return this.httpHelper.get<UserInfoAuditDto>(`/api/userinfo/getauditing`);
     }
 
 }

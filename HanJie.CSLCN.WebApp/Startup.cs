@@ -58,7 +58,7 @@ namespace HanJie.CSLCN.WebApp
 
             Console.WriteLine($"ConnStr:{GlobalConfigs.AppSettings.ConnectionString}");
             services.AddDbContext<CSLDbContext>
-                (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString));  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
+                (options => options.UseMySql(GlobalConfigs.AppSettings.ConnectionString), ServiceLifetime.Transient);  //b => b.MigrationsAssembly("HanJie.CSLCN.WebApp"))
 
             services.AddCors(setupAction =>
             {
@@ -122,7 +122,7 @@ namespace HanJie.CSLCN.WebApp
                  });
 
             }
-            
+
 
             app.UseCors("local-angular-app");
             app.UseFileServer();

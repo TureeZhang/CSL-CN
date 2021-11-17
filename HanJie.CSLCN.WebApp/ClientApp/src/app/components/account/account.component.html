@@ -38,13 +38,15 @@
                         </nz-form-control>
                     </nz-form-item>
                 </form>
-                <nz-card nzTitle="以下个人信息正在审核中，将于审核通过后显示" *ngIf="(currentUser|async).auditStatus==10">
-                    <p><b>昵称：</b>{{(currentUser|async).nickName}}</p>
+                <div *ngIf="isAuditingInfoExist">
+                <nz-divider nzText="正在审核" style="margin-top: 48px;" nzOrientation="left"></nz-divider>
+                <p>以下个人信息正在审核中，将于审核通过后显示。</p>
+                    <p><b>昵称：</b>{{auditingUser.nickName}}</p>
                     <p><b>个人页面：</b><a
-                            href="{{(currentUser|async).personalHomepageUrl}}">{{(currentUser|async).personalHomepageUrl}}</a>
+                            href="{{auditingUser.personalHomepageUrl}}">{{auditingUser.personalHomepageUrl}}</a>
                     </p>
-                    <p><b>个性签名：</b>{{(currentUser|async).personalizedSignature}}</p>
-                </nz-card>
+                    <p><b>个性签名：</b>{{auditingUser.personalizedSignature}}</p>
+                </div>
             </nz-spin>
         </nz-tab>
         <nz-tab [nzTitle]="avatarTabTemplate">

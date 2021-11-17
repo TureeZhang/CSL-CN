@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
+using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +34,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(UserInfoDto dto)
+        public async Task<IActionResult> Post(UserInfoDto dto)
         {
-            this._userInfoService.UpdateAccount(new UserInfo().ConvertFromDtoModel(dto));
+            await this._userInfoService.UpdateAccount(new UserInfo().ConvertFromDtoModel(dto));
+            UserStatuService.LoginedUsers.Where(item => item.Value.Id == dto.Id).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.OnAuditing;
             return Ok();
         }
 
@@ -53,6 +55,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public string Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Route("/api/userinfo/getauditing")]
+        public IActionResult GetAuditingInfo()
+        {
+            return new JsonResult(this._userInfoService.GetAuditingInfo(base.CurrentUser.Id));
         }
 
 
