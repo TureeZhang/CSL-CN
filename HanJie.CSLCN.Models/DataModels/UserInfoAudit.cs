@@ -11,5 +11,6 @@ namespace HanJie.CSLCN.Models.DataModels
         public string AvatarUrl { get; set; }
         public string PersonalHomepageUrl { get; set; }
         public string PersonalizedSignature { get; set; }
+        public string AuditRejectedReason { get; set; }
     }
 }

@@ -61,6 +61,11 @@ export class AccountComponent implements OnInit {
 
     this.userInfoService.updateAccount(this.userinfoForm.value as UserInfoDto).subscribe(res => {
       this.globalService.successTip("提交成功：个人信息将在审核后显示。");
+      this.auditingUser = new UserInfoAuditDto();
+      this.auditingUser.nickName=this.userinfoForm.value.nickName;
+      this.auditingUser.personalHomepageUrl=this.userinfoForm.value.personalHomepageUrl;
+      this.auditingUser.personalizedSignature=this.userinfoForm.value.personalizedSignature;
+      this.auditingUser.auditRejectedReason=null;
     });
 
   }

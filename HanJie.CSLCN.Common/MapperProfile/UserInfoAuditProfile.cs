@@ -15,8 +15,8 @@ namespace HanJie.CSLCN.Common.MapperProfile
                 .ForMember(d => d.NickName, opt => opt.MapFrom(s => s.NickName))
                 .ForMember(d => d.AvatarUrl, opt => opt.MapFrom(s => s.AvatarUrl))
                 .ForMember(d => d.PersonalHomepageUrl, opt => opt.MapFrom(s => s.PersonalHomepageUrl))
-                .ForMember(d => d.PersonalizedSignature, opt => opt.MapFrom(s => s.PersonalizedSignature));
-
+                .ForMember(d => d.PersonalizedSignature, opt => opt.MapFrom(s => s.PersonalizedSignature))
+                .ForMember(d=>d.AuditRejectedReason,opt=>opt.MapFrom(s=>s.AuditRejectedReason));
 
             base.CreateMap<UserInfoAuditDto, UserInfoAudit>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
@@ -24,7 +24,8 @@ namespace HanJie.CSLCN.Common.MapperProfile
                 .ForMember(d => d.NickName, opt => opt.MapFrom(s => s.NickName))
                 .ForMember(d => d.AvatarUrl, opt => opt.MapFrom(s => s.AvatarUrl))
                 .ForMember(d => d.PersonalHomepageUrl, opt => opt.MapFrom(s => s.PersonalHomepageUrl))
-                .ForMember(d => d.PersonalizedSignature, opt => opt.MapFrom(s => s.PersonalizedSignature));
+                .ForMember(d => d.PersonalizedSignature, opt => opt.MapFrom(s => s.PersonalizedSignature))
+                .ForMember(d => d.AuditRejectedReason, opt => opt.MapFrom(s => s.AuditRejectedReason));
 
             base.CreateMap<UserInfo, UserInfoAudit>()
                 .ForMember(d => d.UserId, opt => opt.MapFrom(s => s.Id))

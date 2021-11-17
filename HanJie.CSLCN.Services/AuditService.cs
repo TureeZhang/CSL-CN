@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
@@ -37,11 +38,18 @@ namespace HanJie.CSLCN.Services
 
         public async Task RejectUser(int userId, string reason)
         {
+            Ensure.NotNull(reason, nameof(reason));
+
             UserInfo user =await this._userInfoService.GetById(userId);
             user.AuditStatus = AuditStatusEnum.Rejected;
-            user.AuditRejectedReason = reason;
+            UserInfoAudit userAudit = this._userInfoService.GetAuditingData(userId);
+            userAudit.AuditRejectedReason = reason;
 
             await this._userInfoService.UpdateAsync(user);
+            this._cslDbContext.UserInfoAudits.Update(userAudit);
+            await this._cslDbContext.SaveChangesAsync();
+
+            UserStatuService.LoginedUsers.Where(item => item.Value.Id == userId).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.Rejected;
         }
     }
 }

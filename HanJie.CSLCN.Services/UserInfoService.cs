@@ -368,9 +368,14 @@ namespace HanJie.CSLCN.Services
             return isExists;
         }
 
-        public UserInfoAuditDto GetAuditingInfo(int userId)
+        public UserInfoAuditDto GetAuditingDto(int userId)
         {
-            return Mapper.Map<UserInfoAuditDto>(base.CSLDbContext.UserInfoAudits.Find(userId));
+            return Mapper.Map<UserInfoAuditDto>(GetAuditingData(userId));
+        }
+
+        public UserInfoAudit GetAuditingData(int userId)
+        {
+            return base.CSLDbContext.UserInfoAudits.Find(userId);
         }
 
     }

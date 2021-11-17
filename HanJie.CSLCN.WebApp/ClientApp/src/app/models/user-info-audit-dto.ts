@@ -4,4 +4,5 @@ export class UserInfoAuditDto {
     avatarUrl: string;
     personalHomepageUrl: string;
     personalizedSignature: string;
+    auditRejectedReason: string;
 }

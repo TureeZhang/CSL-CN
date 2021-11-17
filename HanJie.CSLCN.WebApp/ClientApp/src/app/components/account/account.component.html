@@ -42,10 +42,12 @@
                 <nz-divider nzText="正在审核" style="margin-top: 48px;" nzOrientation="left"></nz-divider>
                 <p>以下个人信息正在审核中，将于审核通过后显示。</p>
                     <p><b>昵称：</b>{{auditingUser.nickName}}</p>
-                    <p><b>个人页面：</b><a
+                    <p><b>个人主页：</b><a
                             href="{{auditingUser.personalHomepageUrl}}">{{auditingUser.personalHomepageUrl}}</a>
                     </p>
                     <p><b>个性签名：</b>{{auditingUser.personalizedSignature}}</p>
+                    <br/>
+                    <p *ngIf="auditingUser.auditRejectedReason"><b style="color:red;">审核未通过：{{auditingUser.auditRejectedReason}}</b></p>
                 </div>
             </nz-spin>
         </nz-tab>

@@ -61,7 +61,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         [Route("/api/userinfo/getauditing")]
         public IActionResult GetAuditingInfo()
         {
-            return new JsonResult(this._userInfoService.GetAuditingInfo(base.CurrentUser.Id));
+            return new JsonResult(this._userInfoService.GetAuditingDto(base.CurrentUser.Id));
         }
 
 
