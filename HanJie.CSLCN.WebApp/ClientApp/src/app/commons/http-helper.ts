@@ -92,11 +92,19 @@ export class CSLHttpHelper {
         nzTitle: '哦豁',
         nzContent: err.error.errMsg
       });
-    }else{
+    }
+    else if (err.status === 0) {
+      CSLHttpHelper.modalService.error({
+        nzTitle: '服务器连接失败',
+        nzContent: err.message,
+        nzWidth: "90%"
+      });
+    }
+    else {
       CSLHttpHelper.modalService.error({
         nzTitle: '服务器错误（BUG，方便的话截图给骚汉哦感谢！）',
         nzContent: err.error,
-        nzWidth:"90%"
+        nzWidth: "90%"
       });
     }
     return throwError(err.error.errMsg);
