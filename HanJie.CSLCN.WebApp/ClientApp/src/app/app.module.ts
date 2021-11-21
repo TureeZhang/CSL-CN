@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule, NzLayoutModule, NzBreadCrumbModule, NzGridModule, NzFormModule, NzButtonModule, NzDividerModule, NzIconModule, NzAffixModule, NzDropDownModule, NzMenuModule, NzPaginationModule, NzInputModule, NzInputNumberModule, NzSelectModule, NzAvatarModule, NzCarouselModule, NzPopoverModule, NzStatisticModule, NzTableModule, NzToolTipModule, NzDrawerModule, NzSpinModule, NzAnchorModule, NzTabsModule, NzBadgeModule, NzDescriptionsModule, NzTableComponent, NzEmptyComponent, NzModalModule, NzTagModule, NzCollapseModule, NzPopconfirmModule, NzTypographyModule } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN, isParentOption, NzUploadModule, NzMessageModule, NzEmptyModule, NzAlertModule, NzCardModule, NzListModule, NzCheckboxModule, NzSkeletonModule, NzLayoutModule, NzBreadCrumbModule, NzGridModule, NzFormModule, NzButtonModule, NzDividerModule, NzIconModule, NzAffixModule, NzDropDownModule, NzMenuModule, NzPaginationModule, NzInputModule, NzInputNumberModule, NzSelectModule, NzAvatarModule, NzCarouselModule, NzPopoverModule, NzStatisticModule, NzTableModule, NzToolTipModule, NzDrawerModule, NzSpinModule, NzAnchorModule, NzTabsModule, NzBadgeModule, NzDescriptionsModule, NzTableComponent, NzEmptyComponent, NzModalModule, NzTagModule, NzCollapseModule, NzPopconfirmModule, NzTypographyModule, NzCommentModule } from 'ng-zorro-antd';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -132,7 +132,8 @@ registerLocaleData(zh);
         NzCollapseModule,
         CodemirrorModule,
         NzPopconfirmModule,
-        NzTypographyModule
+        NzTypographyModule,
+        NzCommentModule
     ],
     providers: [{ provide: NZ_I18N, useValue: zh_CN }],
     bootstrap: [AppComponent],

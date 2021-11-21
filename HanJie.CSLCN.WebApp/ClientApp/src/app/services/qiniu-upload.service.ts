@@ -19,9 +19,9 @@ export class QiniuUploadService implements OnInit {
 
   }
 
-  getUploadToken(localFileName: string): Promise<any> {
+  async getUploadToken(localFileName: string): Promise<string> {
     localFileName = encodeURI(localFileName);
-    let promise: Promise<any> = this.httpHelper.get<any>(this.uploadUrl + "?storageFullName=" + localFileName)
+    let promise: Promise<any> = this.httpHelper.get<string>(this.uploadUrl + "?storageFullName=" + localFileName)
       .toPromise();
 
     return promise;

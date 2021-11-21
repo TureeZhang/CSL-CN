@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, forkJoin, Subscription } from 'rxjs';
 import { FormArray } from '@angular/forms';
-import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs, NzDrawerRef, NzUploadXHRArgs, NzUploadChangeParam } from 'ng-zorro-antd';
+import { UploadFile, UploadChangeParam, NzUploadComponent, UploadXHRArgs, NzDrawerRef, NzUploadXHRArgs, NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd';
 import { QiniuUploadService } from '../../services/qiniu-upload.service';
 import { QiniuUploadParameters } from '../../models/qiniu-upload-parameters';
 import { HttpClient, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
@@ -22,16 +22,25 @@ import { CSLHttpHelper } from '../../commons/http-helper';
 })
 export class UploaderComponent implements OnInit {
 
-    public fileList: Array<UploadFile> = [];
+    private token: string;
+    private uploadFileName: string;
+
+    public fileList: Array<NzUploadFile> = [];
     public isShowUploadButton = true;
     public host: UploaderComponent = this;
     public imageMarkdownString: string = null;
     public fileUrl: string;
 
     @Input()
-    public directoryPath = "shared";
+    public directoryPath: string = "shared";
     @Input()
     public usage: UploaderUsageEnum = UploaderUsageEnum.wiki;
+    @Input()
+    public storageFileName: string;
+    @Input()
+    public sizeLimit: number = 0; //KB
+    @Input()
+    public fileTypes: string = null; //"image/png,image/jpeg,image/gif,image/bmp"
 
     constructor(private qiniuUploadService: QiniuUploadService,
         private http: HttpClient,
@@ -51,16 +60,24 @@ export class UploaderComponent implements OnInit {
         console.log(this.fileList);
     }
 
-    customRequest = (item: NzUploadXHRArgs):Subscription => {
+    getUploadToken = (file: NzUploadFile, fileList: NzUploadFile[]): Observable<boolean> => {
+        let host: UploaderComponent = this;
+        return new Observable((observer) => {
+            host.uploadFileName = `${host.directoryPath}/${host.storageFileName ?? file.name}${file.name.substring(file.name.lastIndexOf('.'))}`;
+            host.qiniuUploadService.getUploadToken(host.uploadFileName).then(res => {
+                host.token = res;
+                observer.next(true);
+                observer.complete();
+            });
+        });
 
-        const uploadFullName = this.directoryPath + "/" + item.file.name;
+    }
 
-        let token: string = null;
-        this.qiniuUploadService.getUploadToken(uploadFullName).then(data => token = data);
+    customRequest = (item: NzUploadXHRArgs): Subscription => {
 
 
         const formData = new FormData();
-        if (token === "use-local-storage") {
+        if (this.token === "use-local-storage") {
             ImgService.isLocalStorage = true;
             formData.append('file', item.file as any);
             item.action = this.httpHelper.getBackServerHostUrl() + "/api/upload/localstorage";
@@ -69,8 +86,8 @@ export class UploaderComponent implements OnInit {
             // Create a FormData here to store files and other parameters.
             // tslint:disable-next-line:no-any
             formData.append('file', item.file as any);
-            formData.append('key', uploadFullName)
-            formData.append('token', token);
+            formData.append('key', this.uploadFileName)
+            formData.append('token', this.token);
         }
         const req = new HttpRequest('POST', item.action!, formData, {
             reportProgress: true,
@@ -125,7 +142,7 @@ export class UploaderComponent implements OnInit {
     copyMarkDownToClipboard(): void {
         this.clipboardService.copy(this.imageMarkdownString);
         let copyResponse: ClipboardResponse = new ClipboardResponse();
-        this.clipboardService.pushCopyReponse(copyResponse);
+        this.clipboardService.pushCopyResponse(copyResponse);
         this.closeDrawer();
     }
 
@@ -136,7 +153,7 @@ export class UploaderComponent implements OnInit {
         this.drawerRef.close(fileUrl);
     }
 
-    confirmUserAvatar(): void {
+    confirm(): void {
         this.closeDrawer(this.fileUrl);
     }
 }

@@ -24,6 +24,11 @@ namespace HanJie.CSLCN.Datas
         public DbSet<WikiPassage> WikiPassages { get; set; }
 
         /// <summary>
+        /// 维基文档评论表
+        /// </summary>
+        public DbSet<WikiPassageComment> WikiPassageComments { get; set; }
+
+        /// <summary>
         /// 主菜单信息表
         /// </summary>
         public DbSet<Menu> Menus { get; set; }

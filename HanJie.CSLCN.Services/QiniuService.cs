@@ -21,6 +21,7 @@ namespace HanJie.CSLCN.Services
         private readonly Mac _mac;
         private readonly List<string> _validQiniuCallBackUrls;
         private readonly string _qiniuCallBackUrl;
+        private readonly BucketManager _bucketManager;
 
         public QiniuService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
             : base(cslDbContext, commonHelper)
@@ -28,6 +29,7 @@ namespace HanJie.CSLCN.Services
             this._mac = new Mac(GlobalConfigs.AppSettings.QiniuConfig.AccessKey, GlobalConfigs.AppSettings.QiniuConfig.SecretKey);
             this._validQiniuCallBackUrls = new List<string>() { GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl, "http://www.cities-skylines.cn/api/qiniucallbacktest" };
             this._qiniuCallBackUrl = RunAs.Release ? GlobalConfigs.AppSettings.QiniuConfig.CallBackUrl : "http://www.cities-skylines.cn/api/qiniucallbacktest";
+            this._bucketManager = new BucketManager(this._mac, new Config());
         }
 
 
@@ -127,5 +129,47 @@ namespace HanJie.CSLCN.Services
             return entry.Entity;
         }
 
+        public Task DeleteFile(int id)
+        {
+            Ensure.IsDatabaseId(id, nameof(id));
+
+            QiniuStorageInfo fileInfo = this.CSLDbContext.QiniuStorageInfoes.Find(id);
+            return DeleteFile(fileInfo.FullName);
+        }
+
+        public Task ReNameFile(int id, string newName)
+        {
+            Ensure.IsDatabaseId(id, nameof(id));
+            Ensure.NotNull(newName, nameof(newName));
+
+            QiniuStorageInfo fileInfo = this.CSLDbContext.QiniuStorageInfoes.Find(id);
+            return ReNameFile(fileInfo.FullName, newName);
+        }
+
+        public Task DeleteFile(string key)
+        {
+            Ensure.NotNull(key, nameof(key));
+
+            if (key.StartsWith("/"))
+                key = key.Substring(1);
+
+            return this._bucketManager.Delete(GlobalConfigs.AppSettings.QiniuConfig.BucketName, key);
+
+
+        }
+
+        public Task ReNameFile(string sourceKey, string destinationKey)
+        {
+            Ensure.NotNull(sourceKey, nameof(sourceKey));
+            Ensure.NotNull(destinationKey, nameof(destinationKey));
+
+            if (sourceKey.StartsWith("/"))
+                sourceKey = sourceKey.Substring(1);
+
+            if (destinationKey.StartsWith("/"))
+                destinationKey = destinationKey.Substring(1);
+
+            return this._bucketManager.Move(GlobalConfigs.AppSettings.QiniuConfig.BucketName, sourceKey, GlobalConfigs.AppSettings.QiniuConfig.BucketName, destinationKey,true);
+        }
     }
 }

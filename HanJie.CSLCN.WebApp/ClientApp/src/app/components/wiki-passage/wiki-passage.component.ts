@@ -36,7 +36,7 @@ export class WikiPassageComponent implements OnInit {
      ***/
     public oldWikiPassageDtoContent: string;
 
-    public loading: boolean = true;
+    public isLoading: boolean = true;
 
 
     public color: string = "lightblue";
@@ -49,12 +49,19 @@ export class WikiPassageComponent implements OnInit {
 
     public currentUser: UserInfoDto;
 
+    /***
+     * 用户输入的评论
+     */
+    public commentContent:string;
+
     public isEditLocked: boolean = false;
 
     private imStillOnlineTimer: NodeJS.Timer;
 
     public isLoadingEditButton: boolean = false;
     public isLoadingSaveButton: boolean = false;
+
+    
 
     constructor(private route: ActivatedRoute,
         private router: Router,
@@ -98,7 +105,7 @@ export class WikiPassageComponent implements OnInit {
         this.wikiPassageService.getWikiPassage(routePath).subscribe(response => {
             host.wikiPassage = response;
             host.oldWikiPassageDtoContent = host.wikiPassage.content;
-            host.loading = false;
+            host.isLoading = false;
             this.setBreadCrumbs();
 
             //锁定编辑

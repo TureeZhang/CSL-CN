@@ -2,11 +2,11 @@
   <div nz-row nzType="flex">
     <!--左侧主要文档内容-->
     <div nz-col nzLg="20" nzXs="24">
-      <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzParagraph]="{rows:16}"></nz-skeleton>
+      <nz-skeleton [nzLoading]="isLoading" [nzActive]="true" [nzParagraph]="{rows:16}"></nz-skeleton>
     </div>
   </div>
 
-  <div nz-row nzType="flex" *ngIf="loading==false">
+  <div nz-row nzType="flex" *ngIf="!isLoading">
     <div nz-col nzLg="20" nzXs="24" style="padding-left:34px;padding-top:14px;padding-right:24px;">
       <div *ngIf="isAdmin && isEditLocked" style="background-color: #fffbe6;
                   width: 100%;
@@ -18,15 +18,18 @@
           <nz-avatar nzSrc="{{wikiPassage.editingUser.avatarUrl}}" style="width: 24px;
                                                                       height: 24px;
                                                                       position: relative;
-                                                                      top: -2px;"></nz-avatar><b>{{wikiPassage.editingUser.nickName}}</b> 进行编辑，直至该用户完成保存前，编辑权限已暂向其他用户进行锁定。
+                                                                      top: -2px;"></nz-avatar>
+          <b>{{wikiPassage.editingUser.nickName}}</b> 进行编辑，直至该用户完成保存前，编辑权限已暂向其他用户进行锁定。
         </span>
       </div>
       <h1>
         <span>{{wikiPassage?.title}}</span>
         <ng-container *ngIf="pageStatus==0 && isAdmin && !isEditLocked">
-          <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()" style="margin-left:16px;"><i nz-icon nzType="edit"></i>编 辑</button>
+          <button nz-button nzType="primary" [nzLoading]="isLoadingEditButton" (click)="edit()"
+            style="margin-left:16px;"><i nz-icon nzType="edit"></i>编 辑</button>
         </ng-container>
-        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton" (click)="update()" style="margin-left:16px;"><i nz-icon nzType="save"></i>保 存</button>
+        <button *ngIf="pageStatus==1 && isAdmin" nz-button nzType="primary" [nzLoading]="isLoadingSaveButton"
+          (click)="update()" style="margin-left:16px;"><i nz-icon nzType="save"></i>保 存</button>
       </h1>
 
 
@@ -45,11 +48,12 @@
             <li>
               <b>主要作者/译者：</b>
               <ng-container *ngFor="let item of wikiPassage?.mainAuthors;let i=index;">
-                <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}" href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
+                <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip
+                  nzTooltipTitle="{{item.personalHomepageUrl}}"
+                  href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
                 <span *ngIf="item.personalHomepageUrl==null">{{item.nickName}}</span>
-                <nz-avatar nzSrc="{{item.avatarUrl}}"
-                           [ngStyle]="{ 'background-color': color }"
-                           style="vertical-align: middle;margin-left:8px;"></nz-avatar>
+                <nz-avatar nzSrc="{{item.avatarUrl}}" [ngStyle]="{ 'background-color': color }"
+                  style="vertical-align: middle;margin-left:8px;"></nz-avatar>
                 <span *ngIf="i+1<wikiPassage.mainAuthors.length" style="margin-left:8px;margin-right:8px;">|</span>
 
               </ng-container>
@@ -57,15 +61,16 @@
             <li>
               <b>合作校对/译者：</b>
               <ng-container *ngFor="let item of wikiPassage?.coAuthors;let i =index;">
-                <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip nzTooltipTitle="{{item.personalHomepageUrl}}" href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
+                <a *ngIf="item.personalHomepageUrl!=null" target="_blank" nz-tooltip
+                  nzTooltipTitle="{{item.personalHomepageUrl}}"
+                  href="{{item.personalHomepageUrl}}">{{item.nickName}}</a>
                 <span *ngIf="item.personalHomepageUrl==null">{{item.nickName}}</span>
                 <span *ngIf="i+1<wikiPassage.coAuthors.length">, </span>
                 <span *ngIf="i+1==wikiPassage.coAuthors.length" style="margin-left:8px;margin-right:8px;">|</span>
               </ng-container>
               <ng-container *ngFor="let item of wikiPassage?.coAuthors">
-                <nz-avatar nzSrc="{{item.avatarUrl}}"
-                           [ngStyle]="{ 'background-color': color }"
-                           style="vertical-align: middle;"></nz-avatar>
+                <nz-avatar nzSrc="{{item.avatarUrl}}" [ngStyle]="{ 'background-color': color }"
+                  style="vertical-align: middle;"></nz-avatar>
               </ng-container>
               <ng-container *ngIf="wikiPassage?.coAuthors==null">无</ng-container>
             </li>
@@ -79,7 +84,8 @@
 
         <markdown *ngIf="pageStatus==0" [data]="wikiPassage?.content"></markdown>
 
-        <editor *ngIf="pageStatus==1" required name="Content" [(contentModel)]="wikiPassage.content" ngDefaultControl></editor>
+        <editor *ngIf="pageStatus==1" required name="Content" [(contentModel)]="wikiPassage.content" ngDefaultControl>
+        </editor>
         <!--<md-editor *ngIf="pageStatus==1"
                    name="Content"
                    [upload]="doUpload"
@@ -92,6 +98,53 @@
         </md-editor>-->
 
       </div>
+
+      <!-- 评论 -->
+      <nz-spin [nzSpinning]="isLoading" *ngIf="!isLoading && pageStatus==0">
+        <nz-divider nzText="1 条评论" nzOrientation="left" ></nz-divider>
+        <div nz-row nzJustify="center" nzAlign="middle" style="margin-top:36px;">
+          <div nz-col nzSpan="2" style="text-align: center;">
+            <nz-avatar nzSize="large" [nzSrc]="currentUser.avatarUrl"></nz-avatar>
+          </div>
+          <div nz-col nzSpan=18 style="text-align: center;">
+            <textarea nz-input rows="3" placeholder="说点儿好听的～" [(ngModel)]="commentContent"></textarea>
+          </div>
+          <div nz-col nzSpan="4" style="text-align: center;">
+            <button nz-button nzType="primary" nzSize="large" style="width: 73px;height: 73px;"><span>发 表<br />评
+                论</span></button>
+          </div>
+        </div>
+        <nz-tabset [nzAnimated]="false" style="margin-top: 18px;margin-bottom: 48px;">
+          <nz-tab nzTitle="最热门">
+            <nz-comment nzAuthor="Han Solo">
+              <nz-avatar nz-comment-avatar nzIcon="user"
+                nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+              </nz-avatar>
+              <nz-comment-content>
+                <p>
+                  We supply a series of design principles, practical patterns and high quality design resources (Sketch
+                  and
+                  Axure), to help people
+                  create their product prototypes beautifully and efficiently.
+                </p>
+              </nz-comment-content>
+              <!-- <nz-comment-action>
+              <i nz-tooltip nzTitle="Like" nz-icon nzType="like" [nzTheme]="likes > 0 ? 'twotone' : 'outline'" (click)="like()"></i>
+              <span class="count like">{{ likes }}</span>
+            </nz-comment-action>
+            <nz-comment-action>
+              <i nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike" [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'" (click)="dislike()"></i>
+              <span class="count dislike">{{ dislikes }}</span>
+            </nz-comment-action>
+            <nz-comment-action>Reply to</nz-comment-action> -->
+            </nz-comment>
+          </nz-tab>
+          <nz-tab nzTitle="最新发布">
+            Content of Tab Pane 2
+          </nz-tab>
+        </nz-tabset>
+
+      </nz-spin>
     </div>
 
     <!--右侧目录-->

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Services.Providers;
+using HanJie.CSLCN.Models.Enums;
 
 namespace HanJie.CSLCN.Services
 {
@@ -61,7 +62,13 @@ namespace HanJie.CSLCN.Services
             if (string.IsNullOrEmpty(routePath))
                 throw new ArgumentException("路由地址是必须的", nameof(routePath));
 
-            WikiPassage wikiPassage = await CSLDbContext.WikiPassages.Where(wp => string.Equals(routePath, wp.RoutePath, StringComparison.OrdinalIgnoreCase)).AsNoTracking().FirstOrDefaultAsync();
+            WikiPassage wikiPassage = await CSLDbContext.WikiPassages
+                .Where(wp => string.Equals(routePath, wp.RoutePath, StringComparison.OrdinalIgnoreCase))
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .AsNoTracking().FirstOrDefaultAsync();
+
+            wikiPassage.Comments = wikiPassage.Comments.Where(c => c.AuditStatus == AuditStatusEnum.OK).ToList();
             return wikiPassage;
         }
 
