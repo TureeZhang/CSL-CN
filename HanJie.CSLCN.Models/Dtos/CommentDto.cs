@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Enums;
@@ -9,7 +10,7 @@ namespace HanJie.CSLCN.Models.Dtos
     {
         public string Content { get; set; }
 
-        public WikiPassage WikiPassage { get; set; }
+        public int WikiPassageId { get; set; }
 
         public UserInfoDto User { get; set; }
 

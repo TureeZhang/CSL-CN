@@ -188,6 +188,7 @@ namespace HanJie.CSLCN.WebApp
             services.AddTransient<IValidateCodeService, ValidateCodeService>();
             services.AddTransient<IWikiPassageViewersCountsService, WikiPassageViewersCountsService>();
             services.AddTransient<IAuditService, AuditService>();
+            services.AddTransient<IWikiPassageCommentService, WikiPassageCommentService>();
         }
 
         private void RegisterScoped(IServiceCollection services)

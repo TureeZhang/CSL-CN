@@ -14,6 +14,8 @@ import { GlobalService } from '../../services/global.service';
 import { BreadCrumbDto } from '../../models/bread-crumb';
 import { UserInfoDto } from '../../models/user-info-dto';
 import { EditorComponent } from '../editor/editor.component';
+import { WikiPassageCommentDto } from 'src/app/models/wiki-passage-comment-dto';
+import { error } from 'console';
 
 @Component({
     selector: 'wiki-passage',
@@ -52,7 +54,8 @@ export class WikiPassageComponent implements OnInit {
     /***
      * 用户输入的评论
      */
-    public commentContent:string;
+    public commentContent: string;
+    public commentCountText: string;
 
     public isEditLocked: boolean = false;
 
@@ -60,8 +63,8 @@ export class WikiPassageComponent implements OnInit {
 
     public isLoadingEditButton: boolean = false;
     public isLoadingSaveButton: boolean = false;
+    public isPostingComment: boolean = false;
 
-    
 
     constructor(private route: ActivatedRoute,
         private router: Router,
@@ -105,6 +108,8 @@ export class WikiPassageComponent implements OnInit {
         this.wikiPassageService.getWikiPassage(routePath).subscribe(response => {
             host.wikiPassage = response;
             host.oldWikiPassageDtoContent = host.wikiPassage.content;
+            host.commentCountText = response.comments ? response.comments.length + " 条评论" : "0 条评论";
+
             host.isLoading = false;
             this.setBreadCrumbs();
 
@@ -173,6 +178,26 @@ export class WikiPassageComponent implements OnInit {
             this.pageStatus = WikiPassagePageStatusEnum.Displaying;
             this.globalService.successTip(`【保存成功】锁定解除，已释放编辑权限。`);
         }
+    }
+
+    public postComments() {
+        this.isPostingComment = true;
+        let comment: WikiPassageCommentDto = new WikiPassageCommentDto();
+        comment.user = new UserInfoDto();
+        comment.user.id = this.currentUser.id;
+        comment.wikiPassageId = this.wikiPassage.id;
+        comment.content = this.commentContent;
+
+        this.wikiPassageService.postComment(comment).subscribe(
+            {
+                next: (res) => {
+                    this.globalService.successTip(`评论已成功提交：将在审核通过后显示，敬请谅解。`);
+                    this.commentContent = "";
+                },
+                error: () => {
+                    this.isPostingComment = false;
+                }
+            });
     }
 
     //createChildPage(): void {

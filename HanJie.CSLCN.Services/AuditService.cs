@@ -66,5 +66,28 @@ namespace HanJie.CSLCN.Services
 
             UserStatuService.LoginedUsers.Where(item => item.Value.Id == userId).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.Rejected;
         }
+
+        public async Task ConfirmWikiComment(int id)
+        {
+            Ensure.IsDatabaseId(id, nameof(id));
+
+            WikiPassageComment comment = this._cslDbContext.WikiPassageComments.Find(id);
+            comment.AuditStatus = AuditStatusEnum.OK;
+
+            this._cslDbContext.Update(comment);
+            await this._cslDbContext.SaveChangesAsync();
+        }
+
+        public async Task RejectComment(int id,string reason)
+        {
+            WikiPassageComment comment = this._cslDbContext.WikiPassageComments.Find(id);
+            comment.AuditRejectReason = reason;
+            comment.AuditStatus = AuditStatusEnum.Rejected;
+
+            //todo:消息中心上线后，通知发布人，评论审核被拒绝及其原因。
+
+            this._cslDbContext.WikiPassageComments.Update(comment);
+            await this._cslDbContext.SaveChangesAsync();
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace HanJie.CSLCN.Services
         Task<List<BreadCrumbDto>> CollectBreadCrumbsAsync(WikiPassageDto wikiPassageDto);
         Task<WikiPassage> Create(WikiPassageDto wikiPassageDto);
         Task<WikiPassage> GetByRoutePathAsync(string routePath);
+        List<WikiPassageCommentDto> ListAuditOKComments(int wikiPassageId);
         int GetEditingUserId(int passageId);
         bool IsCurrentUserEditing(int passageId, int currentUserId);
         bool IsPassageLocked(int passageId);

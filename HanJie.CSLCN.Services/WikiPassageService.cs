@@ -33,6 +33,7 @@ namespace HanJie.CSLCN.Services
         private readonly ILogService _logService;
         private readonly IStaticDictionariesProvider _staticDictionariesProvider;
         private readonly IWikiPassageViewersCountsService _wikiPassageViewersCountsService;
+        private readonly IUserInfoService _userInfoService;
 
         /// <summary>
         /// 对访问量缓存对象的保护锁
@@ -47,7 +48,8 @@ namespace HanJie.CSLCN.Services
             IStaticDictionariesProvider staticDictionariesProvider,
             CSLDbContext cslDbContext,
             IWikiPassageViewersCountsService wikiPassageViewersCountsService,
-            ICommonHelper commonHelper)
+            ICommonHelper commonHelper,
+            IUserInfoService userInfoService)
             : base(cslDbContext, commonHelper)
         {
             this._wikiCategoryService = wikiCategoryService;
@@ -55,6 +57,7 @@ namespace HanJie.CSLCN.Services
             this._logService = logService;
             this._staticDictionariesProvider = staticDictionariesProvider;
             this._wikiPassageViewersCountsService = wikiPassageViewersCountsService;
+            this._userInfoService = userInfoService;
         }
 
         public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
@@ -64,11 +67,9 @@ namespace HanJie.CSLCN.Services
 
             WikiPassage wikiPassage = await CSLDbContext.WikiPassages
                 .Where(wp => string.Equals(routePath, wp.RoutePath, StringComparison.OrdinalIgnoreCase))
-                .Include(p => p.Comments)
-                .ThenInclude(c => c.User)
-                .AsNoTracking().FirstOrDefaultAsync();
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
 
-            wikiPassage.Comments = wikiPassage.Comments.Where(c => c.AuditStatus == AuditStatusEnum.OK).ToList();
             return wikiPassage;
         }
 
@@ -555,6 +556,25 @@ namespace HanJie.CSLCN.Services
             //data.IsRowEnd = false;
             //data.IsHomepageShow = false;
             return base.AddAsync(data);
+        }
+
+        public List<WikiPassageCommentDto> ListAuditOKComments(int wikiPassageId)
+        {
+            Ensure.IsDatabaseId(wikiPassageId, nameof(wikiPassageId));
+
+            List<WikiPassageCommentDto> results = new List<WikiPassageCommentDto>();
+
+            List<WikiPassageComment> comments = this.CSLDbContext.WikiPassageComments
+                .Where(item => item.WikiPassageId == wikiPassageId && item.AuditStatus == AuditStatusEnum.OK)
+                .ToList();
+
+            comments.ForEach(async item => {
+                WikiPassageCommentDto dto = Mapper.Map<WikiPassageCommentDto>(item);
+                dto.User = Mapper.Map<UserInfoDto>(await this._userInfoService.GetById(item.UserId));
+                results.Add(dto);
+            });
+
+            return results;
         }
     }
 }

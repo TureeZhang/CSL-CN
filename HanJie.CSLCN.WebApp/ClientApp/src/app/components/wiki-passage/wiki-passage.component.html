@@ -101,7 +101,7 @@
 
       <!-- 评论 -->
       <nz-spin [nzSpinning]="isLoading" *ngIf="!isLoading && pageStatus==0">
-        <nz-divider nzText="1 条评论" nzOrientation="left" ></nz-divider>
+        <nz-divider [nzText]="commentCountText" nzOrientation="left"></nz-divider>
         <div nz-row nzJustify="center" nzAlign="middle" style="margin-top:36px;">
           <div nz-col nzSpan="2" style="text-align: center;">
             <nz-avatar nzSize="large" [nzSrc]="currentUser.avatarUrl"></nz-avatar>
@@ -110,22 +110,19 @@
             <textarea nz-input rows="3" placeholder="说点儿好听的～" [(ngModel)]="commentContent"></textarea>
           </div>
           <div nz-col nzSpan="4" style="text-align: center;">
-            <button nz-button nzType="primary" nzSize="large" style="width: 73px;height: 73px;"><span>发 表<br />评
+            <button [disabled]="!commentContent || isPostingComment" nz-button nzType="primary" nzSize="large"
+              style="width: 73px;height: 73px;" (click)="postComments()"><span>发 表<br />评
                 论</span></button>
           </div>
         </div>
         <nz-tabset [nzAnimated]="false" style="margin-top: 18px;margin-bottom: 48px;">
           <nz-tab nzTitle="最热门">
-            <nz-comment nzAuthor="Han Solo">
-              <nz-avatar nz-comment-avatar nzIcon="user"
-                nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+            <nz-comment [nzAuthor]="item.user.nickName" *ngFor="let item of wikiPassage.comments">
+              <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.user.avatarUrl">
               </nz-avatar>
               <nz-comment-content>
                 <p>
-                  We supply a series of design principles, practical patterns and high quality design resources (Sketch
-                  and
-                  Axure), to help people
-                  create their product prototypes beautifully and efficiently.
+                  {{item.content}}
                 </p>
               </nz-comment-content>
               <!-- <nz-comment-action>

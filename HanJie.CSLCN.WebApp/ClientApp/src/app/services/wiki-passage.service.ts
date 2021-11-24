@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { WikiPassageDto } from '../models/wiki-passage-dto';
 import { encode } from 'punycode';
 import { WikiListItemDto } from '../models/wiki-list-item-dto';
+import { WikiPassageCommentDto } from '../models/wiki-passage-comment-dto';
 
 @Injectable({ providedIn: "root" })
 export class WikiPassageService implements OnInit {
@@ -41,6 +42,10 @@ export class WikiPassageService implements OnInit {
 
   imStillOnlineCall(passageId: number): Observable<boolean> {
     return this.httpHelper.get<boolean>(`${this.wikiImStillOnlineCallUrl}?passageId=${passageId}`);
-    }
+  }
+
+  postComment(comment: WikiPassageCommentDto): Observable<void> {
+    return this.httpHelper.post<WikiPassageCommentDto, any>("/api/wikipassages/createcomment", comment);
+  }
 
 }

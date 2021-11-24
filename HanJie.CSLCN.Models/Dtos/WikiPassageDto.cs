@@ -19,6 +19,7 @@ namespace HanJie.CSLCN.Models.Dtos
         public List<BreadCrumbDto> BreadCrumbs { get; set; }
         public UserInfoDto EditingUser { get; set; }
         public int TotalViewsCount { get; set; }
+        public List<WikiPassageCommentDto> Comments { get; set; }
         //public bool IsRowEnd { get; set; }
         //public bool IsHomepageShow { get; set; }
     }

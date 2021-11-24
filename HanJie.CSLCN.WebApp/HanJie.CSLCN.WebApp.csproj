@@ -78,7 +78,7 @@
   <ItemGroup>
     <PackageReference Include="Hei.Captcha" Version="0.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.21" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="Seq.Extensions.Logging" Version="6.0.0" />
   </ItemGroup>

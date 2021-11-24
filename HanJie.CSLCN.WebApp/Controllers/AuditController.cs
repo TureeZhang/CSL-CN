@@ -50,6 +50,24 @@ namespace HanJie.CSLCN.WebApp.Controllers
             return Ok();
         }
 
+        [HttpGet("/api/[controller]/confirmwikicomment")]
+        public IActionResult ConfirmWikiComment(int id)
+        {
+            Ensure.IsDatabaseId(id, nameof(id));
+
+            this._auditService.ConfirmWikiComment(id);
+            return Ok();
+        }
+
+        [HttpGet("/api/[controller]/rejectcomment")]
+        public IActionResult RejectComment(int id, string reason)
+        {
+            Ensure.IsDatabaseId(id, nameof(id));
+            Ensure.NotNull(reason, nameof(reason));
+
+            this._auditService.RejectComment(id, reason);
+            return Ok();
+        }
 
     }
 }

@@ -27,8 +27,6 @@ namespace HanJie.CSLCN.Models.DataModels
 
         public int CategoryId { get; set; }
 
-        public List<WikiPassageComment> Comments { get; set; }
-
         //[Required]
         //public bool IsRowEnd { get; set; }
 

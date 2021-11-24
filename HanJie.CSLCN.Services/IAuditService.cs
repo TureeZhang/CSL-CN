@@ -9,5 +9,8 @@ namespace HanJie.CSLCN.Services
     {
         Task<UserInfo> ConfirmUser(int userId);
         Task RejectUser(int userId, string reason);
+
+        Task ConfirmWikiComment(int id);
+        Task RejectComment(int id, string reason);
     }
 }
