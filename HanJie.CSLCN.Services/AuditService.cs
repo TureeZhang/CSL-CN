@@ -67,6 +67,23 @@ namespace HanJie.CSLCN.Services
             UserStatuService.LoginedUsers.Where(item => item.Value.Id == userId).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.Rejected;
         }
 
+        public async Task<List<WikiPassageCommentDto>> ListOnAuditingWikiComments()
+        {
+            List<WikiPassageCommentDto> results = new List<WikiPassageCommentDto>();
+
+            List<WikiPassageComment> datas = this._cslDbContext.WikiPassageComments.Where(item => item.AuditStatus == AuditStatusEnum.OnAuditing).ToList();
+            foreach (WikiPassageComment item in datas)
+            {
+                WikiPassageCommentDto dto = Mapper.Map<WikiPassageCommentDto>(item);
+                dto.User =Mapper.Map<UserInfoDto>(await this._userInfoService.GetById(item.UserId));
+
+                results.Add(dto);
+            }
+            
+
+            return results;
+        }
+
         public async Task ConfirmWikiComment(int id)
         {
             Ensure.IsDatabaseId(id, nameof(id));

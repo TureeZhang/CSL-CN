@@ -53,6 +53,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             wikiPassageDto.Comments = this._wikiPassageService.ListAuditOKComments(wikiPassage.Id);
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
             wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(await this._userInfoService.GetById(editingUserId));
+            wikiPassageDto.LastModifyDate = wikiPassage.LastModifyDate.ToString("yyyy-MM-dd hh:mm:ss");
 
             //
             //此处是有意不做等待的，阅读量的统计不应当影响文本内容的返回。

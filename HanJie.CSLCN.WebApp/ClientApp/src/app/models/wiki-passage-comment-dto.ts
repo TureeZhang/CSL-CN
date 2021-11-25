@@ -4,6 +4,8 @@ import { WikiPassageDto } from "./wiki-passage-dto";
 
 export class WikiPassageCommentDto {
 
+    id: number;
+
     content: string;
 
     wikiPassageId: number;
@@ -13,4 +15,6 @@ export class WikiPassageCommentDto {
     auditStatus: AuditStatusEnum;
 
     auditRejectReason: string;
+
+    createDate: string;
 }

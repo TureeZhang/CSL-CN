@@ -31,16 +31,48 @@
                         <td>{{ user.personalizedSignature }}</td>
                         <td><span nz-typography nzType="warning">等待审核</span></td>
                         <td>
-                            <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="确认通过审核吗？" (nzOnConfirm)="confirmUser(user)">通过</button>
+                            <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="确认通过审核吗？"
+                                (nzOnConfirm)="confirmUser(user)">通过</button>
                             <nz-divider nzType="vertical"></nz-divider>
-                            <a nz-button nzDanger (click)="showReasonInputModel(user)">拒绝</a>
+                            <a nz-button nzDanger (click)="showReasonInputModel(user,'user')">拒绝</a>
                         </td>
                     </tr>
                 </tbody>
             </nz-table>
         </nz-tab>
-        <nz-tab nzTitle="评论">
-            【@正在开发】
+        <nz-tab nzTitle="评论" (nzClick)="listOnAuditingWikiComments()">
+            <nz-table #commentTable [nzData]="comments" [nzLoading]="isCommentsLoading">
+                <thead>
+                    <tr>
+                        <th>UID</th>
+                        <th>昵称</th>
+                        <th>头像</th>
+                        <th style="width: 40%;">评论内容</th>
+                        <th>审核状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let comment of commentTable.data">
+                        <td>{{ comment.user.id }}</td>
+                        <td>{{ comment.user.nickName }}</td>
+                        <td>
+                            <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="comment.user.avatarUrl"></nz-avatar>
+                        </td>
+                        <td><b style="font-size: 32px;font-family: emoji;float:left;margin-right: 12px;">“</b> <span
+                                class="text" nz-popover nzPopoverTitle="详情" [nzPopoverContent]="comment.content"> {{
+                                comment.content
+                                }}</span></td>
+                        <td><span nz-typography nzType="warning">等待审核</span></td>
+                        <td>
+                            <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="确认通过审核吗？"
+                                (nzOnConfirm)="confirmComment(comment.id)">通过</button>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-button nzDanger (click)="showReasonInputModel(comment,'comment')">拒绝</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
         </nz-tab>
         <nz-tab nzTitle="文档">
             【@正在开发】
@@ -51,6 +83,7 @@
 
 </div>
 
-<nz-modal [(nzVisible)]="isReasonModalShow" nzTitle="请填写拒绝原因：" nzCancelText="取消" (nzOnCancel)="isReasonModalShow=!isReasonModalShow" (nzOnOk)="rejectUser()">
+<nz-modal [(nzVisible)]="isReasonModalShow" nzTitle="请填写拒绝原因：" nzCancelText="取消" (nzOnCancel)="closeClearSelectItem()"
+    (nzOnOk)="nzRejectReasonInputModelCofirm()" [nzOkDisabled]="!rejectReason">
     <input nz-input placeholder="请填写原因，以便告知用户审核不通过的原因。" [(ngModel)]="rejectReason" />
 </nz-modal>

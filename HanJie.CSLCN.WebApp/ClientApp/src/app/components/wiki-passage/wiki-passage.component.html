@@ -107,7 +107,7 @@
             <nz-avatar nzSize="large" [nzSrc]="currentUser.avatarUrl"></nz-avatar>
           </div>
           <div nz-col nzSpan=18 style="text-align: center;">
-            <textarea nz-input rows="3" placeholder="说点儿好听的～" [(ngModel)]="commentContent"></textarea>
+            <textarea [disabled]="isCommentPosted" nz-input rows="3" placeholder="说点儿好听的～" [(ngModel)]="commentContent"></textarea>
           </div>
           <div nz-col nzSpan="4" style="text-align: center;">
             <button [disabled]="!commentContent || isPostingComment" nz-button nzType="primary" nzSize="large"
@@ -116,8 +116,8 @@
           </div>
         </div>
         <nz-tabset [nzAnimated]="false" style="margin-top: 18px;margin-bottom: 48px;">
-          <nz-tab nzTitle="最热门">
-            <nz-comment [nzAuthor]="item.user.nickName" *ngFor="let item of wikiPassage.comments">
+          <nz-tab nzTitle="最新发布">
+            <nz-comment [nzAuthor]="item.user.nickName" [nzDatetime]="item.createDate" *ngFor="let item of wikiPassage.comments">
               <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.user.avatarUrl">
               </nz-avatar>
               <nz-comment-content>
@@ -136,8 +136,8 @@
             <nz-comment-action>Reply to</nz-comment-action> -->
             </nz-comment>
           </nz-tab>
-          <nz-tab nzTitle="最新发布">
-            Content of Tab Pane 2
+          <nz-tab nzTitle="最热门">
+            正在开发评论点赞与热门，下个版本见～
           </nz-tab>
         </nz-tabset>
 

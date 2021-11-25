@@ -64,6 +64,7 @@ export class WikiPassageComponent implements OnInit {
     public isLoadingEditButton: boolean = false;
     public isLoadingSaveButton: boolean = false;
     public isPostingComment: boolean = false;
+    public isCommentPosted: boolean = false;
 
 
     constructor(private route: ActivatedRoute,
@@ -192,7 +193,8 @@ export class WikiPassageComponent implements OnInit {
             {
                 next: (res) => {
                     this.globalService.successTip(`评论已成功提交：将在审核通过后显示，敬请谅解。`);
-                    this.commentContent = "";
+                    this.commentContent = "【将在审核通过后显示，敬请谅解】：" + this.commentContent;
+                    this.isCommentPosted = true;
                 },
                 error: () => {
                     this.isPostingComment = false;

@@ -50,6 +50,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
             return Ok();
         }
 
+        [HttpGet("/api/[controller]/list-onauditing-comments")]
+        public async Task<IActionResult> ListOnAuditingComments()
+        {
+            List<WikiPassageCommentDto> results =await this._auditService.ListOnAuditingWikiComments();
+            return new JsonResult(results);
+        }
+
         [HttpGet("/api/[controller]/confirmwikicomment")]
         public IActionResult ConfirmWikiComment(int id)
         {
