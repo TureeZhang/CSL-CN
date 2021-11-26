@@ -331,3 +331,5 @@ ASALocalRun/
 
 /HanJie.CSLCN.WebApp/build-run.ps1
 /CSL-CN.lnk
+HanJie.CSLCN.WebApp/appsettings.Debug.json
+HanJie.CSLCN.WebApp/appsettings.Release.json
