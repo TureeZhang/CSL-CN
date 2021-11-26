@@ -1,5 +1,6 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:3.1
 USER root
+RUN apt-get update && apt-get install -y libgdiplus
 COPY . /csl-cn
 WORKDIR /csl-cn
 VOLUME ["/csl-cn/appsettings.Release.json"]

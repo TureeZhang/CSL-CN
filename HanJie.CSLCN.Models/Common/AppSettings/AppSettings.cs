@@ -39,6 +39,10 @@ namespace HanJie.CSLCN.Models.Common.AppSettings
         /// 阿里云短信服务 SecretKey
         /// </summary>
         public string AliyunSmsSecretKey { get; set; }
+        /// <summary>
+        /// 阿里云短信服务模板编号
+        /// </summary>
+        public string AliyunSmsTemplateCode { get; set; }
     }
 
 

@@ -20,8 +20,7 @@ namespace HanJie.CSLCN.Services
         public SmsService(
             CSLDbContext cslDbContext,
             ICommonHelper commonHelper,
-            IRedisService redisService,
-            IValidateCodeService validateCodeService)
+            IRedisService redisService)
             : base(cslDbContext, commonHelper)
         {
             this._redisService = redisService;

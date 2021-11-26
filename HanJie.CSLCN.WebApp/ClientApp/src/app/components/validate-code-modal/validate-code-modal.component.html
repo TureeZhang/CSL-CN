@@ -5,7 +5,7 @@
       <label>请输入下图中的文字（ *无需区分大小写 ）：</label>
     </div>
     <div nz-col nzSpan="24" style="margin-top:24px;text-align: center;cursor: pointer;">
-      <img src="{{validateCodeImgBase64}}" alt="正在获取验证码..." (click)="refreshValidateCode()"/>
+      <img [src]="validateCodeImgBase64" alt="正在获取验证码..." (click)="refreshValidateCode()"/>
     </div>
     <div nz-col nzSpan="24" style="margin-top:24px;margin-bottom: 24px; text-align: center;">
       <input type="text" name="validateCode" style="text-align: center;" [maxLength]="4" [(ngModel)]="userInputCode" spellcheck="false"/>

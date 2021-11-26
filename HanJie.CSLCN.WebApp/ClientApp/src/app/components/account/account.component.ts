@@ -46,7 +46,7 @@ export class AccountComponent implements OnInit {
       this.userinfoForm.patchValue(res);
       this.isUserInfoLoading = false;
 
-      if (res.auditStatus == AuditStatusEnum.OnAuditing) {
+      if (res.auditStatus == AuditStatusEnum.OnAuditing || res.auditStatus == AuditStatusEnum.Rejected) {
         this.userInfoService.getAuditingInfo().subscribe(res => {
           this.auditingUser = res;
           this.isAuditingInfoExist = true;

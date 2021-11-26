@@ -23,7 +23,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             this._humanMachineValidateService = humanMachineValidateService;
         }
 
-        [HttpGet]
+        [HttpGet("/api/ValidateCode")]
         public async Task<ActionResult> Get()
         {
             string imgBase64Str = await this._humanMachineValidateService.GetCodeImageBase64String(base.HttpContext.Connection.RemoteIpAddress.ToString());

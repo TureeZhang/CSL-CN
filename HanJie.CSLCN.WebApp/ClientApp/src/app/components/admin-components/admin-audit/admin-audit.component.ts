@@ -61,9 +61,9 @@ export class AdminAuditComponent implements OnInit {
       this.globalService.ErrorTip(this.auditRejectReasonTip);
       return;
     }
-
+    let nickName :string = this.selectedUser.nickName;
     this.auditService.RejectUser(this.selectedUser.userId, this.rejectReason).subscribe(res => {
-      this.globalService.WarningTip(`成功：已拒绝用户 ${this.selectedUser.nickName} 的个人信息审核。`);
+      this.globalService.successTip(`成功：已拒绝用户 ${nickName} 的个人信息审核。`);
       this.rejectReason = "";
       this.isReasonModalShow = false;
       this.selectedUser = null;
@@ -73,7 +73,7 @@ export class AdminAuditComponent implements OnInit {
 
   listOnAuditingWikiComments(): void {
     this.isCommentsLoading = true;
-    this.comments=[];
+    this.comments = [];
     let host = this;
     this.auditService.listOnAuditingWikiComment().subscribe(res => {
       host.comments = res;
@@ -95,6 +95,7 @@ export class AdminAuditComponent implements OnInit {
       return;
     }
 
+    let host = this;
     this.auditService.RejectWikiComment(this.selectedComment.id, this.rejectReason).subscribe(res => {
       this.globalService.successTip(`评论审核已拒绝，用户将会收到原因说明。`);
       this.rejectReason = "";

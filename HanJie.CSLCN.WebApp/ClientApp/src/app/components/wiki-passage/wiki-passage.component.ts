@@ -82,8 +82,10 @@ export class WikiPassageComponent implements OnInit {
 
         //检查是否为管理员
         this.userInfoService.getCurrentLoginedUserInfo().subscribe(response => {
-            this.currentUser = response;
-            this.isAdmin = response.isAdmin;
+            if (response) {
+                this.currentUser = response;
+                this.isAdmin = response.isAdmin;
+            }
         });
     }
 
@@ -105,13 +107,12 @@ export class WikiPassageComponent implements OnInit {
     }
 
     getWikiPassage(routePath: string): void {
-        let host: WikiPassageComponent = this;
         this.wikiPassageService.getWikiPassage(routePath).subscribe(response => {
-            host.wikiPassage = response;
-            host.oldWikiPassageDtoContent = host.wikiPassage.content;
-            host.commentCountText = response.comments ? response.comments.length + " 条评论" : "0 条评论";
+            this.wikiPassage = response;
+            this.oldWikiPassageDtoContent = this.wikiPassage.content;
+            this.commentCountText = response.comments ? response.comments.length + " 条评论" : "0 条评论";
 
-            host.isLoading = false;
+            this.isLoading = false;
             this.setBreadCrumbs();
 
             //锁定编辑

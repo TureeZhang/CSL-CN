@@ -102,7 +102,7 @@
       <!-- 评论 -->
       <nz-spin [nzSpinning]="isLoading" *ngIf="!isLoading && pageStatus==0">
         <nz-divider [nzText]="commentCountText" nzOrientation="left"></nz-divider>
-        <div nz-row nzJustify="center" nzAlign="middle" style="margin-top:36px;">
+        <div *ngIf="currentUser" nz-row nzJustify="center" nzAlign="middle" style="margin-top:36px;">
           <div nz-col nzSpan="2" style="text-align: center;">
             <nz-avatar nzSize="large" [nzSrc]="currentUser.avatarUrl"></nz-avatar>
           </div>

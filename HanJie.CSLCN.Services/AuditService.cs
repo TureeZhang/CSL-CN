@@ -60,8 +60,8 @@ namespace HanJie.CSLCN.Services
             UserInfoAudit userAudit = this._userInfoService.GetAuditingData(userId);
             userAudit.AuditRejectedReason = reason;
 
-            await this._userInfoService.UpdateAsync(user);
-            this._cslDbContext.UserInfoAudits.Update(userAudit);
+            this._cslDbContext.Update(user);
+            this._cslDbContext.Update(userAudit);
             await this._cslDbContext.SaveChangesAsync();
 
             UserStatuService.LoginedUsers.Where(item => item.Value.Id == userId).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.Rejected;

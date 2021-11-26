@@ -76,6 +76,9 @@ export class CSLHttpHelper {
     if (host == "www.cities-skylines.cn") {
       apiHostUrl += "www.cities-skylines.cn";
     }
+    else if(!host.includes("localhost")){
+      apiHostUrl += "www.cities-skylines.cn";
+    }
     else {
       apiHostUrl += "localhost:5500";
     }

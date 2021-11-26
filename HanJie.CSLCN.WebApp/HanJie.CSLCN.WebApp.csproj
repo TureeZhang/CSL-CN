@@ -24,6 +24,8 @@
     <None Remove="Assets\sensitive-words\政治类.txt" />
     <None Remove="Assets\sensitive-words\网址.txt" />
     <None Remove="Assets\sensitive-words\色情类.txt" />
+    <None Remove="Microsoft.EntityFrameworkCore.Relational" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 
   <ItemGroup>
@@ -81,6 +83,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.21" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="Seq.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.21" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HanJie.CSLCN.Common\HanJie.CSLCN.Common.csproj" />

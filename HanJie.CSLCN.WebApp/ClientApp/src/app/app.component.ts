@@ -1,16 +1,16 @@
-import { Component, OnInit, ElementRef, ViewContainerRef } from '@angular/core';
-import { MenuService } from './services/menu.service';
-import { MenuDto } from './models/menu-dto';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserInfoDto } from './models/user-info-dto';
-import { UserInfoService } from './services/user-info.service';
-import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { GlobalService } from './services/global.service';
-import { BreadCrumbDto } from './models/bread-crumb';
 import { HomepageSettingsDto } from './models/admin/homepage-settings-dto';
-import { SystemSettingsService } from './services/system-settings.service';
+import { BreadCrumbDto } from './models/bread-crumb';
 import { SystemSettingTypeEnum } from './models/enums/system-setting-type-enum';
+import { MenuDto } from './models/menu-dto';
+import { UserInfoDto } from './models/user-info-dto';
+import { GlobalService } from './services/global.service';
+import { MenuService } from './services/menu.service';
+import { SystemSettingsService } from './services/system-settings.service';
+import { UserInfoService } from './services/user-info.service';
 
 
 @Component({
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
     tryRestoreLoginUserInfo(): void {
         this.userInfoService.getCurrentLoginedUserInfo().subscribe(res => {
-            if (res.isLoginSuccess) {
+            if (res && res.isLoginSuccess) {
                 this.currentUser = res;
                 UserInfoService.CurrentUser = res;
                 this.isUserLogined = res.isLoginSuccess;
