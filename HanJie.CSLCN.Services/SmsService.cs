@@ -15,14 +15,17 @@ namespace HanJie.CSLCN.Services
     {
         private readonly IRedisService _redisService;
         private const string _pausedPhoneRedisKey = "validate-code-pausedphone";
+        private AlibabaCloud.SDK.Dysmsapi20170525.Client _smsClient;
 
         public SmsService(
             CSLDbContext cslDbContext,
             ICommonHelper commonHelper,
-            IRedisService redisService)
+            IRedisService redisService,
+            IValidateCodeService validateCodeService)
             : base(cslDbContext, commonHelper)
         {
             this._redisService = redisService;
+            this._smsClient = CreateClient();
         }
 
         public async Task<string> SendValidateCode(string phoneNumber)
@@ -58,13 +61,35 @@ namespace HanJie.CSLCN.Services
             return true;
         }
 
-        private void SendSms(string phoneNumber, string content, TimeSpan expireAfter)
+        private void SendSms(string phoneNumber, string code, TimeSpan expireAfter)
         {
-            throw new NotImplementedException();
+
+            AlibabaCloud.SDK.Dysmsapi20170525.Models.SendSmsRequest sendSmsRequest = new AlibabaCloud.SDK.Dysmsapi20170525.Models.SendSmsRequest
+            {
+                PhoneNumbers = phoneNumber,
+                SignName = "汉界的一颗小虎牙",
+                TemplateCode = "手机验证码",
+                TemplateParam = $"{{\"code\":\"{code}\"}}",
+            };
+            this._smsClient.SendSms(sendSmsRequest);
 
             //发送完成后送入冷却列表 10 分钟。
             if (RunAs.Release)
                 InsertPauseList(phoneNumber);
+        }
+
+        private AlibabaCloud.SDK.Dysmsapi20170525.Client CreateClient()
+        {
+            AlibabaCloud.OpenApiClient.Models.Config config = new AlibabaCloud.OpenApiClient.Models.Config
+            {
+                // 您的AccessKey ID
+                AccessKeyId = GlobalConfigs.AppSettings.AliyunSmsAccessKey,
+                // 您的AccessKey Secret
+                AccessKeySecret = GlobalConfigs.AppSettings.AliyunSmsSecretKey
+            };
+            // 访问的域名
+            config.Endpoint = "dysmsapi.aliyuncs.com";
+            return new AlibabaCloud.SDK.Dysmsapi20170525.Client(config);
         }
 
 

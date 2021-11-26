@@ -30,6 +30,15 @@ namespace HanJie.CSLCN.Models.Common.AppSettings
         public QiniuConfig QiniuConfig { get; set; }
 
         public Redis Redis { get; set; }
+
+        /// <summary>
+        /// 阿里云短信服务 AppKey
+        /// </summary>
+        public string AliyunSmsAccessKey { get; set; }
+        /// <summary>
+        /// 阿里云短信服务 SecretKey
+        /// </summary>
+        public string AliyunSmsSecretKey { get; set; }
     }
 
 
