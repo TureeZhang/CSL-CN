@@ -58,11 +58,12 @@
         <nz-form-item>
           <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>手机号</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="validateForm.controls['phoneNumber']"
-            [nzErrorTip]="phoneNumberErrorTpl"
+            [nzErrorTip]="phoneNumberErrorTpl" nzValidatingTip="正在检查手机号是否已被使用..."
             nzExtra="按照公安备案要求，交互式网站必须留存用户的至少一项实名信息以备查验。请放心，你的信息将被加密保存，其他用户均不可见。（如有来自海外用户的验证需求，请想办法联系骚汉，可以灵活处理）">
             <ng-template #phoneNumberErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">请填写手机号码</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">请填写格式正确的手机号码</ng-container>
+              <ng-container *ngIf="control.hasError('existed')">手机号已被使用，<a href="javascript:void(0);">忘记密码？</a>（暂不支持密码找回，还在开发）</ng-container>
             </ng-template>
             <div nz-row [nzGutter]="8">
               <div nz-col [nzSpan]="18">
@@ -89,6 +90,7 @@
           <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="smsCodeErrorTpl" nzValidatingTip="正在比对验证码...">
             <ng-template #smsCodeErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">请填写手机验证码</ng-container>
+              <ng-container *ngIf="control.hasError('maxlength')">超过验证码长度</ng-container>
               <ng-container *ngIf="control.hasError('pattern')">请输入数字</ng-container>
             </ng-template>
             <input formControlName="smsCode" id="smsCode" nz-input style="max-width:85px" />

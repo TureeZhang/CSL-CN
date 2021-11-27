@@ -50,8 +50,8 @@ export class RegisterComponent implements OnInit {
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
       nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.validateService.isContainSensitiveWords, this.validateService.isNickNameExists]],
       phoneNumberPrefix: ['+86', [Validators.required]],
-      phoneNumber: [null, [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)]],
-      smsCode: [null, [Validators.required, Validators.pattern(/[0-9]/)]],
+      phoneNumber: [null, [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)], [this.validateService.isPhoneNumberExists]],
+      smsCode: [null, [Validators.required, Validators.maxLength(6)], Validators.pattern(/[0-9]/)],
       agree: [true, [Validators.required]]
     });
 

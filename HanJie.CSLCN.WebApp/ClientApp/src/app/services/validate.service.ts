@@ -32,6 +32,10 @@ export class ValidateService implements OnInit {
     return this.handleAsyncValidateRequest("/api/asyncvalidator/nicknameexisted?nickname=", control.value, { error: true, existed: true });
   }
 
+  isPhoneNumberExists = (control: FormControl): Observable<any> => {
+    return this.handleAsyncValidateRequest("/api/asyncvalidator/phonenumberexisted?phoneNumber=", control.value, { error: true, existed: true });
+  }
+
   private handleAsyncValidateRequest(url: string, value: string, inErrorObj: object): Observable<any> {
     return new Observable((observer: Observer<ValidationErrors | null>) => {
       let timer: NodeJS.Timer = this.timers.get(url);

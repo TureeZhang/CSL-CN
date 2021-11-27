@@ -26,5 +26,6 @@ namespace HanJie.CSLCN.Services
         bool IsNickNameExists(string nickName);
         UserInfoAuditDto GetAuditingDto(int userId);
         UserInfoAudit GetAuditingData(int userId);
+        bool IsPhoneNumberExist(string phoneNumber);
     }
 }

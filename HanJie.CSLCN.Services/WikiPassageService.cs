@@ -572,7 +572,7 @@ namespace HanJie.CSLCN.Services
             comments.ForEach(async item => {
                 WikiPassageCommentDto dto = Mapper.Map<WikiPassageCommentDto>(item);
                 dto.User = Mapper.Map<UserInfoDto>(await this._userInfoService.GetById(item.UserId));
-                dto.CreateDate = item.CreateDate.ToString("yyyy-MM-dd hh:mm:ss");
+                dto.CreateDate = item.CreateDate.ToString("yyyy-MM-dd HH:mm:ss");
                 results.Add(dto);
             });
 

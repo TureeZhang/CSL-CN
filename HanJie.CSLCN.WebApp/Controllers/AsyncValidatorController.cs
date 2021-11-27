@@ -50,5 +50,15 @@ namespace HanJie.CSLCN.WebApp.Controllers
             bool isExists = this._userInfoService.IsNickNameExists(nickName);
             return new JsonResult(isExists);
         }
+
+        [HttpGet]
+        [Route("/api/asyncvalidator/phonenumberexisted")]
+        public IActionResult IsPhoneNumberExist(string phoneNumber)
+        {
+            Ensure.NotNull(phoneNumber, nameof(phoneNumber));
+            bool isExist = this._userInfoService.IsPhoneNumberExist(phoneNumber);
+
+            return new JsonResult(isExist);
+        }
     }
 }

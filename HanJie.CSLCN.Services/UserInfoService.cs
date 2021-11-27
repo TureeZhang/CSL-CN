@@ -315,6 +315,7 @@ namespace HanJie.CSLCN.Services
 
             userInfoDto.AuditStatus = AuditStatusEnum.OnAuditing;
             UserInfo userInfo = new UserInfo().ConvertFromDtoModel(userInfoDto);
+            userInfo.PhoneNumber = userInfo.PhoneNumber;
             userInfo.CreateDate = DateTime.Now;
             userInfo.LastModifyDate = DateTime.Now;
             userInfo.Password = this.CommonHelper.GetMd5Base64StringUsePrivateSold(userInfo.Password);
@@ -376,6 +377,18 @@ namespace HanJie.CSLCN.Services
         public UserInfoAudit GetAuditingData(int userId)
         {
             return base.CSLDbContext.UserInfoAudits.Find(userId);
+        }
+
+        public bool IsPhoneNumberExist(string phoneNumber)
+        {
+            Ensure.NotNull(phoneNumber, nameof(phoneNumber));
+
+            UserInfo user=  this.CSLDbContext.UserInfoes.Where(user => user.PhoneNumber == phoneNumber).FirstOrDefault();
+
+            if (user != null)
+                return true;
+
+            return false;
         }
 
     }
