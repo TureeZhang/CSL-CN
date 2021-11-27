@@ -25,16 +25,16 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public async Task<List<UserInfoDto>> List()
+        public List<UserInfoDto> List()
         {
-            return await this._userInfoService.ListDtoes();
+            return  this._userInfoService.ListDtoes();
         }
 
         [HttpGet]
         [Route("/api/admin/adminuserinfo/listuserinfoaudit")]
-        public async Task<List<UserInfoAuditDto>> ListUnAuditorUsersInfo()
+        public List<UserInfoAuditDto> ListUnAuditorUsersInfo()
         {
-            return await this._userInfoService.ListUnAuditorUsersInfo();
+            return  this._userInfoService.ListUnAuditorUsersInfo();
         }
 
         [HttpGet("{id}")]
@@ -45,18 +45,18 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
 
         [HttpGet]
         [Route("/api/admin/adminuserinfo/isduplicated")]
-        public async Task<JsonResult> IsUserNameDuplicated(string userName)
+        public JsonResult IsUserNameDuplicated(string userName)
         {
             Ensure.NotNull(userName, nameof(userName));
 
-            bool result =await this._userInfoService.IsUserNameDuplicated(userName);
+            bool result = this._userInfoService.IsUserNameDuplicated(userName);
             return Json(result);
         }
 
         [HttpPost]
-        public virtual async Task<JsonResult> Post(UserInfoDto userInfoDto)
+        public virtual JsonResult Post(UserInfoDto userInfoDto)
         {
-            UserInfo entity = await this._userInfoService.AddAsync(new UserInfo().ConvertFromDtoModel(userInfoDto));
+            UserInfo entity =  this._userInfoService.Add(new UserInfo().ConvertFromDtoModel(userInfoDto));
             UserInfoDto result = new UserInfoDto().ConvertFromDataModel(entity);
             return Json(result);
         }

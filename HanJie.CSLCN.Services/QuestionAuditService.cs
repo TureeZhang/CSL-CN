@@ -18,13 +18,13 @@ namespace HanJie.CSLCN.Services
 
         }
 
-        public async Task Rejected(int id, string reason, int auditorUserId)
+        public  void Rejected(int id, string reason, int auditorUserId)
         {
             Ensure.IsDatabaseId(id, nameof(id));
             Ensure.NotNull(reason, nameof(reason));
             Ensure.IsDatabaseId(auditorUserId, nameof(auditorUserId));
 
-            Question question = await GetById(id);
+            Question question =  GetById(id);
             question.Status = QuestionStatusEnum.AuditRejected;
             question.AuditRejectedReason = reason;
             question.AuditorUserId = auditorUserId;
@@ -32,15 +32,15 @@ namespace HanJie.CSLCN.Services
             throw new NotImplementedException();
         }
 
-        public async Task AuditOK(int id, int auditorUserId)
+        public  void AuditOK(int id, int auditorUserId)
         {
             Ensure.IsDatabaseId(id, nameof(id));
             Ensure.IsDatabaseId(auditorUserId, nameof(auditorUserId));
 
-            Question question = await GetById(id);
+            Question question =  GetById(id);
             question.Status = QuestionStatusEnum.AuditOK;
             question.AuditorUserId = auditorUserId;
-            await base.UpdateAsync(question);
+             base.Update(question);
         }
     }
 }

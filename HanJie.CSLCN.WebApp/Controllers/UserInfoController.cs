@@ -34,20 +34,20 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(UserInfoDto dto)
+        public IActionResult Post(UserInfoDto dto)
         {
-            await this._userInfoService.UpdateAccount(new UserInfo().ConvertFromDtoModel(dto));
+            this._userInfoService.UpdateAccount(new UserInfo().ConvertFromDtoModel(dto));
             UserStatuService.LoginedUsers.Where(item => item.Value.Id == dto.Id).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.OnAuditing;
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(UserInfoDto userInfo)
+        public IActionResult Put(UserInfoDto userInfo)
         {
             Ensure.NotNull(userInfo, nameof(userInfo));
             Ensure.NotContainsSensitiveWord(userInfo.NickName, nameof(userInfo.NickName));
 
-            await this._userInfoService.UpdateAsync(new UserInfo().ConvertFromDtoModel(userInfo));
+            this._userInfoService.Update(new UserInfo().ConvertFromDtoModel(userInfo));
             return Ok();
         }
 

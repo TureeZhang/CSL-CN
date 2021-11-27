@@ -12,11 +12,11 @@ namespace HanJie.CSLCN.Services
         string CreateValidateImageBase64String(ValidateCodeService.BitmapParam bitmapParam, ValidateCodeService.BitmapStyle bitmapStyle);
         byte[] CreateValidateImageBytes(ValidateCodeService.BitmapParam bitmapParam, ValidateCodeService.BitmapStyle bitmapStyle);
         string CreateValidateNumber(int length);
-        Task<string> GetCodeImageBase64String(string clientId);
+        string GetCodeImageBase64String(string clientId);
         string GetScopeString(List<string> arr, int start, int len);
-        Task<bool> IsSmsCodeEqual(string phoneNumber, string smsCode);
-        Task<bool> IsValidateCodeEqualAsync(string clientId, string userInputCode);
-        Task SendSmsValidateCode(string phoneNumber);
+        bool IsSmsCodeEqual(string phoneNumber, string smsCode);
+        bool IsValidateCodeEqual(string clientId, string userInputCode);
+        void SendSmsValidateCode(string phoneNumber);
         List<string> StringToArray(string str);
     }
 }

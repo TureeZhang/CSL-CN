@@ -23,7 +23,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         [HttpGet]
         [Route("/api/wikicategory")]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             RedisService redisService = new RedisService();
 
@@ -32,8 +32,8 @@ namespace HanJie.CSLCN.WebApp.Controllers
             List<WikiCategoryDto> results = redisService.ObjectGet<List<WikiCategoryDto>>(StringConsts.WikiCategoryCacheKey);
             if (results == null)
             {
-                results = await this._wikiCategoryService.ListDtos();
-                await redisService.ObjectSetAsync(StringConsts.WikiCategoryCacheKey, results);
+                results = this._wikiCategoryService.ListDtos();
+                redisService.ObjectSet(StringConsts.WikiCategoryCacheKey, results);
             }
 
             return Json(results);

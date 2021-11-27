@@ -5,6 +5,6 @@ namespace HanJie.CSLCN.Services
 {
     public interface ILogService
     {
-        Task Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null);
+        void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null);
     }
 }

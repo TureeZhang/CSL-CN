@@ -11,7 +11,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Datas;
 using HanJie.CSLCN.Services.Providers;
@@ -60,28 +59,28 @@ namespace HanJie.CSLCN.Services
             this._userInfoService = userInfoService;
         }
 
-        public async Task<WikiPassage> GetByRoutePathAsync(string routePath)
+        public WikiPassage GetByRoutePath(string routePath)
         {
             if (string.IsNullOrEmpty(routePath))
                 throw new ArgumentException("路由地址是必须的", nameof(routePath));
 
-            WikiPassage wikiPassage = await CSLDbContext.WikiPassages
+            WikiPassage wikiPassage = CSLDbContext.WikiPassages
                 .Where(wp => string.Equals(routePath, wp.RoutePath, StringComparison.OrdinalIgnoreCase))
                 .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             return wikiPassage;
         }
 
 
-        public async Task<List<WikiPassageAnchorTitleDto>> CollectAnchorTitlesAsync(string content)
+        public List<WikiPassageAnchorTitleDto> CollectAnchorTitles(string content)
         {
             if (string.IsNullOrEmpty(content))
                 throw new ArgumentNullException(nameof(content), "content is required.");
 
             List<WikiPassageAnchorTitleDto> result = new List<WikiPassageAnchorTitleDto>();
             StringReader stringReader = new StringReader(content);
-            string line = await stringReader.ReadLineAsync();
+            string line = stringReader.ReadLine();
 
             try
             {
@@ -96,7 +95,7 @@ namespace HanJie.CSLCN.Services
 
                     if (codeTagCount % 2 == 1)
                     {
-                        line = await stringReader.ReadLineAsync();
+                        line = stringReader.ReadLine();
                         continue;
                     }
 
@@ -115,7 +114,7 @@ namespace HanJie.CSLCN.Services
                         //do nothing here;
                     }
 
-                    line = await stringReader.ReadLineAsync();
+                    line = stringReader.ReadLine();
                 }
             }
             catch (Exception)
@@ -133,7 +132,7 @@ namespace HanJie.CSLCN.Services
         /// <param name="isContainLastModifyUserInfo">是否包含文章的作者信息</param>
         /// <param name="neverReadFromCache">是否立即从数据库中执行统计。设置为 false，则自动按照缓存策略决定返回的数据来自于缓存还是数据库。</param>
         /// <returns></returns>
-        public virtual async Task<List<WikiListItemDto>> ListAllPassageGenerals(bool readFromDatabaseImmediately = false)
+        public virtual List<WikiListItemDto> ListAllPassageGenerals(bool readFromDatabaseImmediately = false)
         {
             if (!readFromDatabaseImmediately)
             {
@@ -141,11 +140,11 @@ namespace HanJie.CSLCN.Services
                     return WikiListCaches.Item2;
             }
 
-            List<WikiPassage> wikiPassageDtos = await ListAsync();
+            List<WikiPassage> wikiPassageDtos = List();
             List<WikiListItemDto> wikiListItems = new List<WikiListItemDto>();
             foreach (WikiPassage item in wikiPassageDtos)
             {
-                wikiListItems.Add(await CovertToWikiListModel(item));
+                wikiListItems.Add(CovertToWikiListModel(item));
             }
 
             //Cache
@@ -154,28 +153,28 @@ namespace HanJie.CSLCN.Services
             return wikiListItems;
         }
 
-        public async Task<List<WikiListItemDto>> ListCategoriesAsync(int categoryId)
+        public List<WikiListItemDto> ListCategories(int categoryId)
         {
             Ensure.IsDatabaseId(categoryId, nameof(categoryId));
 
             List<WikiListItemDto> results = new List<WikiListItemDto>();
-            List<WikiPassage> wikiPassages = base.ListWhereAsync(item => item.CategoryId == categoryId);
+            List<WikiPassage> wikiPassages = base.ListWhere(item => item.CategoryId == categoryId);
             foreach (WikiPassage item in wikiPassages)
             {
-                results.Add(await CovertToWikiListModel(item));
+                results.Add(CovertToWikiListModel(item));
             }
 
             return results;
         }
 
-        private async Task<WikiListItemDto> CovertToWikiListModel(WikiPassage wikiPassage)
+        private WikiListItemDto CovertToWikiListModel(WikiPassage wikiPassage)
         {
             WikiListItemDto dto = new WikiListItemDto();
             dto.Id = wikiPassage.Id;
             dto.Title = wikiPassage.Title;
-            dto.Description = await PickDescriptionFromContent(wikiPassage.Content);
+            dto.Description = PickDescriptionFromContent(wikiPassage.Content);
             dto.RoutePath = wikiPassage.RoutePath;
-            dto.CoverUrl = await PickCoverUrlFromContentFirstImage(wikiPassage.Content);
+            dto.CoverUrl = PickCoverUrlFromContentFirstImage(wikiPassage.Content);
             dto.LastModifyDate = wikiPassage.LastModifyDate.ToString("yyyy-MM-dd HH:mm:ss");
             dto.LastModifyUser = new UserInfoDto { Id = wikiPassage.LastModifyUserId };
             dto.TotalViewsCount = this._wikiPassageViewersCountsService.GetByWikiPassageId(wikiPassage.Id).ViewersCount;
@@ -183,27 +182,27 @@ namespace HanJie.CSLCN.Services
             return dto;
         }
 
-        public virtual async Task<List<BreadCrumbDto>> CollectBreadCrumbsAsync(WikiPassageDto wikiPassageDto)
+        public virtual List<BreadCrumbDto> CollectBreadCrumbs(WikiPassageDto wikiPassageDto)
         {
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
 
             List<BreadCrumbDto> results = new List<BreadCrumbDto>();
-            WikiCategory wikiCategory = await this._wikiCategoryService.GetById(wikiPassageDto.CategoryId);
+            WikiCategory wikiCategory = this._wikiCategoryService.GetById(wikiPassageDto.CategoryId);
             results.Add(new BreadCrumbDto { Name = wikiCategory.Name, Url = "/wiki-list" });//$"/wiki-passage/{parentPassage.RoutePath}"
 
             return results;
         }
 
-        public virtual async Task<bool> IsRoutePathExist(string routePath)
+        public virtual bool IsRoutePathExist(string routePath)
         {
             Ensure.NotNull(routePath, nameof(routePath));
 
-            WikiPassage wikiPassage = await GetByRoutePathAsync(routePath);
+            WikiPassage wikiPassage = GetByRoutePath(routePath);
             bool isExist = wikiPassage != null;
             return isExist;
         }
 
-        public virtual async Task UpdateAsync(WikiPassageDto wikiPassageDto, int currentUserId)
+        public virtual void Update(WikiPassageDto wikiPassageDto, int currentUserId)
         {
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
             Ensure.NotNull(wikiPassageDto.EditingUser, nameof(wikiPassageDto.EditingUser));
@@ -237,11 +236,11 @@ namespace HanJie.CSLCN.Services
 
             entity.LastModifyUserId = currentUserId;
 
-            await base.UpdateAsync(entity);
+            base.Update(entity);
             UnlockPassageEditingStatus(wikiPassageDto.Id);
         }
 
-        public virtual async Task<WikiPassage> Create(WikiPassageDto wikiPassageDto)
+        public virtual WikiPassage Create(WikiPassageDto wikiPassageDto)
         {
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
             Ensure.NotNull(wikiPassageDto.Title, nameof(wikiPassageDto.Title));
@@ -252,7 +251,7 @@ namespace HanJie.CSLCN.Services
             }
             else
             {
-                if ((await GetByRoutePathAsync(wikiPassageDto.RoutePath)) != null)
+                if ((GetByRoutePath(wikiPassageDto.RoutePath)) != null)
                     throw new ArgumentException($"指定的路径名称已存在：{wikiPassageDto.RoutePath}");
             }
 
@@ -260,7 +259,7 @@ namespace HanJie.CSLCN.Services
             WikiPassage entity = new WikiPassage().ConvertFromDtoModel(wikiPassageDto);
             entity.MainAuthors = wikiPassageDto.MainAuthors.FirstOrDefault()?.Id.ToString();
             entity.LastModifyUserId = wikiPassageDto.LastModifyUser == null ? wikiPassageDto.MainAuthors.First().Id : wikiPassageDto.LastModifyUser.Id;
-            WikiPassage wikiPassage = await base.AddAsync(entity);
+            WikiPassage wikiPassage = base.Add(entity);
 
             return wikiPassage;
         }
@@ -363,7 +362,7 @@ namespace HanJie.CSLCN.Services
 
 
 
-        public virtual async Task<string> PickCoverUrlFromContentFirstImage(string content)
+        public virtual string PickCoverUrlFromContentFirstImage(string content)
         {
             string result = "./assets/mod-cover-default.jpg";
 
@@ -371,7 +370,7 @@ namespace HanJie.CSLCN.Services
                 return result;
 
             StringReader stringReader = new StringReader(content);
-            string line = await stringReader.ReadLineAsync();
+            string line = stringReader.ReadLine();
             while (line != null)
             {
                 if (line.Trim().StartsWith("!["))
@@ -380,14 +379,14 @@ namespace HanJie.CSLCN.Services
                     break;
                 }
 
-                line = await stringReader.ReadLineAsync();
+                line = stringReader.ReadLine();
             }
 
             return result;
         }
 
 
-        public virtual async Task<string> PickDescriptionFromContent(string content)
+        public virtual string PickDescriptionFromContent(string content)
         {
             Ensure.NotNull(content, nameof(content));
 
@@ -400,7 +399,7 @@ namespace HanJie.CSLCN.Services
             }
 
             StringReader contentReader = new StringReader(content);
-            string line = await contentReader.ReadLineAsync();
+            string line = contentReader.ReadLine();
             while (line != null)
             {
                 if (!line.Trim().StartsWith("![") && line.Trim() != string.Empty)
@@ -409,7 +408,7 @@ namespace HanJie.CSLCN.Services
                     break;
                 }
 
-                line = await contentReader.ReadLineAsync();
+                line = contentReader.ReadLine();
             }
 
             return result;
@@ -417,7 +416,7 @@ namespace HanJie.CSLCN.Services
 
 
         #region 访问量统计
-        public async Task AddViewsCount(int passageId, IPAddress ip)
+        public void AddViewsCount(int passageId, IPAddress ip)
         {
             try
             {
@@ -449,14 +448,14 @@ namespace HanJie.CSLCN.Services
                         viewsCountDto.LastUpdateTime = DateTime.Now;
                         dic[passageId].Add(ipAddress, viewsCountDto);
                     }
-                    this._redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, dic).GetAwaiter();
+                    this._redisService.ObjectSet(StringConsts.ViewsCountDictionary, dic);
 
                 });
             }
             catch (Exception ex)
             {
-                await this._logService.Log(message: "访问量统计：新增访问量出现异常。",
-                     parameters: new { ex = ex.ToString(), passageId, ip = ip.ToString() });
+                this._logService.Log(message: "访问量统计：新增访问量出现异常。",
+                    parameters: new { ex = ex.ToString(), passageId, ip = ip.ToString() });
             }
         }
 
@@ -476,14 +475,14 @@ namespace HanJie.CSLCN.Services
 
         #region 文档贡献者列表
 
-        public virtual async Task<List<WikiPassage>> ListAsMainAuthorPassages(int userId)
+        public virtual List<WikiPassage> ListAsMainAuthorPassages(int userId)
         {
             Ensure.IsDatabaseId(userId, nameof(userId));
 
             //item => 
 
             List<WikiPassage> results = new List<WikiPassage>();
-            var datas = await CSLDbContext.WikiPassages.Select(item => new { item.Id, item.RoutePath, item.Title, item.MainAuthors }).ToListAsync();
+            var datas = CSLDbContext.WikiPassages.Select(item => new { item.Id, item.RoutePath, item.Title, item.MainAuthors }).ToList();
             datas = datas.Where(item => item.MainAuthors == null ? false : item.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToList();
 
             foreach (var item in datas)
@@ -498,17 +497,17 @@ namespace HanJie.CSLCN.Services
             return results;
         }
 
-        public virtual async Task<List<WikiPassageDto>> ListAsMainAuthorPassageDtoes(int userId)
+        public virtual List<WikiPassageDto> ListAsMainAuthorPassageDtoes(int userId)
         {
-            return ConvertToDtos(await ListAsMainAuthorPassages(userId));
+            return ConvertToDtos(ListAsMainAuthorPassages(userId));
         }
 
-        public virtual async Task<List<WikiPassage>> ListAsCooperatePassages(int userId)
+        public virtual List<WikiPassage> ListAsCooperatePassages(int userId)
         {
             Ensure.IsDatabaseId(userId, nameof(userId));
 
             List<WikiPassage> results = new List<WikiPassage>();
-            var datas = await CSLDbContext.WikiPassages.Select(item => new { item.Id, item.RoutePath, item.Title, item.CoAuthors }).ToListAsync();
+            var datas = CSLDbContext.WikiPassages.Select(item => new { item.Id, item.RoutePath, item.Title, item.CoAuthors }).ToList();
             datas = datas.Where(item => item.CoAuthors == null ? false : item.CoAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Contains(userId.ToString())).ToList();
 
             foreach (var item in datas)
@@ -524,9 +523,9 @@ namespace HanJie.CSLCN.Services
             return results;
         }
 
-        public virtual async Task<List<WikiPassageDto>> ListAsCooperatePassageDtoes(int userId)
+        public virtual List<WikiPassageDto> ListAsCooperatePassageDtoes(int userId)
         {
-            return ConvertToDtos(await ListAsCooperatePassages(userId));
+            return ConvertToDtos(ListAsCooperatePassages(userId));
         }
 
         private List<WikiPassageDto> ConvertToDtos(List<WikiPassage> list)
@@ -547,7 +546,7 @@ namespace HanJie.CSLCN.Services
 
         #endregion
 
-        public Task<WikiPassage> AddAsync(WikiPassage data, int currentUserId)
+        public WikiPassage Add(WikiPassage data, int currentUserId)
         {
             Ensure.NotNull(data, nameof(data));
             Ensure.IsDatabaseId(currentUserId, nameof(currentUserId));
@@ -555,7 +554,7 @@ namespace HanJie.CSLCN.Services
             data.MainAuthors = currentUserId.ToString();
             //data.IsRowEnd = false;
             //data.IsHomepageShow = false;
-            return base.AddAsync(data);
+            return base.Add(data);
         }
 
         public List<WikiPassageCommentDto> ListAuditOKComments(int wikiPassageId)
@@ -566,12 +565,13 @@ namespace HanJie.CSLCN.Services
 
             List<WikiPassageComment> comments = this.CSLDbContext.WikiPassageComments
                 .Where(item => item.WikiPassageId == wikiPassageId && item.AuditStatus == AuditStatusEnum.OK)
-                .OrderByDescending(item=>item.CreateDate)
+                .OrderByDescending(item => item.CreateDate)
                 .ToList();
 
-            comments.ForEach(async item => {
+            comments.ForEach(item =>
+            {
                 WikiPassageCommentDto dto = Mapper.Map<WikiPassageCommentDto>(item);
-                dto.User = Mapper.Map<UserInfoDto>(await this._userInfoService.GetById(item.UserId));
+                dto.User = Mapper.Map<UserInfoDto>(this._userInfoService.GetById(item.UserId));
                 dto.CreateDate = item.CreateDate.ToString("yyyy-MM-dd HH:mm:ss");
                 results.Add(dto);
             });

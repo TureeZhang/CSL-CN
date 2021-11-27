@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
@@ -98,7 +97,7 @@ namespace HanJie.CSLCN.Services
             return isAccess;
         }
 
-        public async virtual Task<string> CallBackHandler(string contentType, string authorization, string callBackUrl, string callBackBody)
+        public virtual string CallBackHandler(string contentType, string authorization, string callBackUrl, string callBackBody)
         {
             bool isAccess = AuthCallBackHeader(contentType, authorization, callBackUrl, callBackBody);
 
@@ -106,13 +105,13 @@ namespace HanJie.CSLCN.Services
                 return JsonConvert.SerializeObject(new { ret = "failure" });
 
             QiniuStorageInfo qiniuStorageInfo = new QiniuStorageInfo().ConvertFromDtoModel(JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody));
-            QiniuStorageInfoDto dto = new QiniuStorageInfoDto().ConvertFromDataModel(await UpdateFileStorageInfo(qiniuStorageInfo));
+            QiniuStorageInfoDto dto = new QiniuStorageInfoDto().ConvertFromDataModel(UpdateFileStorageInfo(qiniuStorageInfo));
 
             return JsonConvert.SerializeObject(new { ret = "success", info = dto });
 
         }
 
-        public virtual async Task<QiniuStorageInfo> UpdateFileStorageInfo(QiniuStorageInfo qiniuStorageInfo)
+        public virtual QiniuStorageInfo UpdateFileStorageInfo(QiniuStorageInfo qiniuStorageInfo)
         {
             Ensure.NotNull(qiniuStorageInfo, nameof(qiniuStorageInfo));
 
@@ -123,42 +122,40 @@ namespace HanJie.CSLCN.Services
 
             qiniuStorageInfo.CreateDate = DateTime.Now;
             qiniuStorageInfo.LastModifyDate = DateTime.Now;
-            EntityEntry<QiniuStorageInfo> entry = await CSLDbContext.QiniuStorageInfoes.AddAsync(qiniuStorageInfo);
-            await CSLDbContext.SaveChangesAsync();
+            EntityEntry<QiniuStorageInfo> entry = CSLDbContext.QiniuStorageInfoes.Add(qiniuStorageInfo);
+            CSLDbContext.SaveChanges();
 
             return entry.Entity;
         }
 
-        public Task DeleteFile(int id)
+        public void DeleteFile(int id)
         {
             Ensure.IsDatabaseId(id, nameof(id));
 
             QiniuStorageInfo fileInfo = this.CSLDbContext.QiniuStorageInfoes.Find(id);
-            return DeleteFile(fileInfo.FullName);
+            DeleteFile(fileInfo.FullName);
         }
 
-        public Task ReNameFile(int id, string newName)
+        public void ReNameFile(int id, string newName)
         {
             Ensure.IsDatabaseId(id, nameof(id));
             Ensure.NotNull(newName, nameof(newName));
 
             QiniuStorageInfo fileInfo = this.CSLDbContext.QiniuStorageInfoes.Find(id);
-            return ReNameFile(fileInfo.FullName, newName);
+            ReNameFile(fileInfo.FullName, newName);
         }
 
-        public Task DeleteFile(string key)
+        public void DeleteFile(string key)
         {
             Ensure.NotNull(key, nameof(key));
 
             if (key.StartsWith("/"))
                 key = key.Substring(1);
 
-            return this._bucketManager.Delete(GlobalConfigs.AppSettings.QiniuConfig.BucketName, key);
-
-
+            this._bucketManager.Delete(GlobalConfigs.AppSettings.QiniuConfig.BucketName, key);
         }
 
-        public Task ReNameFile(string sourceKey, string destinationKey)
+        public void ReNameFile(string sourceKey, string destinationKey)
         {
             Ensure.NotNull(sourceKey, nameof(sourceKey));
             Ensure.NotNull(destinationKey, nameof(destinationKey));
@@ -169,7 +166,7 @@ namespace HanJie.CSLCN.Services
             if (destinationKey.StartsWith("/"))
                 destinationKey = destinationKey.Substring(1);
 
-            return this._bucketManager.Move(GlobalConfigs.AppSettings.QiniuConfig.BucketName, sourceKey, GlobalConfigs.AppSettings.QiniuConfig.BucketName, destinationKey,true);
+            this._bucketManager.Move(GlobalConfigs.AppSettings.QiniuConfig.BucketName, sourceKey, GlobalConfigs.AppSettings.QiniuConfig.BucketName, destinationKey, true);
         }
     }
 }

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
@@ -19,7 +18,8 @@ namespace HanJie.CSLCN.Services
         {
 
         }
-        public async Task AddMainMenuAsync(string name)
+
+        public void AddMainMenu(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("顶层菜单的标题是必须的。", nameof(name));
@@ -29,10 +29,10 @@ namespace HanJie.CSLCN.Services
             menu.Name = name;
             menu.ParentId = 0;
 
-            await base.AddAsync(menu);
+            base.Add(menu);
         }
 
-        public async Task AddFirstChildMenuAsync(string name, int parentId)
+        public void AddFirstChildMenu(string name, int parentId)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("一级菜单的标题是必须的。", nameof(name));
@@ -44,19 +44,19 @@ namespace HanJie.CSLCN.Services
             menu.Name = name;
             menu.ParentId = parentId;
 
-            await base.AddAsync(menu);
+            base.Add(menu);
         }
 
         /// <summary>
         /// 获取完整的主目录键值对
         /// </summary>
-        public async Task<Dictionary<Menu, List<Menu>>> GetAllMenusAsync()
+        public Dictionary<Menu, List<Menu>> GetAllMenus()
         {
             Dictionary<Menu, List<Menu>> resultDic = new Dictionary<Menu, List<Menu>>();
 
             Dictionary<int, List<Menu>> queryDic = new Dictionary<int, List<Menu>>();
-            List<Menu> mainMenus = await GetAllMainMenusAsync() ?? throw new Exception("不存在顶层菜单");
-            List<Menu> firstChilds = await GetAllFirstChildsAsync();
+            List<Menu> mainMenus = GetAllMainMenus() ?? throw new Exception("不存在顶层菜单");
+            List<Menu> firstChilds = GetAllFirstChilds();
 
             foreach (Menu item in mainMenus)
             {
@@ -79,11 +79,11 @@ namespace HanJie.CSLCN.Services
         /// 获取所有顶层目列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Menu>> GetAllMainMenusAsync()
+        public List<Menu> GetAllMainMenus()
         {
             List<Menu> results = null;
 
-            results = await CSLDbContext.Menus.Where(m => m.MenuType == MenuTypeEnum.MainMenu).AsNoTracking().ToListAsync();
+            results = CSLDbContext.Menus.Where(m => m.MenuType == MenuTypeEnum.MainMenu).AsNoTracking().ToList();
             return results;
         }
 
@@ -91,11 +91,11 @@ namespace HanJie.CSLCN.Services
         /// 获取所有一级目录列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Menu>> GetAllFirstChildsAsync()
+        public List<Menu> GetAllFirstChilds()
         {
             List<Menu> results = new List<Menu>();
 
-            results = await CSLDbContext.Menus.Where(m => m.MenuType == MenuTypeEnum.FirstChild).AsNoTracking().ToListAsync();
+            results = CSLDbContext.Menus.Where(m => m.MenuType == MenuTypeEnum.FirstChild).AsNoTracking().ToList();
             return results;
         }
     }

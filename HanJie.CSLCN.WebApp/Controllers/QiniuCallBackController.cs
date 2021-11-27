@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.Consts;
 using HanJie.CSLCN.Models.DataModels;
@@ -28,15 +27,15 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         [HttpPost]
         [Route("/api/qiniucallback")]
-        public async Task<string> Post()
+        public string Post()
         {
 
             string contentType = Request.ContentType;
             string authorizationHeader = Request.Headers[HttpConsts.Authorization];
             string callBackUrl = $"http://{Request.Host.Value}{Request.Path.Value}";
-            string callBackBody = await new StreamReader(Request.Body).ReadToEndAsync();
+            string callBackBody = new StreamReader(Request.Body).ReadToEnd();
 
-            string result = await this._qiniuService.CallBackHandler(contentType, authorizationHeader, callBackUrl, callBackBody);
+            string result = this._qiniuService.CallBackHandler(contentType, authorizationHeader, callBackUrl, callBackBody);
 
             return result;
         }
@@ -48,12 +47,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("/api/qiniucallbacktest")]
-        public async Task<string> PostForTest()
+        public string PostForTest()
         {
             string contentType = Request.ContentType;
             string authorizationHeader = Request.Headers[HttpConsts.Authorization];
             string callBackUrl = $"http://{Request.Host.Value}{Request.Path.Value}";
-            string callBackBody = await new StreamReader(Request.Body).ReadToEndAsync();
+            string callBackBody = new StreamReader(Request.Body).ReadToEnd();
 
             System.IO.File.WriteAllText("callback.txt", JsonConvert.SerializeObject(new { contentType, authorizationHeader, callBackUrl, callBackBody }));
             string result = JsonConvert.SerializeObject(new { ret = "success", info = JsonConvert.DeserializeObject<QiniuStorageInfoDto>(callBackBody) });

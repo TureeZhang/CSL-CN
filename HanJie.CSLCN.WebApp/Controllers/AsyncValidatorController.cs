@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
@@ -37,9 +36,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         [Route("/api/[controller]/usernameexisted")]
         [HttpGet]
-        public async Task<IActionResult> IsUserNameExisted([FromQuery] string username)
+        public IActionResult IsUserNameExisted([FromQuery] string username)
         {
-            bool isExisted = await this._userInfoService.IsUserNameDuplicated(username);
+            bool isExisted = this._userInfoService.IsUserNameDuplicated(username);
             return new JsonResult(isExisted);
         }
 

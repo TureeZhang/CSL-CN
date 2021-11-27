@@ -7,7 +7,6 @@ using HanJie.CSLCN.Models.MyExceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
@@ -27,9 +26,9 @@ namespace HanJie.CSLCN.Services
             this._smsClient = CreateClient();
         }
 
-        public async Task<string> SendValidateCode(string phoneNumber)
+        public string SendValidateCode(string phoneNumber)
         {
-            if (await IsPausedPhone(phoneNumber))
+            if (IsPausedPhone(phoneNumber))
                 throw new UserException($"短息验证码发送失败：当前手机号码 10 分钟内曾发送过验证码，请稍后重试。");
 
             if (!phoneNumber.StartsWith("+86"))
@@ -44,14 +43,14 @@ namespace HanJie.CSLCN.Services
         private void InsertPauseList(string phoneNumber)
         {
             Ensure.NotNull(phoneNumber, nameof(phoneNumber));
-            this._redisService.StringSetAsync($"{_pausedPhoneRedisKey}{phoneNumber}", "暂停发送10分钟", new TimeSpan(0, 10, 0));
+            this._redisService.StringSet($"{_pausedPhoneRedisKey}{phoneNumber}", "暂停发送10分钟", new TimeSpan(0, 10, 0));
         }
 
-        private async Task<bool> IsPausedPhone(string phoneNumber)
+        private bool IsPausedPhone(string phoneNumber)
         {
             Ensure.NotNull(phoneNumber, nameof(phoneNumber));
 
-            string str = await this._redisService.StringGetAsync($"{_pausedPhoneRedisKey}{phoneNumber}");
+            string str = this._redisService.StringGet($"{_pausedPhoneRedisKey}{phoneNumber}");
 
             //因为设置暂停发送时 key 的过期时间设置为 10 分钟，因此如果没有取到值说明 key 不在暂停列表中，还没发送过短信或已超过暂停发送的冻结时间
             if (string.IsNullOrEmpty(str))

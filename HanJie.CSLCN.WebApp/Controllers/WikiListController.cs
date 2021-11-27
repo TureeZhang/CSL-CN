@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
@@ -25,17 +24,17 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         [HttpGet]
         [Route("/api/wikilist")]
-        public async Task<IActionResult> List(int? categoryId)
+        public IActionResult List(int? categoryId)
         {
             List<WikiListItemDto> wikiListItemDtos = null;
             if (categoryId.HasValue)
             {
                 Ensure.IsDatabaseId(categoryId.Value, nameof(categoryId));
-                wikiListItemDtos = await this._wikiPassageService.ListCategoriesAsync(categoryId.Value);
+                wikiListItemDtos =  this._wikiPassageService.ListCategories(categoryId.Value);
             }
             else
             {
-                wikiListItemDtos = await this._wikiPassageService.ListAllPassageGenerals();
+                wikiListItemDtos =  this._wikiPassageService.ListAllPassageGenerals();
             }
             return Json(wikiListItemDtos);
         }

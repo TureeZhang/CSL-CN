@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
@@ -26,34 +25,34 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public ActionResult GetAsync()
         {
-            List<DonatorRankDto> donatorAllRanks = await this._donatorRankService.GetDonatorAllRanksOrderbyTotalCountAsync();
-            donatorAllRanks = (await this._userInfoService.BindDonatorUserInfo(donatorAllRanks.ToArray())).ToList();
+            List<DonatorRankDto> donatorAllRanks = this._donatorRankService.GetDonatorAllRanksOrderbyTotalCount();
+            donatorAllRanks = this._userInfoService.BindDonatorUserInfo(donatorAllRanks.ToArray()).ToList();
 
             return new JsonResult(donatorAllRanks);
         }
 
         [HttpGet]
         [Route("/api/donatorrank-monthly")]
-        public async Task<IActionResult> GetMonthly()
+        public ActionResult GetMonthly()
         {
-            List<DonatorRankDto> donatorMonthlyRanks = await this._donatorRankService.GetDonatorMontlyRanksOrderbyTotalCountAsync();
-            donatorMonthlyRanks = (await this._userInfoService.BindDonatorUserInfo(donatorMonthlyRanks.ToArray())).ToList();
+            List<DonatorRankDto> donatorMonthlyRanks = this._donatorRankService.GetDonatorMontlyRanksOrderbyTotalCount();
+            donatorMonthlyRanks = this._userInfoService.BindDonatorUserInfo(donatorMonthlyRanks.ToArray()).ToList();
 
             return Json(donatorMonthlyRanks);
         }
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
             throw new NotImplementedException();
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 

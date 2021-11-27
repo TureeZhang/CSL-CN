@@ -25,9 +25,9 @@ namespace HanJie.CSLCN.Services
             this._cslDbContext = cslDbContext;
         }
 
-        public async Task<UserInfo> ConfirmUser(int userId)
+        public  UserInfo ConfirmUser(int userId)
         {
-            UserInfo userInfo = await this._userInfoService.GetById(userId);
+            UserInfo userInfo = this._userInfoService.GetById(userId);
             UserInfoAudit userInfoAuditCache = this._cslDbContext.UserInfoAudits.Where(item => item.UserId == userId).FirstOrDefault();
 
             //需要确认头像是否出现更新，如果出现更新，需要覆盖正在使用的图片。
@@ -35,9 +35,9 @@ namespace HanJie.CSLCN.Services
             string newAvatarUrl = null;
             if (!string.Equals(userInfo.AvatarUrl, userInfoAuditCache.AvatarUrl, StringComparison.OrdinalIgnoreCase))
             {
-                await this._qiniuService.DeleteFile(new Uri(userInfo.AvatarUrl).PathAndQuery);
+                 this._qiniuService.DeleteFile(new Uri(userInfo.AvatarUrl).PathAndQuery);
                 newAvatarUrl = userInfoAuditCache.AvatarUrl.Remove("_new");
-                await this._qiniuService.ReNameFile(new Uri(userInfoAuditCache.AvatarUrl).PathAndQuery, newAvatarUrl);
+                 this._qiniuService.ReNameFile(new Uri(userInfoAuditCache.AvatarUrl).PathAndQuery, newAvatarUrl);
             }
 
             userInfo.AvatarUrl = newAvatarUrl ?? userInfo.AvatarUrl;
@@ -46,28 +46,28 @@ namespace HanJie.CSLCN.Services
             userInfo.PersonalizedSignature = userInfoAuditCache.PersonalizedSignature;
             userInfo.AuditStatus = AuditStatusEnum.OK;
 
-            await this._userInfoService.UpdateAsync(userInfo);
+             this._userInfoService.Update(userInfo);
 
             return userInfo;
         }
 
-        public async Task RejectUser(int userId, string reason)
+        public void RejectUser(int userId, string reason)
         {
             Ensure.NotNull(reason, nameof(reason));
 
-            UserInfo user = await this._userInfoService.GetById(userId);
+            UserInfo user =  this._userInfoService.GetById(userId);
             user.AuditStatus = AuditStatusEnum.Rejected;
             UserInfoAudit userAudit = this._userInfoService.GetAuditingData(userId);
             userAudit.AuditRejectedReason = reason;
 
             this._cslDbContext.Update(user);
             this._cslDbContext.Update(userAudit);
-            await this._cslDbContext.SaveChangesAsync();
+             this._cslDbContext.SaveChanges();
 
             UserStatuService.LoginedUsers.Where(item => item.Value.Id == userId).FirstOrDefault().Value.AuditStatus = AuditStatusEnum.Rejected;
         }
 
-        public async Task<List<WikiPassageCommentDto>> ListOnAuditingWikiComments()
+        public List<WikiPassageCommentDto> ListOnAuditingWikiComments()
         {
             List<WikiPassageCommentDto> results = new List<WikiPassageCommentDto>();
 
@@ -75,7 +75,7 @@ namespace HanJie.CSLCN.Services
             foreach (WikiPassageComment item in datas)
             {
                 WikiPassageCommentDto dto = Mapper.Map<WikiPassageCommentDto>(item);
-                dto.User =Mapper.Map<UserInfoDto>(await this._userInfoService.GetById(item.UserId));
+                dto.User =Mapper.Map<UserInfoDto>( this._userInfoService.GetById(item.UserId));
 
                 results.Add(dto);
             }
@@ -84,7 +84,7 @@ namespace HanJie.CSLCN.Services
             return results;
         }
 
-        public async Task ConfirmWikiComment(int id)
+        public  void ConfirmWikiComment(int id)
         {
             Ensure.IsDatabaseId(id, nameof(id));
 
@@ -92,10 +92,10 @@ namespace HanJie.CSLCN.Services
             comment.AuditStatus = AuditStatusEnum.OK;
 
             this._cslDbContext.Update(comment);
-            await this._cslDbContext.SaveChangesAsync();
+             this._cslDbContext.SaveChanges();
         }
 
-        public async Task RejectComment(int id,string reason)
+        public  void RejectComment(int id,string reason)
         {
             WikiPassageComment comment = this._cslDbContext.WikiPassageComments.Find(id);
             comment.AuditRejectReason = reason;
@@ -104,7 +104,7 @@ namespace HanJie.CSLCN.Services
             //todo:消息中心上线后，通知发布人，评论审核被拒绝及其原因。
 
             this._cslDbContext.WikiPassageComments.Update(comment);
-            await this._cslDbContext.SaveChangesAsync();
+             this._cslDbContext.SaveChanges();
         }
     }
 }

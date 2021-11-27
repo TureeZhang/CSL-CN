@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
@@ -29,11 +28,11 @@ namespace HanJie.CSLCN.WebApp.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<string> Get(int id)
+        public string Get(int id)
         {
             Ensure.NotNull(id, nameof(id));
 
-            QiniuStorageInfo dto = await this._qiniuService.GetById(id);
+            QiniuStorageInfo dto = this._qiniuService.GetById(id);
             return dto.FullName;
         }
 

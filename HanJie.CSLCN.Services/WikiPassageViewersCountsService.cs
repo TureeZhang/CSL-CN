@@ -24,13 +24,13 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        public async Task UpdateViewersCounts(int id,int newViewersCount)
+        public void UpdateViewersCounts(int id,int newViewersCount)
         {
             Ensure.MoreThan(newViewersCount, 0, nameof(newViewersCount));
 
-            WikiPassageViewersCounts data = await GetById(id);
+            WikiPassageViewersCounts data = GetById(id);
             data.ViewersCount += newViewersCount;
-            await base.UpdateAsync(data);
+            base.Update(data);
         }
     }
 }

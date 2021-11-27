@@ -6,10 +6,10 @@ namespace HanJie.CSLCN.Services
 {
     public interface IMenuService
     {
-        Task AddFirstChildMenuAsync(string name, int parentId);
-        Task AddMainMenuAsync(string name);
-        Task<List<Menu>> GetAllFirstChildsAsync();
-        Task<List<Menu>> GetAllMainMenusAsync();
-        Task<Dictionary<Menu, List<Menu>>> GetAllMenusAsync();
+        void AddFirstChildMenu(string name, int parentId);
+        void AddMainMenu(string name);
+        List<Menu> GetAllFirstChilds();
+        List<Menu> GetAllMainMenus();
+        Dictionary<Menu, List<Menu>> GetAllMenus();
     }
 }

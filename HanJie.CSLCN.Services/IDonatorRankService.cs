@@ -8,9 +8,9 @@ namespace HanJie.CSLCN.Services
     public interface IDonatorRankService
     {
         List<DonatorRankDto> CountTotalWithOrderbyDesc(List<DonatorRank> donatorRanks);
-        Task<DonatorRank> CreateAsync(DonatorRankDto data);
-        Task<List<DonatorRankDto>> GetDonatorAllRanksOrderbyTotalCountAsync();
-        Task<List<DonatorRankDto>> GetDonatorMontlyRanksOrderbyTotalCountAsync();
-        Task<List<DonatorRank>> ListAsync();
+        DonatorRank Create(DonatorRankDto data);
+        List<DonatorRankDto> GetDonatorAllRanksOrderbyTotalCount();
+        List<DonatorRankDto> GetDonatorMontlyRanksOrderbyTotalCount();
+        List<DonatorRank> List();
     }
 }

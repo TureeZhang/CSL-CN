@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
@@ -29,9 +28,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public async Task<JsonResult> GetAsync()
+        public JsonResult GetAsync()
         {
-            Dictionary<Menu, List<Menu>> menuDatas = await this._menuService.GetAllMenusAsync();
+            Dictionary<Menu, List<Menu>> menuDatas = this._menuService.GetAllMenus();
             List<MenuDto> results = new List<MenuDto>();
             foreach (KeyValuePair<Menu, List<Menu>> item in menuDatas)
             {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
@@ -51,9 +50,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpGet("/api/[controller]/list-onauditing-comments")]
-        public async Task<IActionResult> ListOnAuditingComments()
+        public IActionResult ListOnAuditingComments()
         {
-            List<WikiPassageCommentDto> results =await this._auditService.ListOnAuditingWikiComments();
+            List<WikiPassageCommentDto> results = this._auditService.ListOnAuditingWikiComments();
             return new JsonResult(results);
         }
 

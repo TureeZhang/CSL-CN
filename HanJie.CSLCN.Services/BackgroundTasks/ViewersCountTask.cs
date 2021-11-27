@@ -30,7 +30,7 @@ namespace HanJie.CSLCN.Services.BackgroundTasks
             this._serviceProvider = serviceProvider;
         }
 
-        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var scope = this._serviceProvider.CreateScope();
 
@@ -40,11 +40,12 @@ namespace HanJie.CSLCN.Services.BackgroundTasks
             this._redisService = scope.ServiceProvider.GetRequiredService<IRedisService>();
             this._staticDictionariesProvider = scope.ServiceProvider.GetRequiredService<IStaticDictionariesProvider>();
 
-            await StartViewsCountUpdateTask();
+            StartViewsCountUpdateTask();
+            return Task.FromResult(true);
         }
 
 
-        public async Task StartViewsCountUpdateTask()
+        public void StartViewsCountUpdateTask()
         {
             try
             {
@@ -58,29 +59,29 @@ namespace HanJie.CSLCN.Services.BackgroundTasks
                 {
                     while (true)
                     {
-                        this._wikiPassageService.LockViewsDictionary(async dic =>
-                        {
-                            foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
-                            {
-                                int passageId = item.Key;
-                                int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
+                        this._wikiPassageService.LockViewsDictionary(dic =>
+                       {
+                           foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> item in dic)
+                           {
+                               int passageId = item.Key;
+                               int newViewsCount = item.Value.Select(viewsCountDto => viewsCountDto.Value.NewViews).ToList().Sum();
 
-                                if (newViewsCount > 0)
-                                {
-                                    WikiPassageViewersCounts viewersCounts = this._wikiPassageViewersCountsService.GetByWikiPassageId(passageId);
-                                    viewersCounts.ViewersCount += newViewsCount;
-                                    await this._wikiPassageViewersCountsService.UpdateAsync(viewersCounts);
-                                }
-                            }
-                            foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
-                            {
-                                foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
-                                {
-                                    viewsCountItem.Value.NewViews = 0;
-                                }
-                            }
-                            await this._redisService.ObjectSetAsync(StringConsts.ViewsCountDictionary, dic);
-                        });
+                               if (newViewsCount > 0)
+                               {
+                                   WikiPassageViewersCounts viewersCounts = this._wikiPassageViewersCountsService.GetByWikiPassageId(passageId);
+                                   viewersCounts.ViewersCount += newViewsCount;
+                                   this._wikiPassageViewersCountsService.Update(viewersCounts);
+                               }
+                           }
+                           foreach (KeyValuePair<int, Dictionary<string, ViewsCountDto>> passageViewsDictionary in dic)
+                           {
+                               foreach (KeyValuePair<string, ViewsCountDto> viewsCountItem in passageViewsDictionary.Value)
+                               {
+                                   viewsCountItem.Value.NewViews = 0;
+                               }
+                           }
+                           this._redisService.ObjectSet(StringConsts.ViewsCountDictionary, dic);
+                       });
                         if (RunAs.Debug)
                         {
                             Thread.Sleep(20 * 1000);    //5秒
@@ -94,7 +95,7 @@ namespace HanJie.CSLCN.Services.BackgroundTasks
             }
             catch (Exception ex)
             {
-                await this._logService.Log(message: "访问量统计：启动访问量统计系统前出错",
+                this._logService.Log(message: "访问量统计：启动访问量统计系统前出错",
                          parameters: new { ex = ex.ToString() });
             }
 

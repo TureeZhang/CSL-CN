@@ -5,7 +5,7 @@ namespace HanJie.CSLCN.Services
 {
     public interface IWikiPassageCommentService
     {
-        Task Create(WikiPassageCommentDto comment);
-        Task Delete(int id,int currentUserId);
+        void Create(WikiPassageCommentDto comment);
+        void Delete(int id,int currentUserId);
     }
 }

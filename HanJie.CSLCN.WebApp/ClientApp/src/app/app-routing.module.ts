@@ -20,7 +20,8 @@ import { AccountComponent } from './components/account/account.component';
 
 const routes: Routes = [
     //主站路由
-    { path: "", redirectTo: "/homepage", pathMatch: "full" },
+    // { path: "", redirectTo: "/homepage", pathMatch: "full" },
+    { path: "", component: HomepageComponent },
     { path: "homepage", component: HomepageComponent },
     { path: "wiki-passage/:id", component: WikiPassageComponent },
     { path: "login", component: LoginComponent },

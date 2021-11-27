@@ -11,10 +11,10 @@ namespace HanJie.CSLCN.Services
     {
         SystemSetting Get(SystemSettingTypeEnum type, string name);
         HomePageSettingsDto GetHomePageSettings();
-        Task<SystemSettingDto> ListAsDto();
-        Task<List<SystemSetting>> ListAsync();
-        Task<List<SystemSetting>> ListDataModelAsync();
-        Task UpdateAsync(SystemSettingDto settings);
+        SystemSettingDto ListAsDto();
+        List<SystemSetting> List();
+        List<SystemSetting> ListDataModel();
+        void Update(SystemSettingDto settings);
         void UpdateHomePageSettings(HomePageSettingsDto dto);
     }
 }
