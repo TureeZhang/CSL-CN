@@ -67,7 +67,7 @@ namespace HanJie.CSLCN.Services
             {
                 PhoneNumbers = phoneNumber,
                 SignName = "汉界的一颗小虎牙",
-                TemplateCode = "手机验证码",
+                TemplateCode = GlobalConfigs.AppSettings.AliyunSmsTemplateCode,
                 TemplateParam = $"{{\"code\":\"{code}\"}}",
             };
             this._smsClient.SendSms(sendSmsRequest);
