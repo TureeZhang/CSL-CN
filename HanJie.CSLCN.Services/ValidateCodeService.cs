@@ -5,7 +5,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 
 namespace HanJie.CSLCN.Services
@@ -22,7 +21,7 @@ namespace HanJie.CSLCN.Services
             this._smsService = smsService;
         }
 
-        public async Task<string> GetCodeImageBase64String(string clientId)
+        public string GetCodeImageBase64String(string clientId)
         {
             string code = CreateValidateNumber(4);
 
@@ -30,30 +29,30 @@ namespace HanJie.CSLCN.Services
                   new BitmapParam { textarr = StringToArray(code) },
                   new BitmapStyle { IsGif = true, FrameType = GifFrameType.EveryFrame });
 
-            await this._redisService.StringSetAsync($"{StringConsts.ValidateCodeCache}{clientId}", code);
+            this._redisService.StringSet($"{StringConsts.ValidateCodeCache}{clientId}", code);
 
             return imgBase64Str;
         }
 
-        public async Task<bool> IsValidateCodeEqualAsync(string clientId, string userInputCode)
+        public bool IsValidateCodeEqual(string clientId, string userInputCode)
         {
             Ensure.NotNull(clientId, nameof(clientId));
             Ensure.NotNull(userInputCode, nameof(userInputCode));
 
-            string actualCode = await this._redisService.StringGetAsync($"{StringConsts.ValidateCodeCache}{clientId}");
+            string actualCode = this._redisService.StringGet($"{StringConsts.ValidateCodeCache}{clientId}");
             return string.Equals(userInputCode, actualCode, StringComparison.OrdinalIgnoreCase);
         }
 
-        public async Task SendSmsValidateCode(string phoneNumber)
+        public void SendSmsValidateCode(string phoneNumber)
         {
-            string smsCode = await this._smsService.SendValidateCode(phoneNumber);
-            await this._redisService.StringSetAsync($"{SmsValiCodeCacheKey}{phoneNumber}", smsCode, new TimeSpan(0, 10, 0));
+            string smsCode = this._smsService.SendValidateCode(phoneNumber);
+            this._redisService.StringSet($"{SmsValiCodeCacheKey}{phoneNumber}", smsCode, new TimeSpan(0, 10, 0));
         }
 
 
-        public async Task<bool> IsSmsCodeEqual(string phoneNumber, string smsCode)
+        public bool IsSmsCodeEqual(string phoneNumber, string smsCode)
         {
-            string codeCache = await this._redisService.StringGetAsync($"{SmsValiCodeCacheKey}{phoneNumber}");
+            string codeCache = this._redisService.StringGet($"{SmsValiCodeCacheKey}{phoneNumber}");
             bool isValide = string.Equals(codeCache, smsCode);
 
             return isValide;

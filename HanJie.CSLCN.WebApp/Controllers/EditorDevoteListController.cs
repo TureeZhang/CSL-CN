@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Models.DataModels;
 using HanJie.CSLCN.Models.Dtos;
 using HanJie.CSLCN.Services;
@@ -25,7 +24,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(string monthlyTag)
+        public IActionResult List(string monthlyTag)
         {
             if (string.IsNullOrEmpty(monthlyTag))
             {
@@ -44,13 +43,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
             List<EditorDevoteInfoDto> results = new List<EditorDevoteInfoDto>();
 
-            List<UserInfoDto> editors = await this._userInfoService.ListEditorsDto(string.IsNullOrEmpty(monthlyTag) ? -1 : 30);
+            List<UserInfoDto> editors = this._userInfoService.ListEditorsDto(string.IsNullOrEmpty(monthlyTag) ? -1 : 30);
             foreach (UserInfoDto item in editors)
             {
                 EditorDevoteInfoDto editorDevoteInfo = new EditorDevoteInfoDto();
                 editorDevoteInfo.UserInfo = item;
-                editorDevoteInfo.MainAuthPassages = await this._wikiPassageService.ListAsMainAuthorPassageDtoes(item.Id);
-                editorDevoteInfo.CooAuthPassages = await this._wikiPassageService.ListAsCooperatePassageDtoes(item.Id);
+                editorDevoteInfo.MainAuthPassages = this._wikiPassageService.ListAsMainAuthorPassageDtoes(item.Id);
+                editorDevoteInfo.CooAuthPassages = this._wikiPassageService.ListAsCooperatePassageDtoes(item.Id);
                 results.Add(editorDevoteInfo);
             }
 

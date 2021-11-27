@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
@@ -19,7 +18,7 @@ namespace HanJie.CSLCN.Services
 
         }
 
-        public async new virtual Task Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
+        public new virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
         {
             Ensure.NotNull(message, nameof(message));
 
@@ -30,21 +29,21 @@ namespace HanJie.CSLCN.Services
             if (parameters != null)
                 log.ParametersJson = JsonConvert.SerializeObject(parameters);
 
-            await base.AddAsync(log);
+            base.Add(log);
         }
 
         /// <summary>
         /// 添加数据
         /// </summary>
         /// <param name="data"></param>
-        public virtual new async Task<Log> AddAsync(Log data)
+        public virtual new Log Add(Log data)
         {
             Ensure.NotNull(data, nameof(data));
 
             data.CreateDate = DateTime.Now;
             data.LastModifyDate = DateTime.Now;
-            Log result = (await CSLDbContext.Set<Log>().AddAsync(data)).Entity;
-            await CSLDbContext.SaveChangesAsync();
+            Log result = CSLDbContext.Set<Log>().Add(data).Entity;
+            CSLDbContext.SaveChanges();
 
             return result;
 

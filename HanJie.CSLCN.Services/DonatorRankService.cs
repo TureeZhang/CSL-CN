@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using HanJie.CSLCN.Common;
 using HanJie.CSLCN.Datas;
 
@@ -14,24 +13,24 @@ namespace HanJie.CSLCN.Services
     public class DonatorRankService : BaseService<DonatorRankDto, DonatorRank>, IDonatorRankService
     {
 
-        public DonatorRankService(CSLDbContext cslDbContext,ICommonHelper commonHelper)
-            :base(cslDbContext,commonHelper)
+        public DonatorRankService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
+            : base(cslDbContext, commonHelper)
         {
-            
+
         }
 
-        public async Task<List<DonatorRankDto>> GetDonatorAllRanksOrderbyTotalCountAsync()
+        public List<DonatorRankDto> GetDonatorAllRanksOrderbyTotalCount()
         {
-            List<DonatorRank> donatorRanks = await CSLDbContext.DonatorRanks.ToListAsync();
+            List<DonatorRank> donatorRanks = CSLDbContext.DonatorRanks.ToList();
             List<DonatorRankDto> results = CountTotalWithOrderbyDesc(donatorRanks);
 
             return results;
         }
 
-        public virtual async Task<List<DonatorRankDto>> GetDonatorMontlyRanksOrderbyTotalCountAsync()
+        public virtual List<DonatorRankDto> GetDonatorMontlyRanksOrderbyTotalCount()
         {
             DateTime minData = DateTime.Now.AddDays(-30);
-            List<DonatorRank> donatorRanks = await CSLDbContext.DonatorRanks.Where(item => item.CreateDate >= minData).ToListAsync();
+            List<DonatorRank> donatorRanks = CSLDbContext.DonatorRanks.Where(item => item.CreateDate >= minData).ToList();
             List<DonatorRankDto> results = CountTotalWithOrderbyDesc(donatorRanks);
 
             return results;
@@ -90,7 +89,7 @@ namespace HanJie.CSLCN.Services
             return results;
         }
 
-        public virtual Task<DonatorRank> CreateAsync(DonatorRankDto data)
+        public virtual DonatorRank Create(DonatorRankDto data)
         {
             Ensure.NotNull(data, nameof(data));
             Ensure.NotNull(data.UserId, nameof(data.UserId));
@@ -102,7 +101,7 @@ namespace HanJie.CSLCN.Services
 
             data.Id = 0;    //新增数据，ID 自增，需确保为 0 ，由数据库决定 ID
             DonatorRank entity = new DonatorRank().ConvertFromDtoModel(data);
-            return base.AddAsync(entity);
+            return base.Add(entity);
         }
 
     }

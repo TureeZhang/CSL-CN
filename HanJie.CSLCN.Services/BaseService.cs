@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.Services
 {
@@ -21,7 +20,7 @@ namespace HanJie.CSLCN.Services
         public readonly ICommonHelper CommonHelper;
         private readonly ILogService _logService;
 
-        public BaseService(CSLDbContext cslDbContext,ICommonHelper commonHelper)
+        public BaseService(CSLDbContext cslDbContext, ICommonHelper commonHelper)
         {
             this.CSLDbContext = cslDbContext;
             this.CommonHelper = commonHelper;
@@ -31,14 +30,14 @@ namespace HanJie.CSLCN.Services
         /// 添加数据
         /// </summary>
         /// <param name="dto"></param>
-        protected virtual async Task<TDataModelType> AddAsync(TDataModelType data)
+        protected virtual TDataModelType Add(TDataModelType data)
         {
             Ensure.NotNull(data, nameof(data));
 
             data.CreateDate = DateTime.Now;
             data.LastModifyDate = DateTime.Now;
-            TDataModelType result = (await CSLDbContext.Set<TDataModelType>().AddAsync(data)).Entity;
-            await CSLDbContext.SaveChangesAsync();
+            TDataModelType result = CSLDbContext.Set<TDataModelType>().Add(data).Entity;
+            CSLDbContext.SaveChanges();
 
             return result;
 
@@ -48,33 +47,33 @@ namespace HanJie.CSLCN.Services
         /// 根据 ID 删除实数据
         /// </summary>
         /// <param name="id"></param>
-        public async Task DeleteByIdAsync(int id)
+        public void DeleteById(int id)
         {
-            TDataModelType data = await CSLDbContext.Set<TDataModelType>().FindAsync(id);
+            TDataModelType data = CSLDbContext.Set<TDataModelType>().Find(id);
             if (data == null)
                 throw new ArgumentException($"指定删除的数据(id:{id})不存在");
 
             CSLDbContext.Set<TDataModelType>().Remove(data);
-            await CSLDbContext.SaveChangesAsync();
+            CSLDbContext.SaveChanges();
         }
 
         /// <summary>
         /// 编辑数据
         /// </summary>
         /// <param name="dto"></param>
-        public virtual async Task UpdateAsync(TDataModelType data)
+        public virtual void Update(TDataModelType data)
         {
             Ensure.NotNull(data, nameof(data));
 
             data.LastModifyDate = DateTime.Now;
-            TDataModelType entity = await CSLDbContext.Set<TDataModelType>().FindAsync(data.Id);
+            TDataModelType entity = CSLDbContext.Set<TDataModelType>().Find(data.Id);
             Type modelType = typeof(TDataModelType);
             foreach (string propName in typeof(TDataModelType).GetProperties().Select(p => p.Name).ToList())
             {
                 modelType.GetProperty(propName).SetValue(entity, modelType.GetProperty(propName).GetValue(data));
             }
             CSLDbContext.Set<TDataModelType>().Update(entity);
-            await CSLDbContext.SaveChangesAsync();
+            CSLDbContext.SaveChanges();
         }
 
         /// <summary>
@@ -82,27 +81,27 @@ namespace HanJie.CSLCN.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns>查找到的数据，或是 null</returns>
-        public async Task<TDataModelType> GetById(int id)
+        public TDataModelType GetById(int id)
         {
-            TDataModelType data = await CSLDbContext.Set<TDataModelType>().FindAsync(id);
+            TDataModelType data = CSLDbContext.Set<TDataModelType>().Find(id);
             return data;
         }
 
-        public async virtual Task<List<TDataModelType>> ListAsync()
+        public virtual List<TDataModelType> List()
         {
-            List<TDataModelType> results = await CSLDbContext.Set<TDataModelType>().ToListAsync();
+            List<TDataModelType> results = CSLDbContext.Set<TDataModelType>().ToList();
             return results;
         }
 
-        public virtual List<TDataModelType> ListWhereAsync(Func<TDataModelType, bool> predicate)
+        public virtual List<TDataModelType> ListWhere(Func<TDataModelType, bool> predicate)
         {
             List<TDataModelType> results = CSLDbContext.Set<TDataModelType>().Where(predicate).ToList();
             return results;
         }
 
-        public async virtual Task<List<TDtoType>> ListDtos()
+        public virtual List<TDtoType> ListDtos()
         {
-            List<TDataModelType> datas = await CSLDbContext.Set<TDataModelType>().ToListAsync();
+            List<TDataModelType> datas = CSLDbContext.Set<TDataModelType>().ToList();
             List<TDtoType> dtos = new List<TDtoType>();
             foreach (TDataModelType item in datas)
             {
@@ -112,9 +111,9 @@ namespace HanJie.CSLCN.Services
             return dtos;
         }
 
-        public async virtual Task Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
+        public virtual void Log(string message, LogLevelEnum logLevel = LogLevelEnum.Info, object parameters = null)
         {
-            await this._logService.Log(message, logLevel, parameters);
+            this._logService.Log(message, logLevel, parameters);
         }
     }
 }

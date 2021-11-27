@@ -17,7 +17,7 @@ namespace HanJie.CSLCN.Services
 
         }
 
-        Task<WikiCategory> IWikiCategoryService.GetById(int categoryId)
+        WikiCategory IWikiCategoryService.GetById(int categoryId)
         {
             Ensure.NotNull(categoryId, nameof(categoryId));
 

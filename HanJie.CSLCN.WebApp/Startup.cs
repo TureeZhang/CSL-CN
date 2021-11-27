@@ -84,28 +84,31 @@ namespace HanJie.CSLCN.WebApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //因为本来就是开源项目，所以异常信息完全对外提供。
+            app.UseDeveloperExceptionPage();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                
             }
             else
             {
                 ExceptionHandlerOptions exceptionHandlerOptions = new ExceptionHandlerOptions();
                 exceptionHandlerOptions.ExceptionHandler = async (httpContext) =>
                 {
-                    await Task.Run(async () =>
-                   {
-                       try
-                       {
-                           IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
-                           await app.ApplicationServices.GetService<ILogService>().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
-                       }
-                       catch (Exception ex)
-                       {
-                           _ = File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs_{DateTime.Now}.txt"), ex.ToString());
-                           throw;
-                       }
-                   });
+                    await Task.Run(() =>
+                    {
+                        try
+                        {
+                            IExceptionHandlerPathFeature exceptionPath = httpContext.Features.Get<IExceptionHandlerPathFeature>();
+                            app.ApplicationServices.GetService<ILogService>().Log(exceptionPath.Error.ToString(), LogLevelEnum.Error);
+                        }
+                        catch (Exception ex)
+                        {
+                            _ = File.WriteAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs_{DateTime.Now}.txt"), ex.ToString());
+                            throw;
+                        }
+                    });
                 };
                 app.UseExceptionHandler(exceptionHandlerOptions);
                 app.UseExceptionHandler("/index.html");
@@ -122,7 +125,6 @@ namespace HanJie.CSLCN.WebApp
                  });
 
             }
-
 
             app.UseCors("local-angular-app");
             app.UseFileServer();

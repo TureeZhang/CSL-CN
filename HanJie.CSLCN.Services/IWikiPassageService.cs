@@ -9,31 +9,29 @@ namespace HanJie.CSLCN.Services
 {
     public interface IWikiPassageService
     {
-        Task<WikiPassage> AddAsync(WikiPassage data, int currentUserId);
-        Task<List<WikiPassageAnchorTitleDto>> CollectAnchorTitlesAsync(string content);
-        Task<List<BreadCrumbDto>> CollectBreadCrumbsAsync(WikiPassageDto wikiPassageDto);
-        Task<WikiPassage> Create(WikiPassageDto wikiPassageDto);
-        Task<WikiPassage> GetByRoutePathAsync(string routePath);
-        List<WikiPassageCommentDto> ListAuditOKComments(int wikiPassageId);
+        WikiPassage Add(WikiPassage data, int currentUserId);
+        void AddViewsCount(int passageId, IPAddress ip);
+        List<WikiPassageAnchorTitleDto> CollectAnchorTitles(string content);
+        List<BreadCrumbDto> CollectBreadCrumbs(WikiPassageDto wikiPassageDto);
+        WikiPassage Create(WikiPassageDto wikiPassageDto);
+        WikiPassage GetByRoutePath(string routePath);
         int GetEditingUserId(int passageId);
         bool IsCurrentUserEditing(int passageId, int currentUserId);
         bool IsPassageLocked(int passageId);
-        Task<bool> IsRoutePathExist(string routePath);
-        Task<List<WikiListItemDto>> ListAllPassageGenerals(bool readFromDatabaseImmediately = false);
-        Task<List<WikiPassageDto>> ListDtos();
-        Task<List<WikiPassageDto>> ListAsCooperatePassageDtoes(int userId);
-        Task<List<WikiPassage>> ListAsCooperatePassages(int userId);
-        Task<List<WikiPassageDto>> ListAsMainAuthorPassageDtoes(int userId);
-        Task<List<WikiPassage>> ListAsMainAuthorPassages(int userId);
-        Task<List<WikiListItemDto>> ListCategoriesAsync(int categoryId);
+        bool IsRoutePathExist(string routePath);
+        List<WikiListItemDto> ListAllPassageGenerals(bool readFromDatabaseImmediately = false);
+        List<WikiPassageDto> ListAsCooperatePassageDtoes(int userId);
+        List<WikiPassage> ListAsCooperatePassages(int userId);
+        List<WikiPassageDto> ListAsMainAuthorPassageDtoes(int userId);
+        List<WikiPassage> ListAsMainAuthorPassages(int userId);
+        List<WikiPassageCommentDto> ListAuditOKComments(int wikiPassageId);
+        List<WikiListItemDto> ListCategories(int categoryId);
         bool LockPassageEditingStatus(int passageId, int applyToLockPassageUserId);
-        Task<string> PickCoverUrlFromContentFirstImage(string content);
-        Task<string> PickDescriptionFromContent(string content);
-        void UnlockPassageEditingStatus(int passageId);
         void LockViewsDictionary(Action<Dictionary<int, Dictionary<string, ViewsCountDto>>> action);
-        Task UpdateAsync(WikiPassageDto wikiPassageDto, int currentUserId);
-        Task UpdateAsync(WikiPassage wikiPassage);
-        Task<WikiPassage> GetById(int id);
-        Task AddViewsCount(int passageId, IPAddress ip);
+        string PickCoverUrlFromContentFirstImage(string content);
+        string PickDescriptionFromContent(string content);
+        void UnlockPassageEditingStatus(int passageId);
+        void Update(WikiPassageDto wikiPassageDto, int currentUserId);
+        List<WikiPassageDto> ListDtos();
     }
 }

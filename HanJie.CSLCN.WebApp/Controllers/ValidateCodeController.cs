@@ -24,9 +24,9 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpGet("/api/ValidateCode")]
-        public async Task<ActionResult> Get()
+        public ActionResult Get()
         {
-            string imgBase64Str = await this._humanMachineValidateService.GetCodeImageBase64String(base.HttpContext.Connection.RemoteIpAddress.ToString());
+            string imgBase64Str = this._humanMachineValidateService.GetCodeImageBase64String(base.HttpContext.Connection.RemoteIpAddress.ToString());
             return new JsonResult(imgBase64Str);
         }
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HanJie.CSLCN.WebApp.Controllers
 {
@@ -27,12 +26,12 @@ namespace HanJie.CSLCN.WebApp.Controllers
         }
 
         [HttpPost("/api/register/RegistNewUser")]
-        public async Task<IActionResult> RegistNewUser([FromBody] UserInfoDto userInfoDto, [FromQuery] string smsCode)
+        public IActionResult RegistNewUser([FromBody] UserInfoDto userInfoDto, [FromQuery] string smsCode)
         {
             Ensure.NotNull(userInfoDto, nameof(userInfoDto));
             Ensure.NotNull(smsCode, nameof(smsCode));
 
-            await this._userInfoService.RegisterNewUser(userInfoDto, smsCode);
+            this._userInfoService.RegisterNewUser(userInfoDto, smsCode);
             return Ok();
         }
     }

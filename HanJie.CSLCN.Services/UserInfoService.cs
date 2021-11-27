@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using HanJie.CSLCN.Common;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using HanJie.CSLCN.Models.Enums;
 using HanJie.CSLCN.Models.Consts;
@@ -57,9 +56,9 @@ namespace HanJie.CSLCN.Services
             }
         }
 
-        public async virtual Task<List<UserInfoDto>> ListDtoes()
+        public virtual List<UserInfoDto> ListDtoes()
         {
-            List<UserInfo> datas = await base.ListAsync();
+            List<UserInfo> datas = base.List();
             List<UserInfoDto> dtos = new List<UserInfoDto>();
             foreach (UserInfo item in datas)
             {
@@ -72,10 +71,10 @@ namespace HanJie.CSLCN.Services
             return dtos;
         }
 
-        public async Task<List<UserInfoAuditDto>> ListUnAuditorUsersInfo()
+        public List<UserInfoAuditDto> ListUnAuditorUsersInfo()
         {
-            List<int> unAuditUserIds = await base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus == AuditStatusEnum.OnAuditing).Select(user => user.Id).ToListAsync();
-            List<UserInfoAudit> unAuditorUserInfoes = await base.CSLDbContext.UserInfoAudits.Where(user => unAuditUserIds.Contains(user.Id)).ToListAsync();
+            List<int> unAuditUserIds = base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus == AuditStatusEnum.OnAuditing).Select(user => user.Id).ToList();
+            List<UserInfoAudit> unAuditorUserInfoes = base.CSLDbContext.UserInfoAudits.Where(user => unAuditUserIds.Contains(user.Id)).ToList();
 
             List<UserInfoAuditDto> results = new List<UserInfoAuditDto>();
             foreach (var item in unAuditorUserInfoes)
@@ -139,7 +138,7 @@ namespace HanJie.CSLCN.Services
             this._userStatuService.LogoutSuccess(id);
         }
 
-        public new async Task<UserInfo> AddAsync(UserInfo userInfo)
+        public new UserInfo Add(UserInfo userInfo)
         {
             Ensure.NotNull(userInfo, nameof(userInfo));
             Ensure.NotNull(userInfo.IsAdmin, nameof(userInfo.IsAdmin));
@@ -157,27 +156,27 @@ namespace HanJie.CSLCN.Services
             userInfo.CreateDate = DateTime.Now;
             userInfo.LastModifyDate = DateTime.Now;
 
-            UserInfo result = await base.AddAsync(userInfo);
+            UserInfo result = base.Add(userInfo);
             return result;
 
         }
 
-        public async Task<bool> IsUserNameDuplicated(string userName)
+        public bool IsUserNameDuplicated(string userName)
         {
             Ensure.NotNull(userName, nameof(userName));
 
-            UserInfo userInfo = await CSLDbContext.UserInfoes.Where(item => item.UserName == userName).AsQueryable().FirstOrDefaultAsync();
+            UserInfo userInfo = CSLDbContext.UserInfoes.Where(item => item.UserName == userName).AsQueryable().FirstOrDefault();
             if (userInfo == null)
                 return false;
 
             return true;
         }
 
-        public async Task<IEnumerable<DonatorRankDto>> BindDonatorUserInfo(params DonatorRankDto[] dtos)
+        public IEnumerable<DonatorRankDto> BindDonatorUserInfo(params DonatorRankDto[] dtos)
         {
             foreach (DonatorRankDto item in dtos)
             {
-                UserInfo user = await this.GetById(item.UserId);
+                UserInfo user = this.GetById(item.UserId);
                 item.UserNickName = user.NickName;
                 item.AvatarUrl = user.AvatarUrl;
                 item.PersonalHomepageUrl = user.PersonalHomepageUrl;
@@ -226,14 +225,14 @@ namespace HanJie.CSLCN.Services
             return result;
         }
 
-        public async Task<List<UserInfoDto>> CollectAuthorInfoes(string[] userIds)
+        public List<UserInfoDto> CollectAuthorInfoes(string[] userIds)
         {
             Ensure.NotNull(userIds, nameof(userIds));
 
             List<UserInfoDto> result = new List<UserInfoDto>();
             foreach (string item in userIds)
             {
-                UserInfo userInfo = await GetById(Convert.ToInt32(item));
+                UserInfo userInfo = GetById(Convert.ToInt32(item));
                 UserInfoDto dto = new UserInfoDto().ConvertFromDataModel(userInfo);
                 result.Add(dto);
             }
@@ -250,44 +249,44 @@ namespace HanJie.CSLCN.Services
         ///     2.最后活跃时间更新为现在。
         /// </summary>
         /// <param name="id"></param>
-        public virtual async Task UpdateLastCommitInfo(int id)
+        public virtual void UpdateLastCommitInfo(int id)
         {
             Ensure.IsDatabaseId(id, nameof(id));
 
-            UserInfo userInfo = await GetById(id);
+            UserInfo userInfo = GetById(id);
             userInfo.CommitTimesCount += 1;
             userInfo.LastCommitDateTime = DateTime.Now;
-            await UpdateAsync(userInfo);
+            Update(userInfo);
         }
 
-        public virtual async Task<List<UserInfo>> ListRecentActiveEditors(int recentDaysCount = 0)
+        public virtual List<UserInfo> ListRecentActiveEditors(int recentDaysCount = 0)
         {
             List<UserInfo> editors = null;
             if (recentDaysCount <= 0)
             {
-                editors = await CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToListAsync();
+                editors = CSLDbContext.UserInfoes.Where(item => item.IsAdmin).ToList();
             }
             else
             {
-                editors = await CSLDbContext.UserInfoes
+                editors = CSLDbContext.UserInfoes
                     .Where(item => item.IsAdmin && DateTime.Now.AddDays(-recentDaysCount) <= item.LastCommitDateTime)
                     .OrderByDescending(item => item.LastCommitDateTime)
-                    .ToListAsync();
+                    .ToList();
             }
 
             return editors;
 
         }
 
-        public virtual async Task<List<UserInfo>> ListAllEditors()
+        public virtual List<UserInfo> ListAllEditors()
         {
-            return await ListRecentActiveEditors(-1);
+            return ListRecentActiveEditors(-1);
         }
 
-        public virtual async Task<List<UserInfoDto>> ListEditorsDto(int countRecentDays = -1)
+        public virtual List<UserInfoDto> ListEditorsDto(int countRecentDays = -1)
         {
             List<UserInfoDto> results = new List<UserInfoDto>();
-            List<UserInfo> userInfoes = await ListRecentActiveEditors(countRecentDays);
+            List<UserInfo> userInfoes = ListRecentActiveEditors(countRecentDays);
 
             if (userInfoes == null)
                 return null;
@@ -304,12 +303,12 @@ namespace HanJie.CSLCN.Services
             return results;
         }
 
-        public async Task<UserInfoDto> RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode)
+        public UserInfoDto RegisterNewUser(UserInfoDto userInfoDto, string userInputSmsCode)
         {
             Ensure.NotNull(userInfoDto, nameof(userInfoDto));
             Ensure.NotNull(userInfoDto.PhoneNumber, nameof(userInfoDto.PhoneNumber));
 
-            bool isValidatePhone = await this._validateCodeService.IsSmsCodeEqual(userInfoDto.PhoneNumberPrefix + userInfoDto.PhoneNumber, userInputSmsCode);
+            bool isValidatePhone = this._validateCodeService.IsSmsCodeEqual(userInfoDto.PhoneNumberPrefix + userInfoDto.PhoneNumber, userInputSmsCode);
             if (!isValidatePhone)
                 throw new UserException($"发往 {userInfoDto.PhoneNumber} 的手机验证码核对有误，验证失败。请正确输入短信中包含的验证码，然后重试。");
 
@@ -319,46 +318,46 @@ namespace HanJie.CSLCN.Services
             userInfo.CreateDate = DateTime.Now;
             userInfo.LastModifyDate = DateTime.Now;
             userInfo.Password = this.CommonHelper.GetMd5Base64StringUsePrivateSold(userInfo.Password);
-            await AddAsync(userInfo);
+            Add(userInfo);
 
             return userInfoDto;
         }
 
-        public async Task UpdateAccount(UserInfo data)
+        public void UpdateAccount(UserInfo data)
         {
-            UserInfo userToUpdate = await base.GetById(data.Id);
+            UserInfo userToUpdate = base.GetById(data.Id);
 
             if (string.IsNullOrEmpty(data.AvatarUrl))
                 data.AvatarUrl = userToUpdate.AvatarUrl;
 
-            await CacheUserNewInfoes(Mapper.Map<UserInfoAudit>(data));
+            CacheUserNewInfoes(Mapper.Map<UserInfoAudit>(data));
             userToUpdate.AuditStatus = AuditStatusEnum.OnAuditing;
 
-            await UpdateAsync(userToUpdate);
+            Update(userToUpdate);
         }
 
-        private async Task CacheUserNewInfoes(UserInfoAudit data)
+        private void CacheUserNewInfoes(UserInfoAudit data)
         {
             List<UserInfoAudit> existCaches = this.CSLDbContext.UserInfoAudits.Where(item => item.UserId == data.UserId).ToList();
 
             foreach (var item in existCaches)
             {
                 this.CSLDbContext.Remove(item);
-                await this.CSLDbContext.SaveChangesAsync();
+                this.CSLDbContext.SaveChanges();
             }
 
-            await this.CSLDbContext.UserInfoAudits.AddAsync(data);
-            await this.CSLDbContext.SaveChangesAsync();
+            this.CSLDbContext.UserInfoAudits.Add(data);
+            this.CSLDbContext.SaveChanges();
         }
 
-        public override async Task UpdateAsync(UserInfo data)
+        public override void Update(UserInfo data)
         {
             Ensure.IsDatabaseId(data.Id, nameof(data.Id));
 
             data.LastModifyDate = DateTime.Now;
 
             base.CSLDbContext.UserInfoes.Update(data);
-            await base.CSLDbContext.SaveChangesAsync();
+            base.CSLDbContext.SaveChanges();
         }
 
         public bool IsNickNameExists(string nickName)
@@ -383,7 +382,7 @@ namespace HanJie.CSLCN.Services
         {
             Ensure.NotNull(phoneNumber, nameof(phoneNumber));
 
-            UserInfo user=  this.CSLDbContext.UserInfoes.Where(user => user.PhoneNumber == phoneNumber).FirstOrDefault();
+            UserInfo user = this.CSLDbContext.UserInfoes.Where(user => user.PhoneNumber == phoneNumber).FirstOrDefault();
 
             if (user != null)
                 return true;

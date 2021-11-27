@@ -45,12 +45,12 @@ namespace HanJie.CSLCN.Services
         /// </summary>
         /// <param name="question"></param>
         /// <returns></returns>
-        public async Task Create(Question question)
+        public void Create(Question question)
         {
             Ensure.NotNull(question, nameof(question));
 
             question.Status = QuestionStatusEnum.WaitAudit;
-            await base.AddAsync(question);
+             base.Add(question);
         }
     }
 }

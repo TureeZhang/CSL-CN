@@ -21,7 +21,7 @@ namespace HanJie.CSLCN.Services
             this._sensitiveWordHelper = sensitiveWordHelper;
         }
 
-        public async Task Create(WikiPassageCommentDto comment)
+        public void Create(WikiPassageCommentDto comment)
         {
             Ensure.NotNull(comment, nameof(comment));
             Ensure.NotNull(comment.Content, comment.Content);
@@ -35,21 +35,21 @@ namespace HanJie.CSLCN.Services
             data.AuditStatus = AuditStatusEnum.OnAuditing;
             data.CreateDate = DateTime.Now;
             data.LastModifyDate = DateTime.Now;
-            await base.CSLDbContext.WikiPassageComments.AddAsync(data);
-            await base.CSLDbContext.SaveChangesAsync();
+            base.CSLDbContext.WikiPassageComments.Add(data);
+            base.CSLDbContext.SaveChanges();
         }
 
-        public async Task Delete(int id,int currentUserId)
+        public void Delete(int id, int currentUserId)
         {
             Ensure.IsDatabaseId(id, nameof(id));
 
-            WikiPassageComment comment = await base.GetById(id);
+            WikiPassageComment comment = base.GetById(id);
             if (comment.UserId != currentUserId)
                 throw new Exception("评论的发布者与删除操作用户不一致，无权删除。");
 
             //todo: 管理员删除评论需要开另外的方法，这个方法是提供给普通用户调用的。
 
-            await base.DeleteByIdAsync(id);
+            base.DeleteById(id);
         }
     }
 }

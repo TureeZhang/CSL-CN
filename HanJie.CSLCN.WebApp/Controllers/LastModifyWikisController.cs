@@ -34,13 +34,13 @@ namespace HanJie.CSLCN.WebApp.Controllers
             {
                 return Json(LastModifyWikisController.LastModifyWikisCaches.Item2);
             }
-            List<WikiListItemDto> wikiListItemDtos = await this._wikiPassageService.ListAllPassageGenerals();
+            List<WikiListItemDto> wikiListItemDtos = this._wikiPassageService.ListAllPassageGenerals();
 
             //todo:严重的性能问题。前期偷懒，取出了全部了文档对象再 take(25)，应当从 List 起就决定从数据库读取的数据条数。
             wikiListItemDtos = wikiListItemDtos.OrderByDescending(item => item.LastModifyDate).Take(20).ToList();
             foreach (var item in wikiListItemDtos)
             {
-                UserInfoDto userInfoDto = new UserInfoDto().ConvertFromDataModel((await this._userInfoService.GetById(item.LastModifyUser.Id)) ??
+                UserInfoDto userInfoDto = new UserInfoDto().ConvertFromDataModel( this._userInfoService.GetById(item.LastModifyUser.Id) ??
                     throw new ArgumentException($"user not exist. id={item.LastModifyUser.Id}"));
                 item.LastModifyUser = userInfoDto;
             }

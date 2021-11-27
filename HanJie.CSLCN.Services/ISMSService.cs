@@ -5,6 +5,6 @@ namespace HanJie.CSLCN.Services
 {
     public interface ISmsService
     {
-        Task<string> SendValidateCode(string phoneNumber);
+        string SendValidateCode(string phoneNumber);
     }
 }

@@ -6,7 +6,7 @@ namespace HanJie.CSLCN.Services
     public interface IWikiPassageViewersCountsService
     {
         WikiPassageViewersCounts GetByWikiPassageId(int wikiPassageId);
-        Task UpdateViewersCounts(int id, int newViewersCount);
-        Task UpdateAsync(WikiPassageViewersCounts viewersCounts);
+        void UpdateViewersCounts(int id, int newViewersCount);
+        void Update(WikiPassageViewersCounts viewersCounts);
     }
 }

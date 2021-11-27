@@ -7,7 +7,7 @@ namespace HanJie.CSLCN.Services
 {
     public interface IWikiCategoryService
     {
-        Task<WikiCategory> GetById(int categoryId);
-        Task<List<WikiCategoryDto>> ListDtos();
+        WikiCategory GetById(int categoryId);
+        List<WikiCategoryDto> ListDtos();
     }
 }

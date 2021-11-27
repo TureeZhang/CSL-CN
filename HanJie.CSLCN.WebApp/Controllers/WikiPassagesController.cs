@@ -41,38 +41,38 @@ namespace HanJie.CSLCN.WebApp.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public async Task<JsonResult> GetAsync(string id)
+        public JsonResult Get(string id)
         {
-            WikiPassage wikiPassage = await this._wikiPassageService.GetByRoutePathAsync(id);
+            WikiPassage wikiPassage = this._wikiPassageService.GetByRoutePath(id);
             WikiPassageDto wikiPassageDto = Mapper.Map<WikiPassageDto>(wikiPassage);
-            wikiPassageDto.AnchorTitles = await this._wikiPassageService.CollectAnchorTitlesAsync(wikiPassageDto.Content);
-            wikiPassageDto.MainAuthors = await this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-            wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? await this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
-            wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? await this._wikiPassageService.CollectBreadCrumbsAsync(wikiPassageDto) : null;
+            wikiPassageDto.AnchorTitles = this._wikiPassageService.CollectAnchorTitles(wikiPassageDto.Content);
+            wikiPassageDto.MainAuthors = this._userInfoService.CollectAuthorInfoes(wikiPassage.MainAuthors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+            wikiPassageDto.CoAuthors = wikiPassage.CoAuthors != null ? this._userInfoService.CollectAuthorInfoes(wikiPassage.CoAuthors?.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) : null;
+            wikiPassageDto.BreadCrumbs = wikiPassage.CategoryId != 0 ? this._wikiPassageService.CollectBreadCrumbs(wikiPassageDto) : null;
             wikiPassageDto.TotalViewsCount = this._wikiPassageViewersCountsService.GetByWikiPassageId(wikiPassage.Id).ViewersCount;
             wikiPassageDto.Comments = this._wikiPassageService.ListAuditOKComments(wikiPassage.Id);
             int editingUserId = this._wikiPassageService.GetEditingUserId(wikiPassageDto.Id);
-            wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(await this._userInfoService.GetById(editingUserId));
+            wikiPassageDto.EditingUser = editingUserId == 0 ? null : new UserInfoDto().ConvertFromDataModel(this._userInfoService.GetById(editingUserId));
             wikiPassageDto.LastModifyDate = wikiPassage.LastModifyDate.ToString("yyyy-MM-dd hh:mm:ss");
 
             //
             //此处是有意不做等待的，阅读量的统计不应当影响文本内容的返回。
 
-            TaskAwaiter taskAwaiter = Task.Run(async () =>
-             {
-                 await this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
-             }).GetAwaiter();
+            Task.Run(() =>
+            {
+                this._wikiPassageService.AddViewsCount(wikiPassageDto.Id, base.HttpContext.Connection.RemoteIpAddress);
+            });
 
             return new JsonResult(wikiPassageDto);
         }
 
         [HttpGet]
         [Route("/api/wikipassages/isduplicated")]
-        public async Task<IActionResult> IsDuplicated(string routePath)
+        public IActionResult IsDuplicated(string routePath)
         {
             Ensure.NotNull(routePath, nameof(routePath));
 
-            bool result = await this._wikiPassageService.IsRoutePathExist(routePath);
+            bool result = this._wikiPassageService.IsRoutePathExist(routePath);
             return Json(result);
         }
 
@@ -97,7 +97,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         // POST api/<controller>
         [HttpPost]
         [AdministratorOnly]
-        public async Task<IActionResult> PostAsync([FromBody] WikiPassageDto dto)
+        public IActionResult Post([FromBody] WikiPassageDto dto)
         {
             if (!base.CurrentUser.IsAdmin)
             {
@@ -105,7 +105,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
             }
 
             dto.MainAuthors = new List<UserInfoDto> { base.CurrentUser };
-            WikiPassage wikiPassage = await this._wikiPassageService.Create(dto);
+            WikiPassage wikiPassage = this._wikiPassageService.Create(dto);
             WikiPassageDto wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
 
             return Json(wikiPassageDto);
@@ -114,10 +114,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
         // PUT api/<controller>/5
         [HttpPut]
         [AdministratorOnly]
-        public async Task Put([FromBody] WikiPassageDto dto)
+        public void Put([FromBody] WikiPassageDto dto)
         {
-            await this._wikiPassageService.UpdateAsync(dto, base.CurrentUser.Id);
-            await this._userInfoService.UpdateLastCommitInfo(base.CurrentUser.Id);
+            this._wikiPassageService.Update(dto, base.CurrentUser.Id);
+            this._userInfoService.UpdateLastCommitInfo(base.CurrentUser.Id);
         }
 
         // DELETE api/<controller>/5
@@ -140,7 +140,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         public IActionResult DeleteComment(int id)
         {
             Ensure.IsDatabaseId(id, nameof(id));
-            this._wikiPassageCommentService.Delete(id,base.CurrentUser.Id);
+            this._wikiPassageCommentService.Delete(id, base.CurrentUser.Id);
             return Ok();
         }
     }

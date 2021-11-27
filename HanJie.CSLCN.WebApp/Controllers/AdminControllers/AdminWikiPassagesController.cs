@@ -24,18 +24,18 @@ namespace HanJie.CSLCN.WebApp.Controllers.AdminControllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public IActionResult List()
         {
-            List<WikiPassageDto> datas =await this._wikiPassageService.ListDtos();
+            List<WikiPassageDto> datas = this._wikiPassageService.ListDtos();
             return Json(datas);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(WikiPassageDto wikiPassageDto)
+        public IActionResult Post(WikiPassageDto wikiPassageDto)
         {
             Ensure.NotNull(wikiPassageDto, nameof(wikiPassageDto));
 
-            WikiPassage wikiPassage = await this._wikiPassageService.Create(wikiPassageDto);
+            WikiPassage wikiPassage =  this._wikiPassageService.Create(wikiPassageDto);
             wikiPassageDto = new WikiPassageDto().ConvertFromDataModel(wikiPassage);
 
             return Json(wikiPassageDto);

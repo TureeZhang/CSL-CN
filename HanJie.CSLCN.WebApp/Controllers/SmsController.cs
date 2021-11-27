@@ -27,7 +27,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
         // GET: api/values
         [HttpPost]
         [Route("/api/sms")]
-        public async Task<IActionResult> Post([FromBody]Dictionary<string, string> pars)
+        public IActionResult Post([FromBody] Dictionary<string, string> pars)
         {
             string phoneNumber = null;
             string validateCode = null;
@@ -37,10 +37,10 @@ namespace HanJie.CSLCN.WebApp.Controllers
             Ensure.NotNull(phoneNumber, nameof(phoneNumber));
             Ensure.NotNull(validateCode, nameof(validateCode));
 
-            if (!await this._humanMachineValidateService.IsValidateCodeEqualAsync(Request.HttpContext.Connection.RemoteIpAddress.ToString(), validateCode))
+            if (!this._humanMachineValidateService.IsValidateCodeEqual(Request.HttpContext.Connection.RemoteIpAddress.ToString(), validateCode))
                 throw new UserException($"验证码输入有误");
 
-            await this._humanMachineValidateService.SendSmsValidateCode(phoneNumber);
+            this._humanMachineValidateService.SendSmsValidateCode(phoneNumber);
             return Ok();
         }
     }
