@@ -74,7 +74,7 @@ namespace HanJie.CSLCN.Services
         public List<UserInfoAuditDto> ListUnAuditorUsersInfo()
         {
             List<int> unAuditUserIds = base.CSLDbContext.UserInfoes.Where(user => user.AuditStatus == AuditStatusEnum.OnAuditing).Select(user => user.Id).ToList();
-            List<UserInfoAudit> unAuditorUserInfoes = base.CSLDbContext.UserInfoAudits.Where(user => unAuditUserIds.Contains(user.Id)).ToList();
+            List<UserInfoAudit> unAuditorUserInfoes = base.CSLDbContext.UserInfoAudits.Where(user => unAuditUserIds.Contains(user.UserId)).ToList();
 
             List<UserInfoAuditDto> results = new List<UserInfoAuditDto>();
             foreach (var item in unAuditorUserInfoes)
@@ -308,8 +308,8 @@ namespace HanJie.CSLCN.Services
             Ensure.NotNull(userInfoDto, nameof(userInfoDto));
             Ensure.NotNull(userInfoDto.PhoneNumber, nameof(userInfoDto.PhoneNumber));
 
-            bool isValidatePhone = this._validateCodeService.IsSmsCodeEqual(userInfoDto.PhoneNumberPrefix + userInfoDto.PhoneNumber, userInputSmsCode);
-            if (!isValidatePhone)
+            bool isValidatePhone = this._validateCodeService.IsSmsCodeEqual(userInfoDto.PhoneNumber, userInputSmsCode);
+            if (RunAs.Release && !isValidatePhone)
                 throw new UserException($"发往 {userInfoDto.PhoneNumber} 的手机验证码核对有误，验证失败。请正确输入短信中包含的验证码，然后重试。");
 
             userInfoDto.AuditStatus = AuditStatusEnum.OnAuditing;
@@ -317,8 +317,10 @@ namespace HanJie.CSLCN.Services
             userInfo.PhoneNumber = userInfo.PhoneNumber;
             userInfo.CreateDate = DateTime.Now;
             userInfo.LastModifyDate = DateTime.Now;
-            userInfo.Password = this.CommonHelper.GetMd5Base64StringUsePrivateSold(userInfo.Password);
+            userInfo.Password = userInfo.Password;
             Add(userInfo);
+
+            UpdateAccount(userInfo);
 
             return userInfoDto;
         }

@@ -38,6 +38,7 @@
         <nz-header style="background: #fff; padding:0;height:40px;line-height:40px;">
             <div nz-row style="line-height:inherit;">
                 <div nz-col nzLg="24" nzXs="24" style="text-align:right;padding-right:12px;">
+                    <button nz-button nzType="default" nzSize="small" *ngIf="currentUser && currentUser.isAdmin" style="margin-right: 12px;background-color: #f7f7f7;" routerLink="/admin">管理后台</button>
                     <iframe src="https://ghbtns.com/github-btn.html?user=TureeZhang&repo=CSL-CN&type=star&count=true"
                         frameborder="0" scrolling="0" width="95px" height="25px"
                         style="position:relative;top:10px;"></iframe>

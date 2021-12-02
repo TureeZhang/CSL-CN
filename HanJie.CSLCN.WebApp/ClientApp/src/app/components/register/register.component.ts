@@ -51,8 +51,8 @@ export class RegisterComponent implements OnInit {
       nickname: [null, [Validators.required, Validators.pattern("[\u4e00-\u9fa5]*[a-z]*[A-Z]*\\d*-*_*\\s*"), Validators.maxLength(16)], [this.validateService.isContainSensitiveWords, this.validateService.isNickNameExists]],
       phoneNumberPrefix: ['+86', [Validators.required]],
       phoneNumber: [null, [Validators.required, Validators.pattern(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/)], [this.validateService.isPhoneNumberExists]],
-      smsCode: [null, [Validators.required, Validators.maxLength(6)], Validators.pattern(/[0-9]/)],
-      agree: [true, [Validators.required]]
+      smsCode: [null, [Validators.required, Validators.minLength(6), Validators.pattern(/[0-9]/)]],
+      agree: [false, [Validators.requiredTrue]]
     });
 
     this.validateForm.controls["phoneNumber"].statusChanges.subscribe(valid => {
@@ -93,15 +93,15 @@ export class RegisterComponent implements OnInit {
 
   sendSmsCode(userInputCode: string): void {
     var phoneNumberInput = this.validateForm.controls["phoneNumber"];
-    phoneNumberInput.disable();
 
-    this.smsService.sendSmsValidateCode(this.validateForm.controls["phoneNumberPrefix"].value + phoneNumberInput.value, userInputCode).subscribe(data => {
-      this.isValidateCodeModalShow = false;
-      this.validateCodelModalComponent.refreshValidateCode();
-      this.globalService.successTip(`验证通过：已向手机 ${phoneNumberInput.value} 发送验证码。`);
+    let host = this;
+    this.smsService.sendSmsValidateCode(phoneNumberInput.value, userInputCode).subscribe(data => {
+      host.isValidateCodeModalShow = false;
+      host.validateCodelModalComponent.refreshValidateCode();
+      host.globalService.successTip(`验证通过：已向手机 ${phoneNumberInput.value} 发送验证码。`);
     },
       err => {
-        this.validateCodelModalComponent.refreshValidateCode();
+        host.validateCodelModalComponent.refreshValidateCode();
       });
   }
 

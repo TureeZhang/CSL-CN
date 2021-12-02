@@ -1,8 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { GlobalService } from '../services/global.service';
 
 @Injectable({ providedIn: "root" })
 export class CSLHttpHelper {
@@ -14,7 +16,8 @@ export class CSLHttpHelper {
   public static modalService: NzModalService;
 
   constructor(private http: HttpClient,
-    private nzModalService: NzModalService) {
+    private nzModalService: NzModalService,
+    private router: Router) {
     CSLHttpHelper.modalService = nzModalService;
   }
 
@@ -92,6 +95,9 @@ export class CSLHttpHelper {
         nzTitle: '哦豁',
         nzContent: err.error.errMsg
       });
+    }
+    else if (err.status == 401) {
+      this.router.navigate(["/login"]);
     }
     else if (err.status === 0) {
       CSLHttpHelper.modalService.error({

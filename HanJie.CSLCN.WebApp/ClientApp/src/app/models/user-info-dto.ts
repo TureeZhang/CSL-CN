@@ -17,4 +17,5 @@ export class UserInfoDto {
     commitTimesCount: number;
     lastCommitDateTime: string;
     auditStatus: AuditStatusEnum;
+    phoneNumber:string;
 }

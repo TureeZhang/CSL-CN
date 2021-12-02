@@ -31,9 +31,6 @@ namespace HanJie.CSLCN.Services
             if (IsPausedPhone(phoneNumber))
                 throw new UserException($"短息验证码发送失败：当前手机号码 10 分钟内曾发送过验证码，请稍后重试。");
 
-            if (!phoneNumber.StartsWith("+86"))
-                throw new UserException($"短信验证码发送失败：暂不支持向境外手机号码发送短信验证码。");
-
             string code = new Random().Next(100000, 999999).ToString();
             this.SendSms(phoneNumber, code, new TimeSpan(0, 10, 0));
 

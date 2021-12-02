@@ -43,7 +43,7 @@ export class ValidateService implements OnInit {
         clearTimeout(timer);
       }
 
-      if (value === UserInfoService.CurrentUser.nickName) {
+      if (UserInfoService.CurrentUser && value === UserInfoService.CurrentUser.nickName) {
         observer.next(null);
         observer.complete();
       }
