@@ -318,7 +318,7 @@ namespace HanJie.CSLCN.Services
             userInfo.CreateDate = DateTime.Now;
             userInfo.LastModifyDate = DateTime.Now;
             userInfo.Password = userInfo.Password;
-            Add(userInfo);
+            userInfo = Add(userInfo);
 
             UpdateAccount(userInfo);
 
