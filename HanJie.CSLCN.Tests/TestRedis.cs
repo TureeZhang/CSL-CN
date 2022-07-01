@@ -15,7 +15,7 @@ namespace HanJie.CSLCN.Tests
         }
 
         [Fact]
-        public async void ShouldAddObject()
+        public void ShouldAddObject()
         {
             RedisService redisService = new RedisService();
 
@@ -26,7 +26,7 @@ namespace HanJie.CSLCN.Tests
             dic.Add(1, temp);
 
 
-            await redisService.ObjectSetAsync("viewsCountDic-test", dic);
+            redisService.ObjectSet("viewsCountDic-test", dic);
 
             Dictionary<int, Dictionary<string, ViewsCountDto>> dicResult = redisService.ObjectGet<Dictionary<int, Dictionary<string, ViewsCountDto>>>("viewsCountDic");
             Assert.Equal(3, dicResult[1]["192.168.1.1"].NewViews);

@@ -23,5 +23,6 @@ namespace HanJie.CSLCN.Services
 
             ClientAppService.ConfigsDto = result;
         }
+
     }
 }

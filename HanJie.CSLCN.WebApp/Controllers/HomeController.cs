@@ -10,6 +10,7 @@ namespace HanJie.CSLCN.WebApp.Controllers
     public class HomeController : Controller
     {
         [Route("/homepage/{0}")]
+        [Route("/homepage")]
         public IActionResult Index()
         {
             try

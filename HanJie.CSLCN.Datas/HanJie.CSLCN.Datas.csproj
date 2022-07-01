@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HanJie.CSLCN.Models\HanJie.CSLCN.Models.csproj" />
-    <ProjectReference Include="..\HanJie.CSLCN.Interfaces\HanJie.CSLCN.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

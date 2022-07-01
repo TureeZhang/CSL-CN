@@ -20,24 +20,24 @@ namespace HanJie.CSLCN.Tests
             {
                 MenuService service = mock.Create<MenuService>();
 
-                await service.AddMainMenuAsync("主页");   //1
-                await service.AddMainMenuAsync("快速起步");  //2
-                await service.AddMainMenuAsync("常用MOD");        //3
-                await service.AddMainMenuAsync("最新消息"); //4
-                await service.AddMainMenuAsync("请开发者吃饭");  //5
+                service.AddMainMenu("主页");   //1
+                service.AddMainMenu("快速起步");  //2
+                service.AddMainMenu("常用MOD");        //3
+                service.AddMainMenu("最新消息"); //4
+                service.AddMainMenu("请开发者吃饭");  //5
 
-                await service.AddFirstChildMenuAsync("如何修路", 2);
-                await service.AddFirstChildMenuAsync("如何修水管", 2);
-                await service.AddFirstChildMenuAsync("如何分区", 2);
+                service.AddFirstChildMenu("如何修路", 2);
+                service.AddFirstChildMenu("如何修水管", 2);
+                service.AddFirstChildMenu("如何分区", 2);
 
-                await service.AddFirstChildMenuAsync("连连乐", 3);
-                await service.AddFirstChildMenuAsync("挪挪乐", 3);
-                await service.AddFirstChildMenuAsync("Forest Brush v.1.2.5", 3);
+                service.AddFirstChildMenu("连连乐", 3);
+                service.AddFirstChildMenu("挪挪乐", 3);
+                service.AddFirstChildMenu("Forest Brush v.1.2.5", 3);
 
-                await service.AddFirstChildMenuAsync("校园 DLC", 4);
-                await service.AddFirstChildMenuAsync("开发者日志（十八）", 4);
+                service.AddFirstChildMenu("校园 DLC", 4);
+                service.AddFirstChildMenu("开发者日志（十八）", 4);
 
-                Assert.True((await service.GetById(1)).Name == "主页");
+                Assert.True(( service.GetById(1)).Name == "主页");
 
             }
 
